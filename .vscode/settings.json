@@ -1,0 +1,9 @@
+{
+"editor.tabSize": 4,
+"editor.detectIndentation": false,
+"editor.lineHeight": 2,
+"editor.fontFamily": "Courier New",
+"editor.fontSize": 14,
+"editor.fontWeight": "bold",
+"files.associations": {"wrangler.json": "jsonc"}
+}

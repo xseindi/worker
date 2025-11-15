@@ -1,0 +1,22 @@
+{
+"index": "/",
+"style.css": "/style.css",
+"robot:text": "/robots.txt",
+"ad:text": "/ads.txt",
+"favorite.ico": "/favicon.ico",
+"manifest.json": "/manifest.json",
+"sitemap.xml": "/sitemap.xml", "sitemap.xsl": "/sitemap.xsl",
+"feed": "/feed/", "feed:atom": "/feed/atom/",
+"cgi-bin": "/cgi-bin/", "cpanel": "/cpanel/",
+"*": "/:path{.+}",
+"archive": "/archive/", "archive:year": "/:year{[0-9]+}/", "archive:month": "/:year{[0-9]+}/:month{[0-9]+}/", "archive:day": "/:year{[0-9]+}/:month{[0-9]+}/:day{[0-9]+}/",
+"page": {
+    "about": "/about/", "contact": "/contact/", "help": "/help/",
+    "privacy": "/privacy/", "privacy-policy": "/privacy/policy/", "privacy-policy:content": "/privacy/policy/content/",
+    "term_of_use": "/term_of_use", "term_of_service": "/term_of_service",
+    "cookie": "/cookie/", "cookie:preference": "/cookie/preference/",
+    "service": "/service/", "pricing": "/pricing/", "partner": "/partner/",
+    "disclaimer": "/disclaimer", "FAQ": "/FAQ", "DMCA": "/DMCA", "EULA": "/EULA",
+    "*": "*"
+    }
+}

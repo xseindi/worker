@@ -1,0 +1,23 @@
+{
+	"name": "worker",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"start": "wrangler dev",
+		"dev": "wrangler dev",
+		"local": "wrangler dev --port 80",
+		"deploy": "wrangler deploy",
+		"test": "vitest",
+		"cf-typegen": "wrangler types"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"typescript": "^5.5.2",
+		"vitest": "~3.2.0",
+		"wrangler": "^4.48.0"
+	},
+	"dependencies": {
+		"hono": "^4.10.5",
+		"lodash": "^4.17.21"
+	}
+}
