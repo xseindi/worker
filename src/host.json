@@ -1,0 +1,8 @@
+{
+"127.0.0.1": {"theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"bioskopress.com": {"alias": ["www"], "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"bioskopress.online": {"alias": ["www"], "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"contentify.com": {"alias": ["www"], "theme": {"id": "default", "group": "website"}, "config": {}},
+"bioskop.com": {"alias": ["www"], "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"*": {}
+}

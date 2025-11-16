@@ -1,7 +1,7 @@
 {
 "$schema": "node_modules/wrangler/config-schema.json",
 "name": "bioskop",
-"main": "src/index.ts",
+"main": "src/application/app.ts",
 "compatibility_date": "2025-11-13",
 "observability": {"enabled": true},
 "assets": {"binding": "asset", "directory": "./public"},

@@ -1,4 +1,7 @@
 {
-"cd:io": "https://vcredist.github.io",
+"internet": true,
+"on:line": false,
+"cd:io": false,
+"cd:base_url": "https://vcredist.github.io",
 "*": "*"
 }
