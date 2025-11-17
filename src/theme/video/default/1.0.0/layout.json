@@ -1,4 +1,10 @@
 {
-"website": ["<div id=\"\">", "</div>"],
+"website": [
+	"<div id=\"\">",
+	"\t<div id=\"\">",
+	"{{ slot }}",
+	"\t</div>",
+	"</div>"
+	],
 "*": []
 }

@@ -11,8 +11,8 @@
 import php, {express} from "../zend/engine"
 import "../zend/lib"
 import "../zend/library"
-import "../zend/theme"
 import "../zend/worker"
+import "../zend/theme"
 
 import "../plugin/tmdb"
 import "../plugin/video-src"
@@ -35,12 +35,12 @@ app.start (async function (request: any, response: any, next: any) {
 			if (request.error [i].type === "host") return response ("Host Not Found")
 			}
 		}
+	request.router.use ()
 	return next ()
 	})
 
-app.get ("/", async function (request: any, response: any, next: any) {
-	return response.html ("Hello World")
-	})
+app.get (app.router.index)
+app.get (app.router.page ["about"])
 
 /**
  * xxx
@@ -51,6 +51,20 @@ app.get ("/", async function (request: any, response: any, next: any) {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.catch (function (request: any, response: any, next: any) {
+	return response ("404 Not Found", 404)
+	})
 
 /**
  * xxx

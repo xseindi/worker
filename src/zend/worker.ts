@@ -45,7 +45,7 @@ php.worker = class {
 		var _ = function (worker: any) {
 			return function (io: any, next: any) {
 				if (context) return context (worker.request, worker.response, next);
-				else return next ();
+				else return worker.request.router.get (path) || next ();
 				}
 			}
 		this.app.get (path, _ (this));
@@ -77,6 +77,8 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.var = io.env;
 	request.error = [];
 	request.header = {}
+	request.layout = {}
+	request.component = {}
 	for (var header of io.req.raw.headers.entries ()) request.header [header [0]] = header [1];
 	request.url = php.parse_url (io.req.raw.url);
 	request.url.param = function (key: string) { return io.req.param (key); }
@@ -86,17 +88,6 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.next = function () { return ! request.visitor ["agent:crawler"]; }
 	request.visitor = {agent: request.header ["user-agent"], "agent:crawler": false, country: {code: io.req.raw.cf.country, region: {code: io.req.raw.cf.regionCode, name: io.req.raw.cf.region, city: {name: io.req.raw.cf.city, postal: {code: io.req.raw.cf.postalCode}}}}, latitude: io.req.raw.cf.latitude, longitude: io.req.raw.cf.longitude, internet: {organization: io.req.raw.cf.asOrganization}, timezone: io.req.raw.cf.timezone}
 	if (php.is_agent_crawler (request.visitor.agent)) request.visitor ["agent:crawler"] = true;
-	/*
-	request.output = {route: [], base_url: request.base_url, canonical_url: request.canonical_url, theme_id: "default", theme_version: "0.0.0", latest: "0.0.0"}
-	for (var i in worker.route) {
-		if (i === "$") continue;
-		else if (typeof worker.route [i] === "string") {
-			request.output.route.push (`"${i}": "${worker.route [i]}"`)
-			request.output [["route", i].join (" ")] = worker.route [i];
-			}
-		}
-	request.output.route = request.output.route.join (", ");
-	*/
 	return request;
 	}
 
@@ -108,6 +99,37 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.var = {}
 	response.render = function () {}
 	return response;
+	}
+
+php.worker.io.router = class {
+	app: any;
+	request: any;
+	response: any;
+	next: any;
+	router: any = {use: [], get: {}, post: {}}
+	constructor (app: any, request: any, response: any, next: any) {
+		this.app = app;
+		this.request = request;
+		this.response = response;
+		this.next = next;
+		}
+	set (router: any) {
+		this.router.use = router.use;
+		for (var i in router.get) this.router.get [router.get [i].path] = router.get [i];
+		}
+	use () {
+		for (var i in this.router.use) this.router.use [i] (this.app, this.request, this.response, this.next);
+		}
+	get (path: string) {
+		if (this.router.get [path]) return this.router.get [path].context (this.app, this.request, this.response, this.next);
+		}
+	}
+
+php.worker.router = class {
+	router: any = {use: [], get: [], post: []}
+	constructor () {}
+	use (context: any) { this.router.use.push (context); }
+	get (path: string, context: any) { this.router.get.push ({path, context}); }
 	}
 
 php.worker.start = async function (app: any, request: any, response: any, next: any) {
@@ -122,6 +144,13 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 					if (then.queue.length > 1) resolve ();
 					}
 				then.queue = [];
+				var theme = php.theme.template [request.app.theme.group][request.app.theme.id][request.app.theme.version];
+				request.app.theme.router = theme.router;
+				request.app.theme.layout = theme.layout;
+				request.app.theme.component = theme.component;
+				request.theme = new php.theme (request.app.theme);
+				request.router = new php.worker.io.router (app, request, response, next);
+				request.router.set (request.app.theme.router);
 				request.library.variable ();
 				request.library.seo ();
 				resolve ();
@@ -169,15 +198,17 @@ var library: any = class {
 		this.plugin ();
 		}
 	plugin () {
-		this.request.tmdb = new php.plugin.tmdb (this.request.app.config ["tmdb:api"], this.request);
-		this.request.video = {src: new php.plugin.video.src ()}
+		if (this.request.app.config ["tmdb:api"]) {
+			this.request.tmdb = new php.plugin.tmdb (this.request.app.config ["tmdb:api"], this.request);
+			this.request.video = {src: new php.plugin.video.src ()}
+			}
 		}
 	async variable () {
-		this.response.var ["c:type"] = "index";
+		this.response.var ["c_type"] = "index";
 		this.response.var ["base_url"] = this.request.base_url;
 		this.response.var ["canonical_url"] = this.request.canonical_url;
 		this.response.var ["html:lang"] = "en";
-		this.response.var ["html:translate"] = "notranslate";
+		this.response.var ["html:translate"] = "no";
 		this.response.var ["html:css"] = "w3";
 		this.response.var ["head:profile"] = "#";
 		this.response.var ["http-equiv:x-cross-origin"] = "*";

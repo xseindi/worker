@@ -71,7 +71,7 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<meta name="google" content="{{ meta:google }}">`);
 	markup.push (2, `<meta name="googlebot" content="{{ meta:google-bot }}">`);
 	markup.push (2, `<meta name="googlebot-news" content="{{ meta:google-bot-article }}">`);
-	if (option ["google-site-verification"]) markup.push (2, `<meta name="google-site-verification" content="${option ['google-site-verification']}">`);
+	if (option ["google"]) markup.push (2, `<meta name="google-site-verification" content="{{ meta:google-site-verification }}">`);
 	markup.push (2, `<meta name="twitter:card" content="{{ twitter:card }}">`);
 	markup.push (2, `<meta name="twitter:title" content="{{ twitter:title }}">`);
 	markup.push (2, `<meta name="twitter:description" content="{{ twitter:description }}">`);
@@ -93,8 +93,10 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ router manifest.json }}">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
-	markup.push (2, `<link rel="search" href="{{ base_url }}{{ router opensearch }}" type="application/opensearchdescription+xml" title="">`);
-	markup.push (2, `<link rel="search" href="{{ base_url }}{{ router opensearch:description }}" type="application/opensearchdescription+xml" title="">`);
+	if (option ["search"]) {
+		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router opensearch }}" type="application/opensearchdescription+xml" title="">`);
+		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router opensearch:description }}" type="application/opensearchdescription+xml" title="">`);
+		}
 	markup.push (2, `<link rel="dns-prefetch" href="https://1.bp.blogspot.com">`);
 	markup.push (2, `<link rel="dns-prefetch" href="https://2.bp.blogspot.com">`);
 	markup.push (2, `<link rel="dns-prefetch" href="https://3.bp.blogspot.com">`);
@@ -131,11 +133,12 @@ php.html = function (output: string, option: any = {}) {
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
-	markup.push (2, `<script type="text/javascript">var $__ = {"c:type": "{{ c:type }}", "router": {{{ router }}}}</script>`);
+	markup.push (2, `<script type="text/javascript">var $__ = {"c_type": "{{ c_type }}", "router": {{{ router }}}}</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (1, `</head>`);
 	markup.push (1, `<body>`);
 	markup.push (0, output);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router eof.js }}"></script>`);
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();

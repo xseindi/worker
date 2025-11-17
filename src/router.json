@@ -1,7 +1,7 @@
 {
 "index": "/",
 "style.css": "/style.css", "style:sheet": "/style-sheet.css",
-"script.js": "/script.js", "prototype.js": "/asset/js/prototype.js",
+"script.js": "/script.js", "eof.js": "/eof.js", "prototype.js": "/asset/js/prototype.js",
 "robot:text": "/robots.txt",
 "ad:text": "/ads.txt",
 "favorite.ico": "/favicon.ico",
