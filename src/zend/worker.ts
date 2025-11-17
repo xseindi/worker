@@ -136,6 +136,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 	if (request.app.host in app.host) {
 		if (request.next ()) {
 			if (request.app.config = app.host [request.app.host].config)
+			if (request.app.db = app.host [request.app.host].db)
 			if (request.app.theme = app.host [request.app.host].theme)
 			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).where ({id: request.app.theme.id, group: request.app.theme.group}).data [0].version);
 			if (request.library = new library (app, request, response, next)) return php.promise (async function (resolve: any, reject: any) {
@@ -144,35 +145,22 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 					if (then.queue.length > 1) resolve ();
 					}
 				then.queue = [];
-				var theme = php.theme.template [request.app.theme.group][request.app.theme.id][request.app.theme.version];
-				request.app.theme.router = theme.router;
-				request.app.theme.layout = theme.layout;
-				request.app.theme.component = theme.component;
-				request.theme = new php.theme (request.app.theme);
+				if (true || "db") {
+					request.db = new php.db (request.app.db.id);
+					}
+				if (true || "theme") {
+					var theme = php.theme.template [request.app.theme.group][request.app.theme.id][request.app.theme.version];
+					request.app.theme.router = theme.app;
+					request.app.theme.layout = theme.layout;
+					request.app.theme.component = theme.component;
+					request.theme = new php.theme (request.app.theme);
+					}
 				request.router = new php.worker.io.router (app, request, response, next);
 				request.router.set (request.app.theme.router);
 				request.library.variable ();
 				request.library.seo ();
 				resolve ();
 				});
-			/*
-			if (request.library = new library (request, response, next)) return php.promise (function (resolve: any, reject: any) {
-				var then: any = function () {
-					then.queue.push (true)
-					if (then.queue.length > 1) resolve ()
-					}
-				then.queue = []
-				php.timeout (async function () {
-					request.config = app.config
-					request.db = new php.db (request.app.host)
-					request.library.output ()
-					request.library.seo ()
-					request.theme = new php.theme (request.app.theme, request.output.theme_url)
-					await request.theme.fetch ()
-					resolve ()
-					})
-				})
-			*/
 			}
 		else return php.promise (function (resolve: any, reject: any) {
 			request.error.push ({type: "agent", status: "forbidden"})
@@ -204,6 +192,7 @@ var library: any = class {
 			}
 		}
 	async variable () {
+		this.response.var ["latest"] = this.app.config.latest;
 		this.response.var ["c_type"] = "index";
 		this.response.var ["base_url"] = this.request.base_url;
 		this.response.var ["canonical_url"] = this.request.canonical_url;

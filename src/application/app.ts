@@ -12,10 +12,26 @@ import php, {express} from "../zend/engine"
 import "../zend/lib"
 import "../zend/library"
 import "../zend/worker"
+import "../zend/db"
 import "../zend/theme"
 
 import "../plugin/tmdb"
 import "../plugin/video-src"
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+import { readFileSync, writeFileSync } from "node:fs"
+writeFileSync ("test.txt", "Hello, world!")
+const test = readFileSync ("test.txt", "utf8")
+console.log (test)
 
 /**
  * xxx
