@@ -23,7 +23,8 @@ var app = new php.worker.router
  */
 
 app.use (async function (app: any, request: any, response: any, next: any) {
-	request.layout ["website"] = request.theme.layout ("website").render ({slot: "Hello World"}, 2)
+	// request.layout ["default"] = request.theme.layout ("default").render (2)
+	// request.layout ["index"] = request.theme.layout ("index").render (2)
 	})
 
 /**
@@ -37,7 +38,7 @@ app.use (async function (app: any, request: any, response: any, next: any) {
  */
 
 app.get ($ ["index"], async function (app: any, request: any, response: any, next: any) {
-	return response.html (request.layout ["website"])
+	return response.render ("index", {slot: "asd"}, 2)
 	})
 
 /**

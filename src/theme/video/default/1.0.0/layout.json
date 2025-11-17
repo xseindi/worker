@@ -1,10 +1,14 @@
 {
-"website": [
-	"<div id=\"\">",
-	"\t<div id=\"\">",
-	"{{ slot }}",
-	"\t</div>",
-	"</div>"
+	"default": [
+		"<div id=\"\">",
+		"{{ slot }}",
+		"</div>"
 	],
-"*": []
+	"index": [
+		"<div id=\"\">",
+		"\t<div id=\"\">",
+		"{{ slot }}",
+		"\t</div>",
+		"</div>"
+	]
 }

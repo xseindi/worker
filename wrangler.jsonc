@@ -3,7 +3,6 @@
 "name": "bioskop",
 "main": "src/application/app.ts",
 "compatibility_date": "2025-11-13",
-"compatibility_flags": ["enable_nodejs_fs_module"],
 "observability": {"enabled": true},
 "assets": {"binding": "asset", "directory": "./public"},
 "vars": {}

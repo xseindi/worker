@@ -77,8 +77,6 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.var = io.env;
 	request.error = [];
 	request.header = {}
-	request.layout = {}
-	request.component = {}
 	for (var header of io.req.raw.headers.entries ()) request.header [header [0]] = header [1];
 	request.url = php.parse_url (io.req.raw.url);
 	request.url.param = function (key: string) { return io.req.param (key); }
@@ -94,10 +92,14 @@ php.worker.io.request = function (io: any, worker: any) {
 php.worker.io.response = function (io: any, worker: any, request: any) {
 	var response: any = function (output: any, code: number = 200) { return io.html (output, code); }
 	response.html = function (output: string, code: number = 200) { return io.html (php.render (php.html (output), response.var), code); }
-	response.text = io.text;
+	response.css = function (css: string, code: number = 200) { return io.text (css, code, {"Content-Type": "text/css"}); }
+	response.js = function (js: string, code: number = 200) { return io.text (js, code, {"Content-Type": "text/javascript"}); }
+	response.xml = function (xml: string, code: number = 200) { return io.text (xml, code, {"Content-Type": "application/xml"}); }
 	response.json = io.json;
+	response.text = io.text;
 	response.var = {}
-	response.render = function () {}
+	response.component = {}
+	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (request.theme.layout (layout).render (variable, tab)); }
 	return response;
 	}
 

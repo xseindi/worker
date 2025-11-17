@@ -28,21 +28,6 @@ import "../plugin/video-src"
  * xxx://xxx.xxx.xxx/xxx
  */
 
-import { readFileSync, writeFileSync } from "node:fs"
-writeFileSync ("test.txt", "Hello, world!")
-const test = readFileSync ("test.txt", "utf8")
-console.log (test)
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
 var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
 	await php.worker.start (app, request, response, next)
@@ -53,6 +38,10 @@ app.start (async function (request: any, response: any, next: any) {
 		}
 	request.router.use ()
 	return next ()
+	})
+
+app.get (app.router ["style.css"], async function (request: any, response: any, next: any) {
+	return response.css ("")
 	})
 
 app.get (app.router.index)
