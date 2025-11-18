@@ -66,6 +66,11 @@ app.get (app.router ["style.css"], async function (request: any, response: any, 
 	return response.css ("")
 	})
 
+app.get (app.router ["script.js"], async function (request: any, response: any, next: any) {
+	var js = `var $__ = {"c:type": "{{ c:type }}", "router": {{{ router }}}}`
+	return response.js (js.split ("{{ c:type }}").join (response.var ["c:type"]).split ("{{ router }}").join (response.var ["router"]))
+	})
+
 app.get (app.router ["feed"], async function (request: any, response: any, next: any) {
 	return response.xml (`<?xml version="1.0" encoding="UTF-8"?><xml></xml>`)
 	})
@@ -73,6 +78,8 @@ app.get (app.router ["feed"], async function (request: any, response: any, next:
 app.get (app.router ["feed:atom"], async function (request: any, response: any, next: any) {
 	return response.xml (`<?xml version="1.0" encoding="UTF-8"?><xml></xml>`)
 	})
+
+app.get (app.router ["search"])
 
 /**
  * xxx
@@ -344,7 +351,11 @@ var library: any = class {
 		}
 	plugin () {
 		if (this.request.app.config ["tmdb:api"]) {
-			this.request.tmdb = new php.plugin.tmdb (this.request.app.config ["tmdb:api"], this.request);
+			var tmdb = {
+				api: this.request.app.config ["tmdb:api"],
+				token: this.request.app.config ["tmdb:api access:token"],
+				}
+			this.request.tmdb = new php.plugin.tmdb (tmdb, this);
 			this.request.video = {src: new php.plugin.video.src ()}
 			}
 		}
@@ -354,12 +365,12 @@ var library: any = class {
 			title: this.request.db.config ("site:title"),
 			}
 		this.request.app.meta = {
+			author: this.request.db.config ("meta:author"),
 			description: this.request.db.config ("meta:description"),
 			keyword: this.request.db.config ("meta:keyword"),
 			rating: this.request.db.config ("meta:rating"),
 			}
 		this.response.var ["latest"] = this.app.config.latest;
-		this.response.var ["c:type"] = "index";
 		this.response.var ["base_url"] = this.request.base_url;
 		this.response.var ["canonical_url"] = this.request.canonical_url;
 		this.response.var ["title"] = this.request.app.site.title;
@@ -371,8 +382,8 @@ var library: any = class {
 		this.response.var ["http-equiv:x-cross-origin"] = "*";
 		this.response.var ["meta:charset"] = "UTF-8";
 		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_s);
-		this.response.var ["meta:author"] = this.request.app.site.name;
-		this.response.var ["meta:generator"] = "Google AppEngine";
+		this.response.var ["meta:author"] = this.request.app.meta.author;
+		this.response.var ["meta:generator"] = "Firebase (12.6.0)";
 		this.response.var ["meta:keyword"] = this.request.app.meta.keyword;
 		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_s);
 		this.response.var ["meta:description"] = this.request.app.meta.description;
@@ -380,15 +391,17 @@ var library: any = class {
 		this.response.var ["meta:google"] = "notranslate";
 		this.response.var ["meta:google-bot"] = "notranslate";
 		this.response.var ["meta:google-bot-article"] = ["index", "follow"].join (ln_s);
-		var router = [];
-		for (var i in this.app.router) {
-			if (i === "$") continue;
-			else if (typeof this.app.router [i] === "string") {
-				router.push (`"${i}": "${this.app.router [i]}"`);
-				this.response.var [["router", i].join (" ")] = this.app.router [i];
+		if (this.response.var ["c:type"] = "index") {
+			var router = [];
+			for (var i in this.app.router) {
+				if (i === "$") continue;
+				else if (typeof this.app.router [i] === "string") {
+					router.push (`"${i}": "${this.app.router [i]}"`);
+					this.response.var [["router", i].join (" ")] = this.app.router [i];
+					}
 				}
+			this.response.var ["router"] = router.join (ln_s);
 			}
-		this.response.var ["router"] = router.join (ln_s);
 		if (this.app.config ["cd:io"]) {
 			this.response.var ["cd:base_url"] = this.app.config ["cd:base_url"];
 			this.response.var ["theme:base_url"] = [this.app.config ["cd:base_url"], "theme", this.request.app.theme.group, this.request.app.theme.id, this.request.app.theme.version].join ("/");

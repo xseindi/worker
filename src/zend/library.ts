@@ -130,10 +130,10 @@ php.html = function (output: string, option: any = {}) {
 			}
 		markup.push (2, `<script src="{{ cd:base_url }}{{ router prototype.js }}?latest={{ latest }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?latest={{ latest }}"></script>`);
+		markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?latest={{ latest }}"></script>`);
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
-	markup.push (2, `<script type="text/javascript">var $__ = {"c:type": "{{ c:type }}", "router": {{{ router }}}}</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (1, `</head>`);
 	markup.push (1, `<body>`);

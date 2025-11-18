@@ -38,7 +38,7 @@ app.use (async function (app: any, request: any, response: any, next: any) {
  */
 
 app.get ($ ["index"], async function (app: any, request: any, response: any, next: any) {
-	return response.render ("index", {slot: "Hello World - <b>Google</b> <span class=\"font-bold:pop\">Games</span>"}, 2)
+	return response.render ("index", {slot: "Hello World"}, 2)
 	})
 
 /**
@@ -52,8 +52,9 @@ app.get ($ ["index"], async function (app: any, request: any, response: any, nex
  */
 
 app.get ($.page ["about"], async function (app: any, request: any, response: any, next: any) {
+	var tmdb_response: any = await request.tmdb.fetch ("trending:week")
 	response.seo ({title: "About"})
-	return response.render ("index", {slot: "Hello World - <b>Google</b> <span class=\"font-bold:pop\">Games</span>"}, 2)
+	return response.render ("index", {slot: `<pre>${JSON.stringify(tmdb_response, null, '\t')}</pre>`}, 2)
 	})
 
 /**
