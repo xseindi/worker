@@ -99,6 +99,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.text = io.text;
 	response.var = {}
 	response.component = {}
+	response.seo = function (seo: any) { request.library.seo (seo); }
 	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (request.theme.layout (layout).render (variable, tab)); }
 	return response;
 	}
@@ -118,13 +119,11 @@ php.worker.io.router = class {
 	set (router: any) {
 		this.router.use = router.use;
 		for (var i in router.get) this.router.get [router.get [i].path] = router.get [i];
+		for (var i in router.post) this.router.post [router.post [i].path] = router.post [i];
 		}
-	use () {
-		for (var i in this.router.use) this.router.use [i] (this.app, this.request, this.response, this.next);
-		}
-	get (path: string) {
-		if (this.router.get [path]) return this.router.get [path].context (this.app, this.request, this.response, this.next);
-		}
+	use () { for (var i in this.router.use) this.router.use [i] (this.app, this.request, this.response, this.next); }
+	get (path: string) { if (this.router.get [path]) return this.router.get [path].context (this.app, this.request, this.response, this.next); }
+	post (path: string) { if (this.router.post [path]) return this.router.post [path].context (this.app, this.request, this.response, this.next); }
 	}
 
 php.worker.router = class {
@@ -132,130 +131,5 @@ php.worker.router = class {
 	constructor () {}
 	use (context: any) { this.router.use.push (context); }
 	get (path: string, context: any) { this.router.get.push ({path, context}); }
+	post (path: string, context: any) { this.router.post.push ({path, context}); }
 	}
-
-php.worker.start = async function (app: any, request: any, response: any, next: any) {
-	if (request.app.host in app.host) {
-		if (request.next ()) {
-			if (request.app.config = app.host [request.app.host].config)
-			if (request.app.db = app.host [request.app.host].db)
-			if (request.app.theme = app.host [request.app.host].theme)
-			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).filter ({id: request.app.theme.id, group: request.app.theme.group}).data [0].version);
-			if (request.library = new library (app, request, response, next)) return php.promise (async function (resolve: any, reject: any) {
-				var then: any = function () {
-					then.queue.push (true);
-					if (then.queue.length > 1) resolve ();
-					}
-				then.queue = [];
-				if (true || "db") {
-					request.db = new php.db (request.app.db.id);
-					}
-				if (true || "theme") {
-					var theme = php.theme.template [request.app.theme.group][request.app.theme.id][request.app.theme.version];
-					request.app.theme.router = theme.app;
-					request.app.theme.layout = theme.layout;
-					request.app.theme.component = theme.component;
-					request.theme = new php.theme (request.app.theme);
-					}
-				request.router = new php.worker.io.router (app, request, response, next);
-				request.router.set (request.app.theme.router);
-				request.library.variable ();
-				request.library.seo ();
-				resolve ();
-				});
-			}
-		else return php.promise (function (resolve: any, reject: any) {
-			request.error.push ({type: "agent", status: "forbidden"})
-			resolve ()
-			})
-		}
-	else return php.promise (function (resolve: any, reject: any) {
-		request.error.push ({type: "host", status: "none"})
-		resolve ()
-		})
-	}
-
-var library: any = class {
-	app: any;
-	request: any;
-	response: any;
-	next: any;
-	constructor (app: any, request: any, response: any, next: any) {
-		this.app = app;
-		this.request = request;
-		this.response = response;
-		this.next = next;
-		this.plugin ();
-		}
-	plugin () {
-		if (this.request.app.config ["tmdb:api"]) {
-			this.request.tmdb = new php.plugin.tmdb (this.request.app.config ["tmdb:api"], this.request);
-			this.request.video = {src: new php.plugin.video.src ()}
-			}
-		}
-	async variable () {
-		this.request.app.site = {
-			name: this.request.db.config ("site:name"),
-			title: this.request.db.config ("site:title"),
-			}
-		this.request.app.meta = {
-			description: this.request.db.config ("meta:description"),
-			keyword: this.request.db.config ("meta:keyword"),
-			rating: this.request.db.config ("meta:rating"),
-			}
-		this.response.var ["latest"] = this.app.config.latest;
-		this.response.var ["c_type"] = "index";
-		this.response.var ["base_url"] = this.request.base_url;
-		this.response.var ["canonical_url"] = this.request.canonical_url;
-		this.response.var ["title"] = this.request.app.site.title;
-		this.response.var ["alternate:site-name"] = this.request.app.site.name;
-		this.response.var ["html:lang"] = "en";
-		this.response.var ["html:translate"] = "no";
-		this.response.var ["html:css"] = "w3";
-		this.response.var ["head:profile"] = "#";
-		this.response.var ["http-equiv:x-cross-origin"] = "*";
-		this.response.var ["meta:charset"] = "UTF-8";
-		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_c);
-		this.response.var ["meta:author"] = this.request.app.site.name;
-		this.response.var ["meta:generator"] = "Cloudflare Workers";
-		this.response.var ["meta:keyword"] = this.request.app.meta.keyword;
-		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_c);
-		this.response.var ["meta:description"] = this.request.app.meta.description;
-		this.response.var ["meta:rating"] = this.request.app.meta.rating;
-		this.response.var ["meta:google"] = "notranslate";
-		this.response.var ["meta:google-bot"] = "notranslate";
-		this.response.var ["meta:google-bot-article"] = ["index", "follow"].join (ln_c);
-		var router = [];
-		for (var i in this.app.router) {
-			if (i === "$") continue;
-			else if (typeof this.app.router [i] === "string") {
-				router.push (`"${i}": "${this.app.router [i]}"`);
-				this.response.var [["router", i].join (" ")] = this.app.router [i];
-				}
-			}
-		this.response.var ["router"] = router.join (ln_c);
-		if (this.app.config ["cd:io"]) {
-			this.response.var ["cd:base_url"] = this.app.config ["cd:base_url"];
-			this.response.var ["theme:base_url"] = [this.app.config ["cd:base_url"], "theme", this.request.app.theme.group, this.request.app.theme.id, this.request.app.theme.version].join ("/");
-			}
-		else {
-			this.response.var ["cd:base_url"] = this.request.base_url;
-			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.app.theme.group, this.request.app.theme.id, this.request.app.theme.version].join ("/");
-			}
-		}
-	async seo () {
-		this.response.var ["twitter:card"] = "summary_image_large";
-		this.response.var ["twitter:title"] = this.request.app.site.title;
-		this.response.var ["twitter:description"] = this.request.app.meta.description;
-		this.response.var ["twitter:image"] = "";
-		this.response.var ["og:site-name"] = this.request.app.site.name;
-		this.response.var ["og:title"] = this.request.app.site.title;
-		this.response.var ["og:description"] = this.request.app.meta.description;
-		this.response.var ["og:url"] = this.request.canonical_url;
-		this.response.var ["og:image"] = "";
-		this.response.var ["og:type"] = "website";
-		this.response.var ["og:locale"] = "en";
-		}
-	}
-
-var ln_c = ", ";

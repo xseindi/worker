@@ -38,7 +38,6 @@ app.use (async function (app: any, request: any, response: any, next: any) {
  */
 
 app.get ($ ["index"], async function (app: any, request: any, response: any, next: any) {
-	console.log (request.db.config)
 	return response.render ("index", {slot: "Hello World - <b>Google</b> <span class=\"font-bold:pop\">Games</span>"}, 2)
 	})
 
@@ -53,7 +52,8 @@ app.get ($ ["index"], async function (app: any, request: any, response: any, nex
  */
 
 app.get ($.page ["about"], async function (app: any, request: any, response: any, next: any) {
-	return response.html ("Hello World")
+	response.seo ({title: "About"})
+	return response.render ("index", {slot: "Hello World - <b>Google</b> <span class=\"font-bold:pop\">Games</span>"}, 2)
 	})
 
 /**
