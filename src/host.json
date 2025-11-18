@@ -1,8 +1,8 @@
 {
 "127.0.0.1": {"db": {"id": "default"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
-"bioskopress.com": {"alias": ["www"], "db": {"id": "default"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
-"bioskopress.online": {"alias": ["www"], "db": {"id": "default"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"bioskop.com": {"alias": ["www"], "db": {"id": "bioskop"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"bioskopress.com": {"alias": ["www"], "db": {"id": "bioskop"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+"bioskopress.online": {"alias": ["www"], "db": {"id": "bioskop"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
 "contentify.com": {"alias": ["www"], "db": {"id": "default"}, "theme": {"id": "default", "group": "website"}, "config": {}},
-"bioskop.com": {"alias": ["www"], "db": {"id": "default"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
 "*": {}
 }

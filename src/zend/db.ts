@@ -18,12 +18,15 @@ php.db = class {
 	__: any = {config: {}}
 	constructor (db: string) {
 		this.table = php.db.table [db];
-		// this.extract ();
+		this.extract ();
 		}
 	extract () {
 		for (var i in this.table.config) {
-			if ("id" in this.table.config [i]) this.__ ["config"][this.table.config [i].key] = this.table.config [i].value;
+			if ("id" in this.table.config [i]) this.__ ["config"] [this.table.config [i].key] = this.table.config [i].value;
 			}
+		}
+	config (key: string) {
+		return this.__ ["config"][key];
 		}
 	select (table: string) {
 		return new php.db.select (this, table);
@@ -33,26 +36,17 @@ php.db = class {
 php.db.select = class {
 	db: any;
 	table: string;
+	data: any = [];
 	constructor (db: any, table: string) {
 		this.db = db;
 		this.table = table;
 		}
-	array (where: any) {
-		var data: any = [];
-		var table = this.db.table [this.table];
-		if (where) {
-			for (var i in table) {
-				for (var x in where) {
-					if (table [i][x] === where [x]) data.push (table [i]);
-					}
-				}
-			return data;
-			}
-		else return table;
+	filter (filter: any) {
+		this.data = php.array (this.db.table [this.table]).filter (filter).data;
+		return this;
 		}
-	get (key: string) {
-		return this.db.__ [this.table][key];
-		}
+	first () { return php.array.first (this.data); }
+	last () { return php.array.last (this.data); }
 	}
 
 php.db.table = {}

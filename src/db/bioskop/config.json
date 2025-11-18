@@ -1,4 +1,8 @@
 [
-{"id": "", "reference": "", "key": "", "value": ""},
+{"id": "", "reference": "", "key": "site:name", "value": "Bioskop"},
+{"id": "", "reference": "", "key": "site:title", "value": "Bioskop | Movies, TV Shows, Anime in One Place"},
+{"id": "", "reference": "", "key": "meta:description", "value": "Watch and Download Movies, TV Shows, Anime in One Place for free on Bioskop, from Netflix, IMDB, TMDB, LK21, DramaCool"},
+{"id": "", "reference": "", "key": "meta:keyword", "value": "movies, tv shows, anime, watch online, streaming, download, reviews, actors, actresses, photos, user ratings, synopsis, trailers, teasers, credits, cast"},
+{"id": "", "reference": "", "key": "meta:rating", "value": "general"},
 {}
 ]

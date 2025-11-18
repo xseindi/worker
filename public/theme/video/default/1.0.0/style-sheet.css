@@ -1,0 +1,79 @@
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+body > #wrap { display: none; width: 100%; height: 100%; } body.computer > #wrap, body.phone > #wrap { display: table; } body#layout > #wrap { display: table; }
+body > #wrap > #wrapper { display: table-row; width: 100%; height: 100%; }
+body > #wrap > #wrapper > #container { display: table-cell; width: 100%; height: 100%; background-color: var(--background-color); }
+[print] { display: none; }
+[device="computer"] {}
+[device="mobile"] {}
+[device="tablet"] {}
+[device="phone"] {}
+
+@media only screen and (orientation: landscape) {
+	[device="computer"] {}
+	[device="mobile"] {}
+	[device="tablet"] {}
+	[device="phone"] {}
+	}
+
+@media print {
+	#app { display: none !important; }
+	[id="app:print"] { display: table-cell; }
+	[no-print] { display: none !important; }
+	[print] { display: table-cell !important; }
+	* {}
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+#body {}
+
+#app > header { height: 75px; background-color: rgb(3, 37, 65); }
+#app > #body > menu { min-width: 250px; }
+
+img.header-logo { height: 40px; }
+
+.tmdb-background-color { background-color: rgb(3, 37, 65); }
+
+#block-info {}
+#block-info li strong { display: block; }
+
+.video-card-test-container { display: flex; width: calc(100vw - 16px); padding: 30px; gap: 20px; overflow-x: scroll; overflow-y: hidden; background-image: url("/static/trending-bg.svg"); background-repeat: no-repeat; background-position-x: 50%; background-position-y: 150px; }
+.phone .video-card-test-container { width: 100vw; }
+.video-card-test { display: flex; flex-direction: column; gap: 5px; }
+.video-card-test-thumbnail-container { border-radius: 8px; overflow: hidden; }
+.video-card-test-title { font-size: 10px; font-weight: 500; }
+.video-card-test-date { font-size: 8px; }
+
+.test-head  { padding: 75px 30px; }
+
+.test-section-title-container { display: flex; align-items: center; padding: 0 30px; padding-top: 30px; gap: 5px; }
+.test-section-title {  }
+
+.scrollbar-x { scrollbar-color: #cccccc #eeeeee; scrollbar-width: thin; }
+
+.font-rubik { font-family: "Rubik Puddles"; }
+.font-moirai { font-family: "Moirai One"; }
+.font-cherry-bomb { font-family: "Cherry Bomb One"; }
+
+/**
+ * the end
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */

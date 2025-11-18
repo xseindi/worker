@@ -38,7 +38,8 @@ app.use (async function (app: any, request: any, response: any, next: any) {
  */
 
 app.get ($ ["index"], async function (app: any, request: any, response: any, next: any) {
-	return response.render ("index", {slot: "asd"}, 2)
+	console.log (request.db.config)
+	return response.render ("index", {slot: "Hello World - <b>Google</b> <span class=\"font-bold:pop\">Games</span>"}, 2)
 	})
 
 /**

@@ -140,7 +140,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			if (request.app.config = app.host [request.app.host].config)
 			if (request.app.db = app.host [request.app.host].db)
 			if (request.app.theme = app.host [request.app.host].theme)
-			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).where ({id: request.app.theme.id, group: request.app.theme.group}).data [0].version);
+			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).filter ({id: request.app.theme.id, group: request.app.theme.group}).data [0].version);
 			if (request.library = new library (app, request, response, next)) return php.promise (async function (resolve: any, reject: any) {
 				var then: any = function () {
 					then.queue.push (true);
@@ -194,10 +194,21 @@ var library: any = class {
 			}
 		}
 	async variable () {
+		this.request.app.site = {
+			name: this.request.db.config ("site:name"),
+			title: this.request.db.config ("site:title"),
+			}
+		this.request.app.meta = {
+			description: this.request.db.config ("meta:description"),
+			keyword: this.request.db.config ("meta:keyword"),
+			rating: this.request.db.config ("meta:rating"),
+			}
 		this.response.var ["latest"] = this.app.config.latest;
 		this.response.var ["c_type"] = "index";
 		this.response.var ["base_url"] = this.request.base_url;
 		this.response.var ["canonical_url"] = this.request.canonical_url;
+		this.response.var ["title"] = this.request.app.site.title;
+		this.response.var ["alternate:site-name"] = this.request.app.site.name;
 		this.response.var ["html:lang"] = "en";
 		this.response.var ["html:translate"] = "no";
 		this.response.var ["html:css"] = "w3";
@@ -205,12 +216,12 @@ var library: any = class {
 		this.response.var ["http-equiv:x-cross-origin"] = "*";
 		this.response.var ["meta:charset"] = "UTF-8";
 		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_c);
-		this.response.var ["meta:author"] = "";
-		this.response.var ["meta:generator"] = "";
-		this.response.var ["meta:keyword"] = [].join (ln_c);
+		this.response.var ["meta:author"] = this.request.app.site.name;
+		this.response.var ["meta:generator"] = "Cloudflare Workers";
+		this.response.var ["meta:keyword"] = this.request.app.meta.keyword;
 		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_c);
-		this.response.var ["meta:description"] = "";
-		this.response.var ["meta:rating"] = "general";
+		this.response.var ["meta:description"] = this.request.app.meta.description;
+		this.response.var ["meta:rating"] = this.request.app.meta.rating;
 		this.response.var ["meta:google"] = "notranslate";
 		this.response.var ["meta:google-bot"] = "notranslate";
 		this.response.var ["meta:google-bot-article"] = ["index", "follow"].join (ln_c);
@@ -234,12 +245,12 @@ var library: any = class {
 		}
 	async seo () {
 		this.response.var ["twitter:card"] = "summary_image_large";
-		this.response.var ["twitter:title"] = "";
-		this.response.var ["twitter:description"] = "";
+		this.response.var ["twitter:title"] = this.request.app.site.title;
+		this.response.var ["twitter:description"] = this.request.app.meta.description;
 		this.response.var ["twitter:image"] = "";
-		this.response.var ["og:site-name"] = "";
-		this.response.var ["og:title"] = "";
-		this.response.var ["og:description"] = "";
+		this.response.var ["og:site-name"] = this.request.app.site.name;
+		this.response.var ["og:title"] = this.request.app.site.title;
+		this.response.var ["og:description"] = this.request.app.meta.description;
 		this.response.var ["og:url"] = this.request.canonical_url;
 		this.response.var ["og:image"] = "";
 		this.response.var ["og:type"] = "website";

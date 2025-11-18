@@ -193,28 +193,15 @@ php.array.io = class {
 	constructor (array: any = []) {
 		this.array = array;
 		}
-	where (where: any) {
-		if (where) this.data = this.array.filter (function (array: any, index: number) {
+	filter (filter: any) {
+		if (filter) this.data = this.array.filter (function (array: any, index: number) {
 			var error = 0;
-			for (var i in where) if (where [i] === array [i]) continue; else error ++;
+			for (var i in filter) if (filter [i] === array [i]) continue; else error ++;
 			if (error) return false;
 			else return true;
 			});
 		else this.data = this.array;
 		return this;
-		}
-	filter (filter: any = {}) {
-		var array = [];
-		for (var i in this.array) {
-			var error = 0;
-			for (var x in filter) {
-				if (filter [x] === this.array [i][x]) continue;
-				else error ++;
-				}
-			if (error) {}
-			else array.push (this.array [i]);
-			}
-		return array;
 		}
 	}
 
