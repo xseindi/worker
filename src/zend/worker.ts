@@ -100,7 +100,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.var = {}
 	response.component = {}
 	response.seo = function (seo: any) { request.library.seo (seo); }
-	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (request.theme.layout (layout).render (variable, tab)); }
+	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (response.theme.layout (layout).render (variable, tab)); }
 	return response;
 	}
 
