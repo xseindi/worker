@@ -1,0 +1,73 @@
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+:root
+{
+--header-size: 65px;
+--nav-size: 200px;
+--navigation-size: 200px;
+--menu-size: 250px;
+--side-size: 200px;
+--form-search-size: 50px;
+}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+body > #container { display: flex; flex-direction: column; height: 100%; }
+body > #container > section { display: flex; flex-grow: 1; position: relative; background-color: gray; }
+body > #container > section > nav { display: none; flex-direction: column; width: var(--menu-size); background-color: red; }
+body > #container > section > main { flex-grow: 1; background-color: green; }
+
+body.phone > #container > section > nav { display: none; height: 100%; position: absolute; background-color: yellow; }
+
+[print] { display: none; }
+[device="computer"] {}
+[device="mobile"] {}
+[device="tablet"] {}
+[device="phone"] {}
+
+@media only screen and (orientation: landscape) {
+	[device="computer"] {}
+	[device="mobile"] {}
+	[device="tablet"] {}
+	[device="phone"] {}
+	}
+
+@media print {
+	#app { display: none !important; }
+	[id="app:print"] { display: flex; }
+	[no-print] { display: none !important; }
+	[print] { display: flex !important; }
+	* {}
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * the end
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */

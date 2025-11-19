@@ -5,10 +5,24 @@
 		"</div>"
 	],
 	"index": [
-		"<div id=\"\">",
-		"\t<div id=\"\">",
-		"{{ slot }}",
-		"\t</div>",
+		"<div id=\"container\">",
+		"\t<header id=\"header\">",
+		"\t\t{{ theme:header }}",
+		"\t</header>",
+		"\t<section>",
+		"\t\t<nav id=\"menu\">",
+		"{{ theme:menu }}",
+		"\t\t</nav>",
+		"\t\t<main id=\"main\">",
+		"\t\t\t{{ theme:main }}",
+		"\t\t\t<section>",
+		"\t\t\t\tmain section",
+		"\t\t\t</section>",
+		"\t\t</main>",
+		"\t</section>",
+		"\t<footer id=\"footer\">",
+		"\t\t{{ theme:footer }}",
+		"\t</footer>",
 		"</div>"
 	]
 }

@@ -79,6 +79,7 @@ php.plugin.tmdb = class {
 		this.token = tmdb.token;
 		this.request = request;
 		this.movie = new php.plugin.tmdb.movie (this);
+		this.tv = new php.plugin.tmdb.tv (this);
 		}
 	head () {
 		return {
@@ -105,7 +106,7 @@ php.plugin.tmdb = class {
 		var respond: any = await response.json ();
 		var adapter = this.request;
 		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, "page:total": respond.total_pages, "data:total": respond.total_results, data: revamp (respond.results, null, adapter), tmdb: respond.results});
+			resolve ({page: respond.page, "page:total": respond.total_pages, "data:total": respond.total_results, data: revamp (respond.results, option.type, adapter), tmdb: respond.results});
 			});
 		}
 	image (path: string, size: string = "default") {
@@ -114,6 +115,17 @@ php.plugin.tmdb = class {
 	}
 
 php.plugin.tmdb.movie = class {
+	tmdb: any;
+	constructor (tmdb: any) {
+		this.tmdb = tmdb;
+		}
+	discover () {}
+	popular (option: any = {}) {
+		return this.tmdb.fetch ("movie:popular", Object.assign ({type: "movie"}, option));
+		}
+	}
+
+php.plugin.tmdb.tv = class {
 	tmdb: any;
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;

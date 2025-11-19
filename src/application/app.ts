@@ -12,6 +12,8 @@ import php, {express} from "../zend/engine"
 import "../zend/constant"
 import "../zend/lib"
 import "../zend/library"
+import "../zend/html"
+import "../zend/help"
 import "../zend/worker"
 import "../zend/db"
 import "../zend/theme"
@@ -67,8 +69,9 @@ app.get (app.router ["style.css"], async function (request: any, response: any, 
 	})
 
 app.get (app.router ["script.js"], async function (request: any, response: any, next: any) {
-	var js = `var $__ = {"c:type": "{{ c:type }}", "router": {{{ router }}}}`
-	return response.js (js.split ("{{ c:type }}").join (response.var ["c:type"]).split ("{{ router }}").join (response.var ["router"]))
+	var js = [php.js ["global"] ()]
+	if (request.app.config ["ad:block detector"]) js.push (php.js ["ad:block detector"] ())
+	return response.js (request.render (js.join (ln)))
 	})
 
 app.get (app.router ["feed"], async function (request: any, response: any, next: any) {
@@ -304,6 +307,9 @@ async function start (app: any, request: any, response: any, next: any) {
 			if (request.app.theme = app.host [request.app.host].theme)
 			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).filter ({id: request.app.theme.id, group: request.app.theme.group}).data [zero].version);
 			if (request.library = new library (app, request, response, next)) return php.promise (async function (resolve: any, reject: any) {
+				request.app.public = app.host [request.app.host].public
+				request.app.ad = app.host [request.app.host].ad
+				request.app.affiliate = app.host [request.app.host].affiliate
 				var then: any = function () {
 					then.queue.push (true);
 					if (then.queue.length > one) resolve ();
@@ -348,16 +354,6 @@ var library: any = class {
 		this.response = response;
 		this.next = next;
 		this.plugin ();
-		}
-	plugin () {
-		if (this.request.app.config ["tmdb:api"]) {
-			var tmdb = {
-				api: this.request.app.config ["tmdb:api"],
-				token: this.request.app.config ["tmdb:api access:token"],
-				}
-			this.request.tmdb = new php.plugin.tmdb (tmdb, this);
-			this.request.video = {src: new php.plugin.video.src ()}
-			}
 		}
 	async variable () {
 		this.request.app.site = {
@@ -410,6 +406,10 @@ var library: any = class {
 			this.response.var ["cd:base_url"] = this.request.base_url;
 			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.app.theme.group, this.request.app.theme.id, this.request.app.theme.version].join ("/");
 			}
+		this.response.var ["public:base_url"] = [this.request.base_url, "static", this.request.app.public].join ("/");
+		this.response.var ["public:file"] = [this.response.var ["public:base_url"], "file"].join ("/");
+		this.response.var ["public:asset"] = [this.response.var ["public:base_url"], "asset"].join ("/");
+		this.response.var ["asset:image"] = [this.response.var ["public:asset"], "image"].join ("/");
 		}
 	async seo (seo: any) {
 		if (seo) {
@@ -435,17 +435,22 @@ var library: any = class {
 			this.response.var ["og:locale"] = "en";
 			}
 		}
-	async var (param: any = {}) {
-		var title = param.title ? [param.title, this.request.app.site.name].join (" | ") : this.request.app.site.title;
-		var description = param.description || this.request.app.meta.description;
-		this.response.var ["twitter:card"] = "summary_image_large";
-		this.response.var ["twitter:title"] = title;
-		this.response.var ["twitter:description"] = description;
-		this.response.var ["twitter:image"] = "";
-		this.response.var ["og:title"] = title;
-		this.response.var ["og:description"] = description;
-		this.response.var ["og:image"] = "";
-		this.response.var ["og:type"] = "website";
+	plugin () {
+		if (this.request.app.config ["tmdb:api"]) {
+			var tmdb = {
+				api: this.request.app.config ["tmdb:api"],
+				token: this.request.app.config ["tmdb:api access:token"],
+				}
+			this.request.tmdb = new php.plugin.tmdb (tmdb, this);
+			this.request.video = {src: new php.plugin.video.src ()}
+			}
+		if (this.request.app.ad) {
+			if (this.request.app.ad ["adsterra"]) {
+				this.response.var ["ad:adsterra"] = this.request.app.ad ["adsterra"]
+				this.response.var ["ad adsterra:adult"] = this.request.app.ad ["adsterra:adult"]
+				}
+			if (this.request.app.ad ["monetag"]) {}
+			}
 		}
 	}
 

@@ -7,6 +7,6 @@
 "background_color": "#FFFFFF",
 "theme_color": "#FF0033",
 "icons": [
-	{"src": "/static/cloudflare/worker/144.png", "sizes": "144x144", "type": "image/png"}
+	{"src": "/asset/image/manifest/144.png", "sizes": "144x144", "type": "image/png"}
 	]
 }

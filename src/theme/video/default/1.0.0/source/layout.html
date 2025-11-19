@@ -5,9 +5,23 @@
 </template>
 
 <template id="index">
-<div id="">
-	<div id="">
-{{ slot }}
-	</div>
+<div id="container">
+	<header id="header">
+		{{ theme:header }}
+	</header>
+	<section>
+		<nav id="menu">
+{{ theme:menu }}
+		</nav>
+		<main id="main">
+			{{ theme:main }}
+			<section>
+				main section
+			</section>
+		</main>
+	</section>
+	<footer id="footer">
+		{{ theme:footer }}
+	</footer>
 </div>
 </template>

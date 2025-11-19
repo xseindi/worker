@@ -1,6 +1,6 @@
 {
 "index": "/",
-"style.css": "/style.css", "style:sheet": "/style-sheet.css",
+"style.css": "/style.css", "style:sheet": "/style/sheet.css",
 "script.js": "/script.js", "eof.js": "/eof.js", "prototype.js": "/asset/js/prototype.js",
 "robot:text": "/robots.txt",
 "ad:text": "/ads.txt",

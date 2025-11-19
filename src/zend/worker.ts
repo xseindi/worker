@@ -11,10 +11,18 @@ php.worker = class {
 		if (context) this.start (context);
 		}
 	start (context: any) {
+		for (var i in this.host) if (typeof this.host [i] === "string") this.host [i] = this.host [this.host [i]];
 		for (var i in this.host) {
 			if (this.host [i].alias) {
 				if (this.host [i].alias.length) {
-					var host = {config: this.host [i].config, theme: this.host [i].theme}
+					var host = {
+						public: this.host [i].public,
+						config: this.host [i].config,
+						db: this.host [i].db,
+						theme: this.host [i].theme,
+						ad: this.host [i].ad,
+						affiliate: this.host [i].affiliate,
+						}
 					for (var x in this.host [i].alias) {
 						this.host [[this.host [i].alias [x], i].join (".")] = host;
 						}
@@ -100,7 +108,8 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.var = {}
 	response.component = {}
 	response.seo = function (seo: any) { request.library.seo (seo); }
-	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (response.theme.layout (layout).render (variable, tab)); }
+	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (response.theme.layout (layout).render (php.object.assign (variable, response.var), tab)); }
+	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
 	}
 

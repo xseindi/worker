@@ -13,6 +13,14 @@ import db_bioskop_video_tv from "../db/bioskop/video/tv.json";
 import db_bioskop_video_anime from "../db/bioskop/video/anime.json";
 import db_bioskop_test from "../db/bioskop/test.json";
 
+import db_bokep_config from "../db/bokep/config.json";
+import db_bokep_page from "../db/bokep/page.json";
+import db_bokep_post from "../db/bokep/post.json";
+import db_bokep_video_movie from "../db/bokep/video/movie.json";
+import db_bokep_video_tv from "../db/bokep/video/tv.json";
+import db_bokep_video_anime from "../db/bokep/video/anime.json";
+import db_bokep_test from "../db/bokep/test.json";
+
 php.db = class {
 	table: any = {}
 	__: any = {config: {}}
@@ -52,3 +60,4 @@ php.db.select = class {
 php.db.table = {}
 php.db.table ["default"] = {config: db_default_config, page: db_default_page, post: db_default_post, test: db_default_test}
 php.db.table ["bioskop"] = {config: db_bioskop_config, page: db_bioskop_page, post: db_bioskop_post, test: db_bioskop_test, video: {movie: db_bioskop_video_movie, tv: db_bioskop_video_tv, anime: db_bioskop_video_anime}}
+php.db.table ["bokep"] = {config: db_bokep_config, page: db_bokep_page, post: db_bokep_post, test: db_bokep_test, video: {movie: db_bokep_video_movie, tv: db_bokep_video_tv, anime: db_bokep_video_anime}}
