@@ -29,6 +29,8 @@
  */
 
 body > #container { display: flex; flex-direction: column; height: 100%; }
+body > #container > header { min-height: var(--header-size); }
+body > #container > header > [id="header:fly"] { display: flex; align-items: center; width: 100%; height: var(--header-size); position: fixed; background-color: var(--background-color); z-index: 10; }
 body > #container > section { display: flex; flex-grow: 1; position: relative; background-color: gray; }
 body > #container > section > nav { display: none; flex-direction: column; width: var(--menu-size); background-color: red; }
 body > #container > section > main { flex-grow: 1; background-color: green; }

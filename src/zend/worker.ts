@@ -44,7 +44,7 @@ php.worker = class {
 		var _ = function (worker: any) {
 			return function (io: any, next: any) {
 				if (context) return context (worker.request, worker.response, next);
-				else return next ();
+				else return worker.request.router.use ();
 				}
 			}
 		this.app.use (path, _ (this));
@@ -131,15 +131,15 @@ php.worker.io.router = class {
 		for (var i in router.get) this.router.get [router.get [i].path] = router.get [i];
 		for (var i in router.post) this.router.post [router.post [i].path] = router.post [i];
 		}
-	use () { for (var i in this.router.use) this.router.use [i] (this.app, this.request, this.response, this.next); }
+	use () { return this.router.use (this.app, this.request, this.response, this.next); }
 	get (path: string) { if (this.router.get [path]) return this.router.get [path].context (this.app, this.request, this.response, this.next); }
 	post (path: string) { if (this.router.post [path]) return this.router.post [path].context (this.app, this.request, this.response, this.next); }
 	}
 
 php.worker.router = class {
-	router: any = {use: [], get: [], post: []}
+	router: any = {use: null, get: [], post: []}
 	constructor () {}
-	use (context: any) { this.router.use.push (context); }
+	use (context: any) { this.router.use = context; }
 	get (path: string, context: any) { this.router.get.push ({path, context}); }
 	post (path: string, context: any) { this.router.post.push ({path, context}); }
 	}

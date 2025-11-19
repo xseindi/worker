@@ -1,15 +1,15 @@
 import {Hono} from "hono";
 
-import host from "../host.json";
-import db from "../db.json";
-import router from "../router.json";
-import theme from "../theme.json";
-import config from "../config.json";
+import config from "../application/config.json";
+import db from "../application/db.json";
+import host from "../application/host.json";
+import router from "../application/router.json";
+import theme from "../application/theme.json";
 
 function plugin () {}
 
 var php: any = {
-	"host.json": host, "db.json": db, "router.json": router, "theme.json": theme, "config.json": config,
+	"config.json": config, "db.json": db, "host.json": host, "router.json": router, "theme.json": theme,
 	express: new Hono <{Bindings: {asset: Fetcher, db: D1Database, cache: KVNamespace}}> (),
 	plugin,
 	}

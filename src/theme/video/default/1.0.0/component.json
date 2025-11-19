@@ -10,5 +10,14 @@
 		"{{ slot }}",
 		"\t</div>",
 		"</div>"
+	],
+	"header:fly": [
+		"<header id=\"header\">",
+		"\t<div id=\"header:fly\" class=\"box-shadow\">",
+		"\t\t<div component=\"\">1</div>",
+		"\t\t<div class=\"flex:grow\" component=\"\">2</div>",
+		"\t\t<div component=\"\">3</div>",
+		"\t</div>",
+		"</header>"
 	]
 }

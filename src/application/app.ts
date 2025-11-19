@@ -42,7 +42,7 @@ app.start (async function (request: any, response: any, next: any) {
 			if (request.error [i].type === "host") return response ("Host Not Found")
 			}
 		}
-	request.router.use ()
+	await request.router.use ()
 	return next ()
 	})
 
@@ -363,12 +363,14 @@ var library: any = class {
 		this.request.app.meta = {
 			author: this.request.db.config ("meta:author"),
 			description: this.request.db.config ("meta:description"),
+			generator: this.request.db.config ("meta:generator"),
 			keyword: this.request.db.config ("meta:keyword"),
 			rating: this.request.db.config ("meta:rating"),
 			}
 		this.response.var ["latest"] = this.app.config.latest;
 		this.response.var ["base_url"] = this.request.base_url;
 		this.response.var ["canonical_url"] = this.request.canonical_url;
+		this.response.var ["site:name"] = this.request.app.site.name;
 		this.response.var ["title"] = this.request.app.site.title;
 		this.response.var ["alternate:site-name"] = this.request.app.site.name;
 		this.response.var ["html:lang"] = "en";
@@ -379,7 +381,7 @@ var library: any = class {
 		this.response.var ["meta:charset"] = "UTF-8";
 		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_s);
 		this.response.var ["meta:author"] = this.request.app.meta.author;
-		this.response.var ["meta:generator"] = "Firebase (12.6.0)";
+		this.response.var ["meta:generator"] = this.request.app.meta.generator;
 		this.response.var ["meta:keyword"] = this.request.app.meta.keyword;
 		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_s);
 		this.response.var ["meta:description"] = this.request.app.meta.description;

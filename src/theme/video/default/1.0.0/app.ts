@@ -22,9 +22,11 @@ var app = new php.worker.router
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.use (async function (app: any, request: any, response: any, next: any) {
-	response.component ("theme:menu", "index", {slot: ["a", "b", "c"]})
-	response.var ["theme:header"] = `<img src="{{ asset:image }}/logo.png">`
+app.use (function (app: any, request: any, response: any, next: any) {
+	return php.promise (async function (resolve: any, reject: any) {
+		response.var ["theme:header"] = response.theme.component ("header:fly").render (3)
+		resolve ()
+		})
 	})
 
 /**

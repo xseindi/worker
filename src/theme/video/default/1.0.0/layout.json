@@ -6,9 +6,7 @@
 	],
 	"index": [
 		"<div id=\"container\">",
-		"\t<header id=\"header\">",
-		"\t\t{{ theme:header }}",
-		"\t</header>",
+		"{{ theme:header }}",
 		"\t<section>",
 		"\t\t<nav id=\"menu\">",
 		"{{ theme:menu }}",
@@ -18,10 +16,14 @@
 		"\t\t\t<section>",
 		"\t\t\t\tmain section",
 		"\t\t\t</section>",
+		"\t\t\t<div><img width=\"1\" height=\"1000\"></div>",
 		"\t\t</main>",
 		"\t</section>",
 		"\t<footer id=\"footer\">",
-		"\t\t{{ theme:footer }}",
+		"<div>Copyright &copy; 2025 {{ site:name }}</div>",
+		"<div>All Right's Reserved</div>",
+		"<div>Logo's Trademark's on this Site are the Property of their Respective Owner's</div>",
+		"<div>Website Engine Code & Design is Powered By <a href=\"mailto:xseindi@gmail.com\">Netizen</a></div>",
 		"\t</footer>",
 		"</div>"
 	]
