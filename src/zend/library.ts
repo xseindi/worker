@@ -94,10 +94,11 @@ php.promise = function (context: any) { return new Promise (function (resolve, r
 
 php.object = function () {}
 php.object.clone = function (object: any = {}) { return JSON.parse (JSON.stringify (object)); }
-php.object.assign = function (object: any, data: any) {
+php.object.assign = function (object: any, data: any, extra: any = {}) {
 	var output: any = {}
 	for (var i in (object = php.object.clone (object))) output [i] = object [i];
 	for (var i in (data = php.object.clone (data))) output [i] = data [i];
+	for (var i in (extra = php.object.clone (extra))) output [i] = extra [i];
 	return output;
 	}
 

@@ -23,8 +23,7 @@ var app = new php.worker.router
  */
 
 app.use (async function (app: any, request: any, response: any, next: any) {
-	// request.layout ["default"] = request.theme.layout ("default").render (2)
-	// request.layout ["index"] = request.theme.layout ("index").render (2)
+	response.component ("theme:menu", "index", {slot: ["a", "b", "c"]})
 	response.var ["theme:header"] = `<img src="{{ asset:image }}/logo.png">`
 	})
 

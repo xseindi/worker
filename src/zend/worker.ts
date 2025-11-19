@@ -106,9 +106,10 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.json = io.json;
 	response.text = io.text;
 	response.var = {}
-	response.component = {}
+	response.component = function (id: string, component: string = "", variable: any = {}, tab: number = 0) { if (component) return response.component.data [id] = response.theme.component (component).render (variable, tab); else return response.component.data [id]; }
+	response.component.data = {}
 	response.seo = function (seo: any) { request.library.seo (seo); }
-	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (response.theme.layout (layout).render (php.object.assign (variable, response.var), tab)); }
+	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (response.theme.layout (layout).render (php.object.assign (variable, response.var, response.component.data), tab)); }
 	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
 	}

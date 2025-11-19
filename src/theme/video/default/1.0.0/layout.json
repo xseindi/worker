@@ -1,6 +1,6 @@
 {
 	"default": [
-		"<div id=\"\">",
+		"<div id=\"container\">",
 		"{{ slot }}",
 		"</div>"
 	],
