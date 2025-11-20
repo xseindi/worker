@@ -29,13 +29,18 @@
  */
 
 body > #container { display: flex; flex-direction: column; height: 100%; }
+body > #container > section { display: flex; flex-grow: 1; position: relative; }
+body > #container > section > nav { display: none; flex-direction: column; width: var(--menu-size); }
+body > #container > section > main { flex-grow: 1; }
+body.phone > #container > section > nav { display: none; height: 100%; position: absolute; background-color: var(--background-color); }
+
+/*
 body > #container > header { min-height: var(--header-size); }
 body > #container > header > [id="header:fly"] { display: flex; align-items: center; width: 100%; height: var(--header-size); position: fixed; background-color: var(--background-color); z-index: 10; }
-body > #container > section { display: flex; flex-grow: 1; position: relative; background-color: gray; }
-body > #container > section > nav { display: none; flex-direction: column; width: var(--menu-size); background-color: red; }
-body > #container > section > main { flex-grow: 1; background-color: green; }
-
-body.phone > #container > section > nav { display: none; height: 100%; position: absolute; background-color: yellow; }
+*/
+[component="header:fly"] { min-height: var(--header-size); }
+[component="header:fly"] > div { display: flex; align-items: center; width: 100%; height: var(--header-size); position: fixed; background-color: var(--background-color); z-index: 10; }
+[component="footer:info"] { font-size: var(--font-small); font-weight: normal; display: flex; flex-direction: column; align-items: center; gap: var(--px-tiny); padding: var(--px); }
 
 [print] { display: none; }
 [device="computer"] {}

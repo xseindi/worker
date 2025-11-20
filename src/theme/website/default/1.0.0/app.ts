@@ -11,6 +11,7 @@
 import php from "../../../../zend/engine"
 var $ = php ["router.json"]
 var app = new php.worker.router
+const {ln, zero, one} = php.constant
 
 /**
  * xxx
@@ -22,8 +23,19 @@ var app = new php.worker.router
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.use (async function (app: any, request: any, response: any, next: any) {
-	request.layout ["website"] = request.theme.layout ("website").render ({slot: "Hello World"}, 2)
+app.use (function (app: any, request: any, response: any, next: any) {
+	return php.promise (async function (resolve: any, reject: any) {
+		request.app.theme.package (app, request, response, next)
+		response.var ["theme:footer"] = []
+		var db_theme_footer = [
+			{component: "footer:info", param: {}},
+			]
+		for (var i in db_theme_footer) {
+			response.var ["theme:footer"].push (request.component [db_theme_footer [i].component] (db_theme_footer [i].param, 3))
+			}
+		response.var ["theme:header"] = request.theme.component ("header:fly").render (3)
+		resolve ()
+		})
 	})
 
 /**
@@ -37,7 +49,7 @@ app.use (async function (app: any, request: any, response: any, next: any) {
  */
 
 app.get ($ ["index"], async function (app: any, request: any, response: any, next: any) {
-	return response.html (request.layout ["website"])
+	return response.render ("index", {slot: "Hello World"}, 2)
 	})
 
 /**
@@ -51,7 +63,9 @@ app.get ($ ["index"], async function (app: any, request: any, response: any, nex
  */
 
 app.get ($.page ["about"], async function (app: any, request: any, response: any, next: any) {
-	return response.html ("Hello World")
+	var tmdb_response: any = await request.tmdb.movie.popular ()
+	response.seo ({title: "About"})
+	return response.render ("index", {slot: `<pre>${JSON.stringify(tmdb_response, null, '\t')}</pre>`}, 2)
 	})
 
 /**

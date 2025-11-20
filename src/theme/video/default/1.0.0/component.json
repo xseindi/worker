@@ -12,12 +12,44 @@
 		"</div>"
 	],
 	"header:fly": [
-		"<header id=\"header\">",
-		"\t<div id=\"header:fly\" class=\"box-shadow\">",
-		"\t\t<div component=\"\">1</div>",
-		"\t\t<div class=\"flex:grow\" component=\"\">2</div>",
-		"\t\t<div component=\"\">3</div>",
+		"<header id=\"header\" component=\"header:fly\">",
+		"\t<div class=\"no-box-shadow\">",
+		"\t\t<div component=\"\"></div>",
+		"\t\t<div>",
+		"{{ component logo:simple }}",
+		"\t\t</div>",
+		"\t\t<div class=\"flex:grow\" component=\"\"></div>",
+		"\t\t<div component=\"\">right</div>",
 		"\t</div>",
 		"</header>"
+	],
+	"logo:simple": [
+		"<div class=\"flex align-item gap\" component=\"logo:simple\">",
+		"\t<div><img src=\"{{ asset:image }}/logo.png\" height=\"32\"></div>",
+		"\t<div class=\"flex flex:column margin:top\">",
+		"\t\t<div class=\"font:big font:bold\" style=\"font-family: Tangerine;\">{{ site:name }}&trade;</div>",
+		"\t</div>",
+		"</div>"
+	],
+	"logo:sample": [
+		"<div class=\"flex align-item gap\" component=\"logo:sample\">",
+		"\t<div><img src=\"{{ asset:image }}/logo.png\" height=\"40\"></div>",
+		"\t<div class=\"flex flex:column\">",
+		"\t\t<div class=\"font:large font:bold\" style=\"font-family: Tangerine;\">{{ site:name }}&trade;</div>",
+		"\t\t<div class=\"font:small font:bold\">{{ site:tagline }}</div>",
+		"\t</div>",
+		"</div>"
+	],
+	"footer:sensitive": [
+		"<div component=\"footer:sensitive\">",
+		"</div>"
+	],
+	"footer:info": [
+		"<div component=\"footer:info\">",
+		"\t<div>Copyright &copy; 2025 <a href=\"{{ base_url }}\">{{ site:name }}</a></div>",
+		"\t<div>All Right's Reserved</div>",
+		"\t<div>Logo's Trademark's on this Site are the Property of their Respective Owner's</div>",
+		"\t<div>Website Engine Code & Design is Powered By <a href=\"mailto:{{ author:email }}\">{{ author:name }}</a></div>",
+		"</div>"
 	]
 }

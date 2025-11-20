@@ -5,6 +5,7 @@
 "bioskop.vcredist.workers.dev": "bioskop",
 "bioskopress.com": "bioskop",
 "bioskop": {
+	"author": {"name": "", "email": ""},
 	"alias": ["www"],
 	"public": "192.168.0.1",
 	"db": {"id": "bioskop"},

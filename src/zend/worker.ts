@@ -105,12 +105,14 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.xml = function (xml: string, code: number = 200) { return io.text (xml, code, {"Content-Type": "application/xml"}); }
 	response.json = io.json;
 	response.text = io.text;
+	response.get = function (variable: string) { return response.var [variable]; }
 	response.var = {}
-	response.component = function (id: string, component: string = "", variable: any = {}, tab: number = 0) { if (component) return response.component.data [id] = response.theme.component (component).render (variable, tab); else return response.component.data [id]; }
-	response.component.data = {}
+	// response.component = function (id: string, component: string = "", variable: any = {}, tab: number = 0) { if (component) return response.component.data [id] = request.theme.component (component).render (variable, tab); else return response.component.data [id]; }
+	// response.component.data = {}
 	response.seo = function (seo: any) { request.library.seo (seo); }
-	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (response.theme.layout (layout).render (php.object.assign (variable, response.var, response.component.data), tab)); }
+	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (request.theme.layout (layout).render (php.object.assign (variable, response.var), tab)); }
 	request.render = function (markup: string) { return php.render (markup, response.var); }
+	request.component = function (component: string, tab: number = 0) { if (component) return request.app.theme.component [component].map (function (value: any) { if (tab) return ("\t").repeat (tab) + value; else return value; }).join ("\n"); else for (var i in request.app.theme.component) response.var ["component " + i] = request.component (i, tab); }
 	return response;
 	}
 

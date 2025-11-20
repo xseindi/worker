@@ -1,4 +1,25 @@
 {
-"website": ["<div id=\"\">", "</div>"],
-"*": []
+	"default": [
+		"<div id=\"container\">",
+		"{{ slot }}",
+		"</div>"
+	],
+	"index": [
+		"<div id=\"container\">",
+		"{{ theme:header }}",
+		"\t<section>",
+		"\t\t<nav id=\"menu\">",
+		"{{ theme:menu }}",
+		"\t\t</nav>",
+		"\t\t<main id=\"main\">",
+		"\t\t\t{{ theme:main }}",
+		"\t\t\t<section>",
+		"\t\t\t\tmain section",
+		"\t\t\t</section>",
+		"\t\t\t<div><img width=\"1\" height=\"1000\"></div>",
+		"\t\t</main>",
+		"\t</section>",
+		"{{ theme:footer }}",
+		"</div>"
+	]
 }

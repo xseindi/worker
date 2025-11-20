@@ -1,0 +1,59 @@
+<template id="default">
+<div id="">
+{{ slot }}
+</div>
+</template>
+
+<template id="index">
+<div id="">
+	<div id="">
+{{ slot }}
+	</div>
+</div>
+</template>
+
+<template id="header:fly">
+<header id="header" component="header:fly">
+	<div class="no-box-shadow">
+		<div component=""></div>
+		<div>
+{{ component logo:simple }}
+		</div>
+		<div class="flex:grow" component=""></div>
+		<div component="">right</div>
+	</div>
+</header>
+</template>
+
+<template id="logo:simple">
+<div class="flex align-item gap" component="logo:simple">
+	<div><img src="{{ asset:image }}/logo.png" height="32"></div>
+	<div class="flex flex:column margin:top">
+		<div class="font:big font:bold" style="font-family: Tangerine;">{{ site:name }}&trade;</div>
+	</div>
+</div>
+</template>
+
+<template id="logo:sample">
+<div class="flex align-item gap" component="logo:sample">
+	<div><img src="{{ asset:image }}/logo.png" height="40"></div>
+	<div class="flex flex:column">
+		<div class="font:large font:bold" style="font-family: Tangerine;">{{ site:name }}&trade;</div>
+		<div class="font:small font:bold">{{ site:tagline }}</div>
+	</div>
+</div>
+</template>
+
+<template id="footer:sensitive">
+<div component="footer:sensitive">
+</div>
+</template>
+
+<template id="footer:info">
+<div component="footer:info">
+	<div>Copyright &copy; 2025 <a href="{{ base_url }}">{{ site:name }}</a></div>
+	<div>All Right's Reserved</div>
+	<div>Logo's Trademark's on this Site are the Property of their Respective Owner's</div>
+	<div>Website Engine Code & Design is Powered By <a href="mailto:{{ author:email }}">{{ author:name }}</a></div>
+</div>
+</template>

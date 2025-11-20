@@ -4,12 +4,12 @@ var {readFileSync, writeFileSync} = fs;
 var theme_id = "default";
 var theme_group = "video";
 var theme_version = "1.0.0";
-var directory = `D:/HT_doc/cloudflare/worker/src/theme/${theme_group}/${theme_id}/${theme_version}`;
-var dir_source = `${directory}/source`;
+var dir_target = `D:/HT_doc/cloudflare/worker/src/theme/${theme_group}/${theme_id}/${theme_version}`;
+var dir_source = `D:/HT_doc/cloudflare/worker/public/theme/${theme_group}/${theme_id}/${theme_version}/source`;
 var file_source_layout = `${dir_source}/layout.html`;
 var file_source_component = `${dir_source}/component.html`;
-var file_layout = `${directory}/layout.json`;
-var file_component = `${directory}/component.json`;
+var file_layout = `${dir_target}/layout.json`;
+var file_component = `${dir_target}/component.json`;
 
 function str_after (search, string) { var pos = string.indexOf (search); if (pos !== undefined) return string.substr (pos + search.length); else return ""; }
 function str_before (search, string) { return string.split (search) [0]; }

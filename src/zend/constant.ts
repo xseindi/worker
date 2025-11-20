@@ -9,3 +9,7 @@ php.constant.ln = "\n";
 php.constant.ln_r = "\r\n";
 php.constant.ln_tab = "\t";
 php.constant.ln_s = ", ";
+
+php.chr = {
+	dot: "•",
+	}
