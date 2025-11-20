@@ -14,6 +14,13 @@ php.parse_url = function (input: string) {
 		}
 	}
 
+php.is_agent_phone = function (agent: string) {
+	var browser = agent.toLowerCase ();
+	if (browser.indexOf ("iphone") !== undefined) return true;
+	else if (browser.indexOf ("android") !== undefined) return true;
+	else return false;
+	}
+
 php.is_agent_crawler = function (agent: string) {
 	var pattern = [
 		/Googlebot/i,

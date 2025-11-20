@@ -19,7 +19,7 @@ input[type="number"] { -moz-appearance: textfield; }
 input[type="checkbox"], input[type="radio"] { vertical-align: middle; }
 input[type="text"] {} input[type="date"] {} input[type="email"] {}
 input { background-color: var(--background-color); }
-ul.no-style { list-style-type: none; } li.no-style { list-style: none; }
+ul.no-style { list-style-type: none; } ul.no-style li { list-style: none; list-style-type: none; }
 img { display: block; vertical-align: middle; }
 template { display: none; }
 pre { font-family: var(--font-family-code); }

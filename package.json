@@ -5,7 +5,7 @@
 	"scripts": {
 		"start": "wrangler dev",
 		"dev": "wrangler dev",
-		"local": "wrangler dev --port 80",
+		"local": "wrangler dev --port 80 --ip 0.0.0.0",
 		"deploy": "wrangler deploy",
 		"test": "vitest",
 		"cf-typegen": "wrangler types"

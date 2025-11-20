@@ -92,7 +92,8 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.base_url = request.url.address;
 	request.canonical_url = request.url.canonical;
 	request.next = function () { return ! request.visitor ["agent:crawler"]; }
-	request.visitor = {agent: request.header ["user-agent"], "agent:crawler": false, country: {code: io.req.raw.cf.country, region: {code: io.req.raw.cf.regionCode, name: io.req.raw.cf.region, city: {name: io.req.raw.cf.city, postal: {code: io.req.raw.cf.postalCode}}}}, latitude: io.req.raw.cf.latitude, longitude: io.req.raw.cf.longitude, internet: {organization: io.req.raw.cf.asOrganization}, timezone: io.req.raw.cf.timezone}
+	request.visitor = {agent: request.header ["user-agent"], "agent:phone": false, "agent:crawler": false, country: {code: io.req.raw.cf.country, region: {code: io.req.raw.cf.regionCode, name: io.req.raw.cf.region, city: {name: io.req.raw.cf.city, postal: {code: io.req.raw.cf.postalCode}}}}, latitude: io.req.raw.cf.latitude, longitude: io.req.raw.cf.longitude, internet: {organization: io.req.raw.cf.asOrganization}, timezone: io.req.raw.cf.timezone}
+	request.visitor ["agent:phone"] = php.is_agent_phone (request.visitor.agent);
 	if (php.is_agent_crawler (request.visitor.agent)) request.visitor ["agent:crawler"] = true;
 	return request;
 	}

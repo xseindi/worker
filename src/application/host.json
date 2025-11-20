@@ -1,6 +1,7 @@
 {
 "127.0.0.1": {"db": {"id": "default"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
 
+"192.168.18.13": "bioskop",
 "bioskop.com": "bioskop",
 "bioskop.vcredist.workers.dev": "bioskop",
 "bioskopress.com": "bioskop",
