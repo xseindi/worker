@@ -6,7 +6,9 @@
 	],
 	"index": [
 		"<div id=\"container\">",
-		"{{ theme:header }}",
+		"\t<header id=\"header\" class=\"header:size\">",
+		"{{ component header:fly }}",
+		"\t</header>",
 		"\t<section>",
 		"\t\t<nav id=\"menu\">",
 		"{{ theme:menu }}",
@@ -19,8 +21,8 @@
 		"\t\t\t<div><img width=\"1\" height=\"1000\"></div>",
 		"\t\t</main>",
 		"\t</section>",
-		"\t<footer>",
-		"{{ theme:footer }}",
+		"\t<footer id=\"footer\" class=\"flex flex:column gap padding\">",
+		"{{ component footer:info }}",
 		"\t</footer>",
 		"</div>"
 	]

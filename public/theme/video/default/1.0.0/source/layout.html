@@ -6,7 +6,9 @@
 
 <template id="index">
 <div id="container">
-{{ theme:header }}
+	<header id="header" class="header:size">
+{{ component header:fly }}
+	</header>
 	<section>
 		<nav id="menu">
 {{ theme:menu }}
@@ -19,8 +21,8 @@
 			<div><img width="1" height="1000"></div>
 		</main>
 	</section>
-	<footer>
-{{ theme:footer }}
+	<footer id="footer" class="flex flex:column gap padding">
+{{ component footer:info }}
 	</footer>
 </div>
 </template>
