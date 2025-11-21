@@ -95,6 +95,30 @@ app.get ($.page ["about"], async function (app: any, request: any, response: any
 	return response.render ("index", {slot: `<pre>${JSON.stringify(tmdb_response, null, '\t')}</pre>`}, 2)
 	})
 
+app.get ("/test", async function (app: any, request: any, response: any, next: any) {
+	return test_single (app, request, response, next)
+	})
+//1062722
+async function test_single (app: any, request: any, response: any, next: any) {
+	var data = await request.tmdb.movie.single (1062722)
+	return response.json (data)
+	}
+
+async function test (app: any, request: any, response: any, next: any) {
+	var data = await request.tmdb.movie.popular ()
+	console.log (data)
+	data = data.data.map (function (data: any) {
+		delete data.permalink
+		delete data.genre
+		data.poster = "/" + php.array.last (data ["poster"].split ("/"))
+		delete data ["poster:original"]
+		data.backdrop = "/" + php.array.last (data ["backdrop"].split ("/"))
+		delete data ["backdrop:original"]
+		return data
+		})
+	return response.text (JSON.stringify (data, null, "\t"))
+	}
+
 /**
  * xxx
  *

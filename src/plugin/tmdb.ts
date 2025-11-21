@@ -2,32 +2,31 @@ import php from "../zend/engine";
 let {str_after, str_before} = php;
 
 const __api: any = {
-	"trending:today": "https://api.themoviedb.org/3/trending/all/day?language=en-US",
-	"trending:week": "https://api.themoviedb.org/3/trending/all/week?language=en-US",
-	"movie": "https://api.themoviedb.org/3/movie/{id}?language=en-US",
-	"movie trending:today": "https://api.themoviedb.org/3/trending/movie/day?language=en-US",
-	"movie trending:week": "https://api.themoviedb.org/3/trending/movie/week?language=en-US",
-	"movie:discover": "https://api.themoviedb.org/3/discover/movie?language=en-US",
-	"movie:popular": "https://api.themoviedb.org/3/movie/popular?language=en-US",
-	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en-US",
-	"movie:top_rated": "https://api.themoviedb.org/3/movie/top_rated?language=en-US",
-	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming?language=en-US",
-	"tv": "https://api.themoviedb.org/3/tv/{id}?language=en-US",
-	"tv trending:today": "https://api.themoviedb.org/3/trending/tv/day?language=en-US",
-	"tv trending:week": "https://api.themoviedb.org/3/trending/tv/week?language=en-US",
-	"tv:discover": "https://api.themoviedb.org/3/discover/tv?language=en-US",
-	"tv:popular": "https://api.themoviedb.org/3/tv/popular?language=en-US",
-	"tv:airing_today": "https://api.themoviedb.org/3/tv/airing_today?language=en-US",
-	"tv:on_air": "https://api.themoviedb.org/3/tv/on_the_air?language=en-US",
-	"tv:top_rated": "https://api.themoviedb.org/3/tv/top_rated?language=en-US",
-	"people trending:today": "https://api.themoviedb.org/3/trending/person/day?language=en-US",
-	"people trending:week": "https://api.themoviedb.org/3/trending/person/week?language=en-US",
+	"trending:today": "https://api.themoviedb.org/3/trending/all/day?language=en",
+	"trending:week": "https://api.themoviedb.org/3/trending/all/week?language=en",
+	"movie": "https://api.themoviedb.org/3/movie/{id}?language=en",
+	"movie trending:today": "https://api.themoviedb.org/3/trending/movie/day?language=en",
+	"movie trending:week": "https://api.themoviedb.org/3/trending/movie/week?language=en",
+	"movie:discover": "https://api.themoviedb.org/3/discover/movie?language=en",
+	"movie:popular": "https://api.themoviedb.org/3/movie/popular?language=en",
+	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en",
+	"movie:top_rated": "https://api.themoviedb.org/3/movie/top_rated?language=en",
+	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming?language=en",
+	"tv": "https://api.themoviedb.org/3/tv/{id}?language=en",
+	"tv trending:today": "https://api.themoviedb.org/3/trending/tv/day?language=en",
+	"tv trending:week": "https://api.themoviedb.org/3/trending/tv/week?language=en",
+	"tv:discover": "https://api.themoviedb.org/3/discover/tv?language=en",
+	"tv:popular": "https://api.themoviedb.org/3/tv/popular?language=en",
+	"tv:airing_today": "https://api.themoviedb.org/3/tv/airing_today?language=en",
+	"tv:on_air": "https://api.themoviedb.org/3/tv/on_the_air?language=en",
+	"tv:top_rated": "https://api.themoviedb.org/3/tv/top_rated?language=en",
+	"people trending:today": "https://api.themoviedb.org/3/trending/person/day?language=en",
+	"people trending:week": "https://api.themoviedb.org/3/trending/person/week?language=en",
 	"image:default": "https://image.tmdb.org/t/p/w500",
 	"image:original": "https://image.tmdb.org/t/p/original",
 	}
 
 const __genre: any = {
-	all: {},
 	movie: {
 		28: "Action",
 		12: "Adventure",
@@ -102,14 +101,29 @@ php.plugin.tmdb = class {
 		option.page = option.page || 1;
 		if  (option.page) url = [url, ["page", option.page].join ("=")].join ("&");
 		if  (option.genre) url = [url, ["with_genres", option.genre].join ("=")].join ("&");
+		if  (option.append_to_response) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
 		return url;
 		}
-	async fetch (api: string, option: any = {}) {
+	async fetch (api: string, option: any = {}, single: boolean = false) {
 		var response = await fetch (this.url (api, option), this.head ());
-		var respond: any = await response.json ();
+		return response.json ();
+		}
+	array (respond: any, option: any = {}) {
 		var adapter = this.adapter;
 		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, "page:total": respond.total_pages, "data:total": respond.total_results, data: revamp (respond.results, option.type, adapter), tmdb: respond.results});
+			resolve ({
+				page: respond.page,
+				"page:total": respond.total_pages,
+				"data:total": respond.total_results,
+				data: revamp (respond.results, option.type, adapter),
+				tmdb: respond.results,
+				});
+			});
+		}
+	object (respond: any, option: any = {}) {
+		var adapter = this.adapter;
+		return new Promise (function (resolve, reject) {
+			resolve ({revamp: revamp.json (respond, option.type, adapter), "": "----------------------------------", respond});
 			});
 		}
 	image (path: string, size: string = "default") {
@@ -127,8 +141,11 @@ php.plugin.tmdb.movie = class {
 		this.tmdb = tmdb;
 		}
 	discover () {}
-	popular (option: any = {}) {
-		return this.tmdb.fetch ("movie:popular", Object.assign ({type: "movie"}, option));
+	async single (id: any, option: any = {}) {
+		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: true}, option))), option);
+		}
+	async popular (option: any = {}) {
+		return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option);
 		}
 	genre (genre: string) {
 		if (genre === "split") return this.genre_split ();
@@ -239,8 +256,33 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 	var year = r_date.getFullYear ();
 	var popularity = input.popularity;
 	var country = input.origin_country || [];
+	var adult = input.adult || false;
+	var budget = input.budget || 0;
+	var revenue = input.revenue || 0;
+	var status = input.status || "";
+	var tagline = input.tagline || "";
 	type = input.media_type || type;
-	var genre = []; if (input.genre_ids) for (var i in input.genre_ids) genre.push ({id: input.genre_ids [i], name: php.plugin.tmdb.slugify (__genre [type][input.genre_ids [i]]), title: __genre [type][input.genre_ids [i]]});
+	var genre = [], genre_id_list: any = [];
+	if (input.genre_ids) {
+		genre_id_list = input.genre_ids;
+		for (var i in input.genre_ids) {
+			var genre_id = input.genre_ids [i];
+			var genre_title = __genre [type][genre_id];
+			var genre_name = php.plugin.tmdb.slugify (genre_title);
+			var genre_permalink = adapter.request.router.permalink (type + ":genre", {id: genre_id, name: genre_name});
+			genre.push ({id: genre_id, name: genre_name, title: genre_title, permalink: genre_permalink});
+			}
+		}
+	else if (input.genres) {
+		for (var i in input.genres) {
+			var genre_id = input.genres [i].id;
+			var genre_title = __genre [type][genre_id];
+			var genre_name = php.plugin.tmdb.slugify (genre_title);
+			var genre_permalink = adapter.request.router.permalink (type + ":genre", {id: genre_id, name: genre_name});
+			genre.push ({id: genre_id, name: genre_name, title: genre_title, permalink: genre_permalink});
+			genre_id_list.push (genre_id);
+			}
+		}
 	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":name").join (name);
 	if (type === "movie") {}
 	if (type === "tv") {}
@@ -252,7 +294,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 		"poster": poster, "poster:original": poster_original, "backdrop": poster_backdrop, "backdrop:original": poster_backdrop_original,
 		"release_date": release_date, "release_date:string": release_date_string, year,
 		popularity,
-		genre,
+		"genre:id": genre_id_list, genre,
 		country,
 		}
 	return output;

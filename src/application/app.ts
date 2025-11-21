@@ -94,8 +94,9 @@ app.get (app.router ["search"])
  * xxx://xxx.xxx.xxx/xxx
  */
 
+app.get ("/test")
 app.get (app.router.index)
-app.get (app.router.page ["*"])
+app.get (app.router.page ["about"])
 app.get (app.router.page ["about"])
 app.get (app.router.page ["contact"])
 app.get (app.router.page ["help"])
