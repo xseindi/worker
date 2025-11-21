@@ -27,35 +27,36 @@ const __api: any = {
 	}
 
 const __genre: any = {
+	all: {},
 	movie: {
 		28: "Action",
-		12: "Abenteuer",
+		12: "Adventure",
 		16: "Animation",
-		35: "Komödie",
-		80: "Krimi",
-		99: "Dokumentarfilm",
+		35: "Comedy",
+		80: "Crime",
+		99: "Documentary",
 		18: "Drama",
-		10751: "Familie",
+		10751: "Family",
 		14: "Fantasy",
-		36: "Historie",
+		36: "History",
 		27: "Horror",
-		10402: "Musik",
+		10402: "Music",
 		9648: "Mystery",
-		10749: "Liebesfilm",
+		10749: "Romance",
 		878: "Science Fiction",
-		10770: "TV-Film",
+		10770: "TV Movie",
 		53: "Thriller",
-		10752: "Kriegsfilm",
+		10752: "War",
 		37: "Western",
 		},
 	tv: {
 		10759: "Action & Adventure",
 		16: "Animation",
-		35: "Komödie",
-		80: "Krimi",
-		99: "Dokumentarfilm",
+		35: "Comedy",
+		80: "Crime",
+		99: "Documentary",
 		18: "Drama",
-		10751: "Familie",
+		10751: "Family",
 		10762: "Kids",
 		9648: "Mystery",
 		10763: "News",
@@ -74,10 +75,12 @@ php.plugin.tmdb = class {
 	request: any;
 	movie: any;
 	tv: any;
+	genre: any = {}
 	constructor (tmdb: any = {}, request: any = {}) {
 		this.api = tmdb.api;
 		this.token = tmdb.token;
 		this.request = request;
+		this.genre = php.object.assign (__genre.movie, __genre.tv);
 		this.movie = new php.plugin.tmdb.movie (this);
 		this.tv = new php.plugin.tmdb.tv (this);
 		}
@@ -112,10 +115,14 @@ php.plugin.tmdb = class {
 	image (path: string, size: string = "default") {
 		return __api [["image", size].join (":")] + path;
 		}
+	to_slugify (name: string) {
+		return php.plugin.tmdb.slugify (name);
+		}
 	}
 
 php.plugin.tmdb.movie = class {
 	tmdb: any;
+	__genre: any = __genre.movie;
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
@@ -123,12 +130,81 @@ php.plugin.tmdb.movie = class {
 	popular (option: any = {}) {
 		return this.tmdb.fetch ("movie:popular", Object.assign ({type: "movie"}, option));
 		}
+	genre (genre: string) {
+		if (genre === "split") return this.genre_split ();
+		else if (genre === undefined) return this.genre_array ();
+		else if (genre in this.__genre) return {
+			id: genre,
+			title: this.__genre [genre],
+			name: this.tmdb.to_slugify (this.__genre [genre]),
+			permalink: this.genre_permalink (genre),
+			}
+		}
+	genre_array () {
+		var genre = [];
+		for (var id in this.__genre) {
+			var title = this.__genre [id];
+			var name = this.tmdb.to_slugify (title);
+			var permalink = this.genre_permalink (id);
+			genre.push ({id, title, name, permalink});
+			}
+		return genre;
+		}
+	genre_split () {
+		var left = [];
+		var right = [];
+		var genre = this.genre_array ();
+		var length = genre.length;
+		var half: number = parseInt (((length / 2) + 1).toString ().split (".") [0]);
+		for (var i = 0; i < half; i ++) left.push (genre [i]);
+		for (var i = half; i < length; i ++) right.push (genre [i]);
+		return {left, right}
+		}
+	genre_permalink (id: any) {
+		return php ["router.json"]["movie:genre"].split (":id").join (id).split (":name").join (this.tmdb.to_slugify (this.__genre [id]));
+		}
 	}
+
+php.plugin.tmdb.movie.genre = __genre.movie;
 
 php.plugin.tmdb.tv = class {
 	tmdb: any;
+	__genre: any = __genre.tv;
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
+		}
+	genre (genre: string) {
+		if (genre === "split") return this.genre_split ();
+		else if (genre === undefined) return this.genre_array ();
+		else if (genre in this.__genre) return {
+			id: genre,
+			title: this.__genre [genre],
+			name: this.tmdb.to_slugify (this.__genre [genre]),
+			permalink: this.genre_permalink (genre),
+			}
+		}
+	genre_array () {
+		var genre = [];
+		for (var id in this.__genre) {
+			var title = this.__genre [id];
+			var name = this.tmdb.to_slugify (title);
+			var permalink = this.genre_permalink (id);
+			genre.push ({id, title, name, permalink});
+			}
+		return genre;
+		}
+	genre_split () {
+		var left = [];
+		var right = [];
+		var genre = this.genre_array ();
+		var length = genre.length;
+		var half: number = parseInt (((length / 2) + 0).toString ().split (".") [0]);
+		for (var i = 0; i < half; i ++) left.push (genre [i]);
+		for (var i = half; i < length; i ++) right.push (genre [i]);
+		return {left, right}
+		}
+	genre_permalink (id: any) {
+		return php ["router.json"]["tv:genre"].split (":id").join (id).split (":name").join (this.tmdb.to_slugify (this.__genre [id]));
 		}
 	}
 

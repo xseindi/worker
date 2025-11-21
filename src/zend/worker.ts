@@ -137,6 +137,11 @@ php.worker.io.router = class {
 	use () { return this.router.use (this.app, this.request, this.response, this.next); }
 	get (path: string) { if (this.router.get [path]) return this.router.get [path].context (this.app, this.request, this.response, this.next); }
 	post (path: string) { if (this.router.post [path]) return this.router.post [path].context (this.app, this.request, this.response, this.next); }
+	permalink (router: string, param: any = {}) {
+		var permalink = this.request.base_url + this.app.router [router];
+		for (var i in param) permalink = permalink.split (":" + i).join (param [i]);
+		return permalink;
+		}
 	}
 
 php.worker.router = class {

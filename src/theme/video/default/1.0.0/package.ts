@@ -15,9 +15,15 @@ export default function (app: any, request: any, response: any, next: any) {
 				var anchor: any = []
 				for (var x in param.data [i].anchor) {
 					var a = param.data [i].anchor [x]
-					anchor.push (request.theme.component ("button:inline anchor").render (a, tab + 2 + 1))
+					anchor.push (request.theme.component ("button:inline anchor").render (a, (tab + 3)))
 					}
-				data.push (request.theme.component ("button:inline anchor:container").render ({slot: anchor}, tab + 2))
+				data.push (request.theme.component ("button:inline anchor:container").render ({slot: anchor}, (tab + 2)))
+				}
+			if (param.data [i].type === "link") {
+				var left: any = [], right: any = []
+				for (var x in param.data [i].left) left.push (request.theme.component ("button:inline anchor:more").render (param.data [i].left [x], (tab + 4)))
+				for (var x in param.data [i].right) right.push (request.theme.component ("button:inline anchor:more").render (param.data [i].right [x], (tab + 4)))
+				data.push (request.theme.component ("button:inline anchor-more:container").render ({left, right}, (tab + 2)))
 				}
 			}
 		return request.theme.component ("button:inline").render ({title: param.title, slot: data}, tab)

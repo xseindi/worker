@@ -27,7 +27,8 @@
 	<div class="flex align:item justify:item flex:grow gap">
 		<div class="" computer>
 			<div class="flex align:item gap">
-{{ test }}
+{{ element header:movie }}
+{{ element header:tv }}
 			</div>
 		</div>
 		<div>Search</div>
@@ -99,10 +100,10 @@
 <template id="button:inline">
 <button class="button:inline">
 	<div class="flex align:item gap:small padding-vertical:small padding:horizontal">
-		<!--div class="icon:container icon:margin font:large"><span class="icon:material">{{ title }}</span></div-->
 		<span class="font-bold:pop">{{ title }}</span>
+		<div class="icon:container icon:margin font:intermediate"><span class="icon:material">arrow_drop_down</span></div>
 	</div>
-	<section class="flex:column nav:size top:port border:radius background:color box-shadow transition:visibility">
+	<section class="flex:column nav:size top:port left border:radius background:color box-shadow no-overflow transition:visibility">
 {{ slot }}
 	</section>
 </button>
@@ -114,11 +115,28 @@
 </div>
 </template>
 
+<template id="button:inline anchor-more:container">
+<div class="flex font:small text-align:left gap padding" menu="sample:link-more">
+	<div class="flex flex:column flex:grow">
+{{ left }}
+	</div>
+	<div class="flex flex:column flex:grow">
+{{ right }}
+	</div>
+</div>
+</template>
+
 <template id="button:inline anchor">
-<a href="{{ url }}" class="flex align:item gap padding:li a:static">
+<a href="{{ permalink }}" class="flex align:item gap padding:li a:static">
 	<div class="icon:container icon:margin"><span class="icon:material">{{ icon }}</span></div>
 	<span class="font-bold:pop flex:grow">{{ title }}</span>
 	<span class="font:small font-bold:pop" style="color: rgba(var(--color),0.75);">{{ quantity }}</span>
+</a>
+</template>
+
+<template id="button:inline anchor:more">
+<a href="{{ permalink }}" class="flex align:item gap padding:small padding:horizontal a:static">
+	<span class="flex:grow">{{ title }}</span>
 </a>
 </template>
 

@@ -26,7 +26,8 @@
 		"\t<div class=\"flex align:item justify:item flex:grow gap\">",
 		"\t\t<div class=\"\" computer>",
 		"\t\t\t<div class=\"flex align:item gap\">",
-		"{{ test }}",
+		"{{ element header:movie }}",
+		"{{ element header:tv }}",
 		"\t\t\t</div>",
 		"\t\t</div>",
 		"\t\t<div>Search</div>",
@@ -93,10 +94,10 @@
 	"button:inline": [
 		"<button class=\"button:inline\">",
 		"\t<div class=\"flex align:item gap:small padding-vertical:small padding:horizontal\">",
-		"\t\t<!--div class=\"icon:container icon:margin font:large\"><span class=\"icon:material\">{{ title }}</span></div-->",
 		"\t\t<span class=\"font-bold:pop\">{{ title }}</span>",
+		"\t\t<div class=\"icon:container icon:margin font:intermediate\"><span class=\"icon:material\">arrow_drop_down</span></div>",
 		"\t</div>",
-		"\t<section class=\"flex:column nav:size top:port border:radius background:color box-shadow transition:visibility\">",
+		"\t<section class=\"flex:column nav:size top:port left border:radius background:color box-shadow no-overflow transition:visibility\">",
 		"{{ slot }}",
 		"\t</section>",
 		"</button>"
@@ -106,11 +107,26 @@
 		"{{ slot }}",
 		"</div>"
 	],
+	"button:inline anchor-more:container": [
+		"<div class=\"flex font:small text-align:left gap padding\" menu=\"sample:link-more\">",
+		"\t<div class=\"flex flex:column flex:grow\">",
+		"{{ left }}",
+		"\t</div>",
+		"\t<div class=\"flex flex:column flex:grow\">",
+		"{{ right }}",
+		"\t</div>",
+		"</div>"
+	],
 	"button:inline anchor": [
-		"<a href=\"{{ url }}\" class=\"flex align:item gap padding:li a:static\">",
+		"<a href=\"{{ permalink }}\" class=\"flex align:item gap padding:li a:static\">",
 		"\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">{{ icon }}</span></div>",
 		"\t<span class=\"font-bold:pop flex:grow\">{{ title }}</span>",
 		"\t<span class=\"font:small font-bold:pop\" style=\"color: rgba(var(--color),0.75);\">{{ quantity }}</span>",
+		"</a>"
+	],
+	"button:inline anchor:more": [
+		"<a href=\"{{ permalink }}\" class=\"flex align:item gap padding:small padding:horizontal a:static\">",
+		"\t<span class=\"flex:grow\">{{ title }}</span>",
 		"</a>"
 	],
 	"separator:mono": [
