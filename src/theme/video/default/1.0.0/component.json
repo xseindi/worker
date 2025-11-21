@@ -26,8 +26,7 @@
 		"\t<div class=\"flex align:item justify:item flex:grow gap\">",
 		"\t\t<div class=\"\" computer>",
 		"\t\t\t<div class=\"flex align:item gap\">",
-		"\t\t\t\t{{ component button:inline movie }}",
-		"\t\t\t\t{{ component button:inline tv }}",
+		"{{ test }}",
 		"\t\t\t</div>",
 		"\t\t</div>",
 		"\t\t<div>Search</div>",
@@ -91,21 +90,48 @@
 		"\t<div>Website Engine Code & Design is Powered By <a href=\"mailto:{{ author:email }}\">{{ author:name }}</a></div>",
 		"</div>"
 	],
+	"button:inline": [
+		"<button class=\"button:inline\">",
+		"\t<div class=\"flex align:item gap:small padding-vertical:small padding:horizontal\">",
+		"\t\t<!--div class=\"icon:container icon:margin font:large\"><span class=\"icon:material\">{{ title }}</span></div-->",
+		"\t\t<span class=\"font-bold:pop\">{{ title }}</span>",
+		"\t</div>",
+		"\t<section class=\"flex:column nav:size top:port border:radius background:color box-shadow transition:visibility\">",
+		"{{ slot }}",
+		"\t</section>",
+		"</button>"
+	],
+	"button:inline anchor:container": [
+		"<div class=\"flex flex:column text-align:left\">",
+		"{{ slot }}",
+		"</div>"
+	],
+	"button:inline anchor": [
+		"<a href=\"{{ url }}\" class=\"flex align:item gap padding:li a:static\">",
+		"\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">{{ icon }}</span></div>",
+		"\t<span class=\"font-bold:pop flex:grow\">{{ title }}</span>",
+		"\t<span class=\"font:small font-bold:pop\" style=\"color: rgba(var(--color),0.75);\">{{ quantity }}</span>",
+		"</a>"
+	],
+	"separator:mono": [
+		"<div class=\"separator:mono\"></div>"
+	],
 	"button:inline movie": [
 		"<button class=\"button:inline\">",
 		"\t<div class=\"flex align:item gap:small padding-vertical:small padding:horizontal\">",
 		"\t\t<!--div class=\"icon:container icon:margin font:large\"><span class=\"icon:material\">movie</span></div-->",
 		"\t\t<span class=\"font-bold:pop\">Movie</span>",
 		"\t</div>",
-		"\t<section class=\"flex:column nav:size bottom:port border-radius background:color box-shadow\">",
-		"\t\t<div class=\"flex flex:column text-align:left\" style=\"border-bottom: 1px solid #f1f1f1;\">",
+		"\t<section class=\"flex:column nav:size top:port border:radius background:color box-shadow transition:visibility\" menu=\"sample:container\">",
+		"\t\t<div class=\"flex flex:column text-align:left\" menu=\"sample:link\">",
 		"\t\t\t<a href=\"#\" class=\"flex align:item gap padding:li a:static\">",
 		"\t\t\t\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">more_horiz</span></div>",
 		"\t\t\t\t<span class=\"font-bold:pop flex:grow\">Movie Index</span>",
 		"\t\t\t\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">sort_by_alpha</span></div>",
 		"\t\t\t</a>",
 		"\t\t</div>",
-		"\t\t<div class=\"flex flex:column text-align:left\" style=\"border-bottom: 1px solid #f1f1f1;\">",
+		"\t\t<div class=\"separator:mono\"></div>",
+		"\t\t<div class=\"flex flex:column text-align:left\" menu=\"sample:link\">",
 		"\t\t\t<a href=\"#\" class=\"flex align:item gap padding:li a:static\">",
 		"\t\t\t\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">hotel_class</span></div>",
 		"\t\t\t\t<span class=\"font-bold:pop flex:grow\">Pupular</span>",
@@ -122,14 +148,16 @@
 		"\t\t\t\t<span class=\"font:small font-bold:pop\" style=\"color: rgba(var(--color),0.75);\">99</span>",
 		"\t\t\t</a>",
 		"\t\t</div>",
-		"\t\t<div class=\"flex flex:column text-align:left\" style=\"border-bottom: 1px solid #f1f1f1;\">",
+		"\t\t<div class=\"separator:mono\"></div>",
+		"\t\t<div class=\"flex flex:column text-align:left\" menu=\"sample:link\">",
 		"\t\t\t<a href=\"#\" class=\"flex align:item gap padding:li a:static\">",
 		"\t\t\t\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">editor_choice</span></div>",
 		"\t\t\t\t<span class=\"font-bold:pop flex:grow\">Editor Choice</span>",
 		"\t\t\t\t<span class=\"font:small font-bold:pop\" style=\"color: rgba(var(--color),0.75);\">33</span>",
 		"\t\t\t</a>",
 		"\t\t</div>",
-		"\t\t<div class=\"flex font:small text-align:left gap padding\">",
+		"\t\t<div class=\"separator:mono\"></div>",
+		"\t\t<div class=\"flex font:small text-align:left gap padding\" menu=\"sample:link-more\">",
 		"\t\t\t<div class=\"flex flex:column flex:grow\">",
 		"\t\t\t\t<a href=\"#\" class=\"flex align:item gap padding:small padding:horizontal a:static\">",
 		"\t\t\t\t\t<!--div class=\"icon:container icon:margin\"><span class=\"icon:material\">arrow_circle_right</span></div-->",
@@ -188,7 +216,7 @@
 		"\t\t<!--div class=\"icon:container icon:margin font:large\"><span class=\"icon:material\">movie</span></div-->",
 		"\t\t<span class=\"font-bold:pop\">TV Show</span>",
 		"\t</div>",
-		"\t<section class=\"flex:column nav:size bottom:port border-radius background:color box-shadow\">",
+		"\t<section class=\"flex:column nav:size bottom:port border-radius background:color box-shadow transition:visibility\">",
 		"\t\t<div class=\"flex flex:column text-align:left\" style=\"border-bottom: 1px solid #f1f1f1;\">",
 		"\t\t\t<a href=\"#\" class=\"flex align:item gap padding:li a:static\">",
 		"\t\t\t\t<div class=\"icon:container icon:margin\"><span class=\"icon:material\">more_horiz</span></div>",
@@ -272,5 +300,11 @@
 		"\t\t</div>",
 		"\t</section>",
 		"</button>"
+	],
+	"icon:material more horizontal": [
+		"<div class=\"icon:container icon:margin\"><span class=\"icon:material\">more_horiz</span></div>"
+	],
+	"icon:material sort by alpha": [
+		"<div class=\"icon:container icon:margin\"><span class=\"icon:material\">sort_by_alpha</span></div>"
 	]
 }

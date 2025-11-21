@@ -111,6 +111,7 @@
 [class*="nav:size"] { width: var(--nav-size); }
 [class*="padding:li"] { padding: 8px 18px; }
 [class*="icon:margin"] { margin-top: 1px; }
+[class*="separator:mono"] { height: 1px; background-color: rgb(var(--mono)); }
 
 .computer [phone] { display: none; }
 .phone [computer] { display: none; }
@@ -168,6 +169,8 @@ body.phone > #container > section > nav { display: none; height: 100%; position:
 [class*="button:inline"] { position: relative; border: none; border-radius: 4px; background-color: transparent; }
 [class*="button:icon"] { position: relative; padding: 5px; border: none; border-radius: 4px; background-color: transparent; }
 [class*="button:icon"]:hover { background-color: transparent; }
+
+[menu="sample:container"] { }
 
 /**
  * the end

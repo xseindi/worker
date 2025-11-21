@@ -27,8 +27,7 @@
 	<div class="flex align:item justify:item flex:grow gap">
 		<div class="" computer>
 			<div class="flex align:item gap">
-				{{ component button:inline movie }}
-				{{ component button:inline tv }}
+{{ test }}
 			</div>
 		</div>
 		<div>Search</div>
@@ -97,21 +96,52 @@
 </div>
 </template>
 
+<template id="button:inline">
+<button class="button:inline">
+	<div class="flex align:item gap:small padding-vertical:small padding:horizontal">
+		<!--div class="icon:container icon:margin font:large"><span class="icon:material">{{ title }}</span></div-->
+		<span class="font-bold:pop">{{ title }}</span>
+	</div>
+	<section class="flex:column nav:size top:port border:radius background:color box-shadow transition:visibility">
+{{ slot }}
+	</section>
+</button>
+</template>
+
+<template id="button:inline anchor:container">
+<div class="flex flex:column text-align:left">
+{{ slot }}
+</div>
+</template>
+
+<template id="button:inline anchor">
+<a href="{{ url }}" class="flex align:item gap padding:li a:static">
+	<div class="icon:container icon:margin"><span class="icon:material">{{ icon }}</span></div>
+	<span class="font-bold:pop flex:grow">{{ title }}</span>
+	<span class="font:small font-bold:pop" style="color: rgba(var(--color),0.75);">{{ quantity }}</span>
+</a>
+</template>
+
+<template id="separator:mono">
+<div class="separator:mono"></div>
+</template>
+
 <template id="button:inline movie">
 <button class="button:inline">
 	<div class="flex align:item gap:small padding-vertical:small padding:horizontal">
 		<!--div class="icon:container icon:margin font:large"><span class="icon:material">movie</span></div-->
 		<span class="font-bold:pop">Movie</span>
 	</div>
-	<section class="flex:column nav:size bottom:port border-radius background:color box-shadow">
-		<div class="flex flex:column text-align:left" style="border-bottom: 1px solid #f1f1f1;">
+	<section class="flex:column nav:size top:port border:radius background:color box-shadow transition:visibility" menu="sample:container">
+		<div class="flex flex:column text-align:left" menu="sample:link">
 			<a href="#" class="flex align:item gap padding:li a:static">
 				<div class="icon:container icon:margin"><span class="icon:material">more_horiz</span></div>
 				<span class="font-bold:pop flex:grow">Movie Index</span>
 				<div class="icon:container icon:margin"><span class="icon:material">sort_by_alpha</span></div>
 			</a>
 		</div>
-		<div class="flex flex:column text-align:left" style="border-bottom: 1px solid #f1f1f1;">
+		<div class="separator:mono"></div>
+		<div class="flex flex:column text-align:left" menu="sample:link">
 			<a href="#" class="flex align:item gap padding:li a:static">
 				<div class="icon:container icon:margin"><span class="icon:material">hotel_class</span></div>
 				<span class="font-bold:pop flex:grow">Pupular</span>
@@ -128,14 +158,16 @@
 				<span class="font:small font-bold:pop" style="color: rgba(var(--color),0.75);">99</span>
 			</a>
 		</div>
-		<div class="flex flex:column text-align:left" style="border-bottom: 1px solid #f1f1f1;">
+		<div class="separator:mono"></div>
+		<div class="flex flex:column text-align:left" menu="sample:link">
 			<a href="#" class="flex align:item gap padding:li a:static">
 				<div class="icon:container icon:margin"><span class="icon:material">editor_choice</span></div>
 				<span class="font-bold:pop flex:grow">Editor Choice</span>
 				<span class="font:small font-bold:pop" style="color: rgba(var(--color),0.75);">33</span>
 			</a>
 		</div>
-		<div class="flex font:small text-align:left gap padding">
+		<div class="separator:mono"></div>
+		<div class="flex font:small text-align:left gap padding" menu="sample:link-more">
 			<div class="flex flex:column flex:grow">
 				<a href="#" class="flex align:item gap padding:small padding:horizontal a:static">
 					<!--div class="icon:container icon:margin"><span class="icon:material">arrow_circle_right</span></div-->
@@ -195,7 +227,7 @@
 		<!--div class="icon:container icon:margin font:large"><span class="icon:material">movie</span></div-->
 		<span class="font-bold:pop">TV Show</span>
 	</div>
-	<section class="flex:column nav:size bottom:port border-radius background:color box-shadow">
+	<section class="flex:column nav:size bottom:port border-radius background:color box-shadow transition:visibility">
 		<div class="flex flex:column text-align:left" style="border-bottom: 1px solid #f1f1f1;">
 			<a href="#" class="flex align:item gap padding:li a:static">
 				<div class="icon:container icon:margin"><span class="icon:material">more_horiz</span></div>
@@ -279,4 +311,11 @@
 		</div>
 	</section>
 </button>
+</template>
+
+<template id="icon:material more horizontal">
+<div class="icon:container icon:margin"><span class="icon:material">more_horiz</span></div>
+</template>
+<template id="icon:material sort by alpha">
+<div class="icon:container icon:margin"><span class="icon:material">sort_by_alpha</span></div>
 </template>

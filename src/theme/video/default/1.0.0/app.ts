@@ -34,6 +34,22 @@ app.use (function (app: any, request: any, response: any, next: any) {
 			response.var ["theme:footer"].push (request.component [db_theme_footer [i].component] (db_theme_footer [i].param, 3))
 			}
 		response.var ["theme:header"] = request.theme.component ("header:fly").render (3)
+		response.var ["test"] = request.component ["button:inline"] ({title: "Movie", data: [
+			{type: "anchor", anchor: [
+				{title: "Movie Index", url: "#", quantity: 0, icon: "more_horiz"},
+				]},
+			{type: "separator"},
+			{type: "anchor", anchor: [
+				{title: "Popular", url: "#", quantity: 0, icon: "hotel_class"},
+				{title: "Top Rated", url: "#", quantity: 0, icon: "local_fire_department"},
+				{title: "Up Coming", url: "#", quantity: 0, icon: "timer_play"},
+				]},
+			{type: "separator"},
+			{type: "anchor", anchor: [
+				{title: "Editor Choice", url: "#", quantity: 0, icon: "editor_choice"},
+				]},
+			{type: "separator"},
+			]}, 4)
 		resolve ()
 		})
 	})

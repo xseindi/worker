@@ -267,10 +267,17 @@ a:visited { color: var(--font-anchor-color-visited); }
 [class*="img:medium"] img { height: 48px; }
 [class*="img:large"] img { height: 64px; }
 
+/*
 button > section { display: none; position: absolute; }
 button > section:hover { display: flex; }
-button:focus > section { display: flex; }
+button:focus > section { display: flex; visibility: visible; opacity: 1; }
+*/
 
+button > section { display: flex; position: absolute; }
+button > section:hover { visibility: visible; opacity: 1; }
+button:focus > section { visibility: visible; opacity: 1; }
+
+[class*="transition:visibility"] { visibility: hidden; opacity: 0; transition: visibility 0.2s, opacity 0.2s; }
 [class*="transition:opacity"] { overflow: hidden; opacity: 0; transition: opacity 0.2s; }
 [class*="transition:opacity"][class*="transition-opacity:alpha"] { opacity: 1; }
 
