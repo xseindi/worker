@@ -29,7 +29,7 @@ app.use (function (app: any, request: any, response: any, next: any) {
 		the.movie = {"quantity:index": 36, "quantity:popular": 0, "quantity:top_rated": 0, "quantity:up_coming": 0, "quantity:top_global": 0, "quantity:editor-choice": 0, genre: request.tmdb.movie.genre (), "genre:split": request.tmdb.movie.genre ("split")}
 		the.movie.element = {
 			header: [
-				{type: "anchor", anchor: [{title: "TV Show Index", permalink: request.router.permalink ("movie:index"), quantity: the.movie ["quantity:index"], icon: "more_horiz"}]},
+				{type: "anchor", anchor: [{title: "Movie Index", permalink: request.router.permalink ("movie:index"), quantity: the.movie ["quantity:index"], icon: "more_horiz"}]},
 				{type: "separator"},
 				{type: "anchor", anchor: [{title: "Popular", permalink: request.router.permalink ("movie:popular"), quantity: the.movie ["quantity:popular"], icon: "hotel_class"}, {title: "Top Rated", permalink: request.router.permalink ("movie:top_rated"), quantity: the.movie ["quantity:top_rated"], icon: "local_fire_department"}, {title: "Up Coming", permalink: request.router.permalink ("movie:up_coming"), quantity: the.movie ["quantity:up_coming"], icon: "timer_play"}]},
 				{type: "separator"},
@@ -59,8 +59,9 @@ app.use (function (app: any, request: any, response: any, next: any) {
 			response.var ["theme:footer"].push (request.component [db_theme_footer [i].component] (db_theme_footer [i].param, 3))
 			}
 		response.var ["theme:header"] = request.theme.component ("header:fly").render (3)
-		response.var ["element header:movie"] = request.component ["button:inline"] ({title: "Movie", data: the.movie.element ["header"]}, 4)
-		response.var ["element header:tv"] = request.component ["button:inline"] ({title: "TV Show", data: the.tv.element ["header"]}, 4)
+		response.var ["theme:component header:logo"] = request.theme.component ("logo:sample").render (4)
+		response.var ["theme:component header button:movie"] = request.component ["button:inline"] ({title: "Movie", data: the.movie.element ["header"]}, 4)
+		response.var ["theme:component header button:tv"] = request.component ["button:inline"] ({title: "TV Show", data: the.tv.element ["header"]}, 4)
 		resolve ()
 		})
 	})
@@ -96,26 +97,17 @@ app.get ($.page ["about"], async function (app: any, request: any, response: any
 	})
 
 app.get ("/test", async function (app: any, request: any, response: any, next: any) {
+	// return response.html (`<iframe width="560" height="315" src="https://www.youtube.com/embed/Kt2E8nblvXU"></iframe>`)
 	return test_single (app, request, response, next)
 	})
 //1062722
 async function test_single (app: any, request: any, response: any, next: any) {
 	var data = await request.tmdb.movie.single (1062722)
-	return response.json (data)
+	return response.text (JSON.stringify (data))
 	}
 
 async function test (app: any, request: any, response: any, next: any) {
 	var data = await request.tmdb.movie.popular ()
-	console.log (data)
-	data = data.data.map (function (data: any) {
-		delete data.permalink
-		delete data.genre
-		data.poster = "/" + php.array.last (data ["poster"].split ("/"))
-		delete data ["poster:original"]
-		data.backdrop = "/" + php.array.last (data ["backdrop"].split ("/"))
-		delete data ["backdrop:original"]
-		return data
-		})
 	return response.text (JSON.stringify (data, null, "\t"))
 	}
 

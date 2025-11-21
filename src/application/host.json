@@ -8,7 +8,7 @@
 "bioskop": {
 	"author": {"name": "", "email": ""},
 	"alias": ["www"],
-	"public": "192.168.0.1",
+	"public": "7qvt6",
 	"db": {"id": "bioskop"},
 	"theme": {"id": "default", "group": "video"},
 	"ad": {

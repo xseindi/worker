@@ -123,14 +123,37 @@ php.plugin.tmdb = class {
 	object (respond: any, option: any = {}) {
 		var adapter = this.adapter;
 		return new Promise (function (resolve, reject) {
-			resolve ({revamp: revamp.json (respond, option.type, adapter), "": "----------------------------------", respond});
+			resolve (revamp.json (respond, option.type, adapter));
 			});
 		}
 	image (path: string, size: string = "default") {
 		return __api [["image", size].join (":")] + path;
 		}
-	to_slugify (name: string) {
+	slugify (name: string) {
 		return php.plugin.tmdb.slugify (name);
+		}
+	genre_array (list: any, type: string) {
+		var genre = [];
+		for (var id in list) {
+			var title = list [id];
+			var name = this.slugify (title);
+			var permalink = this.genre_permalink (id, list, type);
+			genre.push ({id, title, name, permalink});
+			}
+		return genre;
+		}
+	genre_split (list: any, type: string) {
+		var left = [];
+		var right = [];
+		var genre = this.genre_array (list, type);
+		var length = genre.length;
+		var half: number = parseInt (((length / 2) + 1).toString ().split (".") [0]);
+		for (var i = 0; i < half; i ++) left.push (genre [i]);
+		for (var i = half; i < length; i ++) right.push (genre [i]);
+		return {left, right}
+		}
+	genre_permalink (id: any, list: any, type: string) {
+		return this.adapter.request.router.permalink ((type + ":genre"), {id, name: this.slugify (list [id])});
 		}
 	}
 
@@ -140,45 +163,22 @@ php.plugin.tmdb.movie = class {
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
-	discover () {}
+	async discover () {}
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: true}, option))), option);
 		}
 	async popular (option: any = {}) {
 		return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option);
 		}
-	genre (genre: string) {
-		if (genre === "split") return this.genre_split ();
-		else if (genre === undefined) return this.genre_array ();
-		else if (genre in this.__genre) return {
-			id: genre,
-			title: this.__genre [genre],
-			name: this.tmdb.to_slugify (this.__genre [genre]),
-			permalink: this.genre_permalink (genre),
+	genre (id: any) {
+		if (id === "split") return this.tmdb.genre_split (this.__genre, "movie");
+		else if (id === undefined) return this.tmdb.genre_array (this.__genre, "movie");
+		else if (id in this.__genre) return {
+			id,
+			title: this.__genre [id],
+			name: this.tmdb.slugify (this.__genre [id]),
+			permalink: this.tmdb.genre_permalink (id, this.__genre, "movie"),
 			}
-		}
-	genre_array () {
-		var genre = [];
-		for (var id in this.__genre) {
-			var title = this.__genre [id];
-			var name = this.tmdb.to_slugify (title);
-			var permalink = this.genre_permalink (id);
-			genre.push ({id, title, name, permalink});
-			}
-		return genre;
-		}
-	genre_split () {
-		var left = [];
-		var right = [];
-		var genre = this.genre_array ();
-		var length = genre.length;
-		var half: number = parseInt (((length / 2) + 1).toString ().split (".") [0]);
-		for (var i = 0; i < half; i ++) left.push (genre [i]);
-		for (var i = half; i < length; i ++) right.push (genre [i]);
-		return {left, right}
-		}
-	genre_permalink (id: any) {
-		return this.tmdb.adapter.request.router.permalink ("movie:genre", {id, name: this.tmdb.to_slugify (this.__genre [id])});
 		}
 	}
 
@@ -190,40 +190,26 @@ php.plugin.tmdb.tv = class {
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
-	genre (genre: string) {
-		if (genre === "split") return this.genre_split ();
-		else if (genre === undefined) return this.genre_array ();
-		else if (genre in this.__genre) return {
-			id: genre,
-			title: this.__genre [genre],
-			name: this.tmdb.to_slugify (this.__genre [genre]),
-			permalink: this.genre_permalink (genre),
+	async discover () {}
+	async single (id: any, option: any = {}) {
+		return this.tmdb.object (await this.tmdb.fetch ("tv", (option = php.object.assign ({id, type: "tv", append_to_response: true}, option))), option);
+		}
+	async popular (option: any = {}) {
+		return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option);
+		}
+	genre (id: any) {
+		if (id === "split") return this.tmdb.genre_split (this.__genre, "tv");
+		else if (id === undefined) return this.tmdb.genre_array (this.__genre, "tv");
+		else if (id in this.__genre) return {
+			id,
+			title: this.__genre [id],
+			name: this.tmdb.slugify (this.__genre [id]),
+			permalink: this.tmdb.genre_permalink (id, this.__genre, "tv"),
 			}
-		}
-	genre_array () {
-		var genre = [];
-		for (var id in this.__genre) {
-			var title = this.__genre [id];
-			var name = this.tmdb.to_slugify (title);
-			var permalink = this.genre_permalink (id);
-			genre.push ({id, title, name, permalink});
-			}
-		return genre;
-		}
-	genre_split () {
-		var left = [];
-		var right = [];
-		var genre = this.genre_array ();
-		var length = genre.length;
-		var half: number = parseInt (((length / 2) + 0).toString ().split (".") [0]);
-		for (var i = 0; i < half; i ++) left.push (genre [i]);
-		for (var i = half; i < length; i ++) right.push (genre [i]);
-		return {left, right}
-		}
-	genre_permalink (id: any) {
-		return this.tmdb.adapter.request.router.permalink ("tv:genre", {id, name: this.tmdb.to_slugify (this.__genre [id])});
 		}
 	}
+
+php.plugin.tmdb.tv.genre = __genre.tv;
 
 php.plugin.tmdb.image = function (path: string, size: string = "default") {
 	return __api [["image", size].join (":")] + path;
@@ -247,10 +233,8 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 	var title_original = (input.original_title || input.original_name) || "";
 	var name = php.plugin.tmdb.slugify (title);
 	var description = input.overview;
-	var poster = php.plugin.tmdb.image (input.poster_path);
-	var poster_original = php.plugin.tmdb.image (input.poster_path, "original");
-	var poster_backdrop = php.plugin.tmdb.image (input.backdrop_path);
-	var poster_backdrop_original = php.plugin.tmdb.image (input.backdrop_path, "original");
+	var poster = {path: input.poster_path, url: php.plugin.tmdb.image (input.poster_path), "url:original": php.plugin.tmdb.image (input.poster_path, "original")}
+	var backdrop = null; if (input.backdrop_path) backdrop = {path: input.backdrop_path, url: php.plugin.tmdb.image (input.backdrop_path), "url:original": php.plugin.tmdb.image (input.backdrop_path, "original")}
 	var release_date = (input.release_date || input.first_air_date), r_date = new Date (release_date);
 	var release_date_string = "";
 	var year = r_date.getFullYear ();
@@ -286,307 +270,62 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":name").join (name);
 	if (type === "movie") {}
 	if (type === "tv") {}
+	var credit: any = {image: {poster: [], backdrop: []}, video: {trailer: [], teaser: [], s: [], list: []}, people: {cast: [], crew: []}}
+	if (input.credits) {
+		if (input.images) {
+			if (input.images.posters) {
+				for (var i in input.images.posters) {
+					var poster_path = input.images.posters [i].file_path;
+					var poster_url = php.plugin.tmdb.image (poster_path);
+					var poster_url_original = php.plugin.tmdb.image (poster_path, "original");
+					credit.image.poster.push ({path: poster_path, url: poster_url, "url:original": poster_url_original});
+					}
+				}
+			}
+		if (input.videos) {
+			if (input.videos.results) {
+				for (var i in input.videos.results) {
+					if (input.videos.results [i].site.toLocaleLowerCase () === "youtube") {
+						var video_title = input.videos.results [i].name;
+						var video_key = input.videos.results [i].key;
+						var video_type = (input.videos.results [i].type || "").toLocaleLowerCase ();
+						var video_object = {title: video_title, type: video_type, "embed:id": video_key, "embed:url": "https://www.youtube.com/embed/" + video_key}
+						if (video_type === "trailer") credit.video.trailer.push (video_object);
+						else if (video_type === "teaser") credit.video.teaser.push (video_object);
+						else if (video_type === "behind the scenes") credit.video.s.push (video_object);
+						else credit.video.list.push (video_object);
+						}
+					}
+				}
+			}
+		if (input.credits.cast) {
+			for (var i in input.credits.cast) {
+				var cast_id = input.credits.cast [i].id;
+				var cast_identity = input.credits.cast [i].cast_id;
+				var cast_name = input.credits.cast [i].name;
+				var cast_character = input.credits.cast [i].character;
+				var cast_adult = input.credits.cast [i].adult;
+				var cast_gender = input.credits.cast [i].gender;
+				var cast_poster_path = input.credits.cast [i].profile_path;
+				var cast_poster_url = php.plugin.tmdb.image (cast_poster_path);
+				var cast_poster_url_original = php.plugin.tmdb.image (cast_poster_path, "original");
+				credit.people.cast.push ({id: cast_id, identity: cast_identity, name: cast_name, character: cast_character, adult: cast_adult, gender: cast_gender, poster: {path: cast_poster_path, url: cast_poster_url, "url:original": cast_poster_url_original}});
+				}
+			}
+		}
 	var output = {
 		id, type, name,
 		"title": title, "title:original": title_original,
+		tagline,
 		description,
 		permalink,
-		"poster": poster, "poster:original": poster_original, "backdrop": poster_backdrop, "backdrop:original": poster_backdrop_original,
+		poster, backdrop,
 		"release_date": release_date, "release_date:string": release_date_string, year,
-		popularity,
 		"genre:id": genre_id_list, genre,
+		status, adult, budget, revenue,
+		popularity,
 		country,
+		credit,
 		}
 	return output;
 	}
-
-/*
-const prefix_url : any = {
-	"trending": "https://api.themoviedb.org/3/trending/all/day",
-	"all:trending": "https://api.themoviedb.org/3/trending/all/day",
-	"movie:single": "https://api.themoviedb.org/3/movie/{id}",
-	"movie:discover": "https://api.themoviedb.org/3/discover/movie",
-	"movie:trending": "https://api.themoviedb.org/3/trending/movie/day",
-	"movie:popular": "https://api.themoviedb.org/3/movie/popular",
-	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing",
-	"movie:top_rated": "https://api.themoviedb.org/3/movie/top_rated",
-	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming",
-	"tv:single": "https://api.themoviedb.org/3/tv/{id}",
-	"tv:discover": "https://api.themoviedb.org/3/discover/tv",
-	"tv:trending": "https://api.themoviedb.org/3/trending/tv/day",
-	"tv:popular": "https://api.themoviedb.org/3/tv/popular",
-	"tv:airing_today": "https://api.themoviedb.org/3/tv/airing_today",
-	"tv:on_the_air": "https://api.themoviedb.org/3/tv/on_the_air",
-	"tv:top_rated": "https://api.themoviedb.org/3/tv/top_rated",
-	"image:default": "https://image.tmdb.org/t/p/w500",
-	"image:original": "https://image.tmdb.org/t/p/original",
-	}
-
-php.plugin.tmdb = class {
-	__GET: any;
-	__POST: any;
-	api: string;
-	request: string;
-	movie: any
-	tv: any
-	all: any
-	constructor (api: string, request: any) {
-		this.api = api;
-		this.request = request;
-		this.__GET = {method: "GET", headers: new Headers ({Accept: "application/json"})}
-		this.__POST = {method: "GET", headers: new Headers ({Accept: "application/json"})}
-		this.movie = new php.plugin.tmdb.movie (this);
-		this.tv = new php.plugin.tmdb.tv (this);
-		this.all = new php.plugin.tmdb.all (this);
-		}
-	url (url: string, option: any) {
-		var url = [url, ("api_key={api_key}").split ("{api_key}").join (this.api)].join ("?");
-		option = option || {}
-		option.page = option.page || 1;
-		if  (option.page) url = [url, ["page", option.page].join ("=")].join ("&");
-		if  (option.genre) url = [url, ["with_genres", option.genre].join ("=")].join ("&");
-		return url;
-		}
-	}
-
-php.plugin.tmdb.movie = class {
-	adapter: any;
-	constructor (adapter: any) {
-		this.adapter = adapter;
-		}
-	async single (option: any) {
-		option = option || {}
-		var url = this.adapter.url (prefix_url ["movie:single"].split ("{id}").join (option.id), option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			console.log (respond)
-			console.log (revamped (respond, adapter.request))
-			resolve (respond);
-			});
-		}
-	async discover (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["movie:discover"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request)});
-			});
-		}
-	async trending (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["movie:trending"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request)});
-			});
-		}
-	async popular (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["movie:popular"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request)});
-			});
-		}
-	async now_playing (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["movie:now_playing"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request)});
-			});
-		}
-	async top_rated (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["movie:top_rated"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request)});
-			});
-		}
-	async up_coming (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["movie:up_coming"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request)});
-			});
-		}
-	}
-
-php.plugin.tmdb.movie.embed_url = async function (id: any) {
-	var url = "https://cinemamovie.net/tmdb.php?tmdb_id=" + id;
-	var response = await fetch (url, {method: "GET", headers: new Headers ()});
-	var data = await response.text ();
-	return new Promise (function (resolve) {
-		resolve (data);
-		});
-	}
-
-php.plugin.tmdb.tv = class {
-	adapter: any;
-	constructor (adapter: any) {
-		this.adapter = adapter;
-		}
-	async single (option: any) {
-		option = option || {}
-		var url = this.adapter.url (prefix_url ["tv:single"].split ("{id}").join (option.id), option);
-		var data = await fetch (url, this.adapter.__GET);
-		return data.json ();
-		}
-	async discover (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["tv:discover"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	async trending (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["tv:trending"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	async popular (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["tv:popular"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	async airing_today (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["tv:airing_today"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	async top_rated (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["tv:top_rated"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	async on_the_air (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["tv:on_the_air"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	}
-
-php.plugin.tmdb.all = class {
-	adapter: any;
-	constructor (adapter: any) {
-		this.adapter = adapter;
-		}
-	async trending (option: any) {
-		var adapter: any;
-		var url = (adapter = this.adapter).url (prefix_url ["all:trending"], option);
-		var response = await fetch (url, this.adapter.__GET);
-		var respond : any = await response.json ();
-		var adapter = this.adapter;
-		return new Promise (function (resolve, reject) {
-			resolve ({page: respond.page, total_page: respond.total_pages, total_list: respond.total_results, list: revamp (respond.results, adapter.request, "tv")});
-			});
-		}
-	}
-
-function to_id (input: string) {
-	return str_after (str_before (":movie", php.app.route ["movie:single"]), input).split ("-") [0];
-	}
-
-function to_tv_id (input: string) {
-	return str_after (str_before (":tv", php.app.route ["tv:single"]), input).split ("-") [0];
-	}
-
-function to_slugify (input: string) {
-	var slugify = input.toLocaleLowerCase ().split (" ").join ("-").split (":").join ("-").split ("--").join ("-");
-	if (slugify.substr (- 1) === "-") return slugify.split ("-") [0];
-	else return slugify;
-	}
-
-function revamp (data: any, request: any, type: string = "movie") {
-	return data.map (function (data: any) {
-		return revamped (data, request, type);
-		});
-	}
-
-function revamped (the: any, request: any, type: string = "movie") {
-	var slugify = to_slugify ([the.id, (the.title || the.name)].join ("-"));
-	var title = (the.title || the.name);
-	var title_original = (the.original_title || title);
-	var poster = php.plugin.tmdb.image.src (the.poster_path);
-	var poster_original = php.plugin.tmdb.image.src (the.poster_path, "original");
-	var poster_backdrop = the.backdrop_path ? php.plugin.tmdb.image.src (the.backdrop_path, "original") : "";
-	var permalink = request.url.address + php.app.route ["movie:single"].split (":movie").join (slugify);
-	var permalink_watch = request.url.address + php.app.route ["movie:watch"].split (":movie").join (slugify);
-	var country = the.origin_country;
-	var genre = [];
-	for (var i in the.genres) {
-		genre.push ({id: the.genres [i].id, name: the.genres [i].name, permalink: ""});
-		}
-	if ((type = the.media_type || type) === "tv") {
-		permalink = request.url.address + php.app.route ["tv:single"].split (":tv").join (slugify).split (":season").join (1).split (":episode").join (1);
-		permalink_watch = request.url.address + php.app.route ["tv:watch"].split (":tv").join (slugify).split (":season").join (1).split (":episode").join (1);
-		}
-	var release_date = (the.release_date || the.first_air_date), release_date_string;
-	if (release_date) {
-		var date = new Date (release_date);
-		release_date_string = [php.lib.date.month.name [date.getMonth () + 1], date.getDate ()].join (" ") + ", " + date.getFullYear ();
-		}
-	else {
-		release_date = "0000-00-00";
-		release_date_string = "N/A";
-		}
-	return {
-		id: the.id,
-		title, "title:original": title_original,
-		slugify,
-		permalink, permalink_watch,
-		poster, poster_original, poster_backdrop,
-		release_date, release_date_string,
-		}
-	}
-
-php.plugin.tmdb.image = function () {}
-php.plugin.tmdb.image.src = function (path: string, size: string = "default") { return prefix_url [["image", size].join (":")] + path; }
-php.plugin.tmdb.to_id = to_id;
-php.plugin.tmdb.to_tv_id = to_tv_id;
-php.plugin.tmdb.to_slugify = to_slugify;
-*/
