@@ -72,14 +72,14 @@ const __genre: any = {
 php.plugin.tmdb = class {
 	api: string;
 	token: string;
-	request: any;
+	adapter: any;
 	movie: any;
 	tv: any;
 	genre: any = {}
-	constructor (tmdb: any = {}, request: any = {}) {
+	constructor (tmdb: any = {}, adapter: any = {}) {
 		this.api = tmdb.api;
 		this.token = tmdb.token;
-		this.request = request;
+		this.adapter = adapter;
 		this.genre = php.object.assign (__genre.movie, __genre.tv);
 		this.movie = new php.plugin.tmdb.movie (this);
 		this.tv = new php.plugin.tmdb.tv (this);
@@ -107,7 +107,7 @@ php.plugin.tmdb = class {
 	async fetch (api: string, option: any = {}) {
 		var response = await fetch (this.url (api, option), this.head ());
 		var respond: any = await response.json ();
-		var adapter = this.request;
+		var adapter = this.adapter;
 		return new Promise (function (resolve, reject) {
 			resolve ({page: respond.page, "page:total": respond.total_pages, "data:total": respond.total_results, data: revamp (respond.results, option.type, adapter), tmdb: respond.results});
 			});
@@ -161,7 +161,7 @@ php.plugin.tmdb.movie = class {
 		return {left, right}
 		}
 	genre_permalink (id: any) {
-		return php ["router.json"]["movie:genre"].split (":id").join (id).split (":name").join (this.tmdb.to_slugify (this.__genre [id]));
+		return this.tmdb.adapter.request.router.permalink ("movie:genre", {id, name: this.tmdb.to_slugify (this.__genre [id])});
 		}
 	}
 
@@ -204,7 +204,7 @@ php.plugin.tmdb.tv = class {
 		return {left, right}
 		}
 	genre_permalink (id: any) {
-		return php ["router.json"]["tv:genre"].split (":id").join (id).split (":name").join (this.tmdb.to_slugify (this.__genre [id]));
+		return this.tmdb.adapter.request.router.permalink ("tv:genre", {id, name: this.tmdb.to_slugify (this.__genre [id])});
 		}
 	}
 
