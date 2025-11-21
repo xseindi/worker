@@ -147,7 +147,8 @@ php.plugin.tmdb = class {
 		var right = [];
 		var genre = this.genre_array (list, type);
 		var length = genre.length;
-		var half: number = parseInt (((length / 2) + 1).toString ().split (".") [0]);
+		var half_way = ((length / 2).toString ().split (".").length > 1) ? 1 : 0;
+		var half: number = parseInt (((length / 2) + half_way).toString ().split (".") [0]);
 		for (var i = 0; i < half; i ++) left.push (genre [i]);
 		for (var i = half; i < length; i ++) right.push (genre [i]);
 		return {left, right}
