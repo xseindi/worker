@@ -217,7 +217,7 @@ php.plugin.tmdb.image = function (path: string, size: string = "default") {
 	}
 
 php.plugin.tmdb.slugify = function (name: string) {
-	var slugify = (name || "").toLocaleLowerCase ().split (" ").join ("-").split ("'").join ("").split ("&").join ("-").split (":").join ("-").split ("--").join ("-");
+	var slugify = (name || "").toLocaleLowerCase ().split (" ").join ("-").split ("'").join ("").split ("&").join ("").split (":").join ("-").split ("--").join ("-");
 	if (slugify.endsWith ("-")) return slugify.substr (- 1);
 	else return slugify;
 	}

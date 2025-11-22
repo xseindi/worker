@@ -23,6 +23,70 @@ const {ln, zero, one} = php.constant
  * xxx://xxx.xxx.xxx/xxx
  */
 
+app.get ($.index, async function (app: any, request: any, response: any, next: any) {
+	return response.render ("index", {slot: "Hello World"}, 2)
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get ($.page ["about"], async function (app: any, request: any, response: any, next: any) {
+	response.seo ({title: "About"})
+	return response.render ("index", {slot: "Hello World"}, 2)
+	})
+
+app.get ($.page ["privacy-policy"], async function (app: any, request: any, response: any, next: any) {
+	response.seo ({title: "Privacy Policy"})
+	return response.render ("index", {slot: "Hello World"}, 2)
+	})
+
+app.get ($.page ["term_of_use"], async function (app: any, request: any, response: any, next: any) {
+	response.seo ({title: "Term of Use"})
+	return response.render ("index", {slot: "Hello World"}, 2)
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get ("/test", async function (app: any, request: any, response: any, next: any) {
+	// return response.html (`<iframe width="560" height="315" src="https://www.youtube.com/embed/Kt2E8nblvXU"></iframe>`)
+	return test_single (app, request, response, next)
+	})
+//1062722
+async function test_single (app: any, request: any, response: any, next: any) {
+	var data = await request.tmdb.movie.single (1062722)
+	return response.text (JSON.stringify (data))
+	}
+
+async function test (app: any, request: any, response: any, next: any) {
+	var data = await request.tmdb.movie.popular ()
+	return response.text (JSON.stringify (data, null, "\t"))
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 app.use (function (app: any, request: any, response: any, next: any) {
 	return php.promise (async function (resolve: any, reject: any) {
 		var the: any = {}
@@ -50,16 +114,16 @@ app.use (function (app: any, request: any, response: any, next: any) {
 				{type: "link", left: the.tv ["genre:split"].left.map (function (genre: any) { return {title: genre.title, permalink: genre.permalink} }), right: the.tv ["genre:split"].right.map (function (genre: any) { return {title: genre.title, permalink: genre.permalink} })},
 				],
 			}
-		the.people = {"quantity:index": "99 +", "quantity:male": "&#x27A1;", "quantity:female": "&#x27A1;", "quantity:top_global": 0, "quantity:editor-choice": 0, genre: request.tmdb.movie.genre (), "genre:split": request.tmdb.movie.genre ("split")}
+		the.people = {"quantity:index": "99 +", "quantity:male": "&#x2197;", "quantity:female": "&#x2198;", "quantity:top_global": 0, "quantity:editor-choice": 0, genre: request.tmdb.movie.genre (), "genre:split": request.tmdb.movie.genre ("split")}
 		the.people.element = {
 			header: [
-				{type: "anchor", anchor: [{title: "All", permalink: request.router.permalink ("movie:index"), quantity: the.movie ["quantity:index"], icon: "more_horiz"}]},
+				{type: "anchor", anchor: [{title: "All", permalink: request.router.permalink ("people:index"), quantity: the.movie ["quantity:index"], icon: "more_horiz"}]},
 				{type: "separator"},
-				{type: "anchor", anchor: [{title: "Male", permalink: "/", quantity: the.people ["quantity:male"], icon: "male"}, {title: "Female", permalink: "/", quantity: the.people ["quantity:female"], icon: "female"}]},
+				{type: "anchor", anchor: [{title: "Male", permalink: (request.router.permalink ("people:index") + "?gender=male"), quantity: the.people ["quantity:male"], icon: "male"}, {title: "Female", permalink: (request.router.permalink ("people:index") + "?gender=female"), quantity: the.people ["quantity:female"], icon: "female"}]},
 				{type: "separator"},
-				{type: "anchor", anchor: [{title: "Top Global", permalink: request.router.permalink ("movie:top_global"), quantity: the.movie ["quantity:top_global"], icon: "bolt"}, {title: "Editor Choice", permalink: request.router.permalink ("movie:editor-choice"), quantity: the.movie ["quantity:editor-choice"], icon: "editor_choice"}]},
+				{type: "anchor", anchor: [{title: "Top Global", permalink: request.router.permalink ("people:top_global"), quantity: the.movie ["quantity:top_global"], icon: "bolt"}, {title: "Editor Choice", permalink: request.router.permalink ("people:editor-choice"), quantity: the.movie ["quantity:editor-choice"], icon: "editor_choice"}]},
 				{type: "separator"},
-				{type: "link", left: the.movie ["genre:split"].left.map (function (genre: any) { return {title: genre.title, permalink: genre.permalink} }), right: the.movie ["genre:split"].right.map (function (genre: any) { return {title: genre.title, permalink: genre.permalink} })},
+				{type: "link", left: [{title: "Passed Away", permalink: request.router.permalink ("people:index")}].map (function (genre: any) { return {title: genre.title, permalink: genre.permalink} }), right: [].map (function (genre: any) { return {title: genre.title, permalink: genre.permalink} })},
 				],
 			}
 		request.app.theme.package (app, request, response, next)
@@ -78,51 +142,6 @@ app.use (function (app: any, request: any, response: any, next: any) {
 		resolve ()
 		})
 	})
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-app.get ($ ["index"], async function (app: any, request: any, response: any, next: any) {
-	return response.render ("index", {slot: "Hello World"}, 2)
-	})
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-app.get ($.page ["about"], async function (app: any, request: any, response: any, next: any) {
-	var tmdb_response: any = await request.tmdb.movie.popular ()
-	response.seo ({title: "About"})
-	return response.render ("index", {slot: `<pre>${JSON.stringify(tmdb_response, null, '\t')}</pre>`}, 2)
-	})
-
-app.get ("/test", async function (app: any, request: any, response: any, next: any) {
-	// return response.html (`<iframe width="560" height="315" src="https://www.youtube.com/embed/Kt2E8nblvXU"></iframe>`)
-	return test_single (app, request, response, next)
-	})
-//1062722
-async function test_single (app: any, request: any, response: any, next: any) {
-	var data = await request.tmdb.movie.single (1062722)
-	return response.text (JSON.stringify (data))
-	}
-
-async function test (app: any, request: any, response: any, next: any) {
-	var data = await request.tmdb.movie.popular ()
-	return response.text (JSON.stringify (data, null, "\t"))
-	}
 
 /**
  * xxx

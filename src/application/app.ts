@@ -36,7 +36,7 @@ var {zero, one} = php.constant
 
 var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
-	await start (app, request, response, next)
+	await php.worker.start (app, request, response, next)
 	if (request.error.length) {
 		for (var i in request.error) {
 			if (request.error [i].type === "host") return response ("Host Not Found")
@@ -97,7 +97,6 @@ app.get (app.router ["search"])
 app.get ("/test")
 app.get (app.router.index)
 app.get (app.router.page ["about"])
-app.get (app.router.page ["about"])
 app.get (app.router.page ["contact"])
 app.get (app.router.page ["help"])
 app.get (app.router.page ["privacy"])
@@ -141,9 +140,6 @@ app.get (app.router ["archive:day"])
 
 app.get (app.router ["author:index"])
 app.get (app.router ["author"])
-
-app.get (app.router ["people:index"])
-app.get (app.router ["people"])
 
 /**
  * xxx
@@ -242,9 +238,11 @@ app.get (app.router ["movie trending:today"])
 app.get (app.router ["movie trending:week"])
 app.get (app.router ["movie:discover"])
 app.get (app.router ["movie:popular"])
-app.get (app.router ["movie:now_playing"])
 app.get (app.router ["movie:top_rated"])
 app.get (app.router ["movie:up_coming"])
+app.get (app.router ["movie:now_playing"])
+app.get (app.router ["movie:top_global"])
+app.get (app.router ["movie:editor-choice"])
 
 app.get (app.router ["tv:index"])
 app.get (app.router ["tv:season-episode"])
@@ -257,9 +255,11 @@ app.get (app.router ["tv trending:today"])
 app.get (app.router ["tv trending:week"])
 app.get (app.router ["tv:discover"])
 app.get (app.router ["tv:popular"])
+app.get (app.router ["tv:top_rated"])
 app.get (app.router ["tv:airing_today"])
 app.get (app.router ["tv:on_air"])
-app.get (app.router ["tv:top_rated"])
+app.get (app.router ["tv:top_global"])
+app.get (app.router ["tv:editor-choice"])
 
 app.get (app.router ["anime:index"])
 app.get (app.router ["anime:season-episode"])
@@ -271,10 +271,11 @@ app.get (app.router ["anime:genre"])
 app.get (app.router ["anime trending:today"])
 app.get (app.router ["anime trending:week"])
 app.get (app.router ["anime:discover"])
-app.get (app.router ["anime:popular"])
-app.get (app.router ["anime:airing_today"])
-app.get (app.router ["anime:on_air"])
-app.get (app.router ["anime:top_rated"])
+
+app.get (app.router ["people:index"])
+app.get (app.router ["people"])
+app.get (app.router ["people:top_global"])
+app.get (app.router ["people:editor-choice"])
 
 /**
  * xxx
@@ -289,182 +290,6 @@ app.get (app.router ["anime:top_rated"])
 app.catch (function (request: any, response: any, next: any) {
 	return response ("404 Not Found", 404)
 	})
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-async function start (app: any, request: any, response: any, next: any) {
-	if (request.app.host in app.host) {
-		if (request.next ()) {
-			if (request.app.config = app.host [request.app.host].config)
-			if (request.app.db = app.host [request.app.host].db)
-			if (request.app.theme = app.host [request.app.host].theme)
-			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).filter ({id: request.app.theme.id, group: request.app.theme.group}).data [zero].version);
-			if (request.library = new library (app, request, response, next)) return php.promise (async function (resolve: any, reject: any) {
-				request.app.public = app.host [request.app.host].public
-				request.app.ad = app.host [request.app.host].ad
-				request.app.affiliate = app.host [request.app.host].affiliate
-				var then: any = function () {
-					then.queue.push (true);
-					if (then.queue.length > one) resolve ()
-					}
-				then.queue = [];
-				if (true || "db") {
-					request.db = new php.db (request.app.db.id)
-					}
-				if (true || "theme") {
-					var theme = php.theme.template [request.app.theme.group][request.app.theme.id][request.app.theme.version]
-					request.app.theme.package = theme.package
-					request.app.theme.router = theme.app
-					request.app.theme.layout = theme.layout
-					request.app.theme.component = theme.component
-					request.theme = new php.theme (request.app.theme)
-					request.component ()
-					}
-				request.router = new php.worker.io.router (app, request, response, next)
-				request.router.set (request.app.theme.router)
-				request.library.variable ()
-				request.library.seo ()
-				resolve ()
-				})
-			}
-		else return php.promise (function (resolve: any, reject: any) {
-			request.error.push ({type: "agent", status: "forbidden"})
-			resolve ()
-			})
-		}
-	else return php.promise (function (resolve: any, reject: any) {
-		request.error.push ({type: "host", status: "none"})
-		resolve ()
-		})
-	}
-
-var library: any = class {
-	app: any
-	request: any
-	response: any
-	next: any
-	constructor (app: any, request: any, response: any, next: any) {
-		this.app = app
-		this.request = request
-		this.response = response
-		this.next = next
-		this.plugin ()
-		}
-	async variable () {
-		this.request.app.site = {
-			name: this.request.db.config ("site:name"),
-			title: this.request.db.config ("site:title"),
-			tagline: this.request.db.config ("site:tagline"),
-			author: {
-				name: this.request.db.config ("author:name"),
-				email: this.request.db.config ("author:email"),
-				},
-			}
-		this.request.app.meta = {
-			description: this.request.db.config ("meta:description"),
-			generator: this.request.db.config ("meta:generator"),
-			keyword: this.request.db.config ("meta:keyword"),
-			rating: this.request.db.config ("meta:rating"),
-			}
-		this.response.var ["latest"] = this.app.config.latest
-		this.response.var ["base_url"] = this.request.base_url
-		this.response.var ["canonical_url"] = this.request.canonical_url
-		this.response.var ["author:name"] = this.request.app.site.author.name
-		this.response.var ["author:email"] = this.request.app.site.author.email
-		this.response.var ["site:name"] = this.request.app.site.name
-		this.response.var ["site:tagline"] = this.request.app.site.tagline
-		this.response.var ["title"] = this.request.app.site.title
-		this.response.var ["alternate:site-name"] = this.request.app.site.name
-		this.response.var ["html:lang"] = "en"
-		this.response.var ["html:translate"] = "no"
-		this.response.var ["html:css"] = "w3"
-		this.response.var ["head:profile"] = "#"
-		this.response.var ["http-equiv:x-cross-origin"] = "*"
-		this.response.var ["meta:charset"] = "UTF-8"
-		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_s)
-		this.response.var ["meta:author"] = this.request.app.site.author.name
-		this.response.var ["meta:generator"] = this.request.app.meta.generator
-		this.response.var ["meta:keyword"] = this.request.app.meta.keyword
-		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_s)
-		this.response.var ["meta:description"] = this.request.app.meta.description
-		this.response.var ["meta:rating"] = this.request.app.meta.rating
-		this.response.var ["meta:google"] = "notranslate"
-		this.response.var ["meta:google-bot"] = "notranslate"
-		this.response.var ["meta:google-bot-article"] = ["index", "follow"].join (ln_s)
-		if (this.response.var ["c:type"] = "index") {
-			var router = []
-			for (var i in this.app.router) {
-				if (i === "$") continue
-				else if (typeof this.app.router [i] === "string") {
-					router.push (`"${i}": "${this.app.router [i]}"`)
-					this.response.var [["router", i].join (" ")] = this.app.router [i]
-					}
-				}
-			this.response.var ["router"] = router.join (ln_s)
-			}
-		if (this.app.config ["cd:io"]) {
-			this.response.var ["cd:base_url"] = this.app.config ["cd:base_url"]
-			this.response.var ["theme:base_url"] = [this.app.config ["cd:base_url"], "theme", this.request.app.theme.group, this.request.app.theme.id, this.request.app.theme.version].join ("/")
-			}
-		else {
-			this.response.var ["cd:base_url"] = this.request.base_url
-			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.app.theme.group, this.request.app.theme.id, this.request.app.theme.version].join ("/")
-			}
-		this.response.var ["public:base_url"] = [this.request.base_url, "static", this.request.app.public].join ("/")
-		this.response.var ["public:file"] = [this.response.var ["public:base_url"], "file"].join ("/")
-		this.response.var ["public:asset"] = [this.response.var ["public:base_url"], "asset"].join ("/")
-		this.response.var ["asset:image"] = [this.response.var ["public:asset"], "image"].join ("/")
-		}
-	async seo (seo: any) {
-		if (seo) {
-			var title = seo.title ? [seo.title, this.request.app.site.name].join (" | ") : this.request.app.site.title
-			var description = seo.description || this.request.app.meta.description
-			this.response.var ["title"] = this.response.var ["twitter:title"] = this.response.var ["og:title"] = title
-			this.response.var ["meta:description"] = this.response.var ["twitter:description"] = this.response.var ["og:description"] = description
-			this.response.var ["twitter:image"] = ""
-			this.response.var ["og:image"] = ""
-			this.response.var ["og:type"] = "website"
-			}
-		else {
-			this.response.var ["twitter:card"] = "summary_image_large"
-			this.response.var ["twitter:title"] = this.request.app.site.title
-			this.response.var ["twitter:description"] = this.request.app.meta.description
-			this.response.var ["twitter:image"] = ""
-			this.response.var ["og:site-name"] = this.request.app.site.name
-			this.response.var ["og:title"] = this.request.app.site.title
-			this.response.var ["og:description"] = this.request.app.meta.description
-			this.response.var ["og:url"] = this.request.canonical_url
-			this.response.var ["og:image"] = ""
-			this.response.var ["og:type"] = "website"
-			this.response.var ["og:locale"] = "en"
-			}
-		}
-	plugin () {
-		if (this.request.app.config ["tmdb:api"]) {
-			var tmdb = {
-				api: this.request.app.config ["tmdb:api"],
-				token: this.request.app.config ["tmdb:api access:token"],
-				}
-			this.request.tmdb = new php.plugin.tmdb (tmdb, this)
-			this.request.video = {src: new php.plugin.video.src ()}
-			}
-		if (this.request.app.ad) {
-			if (this.request.app.ad ["adsterra"]) {
-				this.response.var ["ad:adsterra"] = this.request.app.ad ["adsterra"]
-				this.response.var ["ad adsterra:adult"] = this.request.app.ad ["adsterra:adult"]
-				}
-			if (this.request.app.ad ["monetag"]) {}
-			}
-		}
-	}
 
 /**
  * xxx

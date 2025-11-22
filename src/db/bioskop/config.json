@@ -1,6 +1,7 @@
 [
 {"id": "", "reference": "", "key": "author:name", "value": "Bioskop"},
-{"id": "", "reference": "", "key": "author:email", "value": "admin@bioskopress.com"},
+{"id": "", "reference": "", "key": "author:email", "value": "support@bioskopress.com"},
+{"id": "", "reference": "", "key": "domain:name", "value": "bioskopress.com"},
 {"id": "", "reference": "", "key": "site:name", "value": "Bioskop"},
 {"id": "", "reference": "", "key": "site:title", "value": "Bioskop | Movies, TV Shows, Anime in One Channel"},
 {"id": "", "reference": "", "key": "site:tagline", "value": "Movie. TV Show."},

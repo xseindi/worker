@@ -8,42 +8,6 @@
  * xxx://xxx.xxx.xxx/xxx/xxx
  */
 
-:root
-{
---font-family: "Google Sans", "Roboto", sans-serif;
---font-family-title: "Roboto", "Segoe UI", sans-serif;
---font-family-description: "Roboto", "Segoe UI", sans-serif;
---font-family-article: "Alegreya", "Roboto", "Segoe UI", sans-serif;
---font-family-quote: "Roboto", "Segoe UI", sans-serif;
---font-family-code: "Courier New", "Roboto", "Segoe UI", sans-serif;
---font-family-print: "Roboto", "Segoe UI", sans-serif;
---font-family-error: "Roboto", "Segoe UI", sans-serif;
---font-family-warning: "Roboto", "Segoe UI", sans-serif;
---font-family-notice: "Roboto", "Segoe UI", sans-serif;
-}
-
-:root
-{
---font-size: 14px;
---font-lite: 6px;
---font-tiny: 8px;
---font-small: 10px;
---font-intermediate: 16px;
---font-medium: 20px;
---font-large: 24px;
---font-big: 32px;
-}
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx/xxx
- */
-
 [class*="margin:string"] {}
 [class*="margin:icon"] { margin-top: 5px; }
 [class*="margin-small:icon"] { margin-top: 2px; }

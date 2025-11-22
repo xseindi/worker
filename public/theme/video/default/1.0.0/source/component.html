@@ -46,45 +46,13 @@
 			<div class="icon:container icon:margin font:large">
 				<span class="icon:material">notifications</span>
 			</div>
+{{ component notification:float }}
 		</button>
 		<button class="button:icon">
 			<div class="icon:container icon:margin font:large">
 				<span class="icon:material">account_circle</span>
 			</div>
-			<section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
-				<div class="flex align:item gap padding:vertical padding-horizontal:size">
-					<div><img src="{{ asset:image }}/logo.png" height="16"></div>
-					<div class="font:bold">Account Manager</div>
-				</div>
-				{{ component separator:mono }}
-				<div class="flex align:item gap padding:vertical padding-horizontal:size">
-					<div class="icon:container icon:margin font:big text-gradient">
-						<span class="icon:material">person_shield</span>
-					</div>
-					<div class="flex flex:column">
-						<div class="font-bold:pop">Guest</div>
-						<div class="" style="color: rgb(var(--gray));">guest@google.com</div>
-					</div>
-				</div>
-				{{ component separator:mono }}
-				<div class="flex align:item gap padding:vertical padding-horizontal:size">
-					<div class="icon:container icon:margin font:big text-gradient">
-						<span class="icon:material">forum</span>
-					</div>
-					<div class="flex flex:column">
-						<div class="font-bold:pop">Support</div>
-						<div class="" style="color: rgb(var(--gray));">support@google.com</div>
-					</div>
-				</div>
-				{{ component separator:mono }}
-				<div class="font:mini line-spacing:small padding:vertical padding-horizontal:size">
-					We keep your IP Address, Name, Email, Profile Picture Safe.
-					<br>
-					Feel Free to use our Website.
-					<br>
-					Just follow our <a href="/">Privacy Policy</a> and <a href="/">Term's of Use</a>.
-				</div>
-			</section>
+{{ component account-manager:float }}
 		</button>
 		<button class="button:icon">
 			<div class="icon:container icon:margin font:large">
@@ -132,6 +100,61 @@
 	<div>Logo's Trademark's on this Site are the Property of their Respective Owner's</div>
 	<div>Website Engine Code & Design is Powered By <a href="mailto:{{ author:email }}">{{ author:name }}</a></div>
 </div>
+</template>
+
+<template id="notification:float">
+<section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
+	<div class="flex align:item gap padding:vertical padding-horizontal:size">
+		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
+		<div class="font:bold">Notification</div>
+	</div>
+	{{ component separator:mono }}
+	<div class="flex flex:column gap padding:vertical padding-horizontal:size">
+		<div class="font-bold:pop">No Activity</div>
+	</div>
+	{{ component separator:mono }}
+	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:size">
+		Our Information, Activity will appear here, such as when we add new Movie and/or TV Show.
+	</div>
+</section>
+</template>
+
+<template id="account-manager:float">
+<section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
+	<div class="flex align:item gap padding:vertical padding-horizontal:size">
+		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
+		<div class="flex:grow font:bold">Account Manager</div>
+		<div class="color:gray-pop">DISABLED</div>
+	</div>
+	{{ component separator:mono }}
+	<div class="flex align:item gap padding:vertical padding-horizontal:size">
+		<div class="icon:container icon:margin font:big text-gradient">
+			<span class="icon:material">person_shield</span>
+		</div>
+		<div class="flex flex:column">
+			<div class="font-bold:pop">Guest</div>
+			<div class="color:gray-pop">guest@{{ domain:name }}</div>
+		</div>
+	</div>
+	{{ component separator:mono }}
+	<a href="/" class="flex align:item gap padding:vertical padding-horizontal:size a-hover:mono-pop">
+		<div class="icon:container icon:margin font:big text-gradient">
+			<span class="icon:material">forum</span>
+		</div>
+		<div class="flex flex:column">
+			<div class="font-bold:pop color">Support</div>
+			<div class="color:gray-pop">support@{{ domain:name }}</div>
+		</div>
+	</a>
+	{{ component separator:mono }}
+	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:size">
+		We keep your <u>IP</u>, <u>Name</u>, <u>Email</u>, <u>Profile Picture</u> Safe.
+		<br>
+		Feel Free to Watch and Download from our Website.
+		<br>
+		Just follow our <a href="{{ base_url }}{{ router page privacy-policy }}">Privacy Policy</a> and <a href="{{ base_url }}{{ router page term_of_use }}">Term's of Use</a>.
+	</div>
+</section>
 </template>
 
 <template id="button:inline">
