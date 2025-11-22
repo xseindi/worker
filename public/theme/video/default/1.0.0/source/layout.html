@@ -5,24 +5,25 @@
 </template>
 
 <template id="index">
-<div id="container">
+<div id="container" class="flex flex:column">
 	<header id="header" class="header:size">
-{{ component header:fly }}
+{{ component header:float }}
 	</header>
-	<section>
+	<section id="main" class="flex flex:grow relative" background="color">
 		<nav id="menu">
-<!-- theme:menu -->
+{{ theme:location menu }}
+theme:menu
 		</nav>
-		<main id="main">
-<!-- theme:main -->
-			<section>
-<!-- main:section -->
-			</section>
+		<main class="flex flex:column flex:grow gap">
+{{ theme:location main }}
+theme:main
 			<div><img width="1" height="1000"></div>
+			<footer id="main:footer" class="flex flex:column gap padding:horizontal padding:bottom">
+{{ component footer:sensitive }}
+{{ component footer:info }}
+			</footer>
 		</main>
 	</section>
-	<footer id="footer" class="flex flex:column gap padding">
-{{ component footer:info }}
-	</footer>
+	<footer id="footer" background="color"></footer>
 </div>
 </template>

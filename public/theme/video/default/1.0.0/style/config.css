@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Joti+One&display=swap');
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx/xxx
+ */
+
+:root
+{
+--font-family: "Segoe UI", "Noto Sans", "Roboto", sans-serif;
+--font-family-title: "Roboto", "Segoe UI", sans-serif;
+--font-family-description: "Roboto", "Segoe UI", sans-serif;
+--font-family-article: "Alegreya", "Roboto", "Segoe UI", sans-serif;
+--font-family-quote: "Roboto", "Segoe UI", sans-serif;
+--font-family-code: "Courier New", "Roboto", "Segoe UI", sans-serif;
+--font-family-print: "Roboto", "Segoe UI", sans-serif;
+--font-family-error: "Roboto", "Segoe UI", sans-serif;
+--font-family-warning: "Roboto", "Segoe UI", sans-serif;
+--font-family-notice: "Roboto", "Segoe UI", sans-serif;
+--font-family-logo: "Joti One", "Roboto", "Segoe UI", sans-serif;
+}
+
+:root
+{
+--font-size: 14px;
+--font-pop-size: 12px;
+--font-lite: 6px;
+--font-tiny: 8px;
+--font-small: 10px;
+--font-intermediate: 16px;
+--font-medium: 18px;
+--font-large: 24px;
+--font-big: 32px;
+}
+
+:root
+{
+--no-pixel: 0px;
+--pixel: 1px;
+--px: 10px;
+--px-tiny: 3px;
+--px-small: 5px;
+--px-intermediate: 15px;
+--px-medium: 20px;
+--px-large: 25px;
+--px-big: 30px;
+}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx/xxx
+ */
+
+:root
+{
+--color: 68, 68, 68; /* #444444 */
+--background-color: 255, 255, 255; /* #FFFFFF */
+--mono: 241, 241, 241; /* #F1F1F1 */
+--mono-chrome: 102, 102, 102; /* #666666 */
+--mono-pop: 250, 250, 250; /* #FAFAFA */
+--mono-extra: 254, 254, 254; /* #FEFEFE */
+--black: 17, 17, 17; /* #111111 */
+--white: 255, 255, 255;
+--gray: 128, 128, 128;
+--gray-pop: 102, 102, 102;
+--gray-soft: 253, 253, 254;
+--gray-hard: 212, 213, 216;
+--gray-sky: 204, 204, 204; /* #CCCCCC */
+--red: 255, 0, 0; --red-pop: 224, 108, 117;
+--green: 0, 128, 0; --green-pop: 152, 195, 121; --green-soft: 230, 246, 230; --green-hard: 0, 148, 0;
+--blue: 0, 0, 255; --blue-pop: 97, 174, 239; --blue-soft: 238, 249, 253; --blue-hard: 76, 179, 212; --blue-ray: 66, 133, 244;
+--yellow: 255, 255, 0; --yellow-pop: 229, 192, 123; --yellow-soft: 255, 248, 230; --yellow-hard: 230, 167, 0;
+--orange: 255, 165, 0; --orange-pop: 210, 132, 69;
+--purple: 128, 0, 128; --purple-pop: 198, 120, 221;
+--pink: 255, 192, 203; --pink-pop: 255, 192, 203;
+--cyan: 0, 255, 255; --cyan-pop: 117, 181, 170;
+}
+
+:root
+{
+--header-color: rgb(var(--white));
+--border-color: rgb(204, 204, 204);
+--box-shadow: 60, 64, 67;
+--box-shadow-pop: 11, 20, 26;
+}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx/xxx
+ */
+
+:root
+{
+--font-color: rgb(var(--color));
+--font-anchor-color: rgb(var(--blue-ray));
+--font-anchor-color-focus: rgb(var(--blue-ray));
+--font-anchor-color-active: rgb(var(--blue-ray));
+--font-anchor-color-visited: rgb(var(--blue-ray));
+--font-anchor-color-hover: rgb(var(--blue-ray));
+}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx/xxx
+ */
+
+[theme="night"]
+{
+--mono: 34, 34, 34;
+--mono-pop: 51, 51, 51;
+--background-color: 17, 17, 17;
+--font-color: #cccccc;
+--header-color: #101010;
+--border-color: rgb(51, 51, 51);
+--box-shadow: 34, 34, 34;
+}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+:root
+{
+--header-size: 65px;
+--nav-size: 250px;
+--nav-chrome-size: 350px;
+--navigation-size: 200px;
+--menu-size: 250px;
+--side-size: 200px;
+--form-search-size: 500px;
+}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+[font="logo"], [class*="font-family:logo"] { font-family: var(--font-family-logo); }
+
+.color, [color="default"] { color: rgb(var(--color)); }
+[color="mono:chrome"] { color: rgb(var(--mono-chrome)); }
+[color="mono"] { color: rgb(var(--mono)); }
+[color="red:pop"] { color: rgb(var(--red-pop)); }
+
+[background="color"], [class*="background:color"] { background-color: rgb(var(--background-color)); }
+[background="mono"], [class*="background-color:mono"] { background-color: rgb(var(--mono)); }
+
+[class*="header:size"] { min-height: var(--header-size); }
+[class*="nav:size"] { width: var(--nav-size); }
+[class*="nav-chrome:size"] { width: var(--nav-chrome-size); }
+[class*="icon:margin"] { margin-top: 1px; }
+
+[class*="img:tiny"] img { height: 16px; }
+[class*="img:size"] img { height: 24px; }
+[class*="img:small"] img { height: 32px; }
+[class*="img:medium"] img { height: 48px; }
+[class*="img:large"] img { height: 64px; }
+
+/**
+ * the end
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */

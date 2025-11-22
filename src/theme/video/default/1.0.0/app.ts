@@ -129,13 +129,14 @@ app.use (function (app: any, request: any, response: any, next: any) {
 		request.app.theme.package (app, request, response, next)
 		response.var ["theme:footer"] = []
 		var db_theme_footer = [
+			{component: "footer:sensitive", param: {}},
 			{component: "footer:info", param: {}},
 			]
 		for (var i in db_theme_footer) {
 			response.var ["theme:footer"].push (request.component [db_theme_footer [i].component] (db_theme_footer [i].param, 3))
 			}
-		response.var ["theme:header"] = request.theme.component ("header:fly").render (3)
-		response.var ["theme:component header:logo"] = request.theme.component ("logo:sample").render (4)
+		// response.var ["theme:header"] = request.theme.component ("header:float").render (3)
+		// response.var ["theme:component header:logo"] = request.theme.component ("logo:simple").render (4)
 		response.var ["theme:component header button:movie"] = request.component ["button:inline"] ({title: "Movie", data: the.movie.element ["header"]}, 4)
 		response.var ["theme:component header button:tv"] = request.component ["button:inline"] ({title: "TV Show", data: the.tv.element ["header"]}, 4)
 		response.var ["theme:component header button:people"] = request.component ["button:inline"] ({title: "People", data: the.people.element ["header"]}, 4)

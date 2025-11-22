@@ -7,6 +7,9 @@ export default function (app: any, request: any, response: any, next: any) {
 	request.component ["footer:info"] = function (param: any = {}, tab: number = zero) {
 		return request.theme.component ("footer:info").render (param, tab)
 		}
+	request.component ["footer:sensitive"] = function (param: any = {}, tab: number = zero) {
+		return request.theme.component ("footer:sensitive").render (param, tab)
+		}
 	request.component ["button:inline"] = function (param: any = {}, tab: number = zero) {
 		var data: any = []
 		for (var i in param.data) {

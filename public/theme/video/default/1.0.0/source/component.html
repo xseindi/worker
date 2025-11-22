@@ -1,20 +1,10 @@
 <template id="default">
-<div id="">
 {{ slot }}
-</div>
 </template>
 
-<template id="index">
-<div id="">
-	<div id="">
-{{ slot }}
-	</div>
-</div>
-</template>
-
-<template id="header:fly">
-<div class="flex gap align:item x header:size fixed box-shadow" component="header:fly">
-	<div class="padding:left">
+<template id="header:float">
+<div class="flex align:item gap x header:size fixed box-shadow" component="header:float">
+	<div class="flex align:item gap padding:left">
 		<button class="button:icon font:large">
 			<div class="icon:container icon:margin">
 				<span class="icon:material">menu</span>
@@ -22,9 +12,9 @@
 		</button>
 	</div>
 	<div class="flex align:item">
-{{ theme:component header:logo }}
+{{ component logo:simple }}
 	</div>
-	<div class="flex align:item justify:item flex:grow gap">
+	<div class="flex flex:grow align:item justify:item gap">
 		<div class="flex align:item gap" computer>
 			<div class="flex align:item">
 {{ theme:component header button:movie }}
@@ -34,7 +24,7 @@
 		</div>
 	</div>
 	<div class="flex align:item">
-		<input id="search" class="padding padding-horizontal:medium no-border border:radius header-fly-form-search" type="search" placeholder="Search ...">
+		<input id="search" class="padding padding-horizontal:medium no-border border:radius" type="search" placeholder="Search ..." component="search:float">
 	</div>
 	<div class="flex align:item gap padding:right">
 		<button class="button:icon">
@@ -46,13 +36,13 @@
 			<div class="icon:container icon:margin font:large">
 				<span class="icon:material">notifications</span>
 			</div>
-{{ component notification:float }}
+			{{ component notification:float }}
 		</button>
 		<button class="button:icon">
 			<div class="icon:container icon:margin font:large">
 				<span class="icon:material">account_circle</span>
 			</div>
-{{ component account-manager:float }}
+			{{ component account-manager:float }}
 		</button>
 		<button class="button:icon">
 			<div class="icon:container icon:margin font:large">
@@ -70,16 +60,7 @@
 </template>
 
 <template id="logo:simple">
-<div class="flex align:item gap" component="logo:simple">
-	<div><img src="{{ asset:image }}/logo.png" height="32"></div>
-	<div class="flex flex:column">
-		<div class="font-family:logo font:medium font:bold text-gradient">{{ site:name }}</div>
-	</div>
-</div>
-</template>
-
-<template id="logo:sample">
-<a href="/" class="flex align:item gap" component="logo:sample">
+<a href="/" class="flex align:item gap" component="logo:simple">
 	<div><img src="{{ asset:image }}/logo.png" height="32"></div>
 	<div class="flex flex:column">
 		<div class="font-family:logo font:intermediate font:bold text-gradient">{{ site:name }}</div>
@@ -89,7 +70,91 @@
 </template>
 
 <template id="footer:sensitive">
-<div component="footer:sensitive">
+<div class="flex gap" component="footer:sensitive">
+	<div class="flex flex:column flex:grow gap" aria-label="main">
+		{{ component logo:simple }}
+		<div class="flex flex:column gap:small padding padding-horizontal:intermediate border:radius background-color:mono">
+			<p class="font-size:medium font-bold:pop" color="red:pop">Sensitive Content Warning</p>
+			<p color="mono:chrome">
+				This site may contain sensitive content.
+				We does not review nor do we endorse the content of this site.
+				For more information please visit Privacy <a href="/">Content Policy</a>.
+			</p>
+		</div>
+	</div>
+	<div style="width: 10px;"></div>
+	<div class="flex flex:column" style="width: 230px;">
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">description</span>
+			</div>
+			<p>About</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">contacts</span>
+			</div>
+			<p>Contact</p>
+		</a>
+		<!--a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">live_help</span>
+			</div>
+			<p>Help</p>
+		</a-->
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">link</span>
+			</div>
+			<p>Blog</p>
+		</a>
+	</div>
+	<div class="flex flex:column" style="width: 320px;">
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">health_and_safety</span>
+			</div>
+			<p>Privacy Policy</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">settings_accessibility</span>
+			</div>
+			<p>Term's of Use</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">cookie</span>
+			</div>
+			<p>Cookie Preference</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">rss_feed</span>
+			</div>
+			<p>Sitemap</p>
+		</a>
+	</div>
+	<div class="flex flex:column" style="width: 300px;">
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">safety_check</span>
+			</div>
+			<p>Disclaimer</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">admin_panel_settings</span>
+			</div>
+			<p>DMCA</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">live_help</span>
+			</div>
+			<p>FAQ</p>
+		</a>
+	</div>
 </div>
 </template>
 
@@ -104,16 +169,16 @@
 
 <template id="notification:float">
 <section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
-	<div class="flex align:item gap padding:vertical padding-horizontal:size">
+	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
 		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
 		<div class="font:bold">Notification</div>
 	</div>
 	{{ component separator:mono }}
-	<div class="flex flex:column gap padding:vertical padding-horizontal:size">
+	<div class="flex flex:column gap padding:vertical padding-horizontal:intermediate">
 		<div class="font-bold:pop">No Activity</div>
 	</div>
 	{{ component separator:mono }}
-	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:size">
+	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:intermediate">
 		Our Information, Activity will appear here, such as when we add new Movie and/or TV Show.
 	</div>
 </section>
@@ -121,33 +186,33 @@
 
 <template id="account-manager:float">
 <section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
-	<div class="flex align:item gap padding:vertical padding-horizontal:size">
+	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
 		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
 		<div class="flex:grow font:bold">Account Manager</div>
-		<div class="color:gray-pop">DISABLED</div>
+		<div class="font-size:small">DISABLED</div>
 	</div>
 	{{ component separator:mono }}
-	<div class="flex align:item gap padding:vertical padding-horizontal:size">
+	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
 		<div class="icon:container icon:margin font:big text-gradient">
 			<span class="icon:material">person_shield</span>
 		</div>
 		<div class="flex flex:column">
-			<div class="font-bold:pop">Guest</div>
-			<div class="color:gray-pop">guest@{{ domain:name }}</div>
+			<div class="font-bold:pop color">Guest</div>
+			<div class="" color="mono:chrome">guest@{{ domain:name }}</div>
 		</div>
 	</div>
 	{{ component separator:mono }}
-	<a href="/" class="flex align:item gap padding:vertical padding-horizontal:size a-hover:mono-pop">
+	<a href="/" class="flex align:item gap padding:vertical padding-horizontal:intermediate a-hover:mono-pop">
 		<div class="icon:container icon:margin font:big text-gradient">
 			<span class="icon:material">forum</span>
 		</div>
 		<div class="flex flex:column">
 			<div class="font-bold:pop color">Support</div>
-			<div class="color:gray-pop">support@{{ domain:name }}</div>
+			<div class="" color="mono:chrome">support@{{ domain:name }}</div>
 		</div>
 	</a>
 	{{ component separator:mono }}
-	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:size">
+	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:intermediate">
 		We keep your <u>IP</u>, <u>Name</u>, <u>Email</u>, <u>Profile Picture</u> Safe.
 		<br>
 		Feel Free to Watch and Download from our Website.
@@ -160,7 +225,7 @@
 <template id="button:inline">
 <button class="button:inline">
 	<div class="flex align:item gap:small padding-vertical:small padding:horizontal">
-		<span class="font-bold:pop">{{ title }}</span>
+		<span class="font:bold">{{ title }}</span>
 		<div class="icon:container icon:margin font:intermediate"><span class="icon:material">arrow_drop_down</span></div>
 	</div>
 	<section class="flex:column nav:size top:port left border:radius background:color box-shadow no-overflow transition:visibility">
@@ -176,7 +241,7 @@
 </template>
 
 <template id="button:inline anchor-more:container">
-<div class="flex font:small text-align:left gap padding" menu="sample:link-more">
+<div class="flex font:small text-align:left gap padding">
 	<div class="flex flex:column flex:grow">
 {{ left }}
 	</div>
@@ -187,7 +252,7 @@
 </template>
 
 <template id="button:inline anchor">
-<a href="{{ permalink }}" class="flex align:item gap padding:li a:static">
+<a href="{{ permalink }}" class="flex align:item gap padding:li a:static a-hover:mono-pop">
 	<div class="icon:container icon:margin"><span class="icon:material">{{ icon }}</span></div>
 	<span class="font-bold:pop flex:grow">{{ title }}</span>
 	<span class="font:small font-bold:pop" style="color: rgba(var(--color),0.75);">{{ quantity }}</span>

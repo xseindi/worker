@@ -67,9 +67,10 @@ php.html = function (output: string, option: any = {}) {
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">`);
 			}
-		markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?latest={{ latest }}">`);
-		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?latest={{ latest }}">`);
-		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:sheet }}?latest={{ latest }}">`);
+		markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ latest }}">`);
+		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ latest }}">`);
+		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:config }}?cache={{ latest }}">`);
+		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:sheet }}?cache={{ latest }}">`);
 		if (php ["config.json"]["internet"]) {
 			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
 			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
@@ -77,9 +78,9 @@ php.html = function (output: string, option: any = {}) {
 			markup.push (2, `<script src="https://unpkg.com/vue@3.5.22/dist/vue.global.prod.js"></script>`);
 			markup.push (2, `<script src="https://unpkg.com/vue-router@4.5.1/dist/vue-router.global.prod.js"></script>`);
 			}
-		markup.push (2, `<script src="{{ cd:base_url }}{{ router prototype.js }}?latest={{ latest }}"></script>`);
-		markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?latest={{ latest }}"></script>`);
-		markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?latest={{ latest }}"></script>`);
+		markup.push (2, `<script src="{{ cd:base_url }}{{ router prototype.js }}?cache={{ latest }}"></script>`);
+		markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ latest }}"></script>`);
+		markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ latest }}"></script>`);
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
@@ -87,7 +88,7 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (1, `</head>`);
 	markup.push (1, `<body>`);
 	markup.push (0, output);
-	markup.push (2, `<script src="{{ theme:base_url }}{{ router eof.js }}?latest={{ latest }}"></script>`);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router eof.js }}?cache={{ latest }}"></script>`);
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();
