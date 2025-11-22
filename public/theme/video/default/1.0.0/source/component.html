@@ -69,9 +69,72 @@
 </a>
 </template>
 
+<template id="menu:nav">
+<div class="flex flex:column padding" component="menu:nav">
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">description</span></div>
+		<p class="" string>Home</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">subscriptions</span></div>
+		<p class="" string>Short</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">local_fire_department</span></div>
+		<p class="" string>Trending</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">bolt</span></div>
+		<p class="" string>Top Global</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">editor_choice</span></div>
+		<p class="" string>Editor Choice</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">live_tv</span></div>
+		<p class="" string>Live</p>
+	</a>
+</div>
+<div class="font-size:medium font:bold padding-horizontal:large" component="menu-nav:title">YOU</div>
+<div class="flex flex:column padding" component="menu:nav">
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">search_activity</span></div>
+		<p class="" string>History</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">timer_play</span></div>
+		<p class="" string>Watch Later</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">playlist_play</span></div>
+		<p class="" string>Playlist</p>
+	</a>
+</div>
+<div class="font-size:medium font:bold padding-horizontal:large" component="menu-nav:title">EXPLORE</div>
+<div class="flex flex:column padding" component="menu:nav">
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">hotel_class</span></div>
+		<p class="" string>Star</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">movie</span></div>
+		<p class="" string>Movie</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">tv_guide</span></div>
+		<p class="" string>TV Show</p>
+	</a>
+	<a href="" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">photo_camera</span></div>
+		<p class="" string>Photo</p>
+	</a>
+</div>
+</template>
+
 <template id="footer:sensitive">
 <div class="flex gap" component="footer:sensitive">
-	<div class="flex flex:column flex:grow gap" aria-label="main">
+	<div class="flex flex:column flex:grow gap:medium" aria-label="main">
 		{{ component logo:simple }}
 		<div class="flex flex:column gap:small padding padding-horizontal:intermediate border:radius background-color:mono">
 			<p class="font-size:medium font-bold:pop" color="red:pop">Sensitive Content Warning</p>

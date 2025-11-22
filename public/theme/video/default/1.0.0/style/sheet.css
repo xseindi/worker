@@ -33,7 +33,7 @@
 
 body > #container { height: 100%; }
 body > #container > #main {}
-body > #container > #main > nav#menu { display: none; flex-direction: column; width: var(--menu-size); }
+body > #container > #main > nav#menu { display: none; flex-direction: column; min-width: var(--menu-size); }
 body > #container > #main > main {}
 body.phone > #container > #main > nav#menu { display: none; height: 100%; position: absolute; }
 
@@ -58,6 +58,10 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 [component="footer:sensitive"] [aria-label="left"] {}
 [component="footer:sensitive"] [aria-label="right"] {}
 [component="footer:sensitive"] [aria-label="gap"] {}
+
+[class*="anchor:simple"] { display: flex; gap: var(--px); padding: 8px var(--px-intermediate); border-radius: var(--border-radius); }
+[class*="anchor:simple"]:hover { background-color: rgb(var(--mono-pop)); }
+[class*="anchor:simple"] [string] { flex-grow: 1; font-weight: var(--font-bold-pop); color: rgb(var(--color)); }
 
 /**
  * xxx

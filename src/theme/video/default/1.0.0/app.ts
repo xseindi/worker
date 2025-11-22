@@ -48,7 +48,7 @@ app.get ($.page ["privacy-policy"], async function (app: any, request: any, resp
 	})
 
 app.get ($.page ["term_of_use"], async function (app: any, request: any, response: any, next: any) {
-	response.seo ({title: "Term of Use"})
+	response.seo ({title: "Term's of Use"})
 	return response.render ("index", {slot: "Hello World"}, 2)
 	})
 

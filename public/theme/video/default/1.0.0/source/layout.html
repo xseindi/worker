@@ -10,13 +10,11 @@
 {{ component header:float }}
 	</header>
 	<section id="main" class="flex flex:grow relative" background="color">
-		<nav id="menu">
-{{ theme:location menu }}
-theme:menu
+		<nav id="menu" class="flex flex:column">
+			{{ component menu:nav }}
 		</nav>
 		<main class="flex flex:column flex:grow gap">
-{{ theme:location main }}
-theme:main
+<!-- {{ theme:location main }} -->
 			<div><img width="1" height="1000"></div>
 			<footer id="main:footer" class="flex flex:column gap padding:horizontal padding:bottom">
 {{ component footer:sensitive }}
