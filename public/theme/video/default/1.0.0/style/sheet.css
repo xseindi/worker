@@ -51,13 +51,13 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
  * xxx://xxx.xxx.xxx/xxx
  */
 
-[component="header:float"] { background-color: rgba(var(--background-color),0.98); z-index: 10; }
+[component="header:float"] { background-color: rgba(var(--background-color),0.98); z-index: 100; }
+[component="search:float"] { width: var(--form-search-size); border-bottom: 1px solid rgba(var(--background-color)); background-color: rgb(var(--mono)); }
+[component="search:float"]:focus { border-color: #aaaaaa; }
+[id="main:footer"] {}
 [component="footer:info"] {}
-[component="search:float"] { width: var(--form-search-size); background-color: rgb(var(--mono)); }
 [component="footer:sensitive"] {}
-[component="footer:sensitive"] [aria-label="left"] {}
-[component="footer:sensitive"] [aria-label="right"] {}
-[component="footer:sensitive"] [aria-label="gap"] {}
+.phone [component="footer:sensitive"] { flex-direction: column; }
 
 [class*="anchor:simple"] { display: flex; gap: var(--px); padding: 8px var(--px-intermediate); border-radius: var(--border-radius); }
 [class*="anchor:simple"]:hover { background-color: rgb(var(--mono-pop)); }

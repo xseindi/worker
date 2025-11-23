@@ -5,7 +5,7 @@
 <template id="header:float">
 <div class="flex align:item gap x header:size fixed box-shadow" component="header:float">
 	<div class="flex align:item gap padding:left">
-		<button class="button:icon font:large">
+		<button class="button:icon font:large" phone>
 			<div class="icon:container icon:margin">
 				<span class="icon:material">menu</span>
 			</div>
@@ -14,8 +14,9 @@
 	<div class="flex align:item">
 {{ component logo:simple }}
 	</div>
-	<div class="flex flex:grow align:item justify:item gap">
-		<div class="flex align:item gap" computer>
+	<div class="flex flex:grow align:item justify:item gap" phone></div>
+	<div class="flex flex:grow align:item justify:item gap" computer>
+		<div class="flex align:item gap">
 			<div class="flex align:item">
 {{ theme:component header button:movie }}
 {{ theme:component header button:tv }}
@@ -23,11 +24,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="flex align:item">
+	<div class="flex align:item" computer>
 		<input id="search" class="padding padding-horizontal:medium no-border border:radius" type="search" placeholder="Search ..." component="search:float">
 	</div>
 	<div class="flex align:item gap padding:right">
-		<button class="button:icon">
+		<button id="button-search" class="button:icon">
 			<div class="icon:container icon:margin font:large">
 				<span class="icon:material">search</span>
 			</div>
@@ -134,7 +135,7 @@
 
 <template id="footer:sensitive">
 <div class="flex gap" component="footer:sensitive">
-	<div class="flex flex:column flex:grow gap:medium" aria-label="main">
+	<div class="flex flex:column flex:grow gap:medium">
 		{{ component logo:simple }}
 		<div class="flex flex:column gap:small padding padding-horizontal:intermediate border:radius background-color:mono">
 			<p class="font-size:medium font-bold:pop" color="red:pop">Sensitive Content Warning</p>
@@ -252,7 +253,7 @@
 	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
 		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
 		<div class="flex:grow font:bold">Account Manager</div>
-		<div class="font-size:small">DISABLED</div>
+		<div class="font-size:small font:bold" color="red:pop">OFF</div>
 	</div>
 	{{ component separator:mono }}
 	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
@@ -276,11 +277,11 @@
 	</a>
 	{{ component separator:mono }}
 	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:intermediate">
-		We keep your <u>IP</u>, <u>Name</u>, <u>Email</u>, <u>Profile Picture</u> Safe.
+		We keep your <u>Information</u> Safe.
 		<br>
-		Feel Free to Watch and Download from our Website.
+		Watch and Download is always <u>Free</u>.
 		<br>
-		Just follow our <a href="{{ base_url }}{{ router page privacy-policy }}">Privacy Policy</a> and <a href="{{ base_url }}{{ router page term_of_use }}">Term's of Use</a>.
+		Just follow <a href="{{ base_url }}{{ router page privacy-policy }}">Privacy Policy</a> and <a href="{{ base_url }}{{ router page term_of_use }}">Term's of Use</a>.
 	</div>
 </section>
 </template>
@@ -318,12 +319,12 @@
 <a href="{{ permalink }}" class="flex align:item gap padding:li a:static a-hover:mono-pop">
 	<div class="icon:container icon:margin"><span class="icon:material">{{ icon }}</span></div>
 	<span class="font-bold:pop flex:grow">{{ title }}</span>
-	<span class="font:small font-bold:pop" style="color: rgba(var(--color),0.75);">{{ quantity }}</span>
+	<span class="font:small font-bold:pop" style="font-color: rgba(var(--color),0.75);" color="green:pop">{{ quantity }}</span>
 </a>
 </template>
 
 <template id="button:inline anchor:more">
-<a href="{{ permalink }}" class="flex align:item gap padding:small padding:horizontal a:static">
+<a href="{{ permalink }}" class="flex align:item gap padding:small padding:horizontal">
 	<span class="flex:grow">{{ title }}</span>
 </a>
 </template>

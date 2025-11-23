@@ -17,11 +17,89 @@
 <!-- {{ theme:location main }} -->
 			<div><img width="1" height="1000"></div>
 			<footer id="main:footer" class="flex flex:column gap padding:horizontal padding:bottom">
-{{ component footer:sensitive }}
-{{ component footer:info }}
+				<div class="flex gap" component="footer:sensitive">
+					<div class="flex flex:column flex:grow gap:medium">
+						{{ component logo:simple }}
+						<div class="flex flex:column gap:small padding padding-horizontal:intermediate border:radius background-color:mono">
+							<p class="font-size:medium font-bold:pop" color="red:pop">Sensitive Content Warning</p>
+							<p color="mono:chrome">
+								This site may contain sensitive content.
+								We does not review nor do we endorse the content of this site.
+								For more information please visit Privacy <a href="/">Content Policy</a>.
+							</p>
+						</div>
+					</div>
+					<div></div>
+					<div class="" style="min-width: 150px;">
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">description</span></div>
+							<p class="" string>About</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">contacts</span></div>
+							<p class="" string>Contact</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">link</span></div>
+							<p class="" string>Blog</p>
+						</a>
+					</div>
+					<div class="" style="min-width: 200px;">
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">health_and_safety</span></div>
+							<p class="" string>Privacy Policy</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">settings_accessibility</span></div>
+							<p class="" string>Term's of Use</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">cookie</span></div>
+							<p class="" string>Cookie Preference</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">rss_feed</span></div>
+							<p class="" string>Sitemap</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">safety_check</span></div>
+							<p class="" string>Disclaimer</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">admin_panel_settings</span></div>
+							<p class="" string>DMCA</p>
+						</a>
+						<a href="" class="anchor:simple a:static">
+							<div class="icon:container font:medium text_gradient"><span class="icon:material">live_help</span></div>
+							<p class="" string>FAQ</p>
+						</a>
+					</div>
+					<div style="min-width: 150px;"></div>
+				</div>
 			</footer>
 		</main>
 	</section>
-	<footer id="footer" background="color"></footer>
+	<footer id="footer" class="padding:bottom" background="color">
+		{{ component footer:info }}
+	</footer>
+</div>
+</template>
+
+<template id="index-test">
+<div id="container" class="flex flex:column">
+	<header id="header" class="header:size">
+{{ component header:float }}
+	</header>
+	<section id="main" class="flex flex:grow relative" background="color">
+		<nav id="menu" class="flex flex:column">
+			{{ component menu:nav }}
+		</nav>
+		<main id="" class="">
+			<img width="1" height="1000">
+		</main>
+	</section>
+	<footer id="footer" class="padding:bottom" background="color">
+		{{ component footer:info }}
+	</footer>
 </div>
 </template>

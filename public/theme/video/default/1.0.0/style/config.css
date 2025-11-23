@@ -13,7 +13,7 @@
 
 :root
 {
---font-family: "Segoe UI", "Noto Sans", "Roboto", sans-serif;
+--font-family: "Roboto", sans-serif;
 --font-family-title: "Roboto", "Segoe UI", sans-serif;
 --font-family-description: "Roboto", "Segoe UI", sans-serif;
 --font-family-article: "Alegreya", "Roboto", "Segoe UI", sans-serif;
@@ -29,7 +29,7 @@
 :root
 {
 --font-size: 14px;
---font-pop-size: 12px;
+--font-pop-size: 11px;
 --font-lite: 6px;
 --font-tiny: 8px;
 --font-small: 10px;
@@ -37,19 +37,6 @@
 --font-medium: 18px;
 --font-large: 24px;
 --font-big: 32px;
-}
-
-:root
-{
---no-pixel: 0px;
---pixel: 1px;
---px: 10px;
---px-tiny: 3px;
---px-small: 5px;
---px-intermediate: 15px;
---px-medium: 20px;
---px-large: 25px;
---px-big: 30px;
 }
 
 /**
@@ -148,9 +135,22 @@
 
 :root
 {
+--no-pixel: 0px;
+--pixel: 1px;
+--px: 10px;
+--px-tiny: 3px;
+--px-small: 5px;
+--px-intermediate: 15px;
+--px-medium: 20px;
+--px-large: 25px;
+--px-big: 30px;
+}
+
+:root
+{
 --header-size: 65px;
 --nav-size: 250px;
---nav-chrome-size: 350px;
+--nav-chrome-size: 280px;
 --navigation-size: 200px;
 --menu-size: 250px;
 --side-size: 200px;
@@ -173,6 +173,10 @@
 [color="mono:chrome"] { color: rgb(var(--mono-chrome)); }
 [color="mono"] { color: rgb(var(--mono)); }
 [color="red:pop"] { color: rgb(var(--red-pop)); }
+[color="green:pop"] { color: rgb(var(--green-pop)); }
+[color="blue:pop"] { color: rgb(var(--blue-pop)); }
+[color="orange:pop"] { color: rgb(var(--orange-pop)); }
+[color="purple:pop"] { color: rgb(var(--purple-pop)); }
 
 [background="color"], [class*="background:color"] { background-color: rgb(var(--background-color)); }
 [background="mono"], [class*="background-color:mono"] { background-color: rgb(var(--mono)); }
