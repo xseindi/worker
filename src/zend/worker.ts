@@ -276,6 +276,10 @@ var library: any = class {
 				else if (i === "page") {
 					for (var x in this.app.router [i]) this.response.var [["router page", x].join (" ")] = this.app.router [i][x]
 					}
+				else if (i === "p") {
+					for (var x in this.app.router [i]) this.response.var [["router p", x].join (" ")] = this.app.router [i][x]
+					}
+				else {}
 				}
 			this.response.var ["router"] = router.join (ln_s)
 			}

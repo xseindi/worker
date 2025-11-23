@@ -68,12 +68,59 @@ app.get ("/test", async function (app: any, request: any, response: any, next: a
 	})
 //1062722
 async function test_single (app: any, request: any, response: any, next: any) {
-	var data = await request.tmdb.movie.single (1062722)
-	return response.text (JSON.stringify (data))
+	var id = []
+	id = [603, 604, 605] // the matrix
+	id = [161, 163, 298] // ocean
+	id = [20352, 93456, 324852, 519182] // despicable me
+	var movie = []
+	for (var i in id) {
+		var data = await request.tmdb.movie.single (id [i])
+		data.permalink = null
+		data.genre = data.genre.map (function (genre: any) {
+			genre.permalink = null
+			return genre
+			})
+		delete data.credit
+		data = JSON.stringify (data)
+		movie.push (data + ",")
+		}
+	return response.text (movie.join (ln))
+	/*
+	var id = 603
+	var data = await request.tmdb.movie.single (id)
+	if (true) {
+		data.permalink = null
+		data.genre = data.genre.map (function (genre: any) {
+			genre.permalink = null
+			return genre
+			})
+		delete data.credit
+		}
+	if (false) {
+		data = data.map (function (data: any) {
+			data.permalink = null
+			data.genre = data.genre.map (function (genre: any) {
+				genre.permalink = null
+				return genre
+				})
+			return data
+			})
+		}
+	*/
 	}
 
 async function test (app: any, request: any, response: any, next: any) {
 	var data = await request.tmdb.movie.popular ()
+	if (false) {
+		data = data.map (function (data: any) {
+			data.permalink = null
+			data.genre = data.genre.map (function (genre: any) {
+				genre.permalink = null
+				return genre
+				})
+			return data
+			})
+		}
 	return response.text (JSON.stringify (data, null, "\t"))
 	}
 

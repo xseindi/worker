@@ -72,63 +72,63 @@
 
 <template id="menu:nav">
 <div class="flex flex:column padding" component="menu:nav">
-	<a href="" class="anchor:simple a:static">
+	<a href="/" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">description</span></div>
-		<p class="" string>Home</p>
+		<p string>Home</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router p short }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">subscriptions</span></div>
-		<p class="" string>Short</p>
+		<p string>Short</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router p trending }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">local_fire_department</span></div>
-		<p class="" string>Trending</p>
+		<p string>Trending</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router p top_global }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">bolt</span></div>
-		<p class="" string>Top Global</p>
+		<p string>Top Global</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router p editor-choice }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">editor_choice</span></div>
-		<p class="" string>Editor Choice</p>
+		<p string>Editor Choice</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router p live }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">live_tv</span></div>
-		<p class="" string>Live</p>
+		<p color="red:pop" string>Live</p>
 	</a>
 </div>
 <div class="font-size:medium font:bold padding-horizontal:large" component="menu-nav:title">YOU</div>
 <div class="flex flex:column padding" component="menu:nav">
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router p history }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">search_activity</span></div>
-		<p class="" string>History</p>
+		<p string>History</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router playlist:default }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">timer_play</span></div>
-		<p class="" string>Watch Later</p>
+		<p string>Watch Later</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router playlist:index }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">playlist_play</span></div>
-		<p class="" string>Playlist</p>
+		<p string>Playlist</p>
 	</a>
 </div>
 <div class="font-size:medium font:bold padding-horizontal:large" component="menu-nav:title">EXPLORE</div>
 <div class="flex flex:column padding" component="menu:nav">
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router people:index }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">hotel_class</span></div>
-		<p class="" string>Star</p>
+		<p string>Star</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router movie:index }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">movie</span></div>
-		<p class="" string>Movie</p>
+		<p string>Movie</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router tv:index }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">tv_guide</span></div>
-		<p class="" string>TV Show</p>
+		<p string>TV Show</p>
 	</a>
-	<a href="" class="anchor:simple a:static">
+	<a href="{{ base_url }}{{ router photo:index }}" class="anchor:simple a:static">
 		<div class="icon:container font:medium text_gradient"><span class="icon:material">photo_camera</span></div>
-		<p class="" string>Photo</p>
+		<p string>Photo</p>
 	</a>
 </div>
 </template>
