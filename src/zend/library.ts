@@ -9,7 +9,7 @@ php.parse_url = function (input: string) {
 		domain: {},
 		protocol: url.protocol.substr (0, (url.protocol.length - 1)),
 		path: url.pathname,
-		query: url.searchParams,
+		q: url.searchParams,
 		parse: url,
 		}
 	}
@@ -62,6 +62,7 @@ php.markup = class {
 
 php.render = function (markup: any, variable: any = {}, tab: number = 0) {
 	if (Array.isArray (markup)) {
+		if (typeof variable === "number") tab = variable;
 		if (tab) markup = markup.map (function (markup) {
 			if (markup.startsWith (php.render.tag.open)) return markup;
 			else return ("\t").repeat (tab) + markup;

@@ -1,0 +1,345 @@
+<template id="default">
+{{ slot }}
+</template>
+
+<template id="header:float">
+<div class="flex align:item gap x header:size fixed box-shadow" component="header:float">
+	<div class="flex align:item gap padding:left">
+		<button class="button:icon font:large" phone>
+			<div class="icon:container icon:margin">
+				<span class="icon:material">menu</span>
+			</div>
+		</button>
+	</div>
+	<div class="flex align:item">
+{{ component logo:simple }}
+	</div>
+	<div class="flex flex:grow align:item justify:item gap" phone></div>
+	<div class="flex flex:grow align:item justify:item gap" computer>
+		<div class="flex align:item gap">
+			<div class="flex align:item">
+{{ theme:component header button:movie }}
+{{ theme:component header button:tv }}
+{{ theme:component header button:people }}
+			</div>
+		</div>
+	</div>
+	<div class="flex align:item" computer>
+		<input id="search" class="padding padding-horizontal:medium no-border border:radius" type="search" placeholder="Search ..." component="search:float">
+	</div>
+	<div class="flex align:item gap padding:right">
+		<button id="button-search" class="button:icon">
+			<div class="icon:container icon:margin font:large">
+				<span class="icon:material">search</span>
+			</div>
+		</button>
+		<button class="button:icon" computer>
+			<div class="icon:container icon:margin font:large">
+				<span class="icon:material">notifications</span>
+			</div>
+			{{ component notification:float }}
+		</button>
+		<button class="button:icon">
+			<div class="icon:container icon:margin font:large">
+				<span class="icon:material">account_circle</span>
+			</div>
+			{{ component account-manager:float }}
+		</button>
+		<button class="button:icon">
+			<div class="icon:container icon:margin font:large">
+				<span class="icon:material">more_vert</span>
+			</div>
+			<!--section class="nav:size top:port right border-radius border-size background:color box-shadow">
+				<div class="flex flex:column x">
+					<div>asd</div>
+					<div>asd</div>
+				</div>
+			</section-->
+		</button>
+	</div>
+</div>
+</template>
+
+<template id="logo:simple">
+<a href="/" class="flex align:item gap" component="logo:simple">
+	<div><img src="{{ asset:image }}/logo.png" height="32"></div>
+	<div class="flex flex:column">
+		<div class="font-family:logo font:intermediate font:bold text-gradient">{{ site:name }}</div>
+		<div class="font:small font:bold" style="color: rgba(var(--color))">{{ site:tagline }}</div>
+	</div>
+</a>
+</template>
+
+<template id="menu:nav">
+<div class="flex flex:column padding" component="menu:nav">
+	<a href="/" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">description</span></div>
+		<p string>Home</p>
+	</a>
+	<a href="{{ base_url }}{{ router p short }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">subscriptions</span></div>
+		<p string>Short</p>
+	</a>
+	<a href="{{ base_url }}{{ router p trending }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">local_fire_department</span></div>
+		<p string>Trending</p>
+	</a>
+	<a href="{{ base_url }}{{ router p top_global }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">bolt</span></div>
+		<p string>Top Global</p>
+	</a>
+	<a href="{{ base_url }}{{ router p editor-choice }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">editor_choice</span></div>
+		<p string>Editor Choice</p>
+	</a>
+	<a href="{{ base_url }}{{ router p live }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">live_tv</span></div>
+		<p color="red:pop" string>Live</p>
+	</a>
+</div>
+<div class="font-size:medium font:bold padding-horizontal:large" component="menu-nav:title">YOU</div>
+<div class="flex flex:column padding" component="menu:nav">
+	<a href="{{ base_url }}{{ router p history }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">search_activity</span></div>
+		<p string>History</p>
+	</a>
+	<a href="{{ base_url }}{{ router playlist:default }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">timer_play</span></div>
+		<p string>Watch Later</p>
+	</a>
+	<a href="{{ base_url }}{{ router playlist:index }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">playlist_play</span></div>
+		<p string>Playlist</p>
+	</a>
+</div>
+<div class="font-size:medium font:bold padding-horizontal:large" component="menu-nav:title">EXPLORE</div>
+<div class="flex flex:column padding" component="menu:nav">
+	<a href="{{ base_url }}{{ router people:index }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">hotel_class</span></div>
+		<p string>Star</p>
+	</a>
+	<a href="{{ base_url }}{{ router movie:index }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">movie</span></div>
+		<p string>Movie</p>
+	</a>
+	<a href="{{ base_url }}{{ router tv:index }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">tv_guide</span></div>
+		<p string>TV Show</p>
+	</a>
+	<a href="{{ base_url }}{{ router photo:index }}" class="anchor:simple a:static">
+		<div class="icon:container font:medium text_gradient"><span class="icon:material">photo_camera</span></div>
+		<p string>Photo</p>
+	</a>
+</div>
+</template>
+
+<template id="footer:sensitive">
+<div class="flex gap" component="footer:sensitive">
+	<div class="flex flex:column flex:grow gap:medium">
+		{{ component logo:simple }}
+		<div class="flex flex:column gap:small padding padding-horizontal:intermediate border:radius background-color:mono">
+			<p class="font-size:medium font-bold:pop" color="red:pop">Sensitive Content Warning</p>
+			<p color="mono:chrome">
+				This site may contain sensitive content.
+				We does not review nor do we endorse the content of this site.
+				For more information please visit Privacy <a href="/">Content Policy</a>.
+			</p>
+		</div>
+	</div>
+	<div style="width: 10px;"></div>
+	<div class="flex flex:column" style="width: 230px;">
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">description</span>
+			</div>
+			<p>About</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">contacts</span>
+			</div>
+			<p>Contact</p>
+		</a>
+		<!--a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">live_help</span>
+			</div>
+			<p>Help</p>
+		</a-->
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">link</span>
+			</div>
+			<p>Blog</p>
+		</a>
+	</div>
+	<div class="flex flex:column" style="width: 320px;">
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">health_and_safety</span>
+			</div>
+			<p>Privacy Policy</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">settings_accessibility</span>
+			</div>
+			<p>Term's of Use</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">cookie</span>
+			</div>
+			<p>Cookie Preference</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">rss_feed</span>
+			</div>
+			<p>Sitemap</p>
+		</a>
+	</div>
+	<div class="flex flex:column" style="width: 300px;">
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">safety_check</span>
+			</div>
+			<p>Disclaimer</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">admin_panel_settings</span>
+			</div>
+			<p>DMCA</p>
+		</a>
+		<a class="flex align:item gap font-bold:pop padding padding-horizontal:intermediate border:radius a:static a-hover:mono-pop" href="/">
+			<div class="icon:container icon:margin font:medium text:gradient">
+				<span class="icon:material">live_help</span>
+			</div>
+			<p>FAQ</p>
+		</a>
+	</div>
+</div>
+</template>
+
+<template id="footer:info">
+<div class="flex flex:column align:item gap:tiny font:tiny" component="footer:info">
+	<div>Copyright &copy; 2025 <a href="{{ base_url }}">{{ site:name }}</a></div>
+	<div>All Right's Reserved</div>
+	<div>Logo's Trademark's on this Site are the Property of their Respective Owner's</div>
+	<div>Website Engine Code & Design is Powered By <a href="mailto:{{ author:email }}">{{ author:name }}</a></div>
+</div>
+</template>
+
+<template id="notification:float">
+<section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
+	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
+		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
+		<div class="font:bold">Notification</div>
+	</div>
+	{{ component separator:mono }}
+	<div class="flex flex:column gap padding:vertical padding-horizontal:intermediate">
+		<div class="font-bold:pop">No Activity</div>
+	</div>
+	{{ component separator:mono }}
+	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:intermediate">
+		Our Information, Activity will appear here, such as when we add new Movie and/or TV Show.
+	</div>
+</section>
+</template>
+
+<template id="account-manager:float">
+<section class="flex:column nav-chrome:size top:port right text-align:left border:radius background:color box-shadow no-overflow transition:visibility">
+	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
+		<div><img src="{{ asset:image }}/logo.png" height="16"></div>
+		<div class="flex:grow font:bold">Account Manager</div>
+		<div class="font-size:small font:bold" color="red:pop">OFF</div>
+	</div>
+	{{ component separator:mono }}
+	<div class="flex align:item gap padding:vertical padding-horizontal:intermediate">
+		<div class="icon:container icon:margin font:big text-gradient">
+			<span class="icon:material">person_shield</span>
+		</div>
+		<div class="flex flex:column">
+			<div class="font-bold:pop color">Guest</div>
+			<div class="" color="mono:chrome">guest@{{ domain:name }}</div>
+		</div>
+	</div>
+	{{ component separator:mono }}
+	<a href="/" class="flex align:item gap padding:vertical padding-horizontal:intermediate a-hover:mono-pop">
+		<div class="icon:container icon:margin font:big text-gradient">
+			<span class="icon:material">forum</span>
+		</div>
+		<div class="flex flex:column">
+			<div class="font-bold:pop color">Support</div>
+			<div class="" color="mono:chrome">support@{{ domain:name }}</div>
+		</div>
+	</a>
+	{{ component separator:mono }}
+	<div class="font-size:pop line-spacing:small padding:vertical padding-horizontal:intermediate">
+		We keep your <u>Information</u> Safe.
+		<br>
+		Watch and Download is always <u>Free</u>.
+		<br>
+		Just follow <a href="{{ base_url }}{{ router page privacy-policy }}">Privacy Policy</a> and <a href="{{ base_url }}{{ router page term_of_use }}">Term's of Use</a>.
+	</div>
+</section>
+</template>
+
+<template id="button:inline">
+<button class="button:inline">
+	<div class="flex align:item gap:small padding-vertical:small padding:horizontal">
+		<span class="font:bold">{{ title }}</span>
+		<div class="icon:container icon:margin font:intermediate"><span class="icon:material">arrow_drop_down</span></div>
+	</div>
+	<section class="flex:column nav:size top:port left border:radius background:color box-shadow no-overflow transition:visibility">
+{{ slot }}
+	</section>
+</button>
+</template>
+
+<template id="button:inline anchor:container">
+<div class="flex flex:column text-align:left">
+{{ slot }}
+</div>
+</template>
+
+<template id="button:inline anchor-more:container">
+<div class="flex font:small text-align:left gap padding">
+	<div class="flex flex:column flex:grow">
+{{ left }}
+	</div>
+	<div class="flex flex:column flex:grow">
+{{ right }}
+	</div>
+</div>
+</template>
+
+<template id="button:inline anchor">
+<a href="{{ permalink }}" class="flex align:item gap padding:li a:static a-hover:mono-pop">
+	<div class="icon:container icon:margin"><span class="icon:material">{{ icon }}</span></div>
+	<span class="font-bold:pop flex:grow">{{ title }}</span>
+	<span class="font:small font-bold:pop" style="font-color: rgba(var(--color),0.75);" color="green:pop">{{ quantity }}</span>
+</a>
+</template>
+
+<template id="button:inline anchor:more">
+<a href="{{ permalink }}" class="flex align:item gap padding:small padding:horizontal">
+	<span class="flex:grow">{{ title }}</span>
+</a>
+</template>
+
+<template id="separator:mono">
+<div class="separator:mono"></div>
+</template>
+
+<template id="youtube:embed">
+<iframe width="560" height="315" src="{{ url }}" title="{{ title }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</template>
+
+<template id="icon:material more horizontal">
+<div class="icon:container icon:margin"><span class="icon:material">more_horiz</span></div>
+</template>
+<template id="icon:material sort by alpha">
+<div class="icon:container icon:margin"><span class="icon:material">sort_by_alpha</span></div>
+</template>

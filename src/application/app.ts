@@ -39,11 +39,15 @@ app.start (async function (request: any, response: any, next: any) {
 	await php.worker.start (app, request, response, next)
 	if (request.error.length) {
 		for (var i in request.error) {
-			if (request.error [i].type === "host") return response ("Host Not Found")
+			if (request.error [i].type === "host") return response ("Host Not Found", 404)
 			}
 		}
-	await request.router.use ()
+	// await request.router.use ()
 	return next ()
+	})
+
+app.get (app.router.index, function (request: any, response: any, next: any) {
+	return response.vue ()
 	})
 
 /**

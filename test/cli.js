@@ -31,11 +31,11 @@ function parse (input, output) {
 	writeFileSync (output, JSON.stringify (template, null, "\t"));
 	}
 
-//
-
-module.exports = exports = function () {
+module.exports = exports = function (run) {
 	// console.log (`${file_source_layout} > ${file_layout}`)
 	// console.log (`${file_source_component} > ${file_component}`)
-	parse (file_source_layout, file_layout);
-	parse (file_source_component, file_component);
+	if (run) {
+		parse (file_source_layout, file_layout);
+		parse (file_source_component, file_component);
+		}
 	}
