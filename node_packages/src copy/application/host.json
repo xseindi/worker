@@ -1,0 +1,65 @@
+{
+"127.0.0.1": {"db": {"id": "default"}, "theme": {"id": "default", "group": "video"}, "config": {"tmdb:api": ""}},
+
+"192.168.18.13": "bioskop",
+"bioskop.com": "bioskop",
+"bioskop.vcredist.workers.dev": "bioskop",
+"bioskopress.com": "bioskop",
+"bioskop": {
+	"author": {"name": "", "email": ""},
+	"alias": ["www"],
+	"public": "7qvt6",
+	"db": {"id": "bioskop"},
+	"theme": {"id": "default", "group": "video"},
+	"ad": {
+		"adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
+		"adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
+		"monetag": ""
+		},
+	"affiliate": {
+		"marketing": [
+			{"provider": "digistore24", "client": "tubemagic", "url": "https://tubemagic.com/ds#aff=xseindi", "image": {}}
+			],
+		"gamble": [
+			{"provider": "digistore24", "client": "slotmachinesystem", "url": "https://www.digistore24.com/redir/319147/xseindi/", "image": {}}
+			]
+		},
+	"config": {
+		"ad:block detector": false,
+		"tmdb:api": "d4b47b5286ba1ff0ddf4ddf78f70d6d8",
+		"tmdb:api access:token": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNGI0N2I1Mjg2YmExZmYwZGRmNGRkZjc4ZjcwZDZkOCIsIm5iZiI6MTc2MzQzOTc5Ny45MSwic3ViIjoiNjkxYmY0YjU5Y2Y0Mzc3NzMzNjA5YzJjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.fsGVgPtDUktUWh02_mZZyi-cdqlzbdXd5uzc97_Os1U"
+		}
+	},
+
+"bokep.com": "bokep",
+"bokep.vcredist.workers.dev": "bokep",
+"bioskopress.online": "bokep",
+"bokep": {
+	"alias": ["www"],
+	"public": "192.168.1.0",
+	"db": {"id": "bokep"},
+	"theme": {"id": "default", "group": "video"},
+	"ad": {
+		"adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
+		"adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
+		"monetag": ""
+		},
+	"affiliate": {
+		"marketing": [
+			{"provider": "digistore24", "client": "tubemagic", "url": "https://tubemagic.com/ds#aff=xseindi", "image": {}}
+			],
+		"gamble": [
+			{"provider": "digistore24", "client": "slotmachinesystem", "url": "https://www.digistore24.com/redir/319147/xseindi/", "image": {}}
+			]
+		},
+	"config": {
+		"ad:block detector": false,
+		"tmdb:api": "d4b47b5286ba1ff0ddf4ddf78f70d6d8",
+		"tmdb:api access:token": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNGI0N2I1Mjg2YmExZmYwZGRmNGRkZjc4ZjcwZDZkOCIsIm5iZiI6MTc2MzQzOTc5Ny45MSwic3ViIjoiNjkxYmY0YjU5Y2Y0Mzc3NzMzNjA5YzJjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.fsGVgPtDUktUWh02_mZZyi-cdqlzbdXd5uzc97_Os1U"
+		}
+	},
+
+"contentify.com": {"alias": ["www"], "db": {"id": "default"}, "theme": {"id": "default", "group": "website"}, "config": {}},
+
+"*": {}
+}

@@ -8,6 +8,7 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<meta http-equiv="X-UA-Compatible" content="IE=edge">`);
 	markup.push (2, `<meta http-equiv="X-Cross-Origin" content="{{ http-equiv:x-cross-origin }}">`);
 	markup.push (2, `<meta charset="{{ meta:charset }}">`);
+	markup.push (2, `<meta name="title" content="{{ title }}">`);
 	markup.push (2, `<meta name="viewport" content="{{ meta:viewport }}">`);
 	markup.push (2, `<meta name="author" content="{{ meta:author }}">`);
 	markup.push (2, `<meta name="generator" content="{{ meta:generator }}">`);
@@ -24,6 +25,7 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<meta name="twitter:description" content="{{ twitter:description }}">`);
 	markup.push (2, `<meta name="twitter:image" content="{{ twitter:image }}">`);
 	markup.push (2, `<meta property="og:site_name" content="{{ og:site-name }}">`);
+	markup.push (2, `<meta property="og:site_description" content="{{ site:description }}">`);
 	markup.push (2, `<meta property="og:title" content="{{ og:title }}">`);
 	markup.push (2, `<meta property="og:description" content="{{ og:description }}">`);
 	markup.push (2, `<meta property="og:url" content="{{ og:url }}">`);
@@ -60,15 +62,14 @@ php.html = function (output: string, option: any = {}) {
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
+			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
+			// markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">`);
 			}
-		// markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
-		// markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
+		markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
+		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
 		// markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:config }}?cache={{ cache }}">`);
 		// markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:sheet }}?cache={{ cache }}">`);
 		if (php ["config.json"]["internet"]) {
@@ -84,18 +85,45 @@ php.html = function (output: string, option: any = {}) {
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
 		// markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
-		// markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
+		markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
-	markup.push (2, `<script>$__ = {theme: {id: "default"}}</script>`);
+	// markup.push (2, `<script>${php.js ["global"] ()}</script>`);
+	markup.push (2, `<script>$$$.theme.layout = "{{ theme:layout }}";</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
+	markup.push (2, `<style>[hidden] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);
 	markup.push (1, `<body>`);
 	markup.push (0, output);
-	// markup.push (2, `<script src="{{ theme:base_url }}{{ router eof.js }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue.js }}?cache={{ cache }}"></script>`);
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();
+	}
+
+php.vue = function () {}
+php.vue.html = function () {
+	var markup = new php.markup ();
+	markup.push (0, `<div id="app">`);
+	markup.push (1, `<h1 hidden>{{ title }}</h1>`);
+	markup.push (1, `<h2 hidden>{{ site:description }}</h2>`);
+	markup.push (1, `<h3 hidden>{{ meta:description }}</h3>`);
+	markup.push (1, `<article hidden>`);
+	markup.push (2, `<h1>{{ title }}</h1>`);
+	markup.push (2, `<h2>{{ site:description }}</h2>`);
+	markup.push (2, `<date>0000-00-00</date>`);
+	markup.push (2, `<p>{{ meta:description }}</p>`);
+	markup.push (1, `</article>`);
+	markup.push (1, `<menu hidden>`);
+	markup.push (2, `<ul><li></li></ul>`);
+	markup.push (2, `<ul><li></li></ul>`);
+	markup.push (2, `<nav>`);
+	markup.push (3, `<ul><li></li></ul>`);
+	markup.push (3, `<ul><li></li></ul>`);
+	markup.push (2, `</nav>`);
+	markup.push (1, `</menu>`);
+	markup.push (0, `</div>`);
+	return markup.data;
 	}

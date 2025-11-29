@@ -42,12 +42,7 @@ app.start (async function (request: any, response: any, next: any) {
 			if (request.error [i].type === "host") return response ("Host Not Found", 404)
 			}
 		}
-	// await request.router.use ()
 	return next ()
-	})
-
-app.get (app.router.index, function (request: any, response: any, next: any) {
-	return response.vue ()
 	})
 
 /**
@@ -73,9 +68,8 @@ app.get (app.router ["style.css"], async function (request: any, response: any, 
 	})
 
 app.get (app.router ["script.js"], async function (request: any, response: any, next: any) {
-	var js = [php.js ["global"] ()]
-	if (request.app.config ["ad:block detector"]) js.push (php.js ["ad:block detector"] ())
-	return response.js (request.render (js.join (ln)))
+	var json = JSON.stringify ({var: {}, theme: request.client.theme, image: request.client.image, router: app.router})
+	return response.js (`$$$ = ${json}`)
 	})
 
 app.get (app.router ["feed"], async function (request: any, response: any, next: any) {
@@ -84,6 +78,21 @@ app.get (app.router ["feed"], async function (request: any, response: any, next:
 
 app.get (app.router ["feed:atom"], async function (request: any, response: any, next: any) {
 	return response.xml (`<?xml version="1.0" encoding="UTF-8"?><xml></xml>`)
+	})
+
+app.get (app.router ["manifest.json"], async function (request: any, response: any, next: any) {
+	return response.json ({
+		"name": "Minimal Manifest",
+		"short_name": "Minimal Manifest",
+		"display": "minimal-ui",
+		"start_url": "/?manifest",
+		"scope": "/",
+		"background_color": "#FFFFFF",
+		"theme_color": "#FF0033",
+		"icons": [
+			{"src": "/asset/image/manifest/144.png", "sizes": "144x144", "type": "image/png"},
+			],
+		})
 	})
 
 app.get (app.router ["search"])
@@ -98,23 +107,44 @@ app.get (app.router ["search"])
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get ("/test")
-app.get (app.router.index)
-app.get (app.router.page ["about"])
+app.get (app.router.index, function (request: any, response: any, next: any) {
+	response.set ({layout: "index"})
+	return response.vue ()
+	})
+
+app.get (app.router.page ["about"], function (request: any, response: any, next: any) {
+	response.set ({title: "About"})
+	return response.vue ()
+	})
+
 app.get (app.router.page ["contact"])
+
 app.get (app.router.page ["help"])
+
 app.get (app.router.page ["privacy"])
+
 app.get (app.router.page ["privacy-policy"])
+
 app.get (app.router.page ["privacy-policy:content"])
+
 app.get (app.router.page ["term_of_use"])
+
 app.get (app.router.page ["term_of_service"])
+
 app.get (app.router.page ["cookie"])
+
 app.get (app.router.page ["cookie:preference"])
+
 app.get (app.router.page ["disclaimer"])
+
 app.get (app.router.page ["FAQ"])
+
 app.get (app.router.page ["DMCA"])
+
 app.get (app.router.page ["EULA"])
+
 app.get (app.router.page ["service"])
+
 app.get (app.router.page ["partner"])
 
 /**
@@ -292,6 +322,8 @@ app.get (app.router ["people:editor-choice"])
  */
 
 app.catch (function (request: any, response: any, next: any) {
+	response.set ({layout: 404})
+	return response.vue (404)
 	return response ("404 Not Found", 404)
 	})
 

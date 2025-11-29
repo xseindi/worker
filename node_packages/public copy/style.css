@@ -1,0 +1,27 @@
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx/xxx
+ */
+
+[class*="margin:string"] {}
+[class*="margin:icon"] { margin-top: 5px; }
+[class*="margin-small:icon"] { margin-top: 2px; }
+
+[pixel] {}
+[pixel-view] {}
+[string] {}
+[number] {}
+[icon] {}
+[emoticon] {}
+[clear] {}
+
+/**
+ * the end
+ *
+ * xxx://xxx.xxx.xxx/xxx/xxx
+ */
