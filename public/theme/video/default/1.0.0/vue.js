@@ -1,11 +1,51 @@
-$.vue.setup.context = function () {}
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
-$.vue.app.var = $$$.var
+$.vue.setup = $.vue.js ({
+	mount (vue) {
+		setTimeout (function () { this.vue.app.ready = true; }.bind ({vue}), 123);
+		},
+	template: `
+		<div v-if="app.ready" id="application">
+			<theme:layout container/>
+		</div>
+		<loading:spinner v-else/>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 $.vue.app.theme = $$$.theme
 $.vue.app.router = $$$.router
 $.vue.app.image = $$$.image
+$.vue.app.var = $$$.var
 $.vue.app.var ["site:name"] = $.vue.meta.get ({property: "og:site_name"})
 $.vue.app.var ["site:description"] = $.vue.meta.get ({property: "og:site_description"})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
 $.vue.mount.search = function () {
 	if ($.vue.mount.search.loaded) {}
@@ -25,7 +65,21 @@ $.vue.mount.search = function () {
 		}
 	}
 
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 $.app = $.vue.create ()
 $.app.mount ("#app")
 
-//
+/**
+ * the end
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */

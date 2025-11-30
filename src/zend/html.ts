@@ -64,15 +64,14 @@ php.html = function (output: string, option: any = {}) {
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">`);
-			// markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
+			if (false) markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">`);
 			}
 		markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
 		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
-		// markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:config }}?cache={{ cache }}">`);
-		// markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style:sheet }}?cache={{ cache }}">`);
 		if (php ["config.json"]["internet"]) {
+			markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
 			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
 			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
 			markup.push (2, `<script src="https://unpkg.com/lodash@4.17.21/core.min.js"></script>`);
@@ -84,13 +83,12 @@ php.html = function (output: string, option: any = {}) {
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
-		// markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
-	// markup.push (2, `<script>${php.js ["global"] ()}</script>`);
 	markup.push (2, `<script>$$$.theme.layout = "{{ theme:layout }}";</script>`);
+	markup.push (2, `<script>window.onload = function () { php.action ("load"); }</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[hidden] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);

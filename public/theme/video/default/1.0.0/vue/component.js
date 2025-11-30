@@ -8,31 +8,68 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("div:loading", {
-	setup () {
-		return $.vue ()
-		},
+$.vue.component ("loading", $.vue.js ({
 	template: `
-		<div id="loading">loading ...</div>
+		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
+			Loading ...
+		</div>
 		`,
-	})
+	}))
 
-$.vue.component ("account:avatar", $.vue.js ({
+$.vue.component ("loading:spinner", $.vue.js ({
+	template: `
+		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
+			<img:spinner class="size:large"/>
+		</div>
+		`,
+	}))
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+$.vue.component ("logo-simple", $.vue.js ({
+	prop: ["src", "title", "description"],
+	template: `
+		<a class="flex align:item gap" component="logo-simple">
+			<img:logo v-bind:src="prop.src || app.image.logo" class="img:size"/>
+			<div class="flex flex:column gap:space" margin>
+				<span class="font-family:logo font:intermediate font:bold text:gradient">{{ prop.title || app.var ["site:name"] }}</span>
+				<string class="font:small font:bold font:static">{{ prop.description || app.var ["site:description"] }}</string>
+			</div>
+		</a>
+		`,
+	}))
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+$.vue.component ("account-avatar", $.vue.js ({
 	prop: ["name", "email", "avatar"],
-	setup () {
-		return {}
-		},
 	template: `
 		<button class="button padding:pop" component="account:avatar">
 			<div class="flex align:item gap">
-				<div class="flex flex:column gap:tiny justify:item text-align:right">
-					<div class="font-bold:pop" string>{{ prop.name }}</div>
-					<div class="font-size:pop font-bold:pop font-color:mono" string>{{ prop.email }}</div>
+				<div class="flex flex:column justify:item gap:space text-align:right" margin computer>
+					<string class="font-bold:pop">{{ prop.name }}</string>
+					<string class="font-size:small font-bold:pop font-color:mono">{{ prop.email }}</string>
 				</div>
-				<separator:small separator/>
+				<separator:pop computer/>
 				<div class="relative">
 					<img:avatar v-bind:src="prop.avatar" class="size:regular border-radius:circle background-color:mono"/>
-					<div class="absolute border-radius:circle index" style="width: 10px; height: 10px; border: 2px solid white; bottom: -2px; right: -2px; background-color: rgb(var(--green-pop));"></div>
+					<status:online class="background-color:green"/>
 				</div>
 			</div>
 			<slot name="default"/>
@@ -40,178 +77,119 @@ $.vue.component ("account:avatar", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("account-avatar:guest", $.vue.js ({
-	template: `
-		<account:avatar name="Anonymous" email="Sign In" avatar="male_v.png">
-			<slot name="default"/>
-		</account:avatar>
-		`,
-	}))
-
-$.vue.component ("header:float", $.vue.js ({
+$.vue.component ("account-avatar:float", $.vue.js ({
 	setup () {
-		return $.vue ()
-		},
-	mount () {
-		$.vue.mount.search ()
-		},
-	method: {
-		is_ready (element) {
-			console.log (element)
-			},
+		return {
+			link_privacy_policy: $.vue.router.link ({page: "privacy-policy"}),
+			link_term_of_use: $.vue.router.link ({page: "term_of_use"}),
+			}
 		},
 	template: `
-		<div id="header-float" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header:float">
-			<div class="padding:left" phone>
-				<button:float icon="menu" class="header:size --icon-large"></button:icon>
+		<section class="flex flex:column float:medium top:port right text-align:left border:radius background:color box-shadow no-overflow index transition:visibility">
+			<div class="flex align:item gap padding padding-horizontal:medium">
+				<img:logo src="google.svg" class="img:small"/>
+				<string class="flex:grow font:bold">Account Manager</string>
+				<string class="font:small font-bold:pop"></string>
 			</div>
-			<div class="padding-left:small" computer></div>
-			<logo:simple />
-			<div class="flex align:item justify:item flex:grow">
-				<div class="flex align:item gap">
-					<button:material text="G Movie" icon="arrow_drop_down" position="reverse" class="font-bold:pop padding border:radius border-radius-bottom:none background-hover:mono">
-						<section class="flex flex:column float:size top:port left font:regular text-align:left border:radius border-radius-top-left:none background:color box-shadow no-overflow index:medium transition:visibility">
-							<a:simple icon="more_horiz" description="99 +">
-								ALL
-							</a:simple>
-							<separator:mono separator/>
-							<a:simple icon="hotel_class" description="&#x2197;">
-								Popular
-							</a:simple>
-							<a:simple icon="local_fire_department" description="&#x27A1;">
-								Top Rated
-							</a:simple>
-							<a:simple icon="timer_play" description="&#x2198;">
-								Up Coming
-							</a:simple>
-							<separator:mono separator/>
-							<a:simple icon="bolt" description="0">
-								Top Global
-							</a:simple>
-							<a:simple icon="editor_choice" description="0">
-								Editor Choice
-							</a:simple>
-							<separator:mono separator/>
-							<div class="flex font-size:small text-align:left gap padding">
-								<div class="flex flex:column flex:grow">
-									<a href="https://bioskopress.com/movie/genre/12/adventure/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Adventure</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/14/fantasy/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Fantasy</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/16/animation/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Animation</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/18/drama/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Drama</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/27/horror/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Horror</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/28/action/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Action</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/35/comedy/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Comedy</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/36/history/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">History</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/37/western/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Western</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/53/thriller/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Thriller</span>
-									</a>
-								</div>
-								<div class="flex flex:column flex:grow">
-									<a href="https://bioskopress.com/movie/genre/80/crime/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Crime</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/99/documentary/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Documentary</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/878/science-fiction/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Science Fiction</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/9648/mystery/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Mystery</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/10402/music/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Music</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/10749/romance/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Romance</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/10751/family/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">Family</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/10752/war/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">War</span>
-									</a>
-									<a href="https://bioskopress.com/movie/genre/10770/tv-movie/" class="flex align:item gap padding:small padding:horizontal">
-										<span class="flex:grow">TV Movie</span>
-									</a>
-								</div>
-							</div>
-						</section>
-					</button:material>
-					<button:material text="TV Show" icon="arrow_drop_down" position="reverse" class="font-bold:pop padding icon:medium border:radius border-radius-bottom:none background-hover:mono">
-					</button:material>
-					<button:material text="People" icon="arrow_drop_down" position="reverse" class="font-bold:pop padding icon:medium border:radius border-radius-bottom:none background-hover:mono">
-					</button:material>
+			<separator:mono />
+			<div v-if="!google.auth.credential" v-on:click="google.auth.prompt ()" class="flex align:item gap padding padding-horizontal:medium">
+				<icon src="person_shield" class="font:big text:gradient"/>
+				<div class="flex flex:column gap:space">
+					<string class="font-bold:pop">One Tap</string>
+					<string class="font-size:pop font-color:mono">Sign In</string>
 				</div>
 			</div>
-			<div class="flex align:item gap:tiny padding:right">
-				<account-avatar:guest class="border:radius border-radius-bottom:none border-hover:mono">
-					<section class="flex flex:column float:medium top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index:medium transition:visibility">
-						<div class="flex align:item gap padding padding-horizontal:medium">
-							<img:logo src="google.svg" class="img:tiny"/>
-							<p class="font:bold" string>Account Manager</p>
-							<span class="font:small" string></span>
-						</div>
-						<separator:mono separator/>
-						<div class="flex align:item gap padding padding-horizontal:medium">
-							<icon:material src="person_shield" class="font:big text:gradient" icon/>
-							<div class="flex flex:column gap:tiny">
-								<p class="font-bold:pop" string>Sign Up</p>
-								<span class="font-size:pop font-color:mono" string>Under Construction</span>
-							</div>
-						</div>
-						<div class="padding-horizontal:medium">
-							<button:cool v-on:click="vue.router.reload ()" class="flex align:item justify:item width:size padding" string>Continue as Guest</button:cool>
-						</div>
-						<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
-							<p string>We keep your <u>Information</u> Safe.</p>
-							<p string>Watch and Download is always <u>Free</u>.</p>
-							<p string>Just follow <a href="/">Privacy Policy</a> and <a href="/">Term's of Use</a>.</p>
-						</div>
-					</section>
-				</account-avatar:guest>
-				<button:material icon="notifications_unread" class="icon:large border:radius border-radius-bottom:none background-hover:mono">
-					<section class="flex flex:column float:size top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index:medium transition:visibility">
-						<div class="flex align:item gap padding padding-horizontal:medium">
-							<img:logo src="google.svg" class="img:tiny"/>
-							<p class="font:bold" string>Notification</p>
-							<span class="font:small" string></span>
-						</div>
-						<separator:mono separator/>
-						<div class="flex align:item padding padding-horizontal:medium">
-							<p class="font-bold:pop" string>No Activity</p>
-						</div>
-						<separator:mono separator/>
-						<div class="flex align:item justify:item padding padding-horizontal:medium">
-							<p class="font-size:pop font-color:mono" string>Activity, Information Feed.</p>
-						</div>
-					</section>
-				</button:material>
-				<button:material id="search-button" icon="search" class="icon:large border-radius:pop background-hover:mono"/>
+			<div v-if="google.auth.credential" class="padding:top padding-horizontal:medium">
+				<button:awesome v-on:click="google.auth.sign.out ()" class="flex align:item justify:item width:size padding" color="red">Sign Out</button:awesome>
 			</div>
-		</div>
-		<div id="search-form" class="flex align:item header:size width:size fixed padding:right background-color:alpha index:small" style="display: none">
-			<input id="search-input" type="search" class="flex:grow header:size font:medium padding-left:medium border:none" placeholder="Search something ...">
-			<button:material id="search-button-submit" icon="search" class="icon:large"/>
+			<div class="padding-horizontal:medium" v-else>
+				<button:awesome v-on:click="vue.router.reload ()" class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
+			</div>
+			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
+				<p string>Watch and Download is always <u>Free</u>.</p>
+				<p string>We don't store your <u>Information</u>.</p>
+				<p string>See site's <a v-bind:href="link_privacy_policy">Privacy Policy</a> and <a v-bind:href="link_term_of_use">Term's of Use</a>.</p>
+			</div>
+		</section>
+		`,
+	}))
+
+$.vue.component ("account-avatar:anonymous", $.vue.js ({
+	setup () {
+		var account = {name: "Anonymous", email: "Sign In", avatar: "male_v.png"}
+		if (php.google.auth.credential) account = {name: php.google.auth.profile.name, email: php.google.auth.profile.email, avatar: php.google.auth.profile.picture}
+		return {account}
+		},
+	template: `
+		<account-avatar v-bind:name="account.name" v-bind:email="account.email" v-bind:avatar="account.avatar">
+			<slot name="default"/>
+		</account-avatar>
+		`,
+	}))
+
+$.vue.component ("notification:float", $.vue.js ({
+	template: `
+		<section class="flex flex:column float:size top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index transition:visibility">
+			<div class="flex align:item gap padding padding-horizontal:medium">
+				<img:logo src="google.svg" class="img:small"/>
+				<string class="flex:grow font:bold">Notification</string>
+				<string class="font:small font-bold:pop"></string>
+			</div>
+			<separator:mono />
+			<div class="flex flex:column gap padding padding-horizontal:medium">
+				<string class="font-bold:pop">No Activity</string>
+			</div>
+			<separator:mono />
+			<div class="flex align:item justify:item padding padding-horizontal:medium">
+				<string class="font-size:pop font-color:mono">Activity, Information Feed.</string>
+			</div>
+		</section>
+		`,
+	}))
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+$.vue.component ("nav-simple", $.vue.js ({
+	prop: ["text", "data", "position"],
+	setup (prop) {
+		var style = []
+		var css = ["flex flex:column float:size top:port text-align:left border:radius background:color box-shadow no-overflow index transition:visibility"]
+		if (prop.position === "right") css.push ("right border-radius-top-right:none")
+		else if (prop.position) style.push (prop.position)
+		else css.push ("left border-radius-top-left:none")
+		return {css, style}
+		},
+	template: `
+		<button:material v-bind:text="prop.text" icon="arrow_drop_down" icon-position="right" class="padding border:radius border-radius-bottom:none background-hover:mono">
+			<section v-bind:class="css" v-bind:style="style">
+				<component v-for="data in prop.data" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
+			</section>
+		</button:material>
+		`,
+	}))
+
+$.vue.component ("nav-simple:genre", $.vue.js ({
+	prop: ["left", "right"],
+	template: `
+		<div class="flex font-size:small text-align:left gap padding">
+			<div class="flex flex:column width:half">
+				<a v-for="data in (prop.left || [])" v-bind:href="data.url" class="padding:pop">
+					{{ data.text }}
+				</a>
+			</div>
+			<div class="flex flex:column width:half">
+				<a v-for="data in (prop.right || [])" v-bind:href="data.url" class="padding:pop">
+					{{ data.text }}
+				</a>
+			</div>
 		</div>
 		`,
 	}))
@@ -235,6 +213,72 @@ $.vue.component ("header:float", $.vue.js ({
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+$.vue.component ("the-movie:nav", $.vue.js ({
+	setup () {
+		var css = "padding:sky"
+		var data = [
+			{component: "a:material", text: "ALL", description: "99 +", url: $.vue.router.link ("movie:index"), icon: "more_horiz", css},
+			{component: "separator:mono"},
+			{component: "a:material", text: "Popular", description: "—", url: $.vue.router.link ("movie:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: $.vue.router.link ("movie:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Up Coming", description: "—", url: $.vue.router.link ("movie:up_coming"), icon: "timer_play", css},
+			{component: "separator:mono"},
+			{component: "a:material", text: "Top Global", description: "0", url: $.vue.router.link ("movie:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: $.vue.router.link ("movie:editor-choice"), icon: "editor_choice", css},
+			{component: "separator:mono"},
+			{component: "nav-simple:genre", left: [], right: []},
+			]
+		return {data}
+		},
+	template: `
+		<nav-simple text="Movie" v-bind:data="data"/>
+		`,
+	}))
+
+$.vue.component ("the-tv:nav", $.vue.js ({
+	setup () {
+		var css = "padding:sky"
+		var data = [
+			{component: "a:material", text: "ALL", description: "99 +", url: $.vue.router.link ("tv:index"), icon: "more_horiz", css},
+			{component: "separator:mono"},
+			{component: "a:material", text: "Popular", description: "—", url: $.vue.router.link ("tv:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: $.vue.router.link ("tv:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Airing Today", description: "—", url: $.vue.router.link ("tv:airing_today"), icon: "timer_play", css},
+			{component: "separator:mono"},
+			{component: "a:material", text: "Top Global", description: "0", url: $.vue.router.link ("tv:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: $.vue.router.link ("tv:editor-choice"), icon: "editor_choice", css},
+			{component: "separator:mono"},
+			{component: "nav-simple:genre", left: [], right: []},
+			]
+		return {data}
+		},
+	template: `
+		<nav-simple text="TV Show" v-bind:data="data"/>
+		`,
+	}))
+
+$.vue.component ("the-people:nav", $.vue.js ({
+	prop: ["position"],
+	setup () {
+		var css = "padding:sky"
+		var data = [
+			{component: "a:material", text: "ALL", description: "99 +", url: $.vue.router.link ("people:index"), icon: "more_horiz", css},
+			{component: "separator:mono"},
+			{component: "a:material", text: "Male", description: "—", url: $.vue.router.link ("people:index", {}, {gender: "male"}), icon: "male", css},
+			{component: "a:material", text: "Female", description: "—", url: $.vue.router.link ("people:index", {}, {gender: "female"}), icon: "female", css},
+			{component: "separator:mono"},
+			{component: "a:material", text: "Top Global", description: "0", url: $.vue.router.link ("people:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: $.vue.router.link ("people:editor-choice"), icon: "editor_choice", css},
+			{component: "separator:mono"},
+			{component: "nav-simple:genre", left: [{text: "Passed Away", url: "/"}], right: []},
+			]
+		return {data}
+		},
+	template: `
+		<nav-simple text="People" v-bind:data="data" v-bind:position="prop.position"/>
+		`,
+	}))
 
 /**
  * the end

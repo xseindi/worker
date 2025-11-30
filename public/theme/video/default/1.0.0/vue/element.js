@@ -35,49 +35,27 @@ $.vue.element ("icon", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("logo:simple", $.vue.js ({
-	prop: ["src", "title", "description"],
+$.vue.element ("a:material", $.vue.js ({
+	prop: ["text", "description", "url", "icon"],
 	template: `
-		<a href="/" class="flex align:item gap" element="logo:simple">
-			<div><img v-bind:src="prop.src || app.image.logo" class="img:size"></div>
-			<div class="flex flex:column gap:tiny">
-				<p class="font-family:logo font:intermediate font:bold text:gradient">{{ prop.title || app.var ["site:name"] }}</p>
-				<span class="font:small font:bold a:static" string>{{ prop.description || app.var ["site:description"] }}</span>
-			</div>
-		</a>
-		`,
-	}))
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-$.vue.element ("a:simple", $.vue.js ({
-	prop: ["icon", "description"],
-	template: `
-		<a class="a:simple a:static">
-			<icon:material v-bind:src="prop.icon" icon/>
-			<p primary string><slot name="default"/></p>
-			<span v-if="prop.description" class="font:small font-bold:pop font-color:green-pop" string>{{ prop.description }}</span>
+		<a v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
+			<icon v-bind:src="prop.icon"/>
+			<string v-if="prop.text" primary>{{ prop.text }}</string>
+			<string primary v-else><slot name="default"/></string>
+			<string v-if="prop.description" class="font:small font-bold:pop font-color:green">{{ prop.description }}</string>
 		</a>
 		`,
 	}))
 
 $.vue.element ("button:material", $.vue.js ({
-	prop: ["text", "description", "icon", "position"],
+	prop: ["text", "description", "icon", "icon-position"],
 	template: `
-		<button class="button background-hover:mono" element="button:material">
+		<button class="button background-hover:mono background-focus:mono" element="button:material">
 			<div v-if="prop.text" class="flex align:item gap">
-				<icon v-if="prop.icon && (prop.position !== 'reverse')" v-bind:src="prop.icon"/>
+				<icon v-if="prop.icon && (prop.iconPosition !== 'right')" v-bind:src="prop.icon"/>
 				<string class="flex:grow font:bold">{{ prop.text }}</string>
 				<string v-if="prop.description" class="font:small font-bold:pop">{{ prop.description }}</string>
-				<icon v-if="prop.icon && (prop.position === 'reverse')" v-bind:src="prop.icon"/>
+				<icon v-if="prop.icon && (prop.iconPosition === 'right')" v-bind:src="prop.icon"/>
 			</div>
 			<icon v-else-if="prop.icon" v-bind:src="prop.icon"/>
 			<slot name="default"/>
@@ -88,11 +66,7 @@ $.vue.element ("button:material", $.vue.js ({
 $.vue.element ("button:awesome", $.vue.js ({
 	prop: ["color"],
 	setup (prop) {
-		var color = "background-color:blue-ray background-hover:blue-ray"
-		if (prop.color === "red") color = "background-color:red-pop background-hover:red-pop"
-		if (prop.color === "green") color = "background-color:green-pop background-hover:green-pop"
-		if (prop.color === "blue") color = "background-color:blue-pop background-hover:blue-pop"
-		return {color}
+		return {color: ("background-color:{color} background-hover:{color}").split ("{color}").join (prop.color || "blue")}
 		},
 	template: `
 		<button v-bind:class="['button font-color:white border-radius:round', color].join (' ')" element="button:awesome">
@@ -134,7 +108,10 @@ $.vue.element ("icon:material", $.vue.js ({
 $.vue.element ("img:logo", $.vue.js ({
 	prop: ["src"],
 	method: {
-		url (src) { return "/asset/image/logo/" + src },
+		url (src) {
+			if (src.startsWith ("http:") || src.startsWith ("https:")) return src
+			else return "/asset/image/logo/" + src
+			},
 		},
 	template: `
 		<img v-bind:src="url (prop.src)">
@@ -144,7 +121,10 @@ $.vue.element ("img:logo", $.vue.js ({
 $.vue.element ("img:avatar", $.vue.js ({
 	prop: ["src"],
 	method: {
-		url (src) { return "/asset/image/avatar/" + src },
+		url (src) {
+			if (src.startsWith ("http:") || src.startsWith ("https:")) return src
+			else return "/asset/image/avatar/" + src
+			},
 		},
 	template: `
 		<img v-bind:src="url (prop.src)">
@@ -158,6 +138,26 @@ $.vue.element ("img:undraw", $.vue.js ({
 		},
 	template: `
 		<img v-bind:src="svg (prop.src)">
+		`,
+	}))
+
+$.vue.element ("img:extra", $.vue.js ({
+	prop: ["src"],
+	method: {
+		url (src) { return "/asset/image/extra/" + src },
+		},
+	template: `
+		<img v-bind:src="url (prop.src)">
+		`,
+	}))
+
+$.vue.element ("img:spinner", $.vue.js ({
+	template: `
+		<div class="spinner">
+			<svg class="spinner-circular" viewBox="25 25 50 50">
+				<circle class="spinner-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+			</svg>
+		</div>
 		`,
 	}))
 
@@ -189,6 +189,18 @@ $.vue.element ("separator:small", $.vue.js ({
 		`,
 	}))
 
+$.vue.element ("separator:pop", $.vue.js ({
+	template: `
+		<div class="width height:pop background-color:mono-sky"></div>
+		`,
+	}))
+
+$.vue.element ("separator:medium", $.vue.js ({
+	template: `
+		<div class="width height:medium background-color:mono-sky"></div>
+		`,
+	}))
+
 /**
  * xxx
  *
@@ -198,6 +210,13 @@ $.vue.element ("separator:small", $.vue.js ({
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+$.vue.element ("status:online", $.vue.js ({
+	template: `
+		<div class="absolute border-radius:circle index" style="width: 10px; height: 10px; border: 2px solid white; bottom: -2px; right: -2px;"></div>
+		`,
+	}))
+
 
 /**
  * xxx
