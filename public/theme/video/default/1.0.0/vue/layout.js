@@ -8,18 +8,18 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.layout ("default", {
-	setup () {
-		return $.vue ()
+vue.layout ("default", vue.js ({
+	mount () {
+		vue.mount.layout ()
 		},
 	template: `
 		<div layout="default">layout:default</div>
 		`,
-	})
+	}))
 
-$.vue.layout ("index", $.vue.js ({
+vue.layout ("index", vue.js ({
 	mount () {
-		$.action.body.css ();
+		vue.mount.layout ()
 		},
 	template: `
 		<div layout="index" class="flex flex:column height:size">
@@ -60,14 +60,11 @@ $.vue.layout ("index", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.layout (404, {
-	setup () {
-		return $.vue ()
-		},
+vue.layout (404, vue.js ({
 	template: `
 		<div layout="404">not found</div>
 		`,
-	})
+	}))
 	
 /**
  * xxx
@@ -79,9 +76,9 @@ $.vue.layout (404, {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("header:float", $.vue.js ({
+vue.component ("header:float", vue.js ({
 	mount () {
-		$.vue.mount.search ()
+		vue.mount.search ()
 		},
 	template: `
 		<div id="header-float" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header:float">

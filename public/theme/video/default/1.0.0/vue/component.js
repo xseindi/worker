@@ -8,7 +8,7 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("loading", $.vue.js ({
+vue.component ("loading", vue.js ({
 	template: `
 		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
 			Loading ...
@@ -16,7 +16,7 @@ $.vue.component ("loading", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("loading:spinner", $.vue.js ({
+vue.component ("loading:spinner", vue.js ({
 	template: `
 		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
 			<img:spinner class="size:large"/>
@@ -34,7 +34,7 @@ $.vue.component ("loading:spinner", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("logo-simple", $.vue.js ({
+vue.component ("logo-simple", vue.js ({
 	prop: ["src", "title", "description"],
 	template: `
 		<a class="flex align:item gap" component="logo-simple">
@@ -57,10 +57,10 @@ $.vue.component ("logo-simple", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("account-avatar", $.vue.js ({
+vue.component ("account-avatar", vue.js ({
 	prop: ["name", "email", "avatar"],
 	template: `
-		<button class="button padding:pop" component="account:avatar">
+		<button id="account-avatar" class="button padding:pop" component="account:avatar">
 			<div class="flex align:item gap">
 				<div class="flex flex:column justify:item gap:space text-align:right" margin computer>
 					<string class="font-bold:pop">{{ prop.name }}</string>
@@ -77,12 +77,20 @@ $.vue.component ("account-avatar", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("account-avatar:float", $.vue.js ({
+vue.component ("account-avatar:float", vue.js ({
 	setup () {
+		var loading = vue.reference (false)
 		return {
-			link_privacy_policy: $.vue.router.link ({page: "privacy-policy"}),
-			link_term_of_use: $.vue.router.link ({page: "term_of_use"}),
+			loading,
+			link_privacy_policy: vue.router.link ({page: "privacy-policy"}),
+			link_term_of_use: vue.router.link ({page: "term_of_use"}),
 			}
+		},
+	method: {
+		prompt (element) {
+			if (this.loading = true) $ ("#account-avatar").blur (function () { setTimeout (function () { this.vue.loading = false }.bind ({vue: this.vue}), 10000) }.bind ({vue: this}))
+			php.google.auth.prompt ()
+			},
 		},
 	template: `
 		<section class="flex flex:column float:medium top:port right text-align:left border:radius background:color box-shadow no-overflow index transition:visibility">
@@ -92,9 +100,12 @@ $.vue.component ("account-avatar:float", $.vue.js ({
 				<string class="font:small font-bold:pop"></string>
 			</div>
 			<separator:mono />
-			<div v-if="!google.auth.credential" v-on:click="google.auth.prompt ()" class="flex align:item gap padding padding-horizontal:medium">
+			<div v-if="!google.auth.credential" v-on:click="prompt ()" class="flex align:item gap padding padding-horizontal:medium">
 				<icon src="person_shield" class="font:big text:gradient"/>
-				<div class="flex flex:column gap:space">
+				<div v-if="loading" class="flex flex:column gap:space">
+					<string class="font-bold:pop">Loading ...</string>
+				</div>
+				<div class="flex flex:column gap:space" v-else>
 					<string class="font-bold:pop">One Tap</string>
 					<string class="font-size:pop font-color:mono">Sign In</string>
 				</div>
@@ -106,15 +117,19 @@ $.vue.component ("account-avatar:float", $.vue.js ({
 				<button:awesome v-on:click="vue.router.reload ()" class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
 			</div>
 			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
-				<p string>Watch and Download is always <u>Free</u>.</p>
-				<p string>We don't store your <u>Information</u>.</p>
-				<p string>See site's <a v-bind:href="link_privacy_policy">Privacy Policy</a> and <a v-bind:href="link_term_of_use">Term's of Use</a>.</p>
+				<p string>
+					We do not Store your Information nor do we Track your Activity in this Website's.
+					Visit our <a v-bind:href="link_privacy_policy">Privacy Policy</a> and <a v-bind:href="link_term_of_use">Term's of Use</a>.
+				</p>
+				<!--p string>Watch and Download is always <u>Free</u>.</p-->
+				<!--p string>We don't store your <u>Information</u>.</p-->
+				<!--p string>See site's <a v-bind:href="link_privacy_policy">Privacy Policy</a> and <a v-bind:href="link_term_of_use">Term's of Use</a>.</p-->
 			</div>
 		</section>
 		`,
 	}))
 
-$.vue.component ("account-avatar:anonymous", $.vue.js ({
+vue.component ("account-avatar:anonymous", vue.js ({
 	setup () {
 		var account = {name: "Anonymous", email: "Sign In", avatar: "male_v.png"}
 		if (php.google.auth.credential) account = {name: php.google.auth.profile.name, email: php.google.auth.profile.email, avatar: php.google.auth.profile.picture}
@@ -127,7 +142,7 @@ $.vue.component ("account-avatar:anonymous", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("notification:float", $.vue.js ({
+vue.component ("notification:float", vue.js ({
 	template: `
 		<section class="flex flex:column float:size top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index transition:visibility">
 			<div class="flex align:item gap padding padding-horizontal:medium">
@@ -157,7 +172,7 @@ $.vue.component ("notification:float", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("nav-simple", $.vue.js ({
+vue.component ("nav-simple", vue.js ({
 	prop: ["text", "data", "position"],
 	setup (prop) {
 		var style = []
@@ -176,7 +191,7 @@ $.vue.component ("nav-simple", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("nav-simple:genre", $.vue.js ({
+vue.component ("nav-simple:genre", vue.js ({
 	prop: ["left", "right"],
 	template: `
 		<div class="flex font-size:small text-align:left gap padding">
@@ -214,18 +229,18 @@ $.vue.component ("nav-simple:genre", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.component ("the-movie:nav", $.vue.js ({
+vue.component ("the-movie:nav", vue.js ({
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: $.vue.router.link ("movie:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router.link ("movie:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Popular", description: "—", url: $.vue.router.link ("movie:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: $.vue.router.link ("movie:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Up Coming", description: "—", url: $.vue.router.link ("movie:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Popular", description: "—", url: vue.router.link ("movie:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: vue.router.link ("movie:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Up Coming", description: "—", url: vue.router.link ("movie:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Top Global", description: "0", url: $.vue.router.link ("movie:top_global"), icon: "bolt", css},
-			{component: "a:material", text: "Editor Choice", description: "0", url: $.vue.router.link ("movie:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Top Global", description: "0", url: vue.router.link ("movie:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router.link ("movie:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [], right: []},
 			]
@@ -236,18 +251,18 @@ $.vue.component ("the-movie:nav", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("the-tv:nav", $.vue.js ({
+vue.component ("the-tv:nav", vue.js ({
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: $.vue.router.link ("tv:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router.link ("tv:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Popular", description: "—", url: $.vue.router.link ("tv:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: $.vue.router.link ("tv:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Airing Today", description: "—", url: $.vue.router.link ("tv:airing_today"), icon: "timer_play", css},
+			{component: "a:material", text: "Popular", description: "—", url: vue.router.link ("tv:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: vue.router.link ("tv:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Airing Today", description: "—", url: vue.router.link ("tv:airing_today"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Top Global", description: "0", url: $.vue.router.link ("tv:top_global"), icon: "bolt", css},
-			{component: "a:material", text: "Editor Choice", description: "0", url: $.vue.router.link ("tv:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Top Global", description: "0", url: vue.router.link ("tv:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router.link ("tv:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [], right: []},
 			]
@@ -258,18 +273,18 @@ $.vue.component ("the-tv:nav", $.vue.js ({
 		`,
 	}))
 
-$.vue.component ("the-people:nav", $.vue.js ({
+vue.component ("the-people:nav", vue.js ({
 	prop: ["position"],
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: $.vue.router.link ("people:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router.link ("people:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Male", description: "—", url: $.vue.router.link ("people:index", {}, {gender: "male"}), icon: "male", css},
-			{component: "a:material", text: "Female", description: "—", url: $.vue.router.link ("people:index", {}, {gender: "female"}), icon: "female", css},
+			{component: "a:material", text: "Male", description: "—", url: vue.router.link ("people:index", {}, {gender: "male"}), icon: "male", css},
+			{component: "a:material", text: "Female", description: "—", url: vue.router.link ("people:index", {}, {gender: "female"}), icon: "female", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Top Global", description: "0", url: $.vue.router.link ("people:top_global"), icon: "bolt", css},
-			{component: "a:material", text: "Editor Choice", description: "0", url: $.vue.router.link ("people:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Top Global", description: "0", url: vue.router.link ("people:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router.link ("people:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [{text: "Passed Away", url: "/"}], right: []},
 			]

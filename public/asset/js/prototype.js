@@ -1,3 +1,11 @@
+$.meta = function () {}
+$.meta.get = function (meta) {
+	for (var i in meta) {
+		var element = document.querySelector ("meta[" + i + "='" + meta [i] + "']");
+		if (element) return element.content;
+		}
+	}
+
 function JWT_parse (token) {
 	var data = JSON.parse (decodeURIComponent (atob (token.split (".") [1].replace (/-/g, "+").replace (/_/g, "/")).split ("").map (function (c) { return "%" + ("00" + c.charCodeAt (0).toString (16)).slice (-2); }).join("")));
 	return {name: data.name, email: data.email, picture: data.picture}
@@ -6,7 +14,7 @@ function JWT_parse (token) {
 var php = function () {}
 php.event = {}
 php.on = function (key, value) { if (php.event [key]) php.event [key].push (value); else php.event [key] = [value]; }
-php.action = function (key, ... value) { for (var i in php.event [key]) php.event [key][i] (... value); }
+php.emit = function (key, ... value) { for (var i in php.event [key]) php.event [key][i] (... value); }
 php.AD__ = function () {}
 php.AD__.detect = function (url) { $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block = true; if (php.AD__.error) php.AD__.error (php.AD__.block); }}) }
 php.AD__.link = {}
@@ -35,3 +43,18 @@ php.on ("load", function () {
 	else if (false) php.google.auth.prompt ();
 	else {}
 	});
+
+php.html = function () {}
+php.body = function () {}
+php.body.css = function (context) {
+	var type = "phone";
+	var orientation = "portrait";
+	var body = $ ("body").innerWidth ();
+	if (body > 600) type = "phone";
+	if (body > 1000) type = "computer";
+	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
+	$ ("body").removeClass ("computer mobile tablet phone");
+	$ ("body").addClass (type).addClass (orientation);
+	php.emit ("body:css", type, orientation);
+	if (context) context (type, orientation);
+	}

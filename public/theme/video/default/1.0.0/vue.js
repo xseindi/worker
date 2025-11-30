@@ -8,7 +8,7 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.setup = $.vue.js ({
+vue.setup = vue.js ({
 	mount (vue) {
 		setTimeout (function () { this.vue.app.ready = true; }.bind ({vue}), 123);
 		},
@@ -30,12 +30,12 @@ $.vue.setup = $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.app.theme = $$$.theme
-$.vue.app.router = $$$.router
-$.vue.app.image = $$$.image
-$.vue.app.var = $$$.var
-$.vue.app.var ["site:name"] = $.vue.meta.get ({property: "og:site_name"})
-$.vue.app.var ["site:description"] = $.vue.meta.get ({property: "og:site_description"})
+vue.app.theme = $$$.theme
+vue.app.router = $$$.router
+vue.app.image = $$$.image
+vue.app.var = $$$.var
+vue.app.var ["site:name"] = $.meta.get ({property: "og:site_name"})
+vue.app.var ["site:description"] = $.meta.get ({property: "og:site_description"})
 
 /**
  * xxx
@@ -47,9 +47,16 @@ $.vue.app.var ["site:description"] = $.vue.meta.get ({property: "og:site_descrip
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.mount.search = function () {
-	if ($.vue.mount.search.loaded) {}
-	else if ($.vue.mount.search.loaded = true) {
+vue.mount.layout = function () {
+	php.body.css (function (type, orientation) {
+		if (type === "computer") $ ("#menu").css ("display", "flex");
+		if (type === "phone") $ ("#menu").css ("display", "none");
+		})
+	}
+
+vue.mount.search = function () {
+	if (vue.mount.search.loaded) {}
+	else if (vue.mount.search.loaded = true) {
 		$ ("#search-button").click (function () {
 			var search_form = $ ("#search-form")
 			var search_input = $ ("#search-input")
@@ -75,7 +82,25 @@ $.vue.mount.search = function () {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.app = $.vue.create ()
+$ (document).ready (function () {
+	return true
+	})
+
+$ (window).on ("resize", function () {
+	vue.mount.layout ()
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+$.app = vue.create ()
 $.app.mount ("#app")
 
 /**

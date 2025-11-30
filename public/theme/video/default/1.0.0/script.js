@@ -1,3 +1,4 @@
+/*
 $.element = {}
 
 $.action = function (action) {
@@ -37,3 +38,4 @@ $ (document).ready (function () {
 $ (window).on ("resize", function () {
 	$.action.body.css ();
 	});
+*/

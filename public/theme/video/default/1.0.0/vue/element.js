@@ -8,7 +8,7 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("string", $.vue.js ({
+vue.element ("string", vue.js ({
 	template: `
 		<span string>
 			<slot name="default"/>
@@ -16,7 +16,7 @@ $.vue.element ("string", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("icon", $.vue.js ({
+vue.element ("icon", vue.js ({
 	prop: ["src"],
 	template: `
 		<icon:material v-bind:src="prop.src">
@@ -35,7 +35,7 @@ $.vue.element ("icon", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("a:material", $.vue.js ({
+vue.element ("a:material", vue.js ({
 	prop: ["text", "description", "url", "icon"],
 	template: `
 		<a v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
@@ -47,7 +47,7 @@ $.vue.element ("a:material", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("button:material", $.vue.js ({
+vue.element ("button:material", vue.js ({
 	prop: ["text", "description", "icon", "icon-position"],
 	template: `
 		<button class="button background-hover:mono background-focus:mono" element="button:material">
@@ -63,7 +63,7 @@ $.vue.element ("button:material", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("button:awesome", $.vue.js ({
+vue.element ("button:awesome", vue.js ({
 	prop: ["color"],
 	setup (prop) {
 		return {color: ("background-color:{color} background-hover:{color}").split ("{color}").join (prop.color || "blue")}
@@ -85,7 +85,7 @@ $.vue.element ("button:awesome", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("icon:material", $.vue.js ({
+vue.element ("icon:material", vue.js ({
 	prop: ["src"],
 	template: `
 		<div class="icon:container" icon>
@@ -105,7 +105,7 @@ $.vue.element ("icon:material", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("img:logo", $.vue.js ({
+vue.element ("img:logo", vue.js ({
 	prop: ["src"],
 	method: {
 		url (src) {
@@ -118,7 +118,7 @@ $.vue.element ("img:logo", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("img:avatar", $.vue.js ({
+vue.element ("img:avatar", vue.js ({
 	prop: ["src"],
 	method: {
 		url (src) {
@@ -131,7 +131,7 @@ $.vue.element ("img:avatar", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("img:undraw", $.vue.js ({
+vue.element ("img:undraw", vue.js ({
 	prop: ["src"],
 	method: {
 		svg (src) { return ("/asset/image/illustration/undraw/undraw_{src}.svg").split ("{src}").join (src) },
@@ -141,7 +141,7 @@ $.vue.element ("img:undraw", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("img:extra", $.vue.js ({
+vue.element ("img:extra", vue.js ({
 	prop: ["src"],
 	method: {
 		url (src) { return "/asset/image/extra/" + src },
@@ -151,7 +151,7 @@ $.vue.element ("img:extra", $.vue.js ({
 		`,
 	}))
 
-$.vue.element ("img:spinner", $.vue.js ({
+vue.element ("img:spinner", vue.js ({
 	template: `
 		<div class="spinner">
 			<svg class="spinner-circular" viewBox="25 25 50 50">
@@ -171,31 +171,31 @@ $.vue.element ("img:spinner", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("separator:mono", $.vue.js ({
+vue.element ("separator:mono", vue.js ({
 	template: `
 		<div class="height background-color:mono"></div>
 		`,
 	}))
 
-$.vue.element ("separator:vertical", $.vue.js ({
+vue.element ("separator:vertical", vue.js ({
 	template: `
 		<div class="width height:size background-color:mono-sky"></div>
 		`,
 	}))
 
-$.vue.element ("separator:small", $.vue.js ({
+vue.element ("separator:small", vue.js ({
 	template: `
 		<div class="width height:small background-color:mono-sky"></div>
 		`,
 	}))
 
-$.vue.element ("separator:pop", $.vue.js ({
+vue.element ("separator:pop", vue.js ({
 	template: `
 		<div class="width height:pop background-color:mono-sky"></div>
 		`,
 	}))
 
-$.vue.element ("separator:medium", $.vue.js ({
+vue.element ("separator:medium", vue.js ({
 	template: `
 		<div class="width height:medium background-color:mono-sky"></div>
 		`,
@@ -211,12 +211,11 @@ $.vue.element ("separator:medium", $.vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.vue.element ("status:online", $.vue.js ({
+vue.element ("status:online", vue.js ({
 	template: `
 		<div class="absolute border-radius:circle index" style="width: 10px; height: 10px; border: 2px solid white; bottom: -2px; right: -2px;"></div>
 		`,
 	}))
-
 
 /**
  * xxx
