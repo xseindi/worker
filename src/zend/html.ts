@@ -87,7 +87,8 @@ php.html = function (output: string, option: any = {}) {
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
-	markup.push (2, `<script>$$$.theme.layout = "{{ theme:layout }}";</script>`);
+	markup.push (2, `<script>php.app.theme.layout = "{{ theme:layout }}";</script>`);
+	markup.push (2, `<script>php.app.router = "{{ router }}";</script>`);
 	markup.push (2, `<script>window.onload = function () { php.emit ("load"); }</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[hidden] { opacity: 0; }</style>`);

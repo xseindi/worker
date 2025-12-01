@@ -68,8 +68,15 @@ app.get (app.router ["style.css"], async function (request: any, response: any, 
 	})
 
 app.get (app.router ["script.js"], async function (request: any, response: any, next: any) {
-	var json = JSON.stringify ({var: {}, theme: request.client.theme, image: request.client.image, router: app.router})
-	return response.js (`var $$$ = ${json}`)
+	// var json = JSON.stringify ({var: {}, theme: request.client.theme, image: request.client.image, router: app.router})
+	// return response.js (`var $$$ = ${json}`)
+	return response.js (`
+		php.app.var = {}
+		php.app.theme = ${JSON.stringify (request.client.theme)}
+		php.app.router = "${response.var ['router']}"
+		php.app.image = ${JSON.stringify (request.client.image)}
+		php.router.link = ${JSON.stringify (app.router)}
+		`)
 	})
 
 app.get (app.router ["feed"], async function (request: any, response: any, next: any) {
@@ -108,7 +115,7 @@ app.get (app.router ["search"])
  */
 
 app.get (app.router.index, function (request: any, response: any, next: any) {
-	response.set ({layout: "index"})
+	response.set ({layout: "index", router: "home"})
 	return response.vue ()
 	})
 

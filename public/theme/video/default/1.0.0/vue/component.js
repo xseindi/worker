@@ -82,8 +82,6 @@ vue.component ("account-avatar:float", vue.js ({
 		var loading = vue.reference (false)
 		return {
 			loading,
-			link_privacy_policy: vue.router.link ({page: "privacy-policy"}),
-			link_term_of_use: vue.router.link ({page: "term_of_use"}),
 			}
 		},
 	method: {
@@ -119,7 +117,7 @@ vue.component ("account-avatar:float", vue.js ({
 			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
 				<p string>
 					We do not Store your Information nor do we Track your Activity in this Website's.
-					Visit our <a v-bind:href="link_privacy_policy">Privacy Policy</a> and <a v-bind:href="link_term_of_use">Term's of Use</a>.
+					Visit our <a v-bind:href="app.router.page ['privacy-policy']">Privacy Policy</a> and <a v-bind:href="app.router.page ['term_of_use']">Term's of Use</a>.
 				</p>
 				<!--p string>Watch and Download is always <u>Free</u>.</p-->
 				<!--p string>We don't store your <u>Information</u>.</p-->

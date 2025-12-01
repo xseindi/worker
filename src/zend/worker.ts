@@ -213,6 +213,7 @@ var library: any = class {
 		this.response.var ["theme:version"] = this.request.client.theme.version
 		this.response.var ["theme:layout"] = "default"
 		this.response.var ["cache"] = this.app.config.cache
+		this.response.var ["router"] = "index"
 		this.response.var ["base_url"] = this.request.base_url
 		this.response.var ["canonical_url"] = this.request.canonical_url
 		this.response.var ["site:name"] = this.request.client.site.name, this.response.var ["alternate:site-name"] = this.request.client.site.name
@@ -288,20 +289,20 @@ var library: any = class {
 	async set (data: any) {
 		var title = data.title ? [data.title, this.request.client.site.name].join (" &#8212; ") : this.response.var ["title"]
 		var description = data.description || this.response.var ["meta:description"]
-		var layout = data.layout || this.response.var ["theme:layout"]
 		if (data) {
 			this.response.var ["title"] = this.response.var ["twitter:title"] = this.response.var ["og:title"] = title
 			this.response.var ["meta:description"] = this.response.var ["twitter:description"] = this.response.var ["og:description"] = description
 			this.response.var ["twitter:image"] = ""
 			this.response.var ["og:image"] = ""
 			this.response.var ["og:type"] = "website"
-			this.response.var ["theme:layout"] = layout
+			if (data.layout) this.response.var ["theme:layout"] = data.layout
+			if (data.router) this.response.var ["router"] = data.router
 			}
-		var variable = []
-		variable.push (`"site:name": "${this.request.client.site.name}"`)
-		variable.push (`"site:description": "${this.request.client.site.description}"`)
-		variable.push (`"meta:description": "${this.request.client.site.meta.description}"`)
-		this.response.var ["var"] = variable.join (ln_s)
+		// var variable = []
+		// variable.push (`"site:name": "${this.request.client.site.name}"`)
+		// variable.push (`"site:description": "${this.request.client.site.description}"`)
+		// variable.push (`"meta:description": "${this.request.client.site.meta.description}"`)
+		// this.response.var ["var"] = variable.join (ln_s)
 		}
 	plugin () {
 		if (this.request.client.data ["tmdb:api"]) {

@@ -8,17 +8,7 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.setup = vue.js ({
-	mount (vue) {
-		setTimeout (function () { this.vue.app.ready = true; }.bind ({vue}), 123);
-		},
-	template: `
-		<div v-if="app.ready" id="application">
-			<theme:layout container/>
-		</div>
-		<loading:spinner v-else/>
-		`,
-	})
+vue.mount = function () {}
 
 /**
  * xxx
@@ -100,7 +90,13 @@ $ (window).on ("resize", function () {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.app = vue.create ()
+$.app = vue.create (`
+	<div v-if="vue.ready" id="application">
+		<theme:layout container/>
+	</div>
+	<loading:spinner v-else/>
+	`)
+
 $.app.mount ("#app")
 
 /**
