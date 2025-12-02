@@ -1,0 +1,23 @@
+[
+{"#": null, "reference": 0, "name": "", "slug": "", "type": "", "version": ["0.0.0", "1.0.0"], "description": ""},
+
+{"id": 1, "reference": 0, "name": "Default", "slug": "default", "type": "app", "version": ["0.0.0", "1.0.0"], "description": ""},
+
+{"id": 23, "reference": 0, "name": "Parkly", "slug": "parkly", "type": "app", "version": ["0.0.0", "1.0.0"], "description": ""},
+
+{"id": 101, "reference": 0, "name": "Default", "slug": "default", "type": "website", "version": ["0.0.0", "1.0.0"], "description": ""},
+
+{"id": 201, "reference": 0, "name": "Default", "slug": "default", "type": "blog", "version": ["0.0.0", "1.0.0"], "description": ""},
+{"id": 202, "reference": 0, "name": "Chrome", "slug": "chrome", "type": "blog", "version": ["0.0.0", "1.0.0"], "description": ""},
+{"id": 203, "reference": 0, "name": "Chronicle", "slug": "chronicle", "type": "blog", "version": ["0.0.0", "1.0.0"], "description": ""},
+{"id": 204, "reference": 0, "name": "Carbon", "slug": "carbon", "type": "blog", "version": ["0.0.0", "1.0.0"], "description": ""},
+
+{"id": 301, "reference": 0, "name": "Default", "slug": "default", "type": "video", "version": ["0.0.0", "1.0.0"], "description": ""},
+{"id": 301001, "reference": 301, "name": "Alpha", "version": "0.0.0", "description": ""},
+{"id": 301002, "reference": 301, "name": "Beta", "version": "1.0.0", "description": ""},
+{"id": 302, "reference": 0, "name": "Chrome", "slug": "chrome", "type": "video", "version": ["0.0.0", "1.0.0"], "description": ""},
+{"id": 303, "reference": 0, "name": "Chronicle", "slug": "chronicle", "type": "video", "version": ["0.0.0", "1.0.0"], "description": ""},
+{"id": 304, "reference": 0, "name": "Carbon", "slug": "carbon", "type": "video", "version": ["0.0.0", "1.0.0"], "description": ""},
+
+{}
+]

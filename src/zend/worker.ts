@@ -4,7 +4,7 @@ var {zero, one} = php.constant;
 
 php.worker = class {
 	app: express;
-	config: any = {}
+	config: any = php ["config.json"];
 	router: any = php ["router.json"];
 	constructor (app: express, context: any) {
 		this.app = app;
@@ -102,16 +102,6 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.var = {}
 	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
-	/*
-	response.get = function (variable: string) { return response.var [variable]; }
-	response.var = {}
-	// response.component = function (id: string, component: string = "", variable: any = {}, tab: number = 0) { if (component) return response.component.data [id] = request.theme.component (component).render (variable, tab); else return response.component.data [id]; }
-	// response.component.data = {}
-	response.seo = function (seo: any) { request.library.seo (seo); }
-	response.render = function (layout: string, variable: any = {}, tab: number = 0) { return response.html (request.theme.layout (layout).render (php.object.assign (variable, response.var), tab)); }
-	request.render = function (markup: string) { return php.render (markup, response.var); }
-	request.component = function (component: string, tab: number = 0) { if (component) return request.app.theme.component [component].map (function (value: any) { if (tab) return ("\t").repeat (tab) + value; else return value; }).join ("\n"); else for (var i in request.app.theme.component) response.var ["component " + i] = request.component (i, tab); }
-	*/
 	}
 
 /**
@@ -126,11 +116,53 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 
 php.worker.start = async function (app: any, request: any, response: any, next: any) {
 	if (request.agent.crawler () === false) {
-		if (php ["config.json"].setup) {
+		if (app.config.setup) {
 			if (request.url.query ("setup") === "install") {
 				await request.db.setup ({drop: true, data: true})
 				}
 			}
+		request.db.cache = {
+			config: await request.db.select ("config").json ().find ().query (),
+			client: await request.db.select ("client").json ().find ().query (),
+			theme: await request.db.select ("theme").json ().find ().query (),
+			image: await request.db.select ("image").json ().find ().query (),
+			}
+		for (var i in request.db.cache.config.data) {
+			app.config [request.db.cache.config.data [i].key] = request.db.value (request.db.cache.config.data [i].value)
+			}
+		var client = request.db.cache.client.array ().filter ({host: request.url.host.name}).one ()
+		if (client) {
+			request.client.id = client.id
+			request.client.reference = client.reference
+			request.client.object = request.db.value (client.meta) || {}
+			request.client.theme = request.db.cache.theme.array ().filter ({id: client.theme}).one () || {}
+			if (client.reference) {
+				var reference = request.db.cache.client.array ().filter ({id: client.reference}).one ()
+				request.client.object = php.object.assign ((request.db.value (reference.meta) || {}), request.client.object)
+				if (("id" in request.client.theme) === false) request.client.theme = request.db.cache.theme.array ().filter ({id: reference.theme}).one () || {}
+				}
+			if (request.client.theme.reference) {
+				var reference = request.db.cache.theme.array ().filter ({id: request.client.theme.reference}).one ()
+				request.client.theme.sub = request.client.theme.name
+				request.client.theme.name = reference.name
+				request.client.theme.slug = reference.slug
+				request.client.theme.type = reference.type
+				}
+			else {
+				request.client.theme.version = php.array.last (request.client.theme.version)
+				}
+			return php.promise (async function (resolve: any, reject: any) {
+				request.library = new library (app, request, response, next)
+				request.library.variable ()
+				request.library.set ()
+				resolve ()
+				})
+			}
+		else return php.promise (function (resolve: any, reject: any) {
+			request.error.push ({type: "host", status: "error"})
+			resolve ()
+			})
+		/*
 		var db: any = {
 			config: await request.db.select ("config").find ().exec (),
 			client: await request.db.select ("client").find ({host: request.url.host.name}).exec (),
@@ -176,6 +208,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			request.error.push ({type: "host", status: "error"})
 			resolve ()
 			})
+		*/
 		}
 	else return php.promise (function (resolve: any, reject: any) {
 		request.error.push ({type: "agent", status: "forbidden"})
@@ -315,51 +348,3 @@ var library: any = class {
 			}
 		}
 	}
-
-/*
-php.worker.__start = async function (app: any, request: any, response: any, next: any) {
-	if (request.app.host in app.host) {
-		if (request.next ()) {
-			if (request.app.config = app.host [request.app.host].config)
-			if (request.app.db = app.host [request.app.host].db)
-			if (request.app.theme = app.host [request.app.host].theme)
-			if (request.app.theme.version) {} else request.app.theme.version = php.array.last (php.array (app.theme).filter ({id: request.app.theme.id, group: request.app.theme.group}).data [zero].version);
-			if (request.library = new library (app, request, response, next)) return php.promise (async function (resolve: any, reject: any) {
-				request.app.public = app.host [request.app.host].public
-				request.app.ad = app.host [request.app.host].ad
-				request.app.affiliate = app.host [request.app.host].affiliate
-				var then: any = function () {
-					then.queue.push (true);
-					if (then.queue.length > one) resolve ()
-					}
-				then.queue = [];
-				if (true || "db") {
-					request.db = new php.db (request.app.db.id)
-					}
-				if (true || "theme") {
-					var theme = php.theme.template [request.app.theme.group][request.app.theme.id][request.app.theme.version]
-					request.app.theme.package = theme.package
-					request.app.theme.router = theme.app
-					request.app.theme.layout = theme.layout
-					request.app.theme.component = theme.component
-					request.theme = new php.theme (request.app.theme)
-					request.component ()
-					}
-				request.router = new php.worker.io.router (app, request, response, next)
-				request.router.set (request.app.theme.router)
-				request.library.variable ()
-				request.library.seo ()
-				resolve ()
-				})
-			}
-		else return php.promise (function (resolve: any, reject: any) {
-			request.error.push ({type: "agent", status: "forbidden"})
-			resolve ()
-			})
-		}
-	else return php.promise (function (resolve: any, reject: any) {
-		request.error.push ({type: "host", status: "none"})
-		resolve ()
-		})
-	}
-*/

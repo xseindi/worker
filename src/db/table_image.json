@@ -1,0 +1,13 @@
+[
+{"#": null, "reference": 0, "name": "", "type": "", "type_of": "", "file": "", "description": ""},
+
+{"id": 1001, "reference": 0, "name": "Cloudflare", "type": "logo", "type_of": "brand", "file": "cloudflare.svg", "description": ""},
+{"id": 1002, "reference": 0, "name": "Cloudflare Worker", "type": "logo", "type_of": "brand", "file": "cloudflare-worker.svg", "description": ""},
+{"id": 1003, "reference": 0, "name": "Google", "type": "logo", "type_of": "brand", "file": "google.svg", "description": ""},
+
+{"id": 10001, "reference": 0, "name": "Play Button", "type": "logo", "file": "play_button.png", "description": ""},
+
+{"id": 20001, "reference": 0, "name": "Male Colorize", "type": "avatar", "file": "male_v.png", "description": ""},
+
+{}
+]

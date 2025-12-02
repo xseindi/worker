@@ -116,14 +116,24 @@ php.array.last = function (array: any = []) { var value; for (var i in array) va
 
 php.array.io = class {
 	array: any = [];
-	data: any = [];
+	data: any;
 	constructor (array: any = []) {
 		this.array = array;
 		}
+	one () { return php.array.first (this.data || this.array); }
 	filter (filter: any) {
 		if (filter) this.data = this.array.filter (function (array: any, index: number) {
 			var error = 0;
-			for (var i in filter) if (filter [i] === array [i]) continue; else error ++;
+			for (var i in filter) {
+				if (typeof filter [i] === "object") {
+					if (filter [i].equal === false) {
+						if (filter [i].value !== array [i]) continue;
+						else error ++;
+						}
+					}
+				else if (filter [i] === array [i]) continue;
+				else error ++;
+				}
 			if (error) return false;
 			else return true;
 			});

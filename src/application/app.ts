@@ -70,12 +70,17 @@ app.get (app.router ["style.css"], async function (request: any, response: any, 
 app.get (app.router ["script.js"], async function (request: any, response: any, next: any) {
 	// var json = JSON.stringify ({var: {}, theme: request.client.theme, image: request.client.image, router: app.router})
 	// return response.js (`var $$$ = ${json}`)
+	var image: any = {stock: {}}
+	for (var i in request.db.cache.image.data) {
+		image.stock [request.db.cache.image.data [i].id] = request.db.cache.image.data [i].file
+		}
 	return response.js (`
 		php.app.var = {}
 		php.app.theme = ${JSON.stringify (request.client.theme)}
 		php.app.router = "${response.var ['router']}"
-		php.app.image = ${JSON.stringify (request.client.image)}
+		php.app.image = ${JSON.stringify (request.client.object.image)}
 		php.router.link = ${JSON.stringify (app.router)}
+		php.image.stock = ${JSON.stringify (image.stock)}
 		`)
 	})
 
