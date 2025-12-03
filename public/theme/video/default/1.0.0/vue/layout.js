@@ -9,9 +9,6 @@
  */
 
 vue.layout ("default", vue.js ({
-	mount () {
-		vue.mount.layout ()
-		},
 	template: `
 		<div layout="default">layout:default</div>
 		`,

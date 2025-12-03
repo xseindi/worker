@@ -8,7 +8,12 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.mount = function () {}
+vue.mount = function (v) {
+	if (vue.mount.layout) {
+		if (vue.mount.layout.loaded) {}
+		else if (vue.mount.layout.loaded = true) vue.mount.layout ()
+		}
+	}
 
 /**
  * xxx
@@ -19,13 +24,6 @@ vue.mount = function () {}
  *
  * xxx://xxx.xxx.xxx/xxx
  */
-
-vue.app.theme = $$$.theme
-vue.app.router = $$$.router
-vue.app.image = $$$.image
-vue.app.var = $$$.var
-vue.app.var ["site:name"] = $.meta.get ({property: "og:site_name"})
-vue.app.var ["site:description"] = $.meta.get ({property: "og:site_description"})
 
 /**
  * xxx
@@ -91,7 +89,7 @@ $ (window).on ("resize", function () {
  */
 
 $.app = vue.create (`
-	<div v-if="vue.ready" id="application">
+	<div v-if="vue.ready.value" id="application">
 		<theme:layout container/>
 	</div>
 	<loading:spinner v-else/>

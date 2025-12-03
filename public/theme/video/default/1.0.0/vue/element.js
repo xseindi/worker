@@ -106,11 +106,11 @@ vue.element ("icon:material", vue.js ({
  */
 
 vue.element ("img:logo", vue.js ({
-	prop: ["src"],
+	prop: ["src", "type"],
 	method: {
 		url (src) {
-			if (src.startsWith ("http:") || src.startsWith ("https:")) return src
-			else return "/asset/image/logo/" + src
+			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
+			return "/asset/image/logo/" + php.image.stock [src]
 			},
 		},
 	template: `
@@ -122,8 +122,8 @@ vue.element ("img:avatar", vue.js ({
 	prop: ["src"],
 	method: {
 		url (src) {
-			if (src.startsWith ("http:") || src.startsWith ("https:")) return src
-			else return "/asset/image/avatar/" + src
+			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
+			return "/asset/image/avatar/" + php.image.stock [src]
 			},
 		},
 	template: `
@@ -138,16 +138,6 @@ vue.element ("img:undraw", vue.js ({
 		},
 	template: `
 		<img v-bind:src="svg (prop.src)">
-		`,
-	}))
-
-vue.element ("img:extra", vue.js ({
-	prop: ["src"],
-	method: {
-		url (src) { return "/asset/image/extra/" + src },
-		},
-	template: `
-		<img v-bind:src="url (prop.src)">
 		`,
 	}))
 

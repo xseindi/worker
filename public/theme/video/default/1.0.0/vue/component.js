@@ -93,7 +93,7 @@ vue.component ("account-avatar:float", vue.js ({
 	template: `
 		<section class="flex flex:column float:medium top:port right text-align:left border:radius background:color box-shadow no-overflow index transition:visibility">
 			<div class="flex align:item gap padding padding-horizontal:medium">
-				<img:logo src="google.svg" class="img:small"/>
+				<img:logo src="google" class="img:small"/>
 				<string class="flex:grow font:bold">Account Manager</string>
 				<string class="font:small font-bold:pop"></string>
 			</div>
@@ -112,12 +112,12 @@ vue.component ("account-avatar:float", vue.js ({
 				<button:awesome v-on:click="google.auth.sign.out ()" class="flex align:item justify:item width:size padding" color="red">Sign Out</button:awesome>
 			</div>
 			<div class="padding-horizontal:medium" v-else>
-				<button:awesome v-on:click="vue.router.reload ()" class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
+				<button:awesome v-on:click="php.router.reload ()" class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
 			</div>
 			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
 				<p string>
 					We do not Store your Information nor do we Track your Activity in this Website's.
-					Visit our <a v-bind:href="app.router.page ['privacy-policy']">Privacy Policy</a> and <a v-bind:href="app.router.page ['term_of_use']">Term's of Use</a>.
+					Visit our <a v-bind:href="php.router.link.page ['privacy-policy']">Privacy Policy</a> and <a v-bind:href="php.router.link.page ['term_of_use']">Term's of Use</a>.
 				</p>
 				<!--p string>Watch and Download is always <u>Free</u>.</p-->
 				<!--p string>We don't store your <u>Information</u>.</p-->
@@ -129,7 +129,7 @@ vue.component ("account-avatar:float", vue.js ({
 
 vue.component ("account-avatar:anonymous", vue.js ({
 	setup () {
-		var account = {name: "Anonymous", email: "Sign In", avatar: "male_v.png"}
+		var account = {name: "Anonymous", email: "Sign In", avatar: php.app.image.avatar}
 		if (php.google.auth.credential) account = {name: php.google.auth.profile.name, email: php.google.auth.profile.email, avatar: php.google.auth.profile.picture}
 		return {account}
 		},
@@ -144,7 +144,7 @@ vue.component ("notification:float", vue.js ({
 	template: `
 		<section class="flex flex:column float:size top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index transition:visibility">
 			<div class="flex align:item gap padding padding-horizontal:medium">
-				<img:logo src="google.svg" class="img:small"/>
+				<img:logo src="google" class="img:small"/>
 				<string class="flex:grow font:bold">Notification</string>
 				<string class="font:small font-bold:pop"></string>
 			</div>
@@ -231,14 +231,14 @@ vue.component ("the-movie:nav", vue.js ({
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router.link ("movie:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: php.router ("movie:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Popular", description: "—", url: vue.router.link ("movie:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: vue.router.link ("movie:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Up Coming", description: "—", url: vue.router.link ("movie:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Popular", description: "—", url: php.router ("movie:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: php.router ("movie:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Up Coming", description: "—", url: php.router ("movie:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Top Global", description: "0", url: vue.router.link ("movie:top_global"), icon: "bolt", css},
-			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router.link ("movie:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Top Global", description: "0", url: php.router ("movie:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: php.router ("movie:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [], right: []},
 			]
@@ -253,14 +253,14 @@ vue.component ("the-tv:nav", vue.js ({
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router.link ("tv:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: php.router ("tv:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Popular", description: "—", url: vue.router.link ("tv:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: vue.router.link ("tv:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Airing Today", description: "—", url: vue.router.link ("tv:airing_today"), icon: "timer_play", css},
+			{component: "a:material", text: "Popular", description: "—", url: php.router ("tv:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: php.router ("tv:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Airing Today", description: "—", url: php.router ("tv:airing_today"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Top Global", description: "0", url: vue.router.link ("tv:top_global"), icon: "bolt", css},
-			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router.link ("tv:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Top Global", description: "0", url: php.router ("tv:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: php.router ("tv:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [], right: []},
 			]
@@ -276,13 +276,13 @@ vue.component ("the-people:nav", vue.js ({
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router.link ("people:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: php.router ("people:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Male", description: "—", url: vue.router.link ("people:index", {}, {gender: "male"}), icon: "male", css},
-			{component: "a:material", text: "Female", description: "—", url: vue.router.link ("people:index", {}, {gender: "female"}), icon: "female", css},
+			{component: "a:material", text: "Male", description: "—", url: php.router ("people:index", {}, {gender: "male"}), icon: "male", css},
+			{component: "a:material", text: "Female", description: "—", url: php.router ("people:index", {}, {gender: "female"}), icon: "female", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Top Global", description: "0", url: vue.router.link ("people:top_global"), icon: "bolt", css},
-			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router.link ("people:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Top Global", description: "0", url: php.router ("people:top_global"), icon: "bolt", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: php.router ("people:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [{text: "Passed Away", url: "/"}], right: []},
 			]

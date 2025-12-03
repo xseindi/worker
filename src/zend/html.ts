@@ -42,9 +42,9 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ router manifest.json }}">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
-	if (option ["search"]) {
-		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router opensearch }}" type="application/opensearchdescription+xml" title="">`);
-		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router opensearch:description }}" type="application/opensearchdescription+xml" title="">`);
+	if (option ["open-search"]) {
+		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search }}" type="application/opensearchdescription+xml" title="">`);
+		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search:description }}" type="application/opensearchdescription+xml" title="">`);
 		}
 	markup.push (2, `<link rel="dns-prefetch" href="https://1.bp.blogspot.com">`);
 	markup.push (2, `<link rel="dns-prefetch" href="https://2.bp.blogspot.com">`);
@@ -62,8 +62,8 @@ php.html = function (output: string, option: any = {}) {
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">`);
 			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">`);
+			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">`);
 			if (false) markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">`);
 			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">`);
@@ -106,23 +106,25 @@ php.vue = function () {}
 php.vue.html = function () {
 	var markup = new php.markup ();
 	markup.push (0, `<div id="app">`);
-	markup.push (1, `<h1 hidden>{{ title }}</h1>`);
-	markup.push (1, `<h2 hidden>{{ site:description }}</h2>`);
-	markup.push (1, `<h3 hidden>{{ meta:description }}</h3>`);
-	markup.push (1, `<article hidden>`);
-	markup.push (2, `<h1>{{ title }}</h1>`);
-	markup.push (2, `<h2>{{ site:description }}</h2>`);
-	markup.push (2, `<date>0000-00-00</date>`);
-	markup.push (2, `<p>{{ meta:description }}</p>`);
-	markup.push (1, `</article>`);
-	markup.push (1, `<menu hidden>`);
-	markup.push (2, `<ul><li></li></ul>`);
-	markup.push (2, `<ul><li></li></ul>`);
-	markup.push (2, `<nav>`);
-	markup.push (3, `<ul><li></li></ul>`);
-	markup.push (3, `<ul><li></li></ul>`);
-	markup.push (2, `</nav>`);
-	markup.push (1, `</menu>`);
+		markup.push (1, `<div hidden>`);
+			markup.push (2, `<h1>{{ title }}</h1>`);
+			markup.push (2, `<h2>{{ site:description }}</h2>`);
+			markup.push (2, `<h3>{{ meta:description }}</h3>`);
+			markup.push (2, `<article>`);
+				markup.push (3, `<h1>{{ title }}</h1>`);
+				markup.push (3, `<h2>{{ site:description }}</h2>`);
+				markup.push (3, `<date>0000-00-00</date>`);
+				markup.push (3, `<p>{{ meta:description }}</p>`);
+			markup.push (2, `</article>`);
+			markup.push (2, `<menu>`);
+				markup.push (3, `<ul><li></li></ul>`);
+				markup.push (3, `<ul><li></li></ul>`);
+				markup.push (3, `<nav>`);
+					markup.push (4, `<ul><li></li></ul>`);
+					markup.push (4, `<ul><li></li></ul>`);
+				markup.push (3, `</nav>`);
+			markup.push (2, `</menu>`);
+		markup.push (1, `</div>`);
 	markup.push (0, `</div>`);
 	return markup.data;
 	}

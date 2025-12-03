@@ -65,6 +65,7 @@ php.router = function (key, value = {}, query = {}) {
 	return router;
 	}
 
+php.router.reload = function () { location.reload (); }
 php.router.link = {}
 
 /**
@@ -142,6 +143,8 @@ php.sleep = function (context, second = 0) { return setTimeout (context, (second
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+php.image = function () {}
 
 /**
  * xxx

@@ -95,7 +95,6 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.vue = function (slot: any, code: number = 200) {
 		if (typeof slot === "number") if (code = slot) slot = null;
 		if (slot) {} else slot = "\t\t\t<!---->";
-		// var markup = [`<div id="app"></div>`, `<div id="app:container" style="display: none">`, `{{ slot }}`, `</div>`];
 		var markup = php.vue.html ();
 		return response.html (php.render (markup, {slot}, 2), code);
 		}
@@ -162,53 +161,6 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			request.error.push ({type: "host", status: "error"})
 			resolve ()
 			})
-		/*
-		var db: any = {
-			config: await request.db.select ("config").find ().exec (),
-			client: await request.db.select ("client").find ({host: request.url.host.name}).exec (),
-			}
-		for (var i in db.config.data) {
-			app.config [db.config.data [i].key] = request.db.value (db.config.data [i].value)
-			}
-		if (db.client.data.length) {
-			var client = db.client.data [0]
-			request.client.id = client.id
-			request.client.reference = client.reference
-			request.client.theme = {id: client.theme_id, type: client.theme_type, version: client.theme_version}
-			request.client.object = request.db.value (client.json) || {}
-			if (client.reference) {
-				var reference = await request.db.select ("client").find ({id: client.reference}).exec ()
-				if (reference.data.length) if (reference = reference.data [0]) {
-					if (request.client.theme.id) {}
-					else {
-						request.client.theme.id = reference.theme_id
-						request.client.theme.type = reference.theme_type
-						request.client.theme.version = reference.theme_version
-						}
-					request.client.object = php.object.assign ((request.db.value (reference.json) || {}), request.client.object)
-					}
-				db.image = await request.db.select ("image").find ({reference: reference.id}).exec ()
-				}
-			else {
-				db.image = await request.db.select ("image").find ({reference: client.id}).exec ()
-				}
-			if (db.image.data.length) {
-				for (var i in db.image.data) {
-					request.client.image [db.image.data [i].key] = db.image.data [i].url || db.image.data [i].value
-					}
-				}
-			return php.promise (async function (resolve: any, reject: any) {
-				request.library = new library (app, request, response, next)
-				request.library.variable ()
-				request.library.set ()
-				resolve ()
-				})
-			}
-		else return php.promise (function (resolve: any, reject: any) {
-			request.error.push ({type: "host", status: "error"})
-			resolve ()
-			})
-		*/
 		}
 	else return php.promise (function (resolve: any, reject: any) {
 		request.error.push ({type: "agent", status: "forbidden"})
@@ -242,6 +194,7 @@ var library: any = class {
 				},
 			}
 		this.response.var ["theme:id"] = this.request.client.theme.id
+		this.response.var ["theme:slug"] = this.request.client.theme.slug
 		this.response.var ["theme:type"] = this.request.client.theme.type
 		this.response.var ["theme:version"] = this.request.client.theme.version
 		this.response.var ["theme:layout"] = "default"
@@ -281,43 +234,32 @@ var library: any = class {
 		this.response.var ["og:type"] = "website"
 		this.response.var ["og:locale"] = "en"
 		if (this.response.var ["c:type"] = "index") {
-			var router: any = []
 			for (var i in this.app.router) {
 				if (i === "$") continue
 				else if (typeof this.app.router [i] === "string") {
-					// router.push (`"${i}": "${this.app.router [i]}"`)
 					this.response.var [["router", i].join (" ")] = this.app.router [i]
 					}
 				else if (i === "page") {
 					for (var x in this.app.router [i]) {
-						// router.push (`"${i} ${x}": "${this.app.router [i][x]}"`)
 						this.response.var [["router page", x].join (" ")] = this.app.router [i][x]
 						}
 					}
 				else if (i === "p") {
 					for (var x in this.app.router [i]) {
-						// router.push (`"${i} ${x}": "${this.app.router [i][x]}"`)
 						this.response.var [["router p", x].join (" ")] = this.app.router [i][x]
 						}
 					}
 				else {}
 				}
-			// this.response.var ["router"] = router.join (ln_s)
 			}
 		if (this.app.config ["cd:io"]) {
 			this.response.var ["cd:base_url"] = this.app.config ["cd:base_url"]
-			this.response.var ["theme:base_url"] = [this.app.config ["cd:base_url"], "theme", this.request.client.theme.type, this.request.client.theme.id, this.request.client.theme.version].join ("/")
+			this.response.var ["theme:base_url"] = [this.app.config ["cd:base_url"], "theme", this.request.client.theme.type, this.request.client.theme.slug, this.request.client.theme.version].join ("/")
 			}
 		else {
 			this.response.var ["cd:base_url"] = this.request.base_url
-			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.client.theme.type, this.request.client.theme.id, this.request.client.theme.version].join ("/")
+			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.client.theme.type, this.request.client.theme.slug, this.request.client.theme.version].join ("/")
 			}
-		/*
-		this.response.var ["public:base_url"] = [this.request.base_url, "static", this.request.app.public].join ("/")
-		this.response.var ["public:file"] = [this.response.var ["public:base_url"], "file"].join ("/")
-		this.response.var ["public:asset"] = [this.response.var ["public:base_url"], "asset"].join ("/")
-		this.response.var ["asset:image"] = [this.response.var ["public:asset"], "image"].join ("/")
-		*/
 		}
 	async set (data: any) {
 		var title = data.title ? [data.title, this.request.client.site.name].join (" &#8212; ") : this.response.var ["title"]
@@ -331,11 +273,6 @@ var library: any = class {
 			if (data.layout) this.response.var ["theme:layout"] = data.layout
 			if (data.router) this.response.var ["router"] = data.router
 			}
-		// var variable = []
-		// variable.push (`"site:name": "${this.request.client.site.name}"`)
-		// variable.push (`"site:description": "${this.request.client.site.description}"`)
-		// variable.push (`"meta:description": "${this.request.client.site.meta.description}"`)
-		// this.response.var ["var"] = variable.join (ln_s)
 		}
 	plugin () {
 		if (this.request.client.data ["tmdb:api"]) {

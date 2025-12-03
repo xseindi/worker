@@ -18,15 +18,13 @@ vue.create = function (context) {
 	var app;
 	if (context) if (typeof context === "string") app = createApp (vue.js ({
 		mount (v) {
-			if (vue.mount) vue.mount (v);
-			php.sleep (function () { vue.ready = true; }, 0.123);
+			php.sleep (function () { vue.ready.value = true; }, 3);
 			},
 		template: context,
 		}));
 	if (app === undefined) app = createApp (vue.js ({
 		mount (v) {
-			if (vue.initialize) vue.initialize (v);
-			else php.sleep (function () { vue.ready = true; }, 0.123);
+			php.sleep (function () { vue.ready.value = true; }, 3);
 			},
 		template: `
 			<div v-if="vue.ready" id="application">
@@ -54,6 +52,7 @@ vue.js = function (v) {
 			return vue ({prop});
 			},
 		mounted () {
+			if (vue.mount) vue.mount (this);
 			if (v.mount) v.mount (this);
 			},
 		methods: v.method || {},
@@ -71,7 +70,7 @@ vue.layout.key = function (layout) { return "layout:" + layout; }
 vue.markup = {
 	"theme:layout": vue.js ({
 		setup () {
-			return {src: vue.app.theme.layout}
+			return {src: php.app.theme.layout}
 			},
 		template: `
 			<component v-bind:is="vue.layout.key (src)"></component>
