@@ -122,17 +122,17 @@ php.db = class {
 php.db.select = class {
 	db: any;
 	sql: any = [];
-	table: string;
+	table: any = {}
 	prop: any = {}
 	json_data: any;
 	j_son: boolean = false;
 	constructor (db: any, table: string) {
 		this.db = db;
-		this.table = table;
+		this.table.key = table;
+		this.table.name = php.db.table (table);
 		}
 	find (filter: any = {}) {
-		var table = php.db.table (this.table);
-		this.sql.push (`select * from ${table}`);
+		this.sql.push (`select * from ${this.table.name}`);
 		this.prop.where = php.db.sql.where (this.prop.filter = filter);
 		return this;
 		}
@@ -149,15 +149,50 @@ php.db.select = class {
 		return new Promise (function (resolve, reject) {
 			var data = db.results;
 			if (self.j_son) data = php.array (self.db.merge (data, self.json_data)).filter (self.prop.filter).data;
-			resolve ({success: db.success, meta: db.meta, data, array: function () { return php.array (data); }});
+			resolve ({
+				success: db.success, meta: db.meta, data,
+				array: function () { return php.array (data); },
+				insert: function (data: any) { return new php.db.insert (self.db, self.table.key).set (data).query (); },
+				});
 			});
 		}
 	json (data: any) {
 		if (typeof data === "string") data = this.db.json [data];
-		else if (data === undefined) data = this.db.json [this.table];
+		else if (data === undefined) data = this.db.json [this.table.key];
 		this.json_data = data;
 		this.j_son = true;
 		return this;
+		}
+	}
+
+php.db.insert = class {
+	db: any;
+	sql: any = [];
+	table: any = {}
+	prop: any = {}
+	data: any;
+	key: any = [];
+	value: any = [];
+	tmp: any = [];
+	constructor (db: any, table: string) {
+		this.db = db;
+		this.table.key = table;
+		this.table.name = php.db.table (table);
+		}
+	set (data: any) {
+		for (var key in data) {
+			this.key.push (key);
+			this.value.push (data [key]);
+			this.tmp.push ("?");
+			}
+		return this;
+		}
+	async query () {
+		var sql = `insert into ${this.table.name} (${this.key.join (", ")}) values (${this.tmp.join (", ")});`;
+		var db = await this.db.adapter.prepare (sql).bind (... this.value).run ();
+		return new Promise (function (resolve, reject) {
+			resolve (db);
+			});
 		}
 	}
 

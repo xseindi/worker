@@ -39,7 +39,7 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<link rel="profile" href="https://gmpg.org/xfn/11">`);
 	markup.push (2, `<link rel="icon" href="{{ base_url }}{{ router favorite.ico }}">`);
 	markup.push (2, `<link rel="canonical" href="{{ canonical_url }}">`);
-	markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ router manifest.json }}">`);
+	if (option ["manifest.json"]) markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ manifest.json }}">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
 	if (option ["open-search"]) {
@@ -83,13 +83,16 @@ php.html = function (output: string, option: any = {}) {
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
+		// markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		}
 	markup.push (2, `<script type="application/ld+json"></script>`);
 	markup.push (2, `<script type="application/ld+json"></script>`);
-	markup.push (2, `<script>php.app.theme.layout = "{{ theme:layout }}";</script>`);
-	markup.push (2, `<script>php.app.router = "{{ router }}";</script>`);
-	markup.push (2, `<script>window.onload = function () { php.emit ("load"); }</script>`);
+	// markup.push (2, `<script>php.app.theme.layout = "{{ theme:layout }}";</script>`);
+	// markup.push (2, `<script>php.app.router = "{{ router }}";</script>`);
+	markup.push (2, `<script>`);
+	markup.push (0, `{{ bacot }}`);
+	markup.push (2, `</script>`);
+	// markup.push (2, `<script>window.onload = function () { php.emit ("load"); }</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[hidden] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);

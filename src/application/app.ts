@@ -46,6 +46,24 @@ app.start (async function (request: any, response: any, next: any) {
 	return next ()
 	})
 
+app.post ("/g_auth", async function (request: any, response: any, next: any) {
+	var post = await request.json ()
+	var g_auth = post.g_auth || {}
+	if ("email" in g_auth) {
+		if (request.db.cache.plugin.g_auth.array ().filter ({email: g_auth.email}).one ()) {}
+		else {
+			var insert = await request.db.cache.plugin.g_auth.insert ({
+				p_id: g_auth.p_id,
+				name: g_auth.name,
+				email: g_auth.email,
+				picture: g_auth.picture,
+				})
+			}
+		return response.json ({success: true})
+		}
+	return response.json ({})
+	})
+
 /**
  * xxx
  *

@@ -61,12 +61,11 @@ vue.js = function (v) {
 	}
 
 vue.start = function () {
-	php.sleep (function () { vue.ready.value = true; }, (vue.sleep || 1));
+	php.sleep (function () { vue.ready.value = true; }, (vue.sleep || 0.1));
 	}
 
 vue.reactive = function (value = {}) { return reactive (value); }
 vue.reference = function (value = null) { return ref (value); }
-vue.ready = vue.reference (false);
 vue.component = function (key, value) { vue.markup [key] = value; }
 vue.element = function (key, value) { vue.markup [key] = value; }
 vue.layout = function (key, value) { vue.markup [vue.layout.key (key)] = value; }
@@ -111,6 +110,9 @@ vue.markup = {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+vue.loading = vue.reactive ();
+vue.ready = vue.reference (false);
 
 /**
  * the end

@@ -67,6 +67,16 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.error = [];
 	request.header = {}
 	request.redirect = {}
+	request.io = io.req;
+	request.json = async function () {
+		try {
+			var json = await io.req.json ();
+			return new Promise (function (resolve, reject) { resolve (json); });
+			}
+		catch (e) {
+			return new Promise (function (resolve, reject) { resolve ({}); });
+			}
+		}
 	for (var header of io.req.raw.headers.entries ()) request.header [header [0]] = header [1];
 	request.url = php.parse_url (io.req.raw.url);
 	request.url.param = function (key: string) { return io.req.param (key); }
@@ -127,7 +137,11 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			client: await request.db.select ("client").json ().find ().query (),
 			theme: await request.db.select ("theme").json ().find ().query (),
 			image: await request.db.select ("image").json ().find ().query (),
+			plugin: {
+				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
+				},
 			}
+		console.log (request.db.cache.plugin.g_auth.data)
 		for (var i in request.db.cache.config.data) {
 			app.config [request.db.cache.config.data [i].key] = request.db.value (request.db.cache.config.data [i].value)
 			}
@@ -164,7 +178,6 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			else {
 				request.client.theme.version = php.array.last (request.client.theme.version)
 				}
-			console.log (request.client)
 			return php.promise (async function (resolve: any, reject: any) {
 				request.library = new library (app, request, response, next)
 				request.library.variable ()
@@ -275,6 +288,7 @@ var library: any = class {
 			this.response.var ["cd:base_url"] = this.request.base_url
 			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.client.theme.type, this.request.client.theme.slug, this.request.client.theme.version].join ("/")
 			}
+		if (this.request.client.object ["manifest:id"]) this.response.var ["manifest.json"] = `/manifest/${this.request.client.object ["manifest:id"]}.json`
 		}
 	async set (data: any) {
 		var title = data.title ? [data.title, this.request.client.site.name].join (" &#8212; ") : this.response.var ["title"]
@@ -288,6 +302,8 @@ var library: any = class {
 			if (data.layout) this.response.var ["theme:layout"] = data.layout
 			if (data.router) this.response.var ["router"] = data.router
 			}
+		this.request.client.theme.layout = this.response.var ["theme:layout"]
+		this.response.var ["bacot"] = php.help ["script.js"] (this.app, this.request, this.response).render ()
 		}
 	plugin () {
 		if (this.request.client.data ["tmdb:api"]) {

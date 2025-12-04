@@ -8,7 +8,29 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.sleep = 0.123
+vue.sleep = 0.1
+
+/*
+vue.start = function () {
+	if (localStorage.getItem (php.google.auth.client.credential)) {
+		vue.ready.value = true
+		}
+	else {
+		var data = {g_auth: php.google.auth.profile}
+		php.ajax.post ("/test", data, {
+			success: function (response) {
+				if (response.success) localStorage.setItem (php.google.auth.client.credential, php.google.auth.credential)
+				vue.ready.value = true
+				console.log ("post:response", response)
+				},
+			error: function (error) {
+				vue.ready.value = true
+				console.error ("error", error)
+				},
+			})
+		}
+	}
+*/
 
 vue.mount = function (v) {
 	if (vue.mount.layout) {
@@ -23,6 +45,14 @@ vue.mount.layout = function () {
 		if (php.device.phone ()) $ ("#menu").css ("display", "none");
 		})
 	}
+
+php.on ("google:auth sign-in", function () {
+	vue.loading.google_auth_sign_in = true
+	})
+
+php.on ("google:auth sign-in:done", function () {
+	vue.loading.google_auth_sign_in_done = true
+	})
 
 /**
  * xxx

@@ -95,6 +95,8 @@ vue.component ("account-simple:float", vue.js ({
 				<div class="flex flex:column gap:space">
 					<string class="font-bold:pop">Google One Tap</string>
 					<string class="font-size:pop font-color:mono">Third-party Sign In Required</string>
+					<string v-if="vue.loading.google_auth_sign_in" class="font-size:small font-color:mono"><i>Loading</i></string>
+					<string v-if="vue.loading.google_auth_sign_in_done" class="font-size:small font-color:mono"><i>OK, Reloading</i></string>
 				</div>
 			</div>
 			<div v-if="google.auth.credential" class="padding:top padding-horizontal:medium">
