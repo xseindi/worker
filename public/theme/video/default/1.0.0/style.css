@@ -499,6 +499,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .background-color\:green { background-color: rgb(var(--green)); }
 .background-color\:blue { background-color: rgb(var(--blue)); }
 
+.background-hover\:transparent:hover { background-color: transparent; }
 .background-hover\:mono:hover { background-color: rgb(var(--mono)); }
 .background-hover\:mono-pop:hover { background-color: rgb(var(--mono-pop)); }
 .background-hover\:mono-extra:hover { background-color: rgb(var(--mono-extra)); }
@@ -507,6 +508,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .background-hover\:green:hover { background-color: rgb(var(--green)); }
 .background-hover\:blue:hover { background-color: rgba(var(--blue),0.95); }
 
+.background-focus\:transparent:focus { background-color: transparent; }
 .background-focus\:mono:focus { background-color: rgb(var(--mono)); }
 .background-focus\:mono-pop:focus { background-color: rgb(var(--mono-pop)); }
 .background-focus\:mono-extra:focus { background-color: rgb(var(--mono-extra)); }
@@ -514,6 +516,8 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .background-focus\:red:focus { background-color: rgb(var(--red)); }
 .background-focus\:green:focus { background-color: rgb(var(--green)); }
 .background-focus\:blue:focus { background-color: rgb(var(--blue)); }
+
+.background\:clear, .background\:clear:hover, .background\:clear:focus { background-color: transparent; }
 
 /**
  * ::state(webkit-scrollbar) { width: 3px; }

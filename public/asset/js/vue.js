@@ -18,13 +18,13 @@ vue.create = function (context) {
 	var app;
 	if (context) if (typeof context === "string") app = createApp (vue.js ({
 		mount (v) {
-			php.sleep (function () { vue.ready.value = true; }, 3);
+			vue.start ()
 			},
 		template: context,
 		}));
 	if (app === undefined) app = createApp (vue.js ({
 		mount (v) {
-			php.sleep (function () { vue.ready.value = true; }, 3);
+			vue.start ()
 			},
 		template: `
 			<div v-if="vue.ready" id="application">
@@ -58,6 +58,10 @@ vue.js = function (v) {
 		methods: v.method || {},
 		template: v.template || ``,
 		}
+	}
+
+vue.start = function () {
+	php.sleep (function () { vue.ready.value = true; }, (vue.sleep || 1));
 	}
 
 vue.reactive = function (value = {}) { return reactive (value); }

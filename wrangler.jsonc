@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "parkly",
+	"name": "bioskop",
 	"main": "src/application/app.ts",
 	"compatibility_date": "2025-11-09",
 	"observability": {

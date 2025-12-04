@@ -66,6 +66,7 @@ php.worker.io.request = function (io: any, worker: any) {
 	var request: any = function () {}
 	request.error = [];
 	request.header = {}
+	request.redirect = {}
 	for (var header of io.req.raw.headers.entries ()) request.header [header [0]] = header [1];
 	request.url = php.parse_url (io.req.raw.url);
 	request.url.param = function (key: string) { return io.req.param (key); }
@@ -91,6 +92,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.xml = function (xml: string, code: number = 200) { return io.text (xml, code, {"Content-Type": "application/xml"}); }
 	response.json = io.json;
 	response.text = io.text;
+	response.redirect = io.redirect;
 	response.set = function (data: any) { request.library.set (data); }
 	response.vue = function (slot: any, code: number = 200) {
 		if (typeof slot === "number") if (code = slot) slot = null;
@@ -131,10 +133,22 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			}
 		var client = request.db.cache.client.array ().filter ({host: request.url.host.name}).one ()
 		if (client) {
+			if (client.redirect) return php.promise (function (resolve: any, reject: any) {
+				var split = client.redirect.split (" ")
+				var url, code = 302
+				if (split.length > 1) { if (code = split [0]) url = split [1] }
+				else url = split [0]
+				request.redirect.url = url
+				request.redirect.code = code
+				resolve ()
+				})
 			request.client.id = client.id
 			request.client.reference = client.reference
 			request.client.object = request.db.value (client.meta) || {}
 			request.client.theme = request.db.cache.theme.array ().filter ({id: client.theme}).one () || {}
+			request.client.host = {name: client.host}
+			if (client.domain) request.client.host.cookie = "." + client.domain
+			else request.client.host.cookie = client.host
 			if (client.reference) {
 				var reference = request.db.cache.client.array ().filter ({id: client.reference}).one ()
 				request.client.object = php.object.assign ((request.db.value (reference.meta) || {}), request.client.object)
@@ -150,6 +164,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			else {
 				request.client.theme.version = php.array.last (request.client.theme.version)
 				}
+			console.log (request.client)
 			return php.promise (async function (resolve: any, reject: any) {
 				request.library = new library (app, request, response, next)
 				request.library.variable ()

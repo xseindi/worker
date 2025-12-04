@@ -49,16 +49,16 @@
 {"id": null, "reference": 100, "host": "192.168.18.13"},
 {"id": null, "reference": 100, "host": "localhost"},
 {"id": null, "reference": 100, "host": "bioskop.vcredist.workers.dev"},
-{"id": null, "reference": 100, "host": "bioskopress.com"},
-{"id": null, "reference": 100, "host": "www.bioskopress.com"},
-{"id": null, "reference": 100, "host": "bioskop.com"},
-{"id": null, "reference": 100, "host": "www.bioskop.com"},
+{"id": null, "reference": 100, "host": "bioskopress.com", "domain": "bioskopress.com"},
+{"id": null, "reference": 100, "host": "www.bioskopress.com", "domain": "bioskopress.com"},
+{"id": null, "reference": 100, "host": "bioskop.com", "domain": "bioskop.com"},
+{"id": null, "reference": 100, "host": "www.bioskop.com", "domain": "bioskop.com"},
 
 {"id": null, "reference": 100, "host": "bokep.vcredist.workers.dev"},
 {"id": null, "reference": 100, "host": "bioskopress.online"},
-{"id": null, "reference": 100, "host": "www.bioskopress.online"},
+{"id": null, "reference": 100, "host": "www.bioskopress.online", "domain": "bioskopress.online"},
 {"id": null, "reference": 100, "host": "bokep.com"},
-{"id": null, "reference": 100, "host": "www.bokep.com"},
+{"id": null, "reference": 100, "host": "www.bokep.com", "domain": "bokep.com"},
 
 {}
 ]

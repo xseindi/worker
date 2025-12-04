@@ -1,7 +1,0 @@
-{
-"internet": true,
-"cd:io": false,
-"cd:base_url": "https://vcredist.github.io",
-"latest": "0.0.0",
-"*": "*"
-}

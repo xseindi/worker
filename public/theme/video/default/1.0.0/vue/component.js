@@ -57,10 +57,10 @@ vue.component ("logo-simple", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("account-avatar", vue.js ({
+vue.component ("account-simple", vue.js ({
 	prop: ["name", "email", "avatar"],
 	template: `
-		<button id="account-avatar" class="button padding:pop" component="account:avatar">
+		<button id="account-simple" class="button padding:pop border:radius border-radius-bottom:none" component="account:avatar">
 			<div class="flex align:item gap">
 				<div class="flex flex:column justify:item gap:space text-align:right" margin computer>
 					<string class="font-bold:pop">{{ prop.name }}</string>
@@ -77,19 +77,11 @@ vue.component ("account-avatar", vue.js ({
 		`,
 	}))
 
-vue.component ("account-avatar:float", vue.js ({
+vue.component ("account-simple:float", vue.js ({
 	setup () {
-		var loading = vue.reference (false)
-		return {
-			loading,
-			}
+		return {}
 		},
-	method: {
-		prompt (element) {
-			if (this.loading = true) $ ("#account-avatar").blur (function () { setTimeout (function () { this.vue.loading = false }.bind ({vue: this.vue}), 10000) }.bind ({vue: this}))
-			php.google.auth.prompt ()
-			},
-		},
+	method: {},
 	template: `
 		<section class="flex flex:column float:medium top:port right text-align:left border:radius background:color box-shadow no-overflow index transition:visibility">
 			<div class="flex align:item gap padding padding-horizontal:medium">
@@ -98,49 +90,51 @@ vue.component ("account-avatar:float", vue.js ({
 				<string class="font:small font-bold:pop"></string>
 			</div>
 			<separator:mono />
-			<div v-if="!google.auth.credential" v-on:click="prompt ()" class="flex align:item gap padding padding-horizontal:medium">
+			<div v-if="google.auth.empty ()" v-on:click="google.auth.prompt ()" class="flex align:start gap padding padding-horizontal:medium">
 				<icon src="person_shield" class="font:big text:gradient"/>
-				<div v-if="loading" class="flex flex:column gap:space">
-					<string class="font-bold:pop">Loading ...</string>
-				</div>
-				<div class="flex flex:column gap:space" v-else>
-					<string class="font-bold:pop">One Tap</string>
-					<string class="font-size:pop font-color:mono">Sign In</string>
+				<div class="flex flex:column gap:space">
+					<string class="font-bold:pop">Google One Tap</string>
+					<string class="font-size:pop font-color:mono">Third-party Sign In Required</string>
 				</div>
 			</div>
 			<div v-if="google.auth.credential" class="padding:top padding-horizontal:medium">
 				<button:awesome v-on:click="google.auth.sign.out ()" class="flex align:item justify:item width:size padding" color="red">Sign Out</button:awesome>
 			</div>
 			<div class="padding-horizontal:medium" v-else>
-				<button:awesome v-on:click="php.router.reload ()" class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
+				<button:awesome class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
 			</div>
 			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
-				<p string>
+				<string class="line-spacing:small">
 					We do not Store your Information nor do we Track your Activity in this Website's.
 					Visit our <a v-bind:href="php.router.link.page ['privacy-policy']">Privacy Policy</a> and <a v-bind:href="php.router.link.page ['term_of_use']">Term's of Use</a>.
-				</p>
-				<!--p string>Watch and Download is always <u>Free</u>.</p-->
-				<!--p string>We don't store your <u>Information</u>.</p-->
-				<!--p string>See site's <a v-bind:href="link_privacy_policy">Privacy Policy</a> and <a v-bind:href="link_term_of_use">Term's of Use</a>.</p-->
+				</string>
 			</div>
 		</section>
 		`,
 	}))
 
-vue.component ("account-avatar:anonymous", vue.js ({
+vue.component ("account-simple:anonymous", vue.js ({
 	setup () {
 		var account = {name: "Anonymous", email: "Sign In", avatar: php.app.image.avatar}
 		if (php.google.auth.credential) account = {name: php.google.auth.profile.name, email: php.google.auth.profile.email, avatar: php.google.auth.profile.picture}
 		return {account}
 		},
 	template: `
-		<account-avatar v-bind:name="account.name" v-bind:email="account.email" v-bind:avatar="account.avatar">
+		<account-simple v-bind:name="account.name" v-bind:email="account.email" v-bind:avatar="account.avatar">
 			<slot name="default"/>
-		</account-avatar>
+		</account-simple>
 		`,
 	}))
 
-vue.component ("notification:float", vue.js ({
+vue.component ("notification-simple", vue.js ({
+	template: `
+		<button:material icon="notifications_unread" class="icon:large padding:pop border:radius border-radius-bottom:none">
+			<slot name="default"/>
+		</button:material>
+		`,
+	}))
+
+vue.component ("notification-simple:float", vue.js ({
 	template: `
 		<section class="flex flex:column float:size top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index transition:visibility">
 			<div class="flex align:item gap padding padding-horizontal:medium">

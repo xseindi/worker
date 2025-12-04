@@ -1,9 +1,9 @@
 var table: any = {
 	"config": {name: "table_config", sql: `create table if not exists (id integer primary key, reference integer, key text, value text, description text);`},
-	"client": {name: "table_client", sql: `create table if not exists (id integer primary key, reference integer, host text, theme integer, meta text not null default '{}', description text);`},
+	"client": {name: "table_client", sql: `create table if not exists (id integer primary key, reference integer, host text, domain text, redirect text, theme integer, meta text not null default '{}', description text);`},
 	"theme": {name: "table_theme", sql: `create table if not exists (id integer primary key, reference integer, name text, slug text, type text, version text not null default '[]', description text);`},
 	"blob": {name: "table_blob", sql: `create table if not exists (id integer primary key, reference integer, key text, value blob, description text);`},
-	"image": {name: "table_image", sql: `create table if not exists (id integer primary key, reference integer, name text, type text, type_of text, file text, description text);`},
+	"image": {name: "table_image", sql: `create table if not exists (id integer primary key, reference integer, name text, slug text, type text, type_of text, file text, description text);`},
 	// "taxonomy": {name: "table_taxonomy", sql: `create table if not exists table_taxonomy (id integer primary key, reference integer, key text, value text);`},
 	// "category": {name: "table_category", sql: `create table if not exists table_category (id integer primary key, reference integer, key text, value text);`},
 	// "genre": {name: "table_genre", sql: `create table if not exists table_genre (id integer primary key, reference integer, key text, value text);`},

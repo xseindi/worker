@@ -8,6 +8,8 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.sleep = 0.123
+
 vue.mount = function (v) {
 	if (vue.mount.layout) {
 		if (vue.mount.layout.loaded) {}
@@ -15,32 +17,32 @@ vue.mount = function (v) {
 		}
 	}
 
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
 vue.mount.layout = function () {
 	php.body.css (function (type, orientation) {
-		if (type === "computer") $ ("#menu").css ("display", "flex");
-		if (type === "phone") $ ("#menu").css ("display", "none");
+		if (php.device.computer ()) $ ("#menu").css ("display", "flex");
+		if (php.device.phone ()) $ ("#menu").css ("display", "none");
 		})
 	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
 vue.mount.search = function () {
 	if (vue.mount.search.loaded) {}

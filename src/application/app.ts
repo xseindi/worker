@@ -37,6 +37,7 @@ var {zero, one} = php.constant
 var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
 	await php.worker.start (app, request, response, next)
+	if (request.redirect.url) return response.redirect (request.redirect.url, request.redirect.code)
 	if (request.error.length) {
 		for (var i in request.error) {
 			if (request.error [i].type === "host") return response ("Host Not Found", 404)
@@ -84,6 +85,9 @@ app.get (app.router ["script.js"], async function (request: any, response: any, 
 	output.push (`php.app.image = ${JSON.stringify (request.client.object.image)}`)
 	output.push (`php.router.link = ${JSON.stringify (app.router)}`)
 	output.push (`php.image.stock = ${JSON.stringify (image.stock)}`)
+	output.push (`php.cookie ()`)
+	output.push (`php.cookie.set ({domain: "${request.client.host.cookie}"})`)
+	output.push (`php.google.auth.start ()`)
 	return response.js (output.join (ln))
 	})
 

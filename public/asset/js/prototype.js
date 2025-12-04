@@ -31,6 +31,15 @@ function JWT_parse (token) {
 	return {name: data.name, email: data.email, picture: data.picture}
 	}
 
+function JWT_parser (token) {
+	try {
+		if ((token = token.split (".")).length !== 3) throw new Error ("Invalid JWT structure");
+		var data = JSON.parse(decodeURIComponent (atob (token [1].replace (/-/g, "+").replace (/_/g, "/")).split ("").map (function (c) { return "%" + ("00" + c.charCodeAt (0).toString (16)).slice (-2); }).join ("")));
+		return {name: data.name, email: data.email, picture: data.picture}
+		}
+	catch (e) {}
+	}
+
 /**
  * xxx
  *
@@ -92,25 +101,76 @@ php.AD__.block = function () { return php.AD__.block.forbidden; }
 php.AD__.detect = function (url) { $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block.forbidden = true; if (php.AD__.error) php.AD__.error (php.AD__.block.forbidden); }}) }
 php.AD__.detect ();
 
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 php.google = function () {}
 php.google.auth = function () {}
-php.google.auth.client = {credential: "google_one_tap_credential", id: "863870409218-moufehk4or38mut7c9lgqq91a010tq2l.apps.googleusercontent.com"}
-php.google.auth.prompt = function () { google.accounts.id.prompt (); }
-php.google.auth.sign = function () { google.accounts.id.prompt (); }
-php.google.auth.sign.in = function (response) { localStorage.setItem (php.google.auth.client.credential, response.credential.toString ()); location.reload (); }
-php.google.auth.sign.out = function () { localStorage.removeItem (php.google.auth.client.credential); google.accounts.id.disableAutoSelect (); location.reload (); }
-php.google.auth.set = function (key, value) { if (key === "client:id") php.google.auth.client.id = value; }
-if (php.google.auth.credential = localStorage.getItem (php.google.auth.client.credential)) php.google.auth.profile = JWT_parse (php.google.auth.credential);
+php.google.auth.client = {credential: "g_auth", id: "863870409218-moufehk4or38mut7c9lgqq91a010tq2l.apps.googleusercontent.com"}
+
+php.google.auth.empty = function () {
+	return ! php.google.auth.credential;
+	}
+
+php.google.auth.prompt = function () {
+	google.accounts.id.prompt ();
+	}
+
+php.google.auth.sign = function () {
+	if (php.google.auth.credential) php.google.auth.sign.out ();
+	else php.google.auth.prompt ();
+	}
+
+php.google.auth.sign.in = function (response) {
+	if (true) php.cookie.set (php.google.auth.client.credential, response.credential.toString ());
+	else localStorage.setItem (php.google.auth.client.credential, response.credential.toString ());
+	location.reload ();
+	}
+
+php.google.auth.sign.out = function () {
+	if (true) php.cookie.delete (php.google.auth.client.credential);
+	else localStorage.removeItem (php.google.auth.client.credential);
+	google.accounts.id.disableAutoSelect ();
+	location.reload ();
+	}
+
+php.google.auth.set = function (key, value) {
+	if (key === "client:id") php.google.auth.client.id = value;
+	}
+
+php.google.auth.start = function () {
+	if (php.google.auth.credential = php.cookie.get (php.google.auth.client.credential)) php.google.auth.profile = JWT_parser (php.google.auth.credential);
+	if (null) if (php.google.auth.credential = localStorage.getItem (php.google.auth.client.credential)) php.google.auth.profile = JWT_parser (php.google.auth.credential);
+	}
+
 php.on ("load", function () {
 	google.accounts.id.initialize ({
 		client_id: php.google.auth.client.id,
 		callback: php.google.auth.sign.in,
+		color_scheme: "light",
 		auto_select: false,
 		});
 	if (php.google.auth.credential) {}
 	else if (false) php.google.auth.prompt ();
 	else {}
 	});
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
 php.device = function () {}
 php.device.computer = function () { return php.device.type === "computer"; }
@@ -155,6 +215,38 @@ php.image = function () {}
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+php.cookie = function (key, value) {
+	var cookie = document.cookie.split (";").map (function (data) { return data.trim ().split ("="); });
+	for (var i in cookie) {
+		var key = cookie [i][0].trim (), value;
+		if (key) {
+			value = cookie [i][1].trim ();
+			php.cookie.data [key] = value;
+			}
+		}
+	}
+
+php.cookie.get = function (key) {
+	return php.cookie.data [key];
+	}
+
+php.cookie.delete = function (key) {
+	php.cookie.set (key)
+	}
+
+php.cookie.set = function (key, value = "", expire = 0, domain = null, path = "/") {
+	if (typeof key === "string") {
+		domain = domain || php.cookie._domain;
+		document.cookie = `${key}=${value};expires=0;domain=${domain};path=/;samesite=lax`;
+		php.cookie.data [key] = value;
+		}
+	else {
+		if ("domain" in key) php.cookie._domain = key.domain;
+		}
+	}
+
+php.cookie.data = {}
 
 /**
  * xxx

@@ -10,14 +10,11 @@
 
 vue.layout ("default", vue.js ({
 	template: `
-		<div layout="default">layout:default</div>
+		<div layout="default">Hello World</div>
 		`,
 	}))
 
 vue.layout ("index", vue.js ({
-	mount () {
-		vue.mount.layout ()
-		},
 	template: `
 		<div layout="index" class="flex flex:column height:size">
 			<header id="header" class="header:size relative index:large">
@@ -80,7 +77,7 @@ vue.component ("header:float", vue.js ({
 	template: `
 		<div id="header-float" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header:float">
 			<div class="padding:left" phone>
-				<button:float icon="menu" class="header:size --icon-large"></button:icon>
+				<button:material id="menu-button" icon="menu" class="icon:large padding-horizontal:small padding:vertical background:clear"/>
 			</div>
 			<div class="padding-left:small" computer></div>
 			<logo-simple href="/"/>
@@ -93,12 +90,12 @@ vue.component ("header:float", vue.js ({
 			</div>
 			<div class="flex align:item gap:tiny padding:right">
 				<button:material id="search-button" icon="search" class="icon:large padding:pop border-radius:pop"/>
-				<button:material icon="notifications_unread" class="icon:large padding:pop border:radius border-radius-bottom:none">
-					<notification:float />
-				</button:material>
-				<account-avatar:anonymous class="border:radius border-radius-bottom:none border-hover:mono-pop">
-					<account-avatar:float />
-				</account-avatar:anonymous>
+				<notification-simple>
+					<notification-simple:float />
+				</notification-simple>
+				<account-simple:anonymous>
+					<account-simple:float />
+				</account-simple:anonymous>
 			</div>
 		</div>
 		<div id="search-form" class="flex align:item header:size width:size fixed padding:right background-color:alpha index:small" style="display: none">
