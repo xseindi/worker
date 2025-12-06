@@ -26,7 +26,7 @@
 "tag": "/tag/:tag/", "tag:index": "/tag/",
 "label": "/label/:label/", "label:index": "/label/",
 "genre": "/genre/:genre/", "genre:index": "/genre/",
-"country": "/country/:country/", "country:index": "/country/",
+"country": "/country/:country/", "country:index": "/country/", "country:by_type": "/country/:country/:type/",
 "image": "/image/:image/", "image:index": "/image/",
 "picture": "/picture/:picture/", "picture:index": "/picture/",
 "photo": "/photo/:photo/", "photo:index": "/photo/",

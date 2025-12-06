@@ -167,6 +167,7 @@ php.device.computer = function () { return php.device.type === "computer"; }
 php.device.phone = function () { return php.device.type === "phone"; }
 php.html = function () {}
 php.body = function () {}
+php.body.width = $ ("body").width ();
 php.body.css = function (context) {
 	var type = "phone";
 	var orientation = "portrait";
@@ -174,12 +175,17 @@ php.body.css = function (context) {
 	if (body > 600) type = "phone";
 	if (body > 1000) type = "computer";
 	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
-	$ ("body").removeClass ("computer mobile tablet phone");
-	$ ("body").addClass (type).addClass (orientation);
 	php.device.type = type;
 	php.device.orientation = orientation;
-	php.emit ("body:css", type, orientation);
 	if (context) context (type, orientation);
+	if (context !== null) php.body.css.rc (type, orientation);
+	}
+php.body.css.rc = function (type, orientation) {
+	type = type || php.device.type;
+	orientation = orientation || php.device.orientation;
+	$ ("body").removeClass ("computer mobile tablet phone");
+	$ ("body").addClass (type).addClass (orientation);
+	php.emit ("body:css", type, orientation);
 	}
 
 php.sleep = function (context, second = 0) { return setTimeout (context, (second * 1000)); }
@@ -353,6 +359,61 @@ php.on ("load", function () {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+php.owl = function () {}
+php.owl.carousel = function (element, reference, option) {
+	option = option || {}
+	var setting = {
+		onTranslated: option ["on:translate"] || function () {},
+		gap: (option.gap || 0),
+		loop: (option.loop || false),
+		center: (option.center || false),
+		nav: (option.nav || false), dots: (option ["nav:dot"] || false),
+		autoplay: (option.play === "auto" || option.play || false),
+		margin: (option.margin || 10),
+		autoWidth: (option.width === "auto" || false),
+		stagePadding: (option ["stage:padding"] || 0),
+		autoplayTimeout: (option.timeout || 10000),
+		autoplayHoverPause: true,
+		responsive: option.responsive || php.owl.carousel ["item:default"],
+		}
+	php.owl.carousel.event.push ({element, reference, setting});
+	setTimeout (function () {
+		var oc = $ (element);
+		if (oc) {
+			if (reference) oc.width ($ (reference).width () - setting.gap);
+			oc.owlCarousel (setting);
+			}
+		}, 1000);
+	}
+
+php.owl.carousel.event = [];
+
+php.owl.carousel.emit = function () {
+	for (var i in php.owl.carousel.event) {
+		var oc = $ (php.owl.carousel.event [i].element);
+		if (oc) {
+			oc.css ("display", "none");
+			setTimeout (function () {
+				oc.css ("display", "flex");
+				if (php.owl.carousel.event [i].reference) oc.width ($ (php.owl.carousel.event [i].reference).width ()), console.log ($ (php.owl.carousel.event [i].reference).width ());
+				oc.owlCarousel (php.owl.carousel.event [i].setting);
+				}, 1000);
+			}
+		}
+	}
+
+php.owl.carousel ["item:default"] = {
+	0: {items: 1},
+	600: {items: 3},
+	1000: {items: 5},
+	}
+
+php.owl.carousel ["item:pop"] = {
+	0: {items: 2},
+	600: {items: 4},
+	1000: {items: 6},
+	}
 
 /**
  * the end

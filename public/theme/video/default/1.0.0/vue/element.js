@@ -105,6 +105,32 @@ vue.element ("icon:material", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("img:file", {
+	prop: ["src", "type"],
+	setup (prop) {
+		var absolute = null
+		if (prop.type === "absolute") absolute = "background-image: url('/file/" + prop.src + "'); background-position: center center; background-size: cover;"
+		return {absolute}
+		},
+	method: {
+		url (src) { return "/file/" + src },
+		},
+	template: `
+		<div v-if="absolute" class="width:height absolute top left" v-bind:style="absolute"></div>
+		<img v-bind:src="url (prop.src)" v-else>
+		`,
+	})
+
+vue.element ("img:asset", {
+	prop: ["src"],
+	method: {
+		url (src) { return "/asset/image/" + src },
+		},
+	template: `
+		<img v-bind:src="url (prop.src)">
+		`,
+	})
+
 vue.element ("img:logo", {
 	prop: ["src", "type"],
 	method: {

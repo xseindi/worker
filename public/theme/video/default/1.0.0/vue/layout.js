@@ -16,10 +16,11 @@ vue.layout ("default", {
 
 vue.layout ("index", {
 	setup () {
-		var test = [
-			{component: "block", css: "bacot", data: [{component: "a:material", text: "asd", css: ""}]},
-			]
-		return {test}
+		var oc = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+		return {oc}
+		},
+	mount () {
+		vue.mount.main ()
 		},
 	template: `
 		<div layout="index" class="flex flex:column height:size">
@@ -27,12 +28,12 @@ vue.layout ("index", {
 				<header-simple:float></header-simple:float>
 			</header>
 			<main class="flex flex:grow index">
-				<menu id="menu" class="block relative">
+				<menu id="menu" class="block relative index:small">
 					<div outter>
 						<menu-simple></menu-simple>
 					</div>
 				</menu>
-				<main id="main" class="flex flex:column flex:grow">
+				<main id="main" class="flex flex:column flex:grow index">
 					<div v-if="null" class="flex align:item justify:item padding:vertical" phone>
 						<div class="flex align:item gap" phone>
 							<the-movie:nav />
@@ -40,7 +41,19 @@ vue.layout ("index", {
 							<the-people:nav position="right"/>
 						</div>
 					</div>
-					main
+					<video-card id="test"/>
+					<!--div id="test-oc-container" class="relative">
+						<div id="test-oc" class="owl-carousel owl-theme padding">
+							<div v-for="oc in oc" class="owl-carousel-item">
+								<div class="relative border:radius no-overflow">
+									<img:asset src="3x4.svg" class=""/>
+									<img:file src="movie-tron.webp" type="absolute"/>
+								</div>
+								<div>asd</div>
+							</div>
+						</div>
+					</div-->
+					<div><img:asset src="blank-portrait.svg" width="100"/></div>
 					<div><img:undraw src="cloud" class="img:big"/></div>
 					<img width="1" height="750">
 				</main>
@@ -81,11 +94,12 @@ vue.layout (404, {
 vue.component ("header-simple:float", {
 	mount () {
 		vue.mount.search ()
+		vue.mount.menu ()
 		},
 	template: `
 		<div id="header-simple" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header-simple:float">
 			<div class="padding:left" phone>
-				<button:material id="menu-button" icon="menu" class="icon:large padding-horizontal:small padding:vertical background:clear"/>
+				<button:material id="menu:toggle" icon="menu" class="icon:large padding-horizontal:small padding:vertical background:clear"/>
 			</div>
 			<div class="padding-left:small" computer></div>
 			<logo-simple href="/"/>
@@ -136,35 +150,35 @@ vue.component ("menu-simple", {
 				{text: "Photo", icon: "photo_camera", url: php.router ("photo:index")},
 				],
 			drama: [
-				{text: "Korea", icon: "globe_asia", url: php.router ("country", {country: "korea"}, {type: "tv"})},
-				{text: "Japan", icon: "globe_asia", url: php.router ("country", {country: "japan"}, {type: "tv"})},
-				{text: "China", icon: "globe_asia", url: php.router ("country", {country: "china"}, {type: "tv"})},
+				{text: "Korea", icon: "globe_asia", url: php.router ("country:by_type", {country: "korea", type: "tv"})},
+				{text: "Japan", icon: "globe_asia", url: php.router ("country:by_type", {country: "japan", type: "tv"})},
+				{text: "China", icon: "globe_asia", url: php.router ("country:by_type", {country: "china", type: "tv"})},
 				],
 			}
 		return {menu}
 		},
 	template: `
-		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color">
+		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color" aria-modal="menu">
 			<div class="flex flex:column padding">
-				<a:material v-for="a in menu.general" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:pop border-radius:pop"/>
+				<a:material v-for="a in menu.general" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/>
 			</div>
 			<div class="padding-horizontal:large">
 				<string class="font-size:intermediate font:bold">YOU</string>
 			</div>
 			<div class="flex flex:column padding">
-				<a:material v-for="a in menu.visitor" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:pop border-radius:pop"/>
+				<a:material v-for="a in menu.visitor" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/>
 			</div>
 			<div class="padding-horizontal:large">
 				<string class="font-size:intermediate font:bold">EXPLORE</string>
 			</div>
 			<div class="flex flex:column padding">
-				<a:material v-for="a in menu.explore" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:pop border-radius:pop"/>
+				<a:material v-for="a in menu.explore" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/>
 			</div>
 			<div class="padding-horizontal:large">
 				<string class="font-size:intermediate font:bold">DRAMA (ASIA)</string>
 			</div>
 			<div class="flex flex:column padding">
-				<a:material v-for="a in menu.drama" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:pop border-radius:pop"/>
+				<a:material v-for="a in menu.drama" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/>
 			</div>
 		</div>
 		`,

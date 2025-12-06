@@ -19,6 +19,12 @@
 	"ad:adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
 	"ad adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
 	"ad:monetag": "",
+	"referral:do": "",
+	"referral:vultr": "https://www.vultr.com/?ref=9837557",
+	"referral vultr:special": "https://www.vultr.com/?ref=9837558-9J",
+	"affiliate": {
+		"ds": [{"url": "https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=IAFmarketing"}]
+		},
 	"image": {
 		"logo": 10001,
 		"avatar": 20001
