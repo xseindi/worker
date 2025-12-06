@@ -1,14 +1,15 @@
 import php from "../zend/engine";
 
-php.html = function (output: string, option: any = {}) {
+php.html = function (output: string, variable: any = {}) {
 	var markup = new php.markup (`<!DOCTYPE html>`);
 	markup.push (0, `<html lang="{{ html:lang }}" translate="{{ html:translate }}" class="{{ html:css }}" prefix="og: http://ogp.me/ns#">`);
 	markup.push (1, `<head profile="{{ head:profile }}">`);
 	markup.push (2, `<title>{{ title }}</title>`);
+	markup.push (2, `<meta charset="{{ meta:charset }}">`);
 	markup.push (2, `<meta http-equiv="X-UA-Compatible" content="IE=edge">`);
 	markup.push (2, `<meta http-equiv="X-Cross-Origin" content="{{ http-equiv:x-cross-origin }}">`);
-	markup.push (2, `<meta charset="{{ meta:charset }}">`);
-	markup.push (2, `<meta name="title" content="{{ title }}">`);
+	if (false) markup.push (2, `<meta name="title" content="{{ title }}">`);
+	markup.push (2, `<meta itemprop="name" content="{{ title }}">`);
 	markup.push (2, `<meta name="viewport" content="{{ meta:viewport }}">`);
 	markup.push (2, `<meta name="author" content="{{ meta:author }}">`);
 	markup.push (2, `<meta name="generator" content="{{ meta:generator }}">`);
@@ -19,7 +20,7 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<meta name="google" content="{{ meta:google }}">`);
 	markup.push (2, `<meta name="googlebot" content="{{ meta:google-bot }}">`);
 	markup.push (2, `<meta name="googlebot-news" content="{{ meta:google-bot-article }}">`);
-	if (option ["google"]) markup.push (2, `<meta name="google-site-verification" content="{{ meta:google-site-verification }}">`);
+	if (variable ["google"]) markup.push (2, `<meta name="google-site-verification" content="{{ meta:google-site-verification }}">`);
 	markup.push (2, `<meta name="twitter:card" content="{{ twitter:card }}">`);
 	markup.push (2, `<meta name="twitter:title" content="{{ twitter:title }}">`);
 	markup.push (2, `<meta name="twitter:description" content="{{ twitter:description }}">`);
@@ -32,17 +33,17 @@ php.html = function (output: string, option: any = {}) {
 	markup.push (2, `<meta property="og:image" content="{{ og:image }}">`);
 	markup.push (2, `<meta property="og:type" content="{{ og:type }}">`);
 	markup.push (2, `<meta property="og:locale" content="{{ og:locale }}">`);
-	if (option ["article"]) {
+	if (variable ["article"]) {
 		markup.push (2, `<meta property="article:published_time" content="{{ article:published_time }}">`);
 		markup.push (2, `<meta property="article:modified_time" content="{{ article:modified_time }}">`);
 		}
 	markup.push (2, `<link rel="profile" href="https://gmpg.org/xfn/11">`);
 	markup.push (2, `<link rel="icon" href="{{ base_url }}{{ router favorite.ico }}">`);
 	markup.push (2, `<link rel="canonical" href="{{ canonical_url }}">`);
-	if (option ["manifest.json"]) markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ manifest.json }}">`);
+	if (variable ["manifest.json"]) markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ manifest.json }}">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
-	if (option ["open-search"]) {
+	if (variable ["open-search"]) {
 		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search }}" type="application/opensearchdescription+xml" title="">`);
 		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search:description }}" type="application/opensearchdescription+xml" title="">`);
 		}
@@ -85,16 +86,13 @@ php.html = function (output: string, option: any = {}) {
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
 		// markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		}
-	markup.push (2, `<script type="application/ld+json"></script>`);
-	markup.push (2, `<script type="application/ld+json"></script>`);
-	// markup.push (2, `<script>php.app.theme.layout = "{{ theme:layout }}";</script>`);
-	// markup.push (2, `<script>php.app.router = "{{ router }}";</script>`);
-	markup.push (2, `<script>`);
-	markup.push (0, `{{ bacot }}`);
-	markup.push (2, `</script>`);
-	// markup.push (2, `<script>window.onload = function () { php.emit ("load"); }</script>`);
+	markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].organization ()}</script>`);
+	markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].website ()}</script>`);
+	if (variable ["ld+json webpage"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].webpage ()}</script>`);
+	if (variable ["breadcrumb:list"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].breadcrumb.list (variable ["breadcrumb:list"])}</script>`);
+	markup.push (0, `{{ scriptag }}`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
-	markup.push (2, `<style>[hidden] { opacity: 0; }</style>`);
+	markup.push (2, `<style>[application] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);
 	markup.push (1, `<body>`);
 	markup.push (0, output);
@@ -109,7 +107,7 @@ php.vue = function () {}
 php.vue.html = function () {
 	var markup = new php.markup ();
 	markup.push (0, `<div id="app">`);
-		markup.push (1, `<div hidden>`);
+		markup.push (1, `<div application>`);
 			markup.push (2, `<h1>{{ title }}</h1>`);
 			markup.push (2, `<h2>{{ site:description }}</h2>`);
 			markup.push (2, `<h3>{{ meta:description }}</h3>`);
@@ -131,3 +129,81 @@ php.vue.html = function () {
 	markup.push (0, `</div>`);
 	return markup.data;
 	}
+
+php.help ["script.js"] = function (app: any, request: any, response: any, next: any) {
+	var markup = new php.markup ();
+	markup.push (2, `<script>php.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"})}</script>`);
+	markup.push (2, `<script>php.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
+	markup.push (2, `<script>php.app.router = "${response.var ['router']}"</script>`);
+	markup.push (2, `<script>php.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
+	markup.push (2, `<script>php.router.link = ${JSON.stringify (app.router)}</script>`);
+	markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
+	markup.push (2, `<script>php.cookie ()</script>`);
+	markup.push (2, `<script>php.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
+	markup.push (2, `<script>php.cookie.start ()</script>`);
+	markup.push (2, `<script>php.google.auth.start ()</script>`);
+	markup.push (2, `<script>window.onload = function () { php.emit ("load") }</script>`);
+	return markup;
+	}
+
+php.help ["ld+json"] = function () {}
+
+php.help ["ld+json"].organization = function () {
+	return JSON.stringify ({
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"@id": "{{ base_url }}/#organization",
+		"name": "{{ ld+json organization:name }}",
+		"url": "{{ ld+json organization:url }}",
+		"logo": "{{ ld+json organization:logo }}",
+		});
+	}
+
+php.help ["ld+json"].website = function () {
+	return JSON.stringify ({
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		"@id": "{{ base_url }}/#website",
+		"name": "{{ site:name }}",
+		"alternateName": "{{ site:name }}",
+		"description": "{{ site:description }}",
+		"url": "{{ base_url }}",
+		"publisher": {"@id": "{{ base_url }}/#organization"},
+		"potentialAction": {
+			"@type": "SearchAction",
+			"target": {"@type": "EntryPoint", "urlTemplate": "{{ base_url }}{{ router search }}/?s={search_term_string}"},
+			"query-input": "required name=search_term_string",
+			},
+		});
+	}
+
+php.help ["ld+json"].webpage = function () {
+	return JSON.stringify ({
+		"@context": "https://schema.org",
+		"@type": "WebPage",
+		"headline": "{{ title }}",
+		"url": "{{ canonical_url }}",
+		"datePublished": "{{ date:publish }}",
+		"image": "{{ ld+json webpage:image }}",
+		"thumbnailUrl": "{{ ld+json webpage:thumbnail }}",
+		});
+	}
+
+php.help ["ld+json"].breadcrumb = function () {}
+php.help ["ld+json"].breadcrumb.list = function (data: any = []) {
+	var list = [];
+	var position = 0;
+	for (var i in data) {
+		position ++
+		list.push ({"@type": "ListItem", position, name: data [i].name, item: data [i].url});
+		}
+	return JSON.stringify ({
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"itemListElement": list,
+		});
+	}
+
+/*
+
+*/

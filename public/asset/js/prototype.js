@@ -228,12 +228,18 @@ php.cookie.delete = function (key) {
 
 php.cookie.set = function (key, value = "", expire = 0, domain = null, path = "/") {
 	if (typeof key === "string") {
+		expire = expire || php.cookie._expire;
 		domain = domain || php.cookie._domain;
-		document.cookie = `${key}=${value};expires=0;domain=${domain};path=/;samesite=lax`;
+		document.cookie = `${key}=${value};expires=${expire};domain=${domain};path=/;samesite=lax`;
 		php.cookie.data [key] = value;
 		}
 	else {
 		if ("domain" in key) php.cookie._domain = key.domain;
+		if ("expire:day" in key) {
+			var date_expire = new Date ();
+			date_expire.setTime (date_expire.getTime () + (key ["expire:day"] * 24 * 60 * 60 * 1000));
+			php.cookie._expire = date_expire.toUTCString ();
+			}
 		}
 	}
 
@@ -304,11 +310,11 @@ php.google.auth.sign.in = function (response) {
 	php.ajax.post ("/g_auth", {g_auth: credential.object}, {
 		success: function (response) {
 			php.emit ("google:auth sign-in:done", response);
-			// location.reload ();
+			location.reload ();
 			},
 		error: function (error) {
 			php.emit ("google:auth sign-in:done", {error});
-			//  location.reload ();
+			location.reload ();
 			},
 		})
 	}
@@ -331,7 +337,6 @@ php.on ("load", function () {
 	google.accounts.id.initialize ({
 		client_id: php.google.auth.client.id,
 		callback: php.google.auth.sign.in,
-		color_scheme: "light",
 		auto_select: false,
 		});
 	if (php.google.auth.credential) {}

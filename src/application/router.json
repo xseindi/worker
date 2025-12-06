@@ -3,6 +3,7 @@
 "style.css": "/style.css", "style:sheet": "/style/sheet.css", "style:config": "/style/config.css",
 "script.js": "/script.js", "eof.js": "/eof.js", "prototype.js": "/prototype.js", "asset:prototype.js": "/asset/js/prototype.js",
 "vue.js": "/vue.js", "asset:vue.js": "/asset/js/vue.js", "vue:layout": "/vue/layout.js", "vue:component": "/vue/component.js", "vue:element": "/vue/element.js",
+"image:logo": "/asset/image/logo/:logo", "image:avatar": "/asset/image/avatar/:avatar",
 "robot:text": "/robots.txt",
 "ad:text": "/ads.txt",
 "favorite.ico": "/favicon.ico",
@@ -25,7 +26,7 @@
 "tag": "/tag/:tag/", "tag:index": "/tag/",
 "label": "/label/:label/", "label:index": "/label/",
 "genre": "/genre/:genre/", "genre:index": "/genre/",
-"country": "/country/", "country:single": "/country/:country/",
+"country": "/country/:country/", "country:index": "/country/",
 "image": "/image/:image/", "image:index": "/image/",
 "picture": "/picture/:picture/", "picture:index": "/picture/",
 "photo": "/photo/:photo/", "photo:index": "/photo/",
@@ -57,12 +58,20 @@
 	"*": "*"
 	},
 "p": {
+	"short": "/short/",
 	"trending": "/trending/",
 	"top_global": "/top_global/",
 	"editor-choice": "/editor-choice/",
-	"short": "/short/",
 	"live": "/live/",
 	"history": "/history/",
+	"*": "*"
+	},
+"drama": {
+	"index": "/drama/",
+	"asia": "/drama/asia/",
+	"asia:korea": "/drama/asia/korea/",
+	"asia:japan": "/drama/asia/japan/",
+	"asia:china": "/drama/asia/china/",
 	"*": "*"
 	}
 }

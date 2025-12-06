@@ -96,10 +96,11 @@ php.worker.io.request = function (io: any, worker: any) {
 
 php.worker.io.response = function (io: any, worker: any, request: any) {
 	var response: any = function (output: string, code: number = 200) { return io.html (output, code); }
-	response.html = function (output: string, code: number = 200) { return io.html (php.render (php.html (output), response.var), code); }
+	response.html = function (output: string, code: number = 200) { return io.html (php.render (php.html (output, response.var), response.var), code); }
 	response.css = function (css: string, code: number = 200) { return io.text (css, code, {"Content-Type": "text/css"}); }
 	response.js = function (js: string, code: number = 200) { return io.text (js, code, {"Content-Type": "text/javascript"}); }
 	response.xml = function (xml: string, code: number = 200) { return io.text (xml, code, {"Content-Type": "application/xml"}); }
+	response.image = function () {}
 	response.json = io.json;
 	response.text = io.text;
 	response.redirect = io.redirect;
@@ -132,6 +133,11 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				await request.db.setup ({drop: true, data: true})
 				}
 			}
+		request.router = function (key: string, value: any = {}) {
+			var router = request.base_url + app.router [key]
+			for (var i in value) router = router.split (":" + i).join (value [i])
+			return router
+			}
 		request.db.cache = {
 			config: await request.db.select ("config").json ().find ().query (),
 			client: await request.db.select ("client").json ().find ().query (),
@@ -141,12 +147,11 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
-		console.log (request.db.cache.plugin.g_auth.data)
 		for (var i in request.db.cache.config.data) {
 			app.config [request.db.cache.config.data [i].key] = request.db.value (request.db.cache.config.data [i].value)
 			}
-		var client = request.db.cache.client.array ().filter ({host: request.url.host.name}).one ()
-		if (client) {
+		var client: any
+		if (client = request.db.cache.client.array ().filter ({host: request.url.host.name}).one ()) {
 			if (client.redirect) return php.promise (function (resolve: any, reject: any) {
 				var split = client.redirect.split (" ")
 				var url, code = 302
@@ -156,28 +161,8 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				request.redirect.code = code
 				resolve ()
 				})
-			request.client.id = client.id
-			request.client.reference = client.reference
-			request.client.object = request.db.value (client.meta) || {}
-			request.client.theme = request.db.cache.theme.array ().filter ({id: client.theme}).one () || {}
-			request.client.host = {name: client.host}
-			if (client.domain) request.client.host.cookie = "." + client.domain
-			else request.client.host.cookie = client.host
-			if (client.reference) {
-				var reference = request.db.cache.client.array ().filter ({id: client.reference}).one ()
-				request.client.object = php.object.assign ((request.db.value (reference.meta) || {}), request.client.object)
-				if (("id" in request.client.theme) === false) request.client.theme = request.db.cache.theme.array ().filter ({id: reference.theme}).one () || {}
-				}
-			if (request.client.theme.reference) {
-				var reference = request.db.cache.theme.array ().filter ({id: request.client.theme.reference}).one ()
-				request.client.theme.sub = request.client.theme.name
-				request.client.theme.name = reference.name
-				request.client.theme.slug = reference.slug
-				request.client.theme.type = reference.type
-				}
-			else {
-				request.client.theme.version = php.array.last (request.client.theme.version)
-				}
+			php.worker.client (app, request, response, next, client)
+			php.worker.image (app, request, response, next)
 			return php.promise (async function (resolve: any, reject: any) {
 				request.library = new library (app, request, response, next)
 				request.library.variable ()
@@ -194,6 +179,52 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 		request.error.push ({type: "agent", status: "forbidden"})
 		resolve ()
 		})
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+php.worker.client = async function (app: any, request: any, response: any, next: any, client: any) {
+	request.client.id = client.id
+	request.client.reference = client.reference
+	request.client.object = request.db.value (client.meta) || {}
+	request.client.theme = request.db.cache.theme.array ().filter ({id: client.theme}).one () || {}
+	request.client.host = {name: client.host}
+	if (client.domain) request.client.host.cookie = "." + client.domain
+	else request.client.host.cookie = client.host
+	if (client.reference) {
+		var reference = request.db.cache.client.array ().filter ({id: client.reference}).one ()
+		request.client.object = php.object.assign ((request.db.value (reference.meta) || {}), request.client.object)
+		if (("id" in request.client.theme) === false) request.client.theme = request.db.cache.theme.array ().filter ({id: reference.theme}).one () || {}
+		}
+	if (request.client.theme.reference) {
+		var reference = request.db.cache.theme.array ().filter ({id: request.client.theme.reference}).one ()
+		request.client.theme.sub = request.client.theme.name
+		request.client.theme.name = reference.name
+		request.client.theme.slug = reference.slug
+		request.client.theme.type = reference.type
+		}
+	else {
+		request.client.theme.version = php.array.last (request.client.theme.version)
+		}
+	}
+
+php.worker.image = async function (app: any, request: any, response: any, next: any) {
+	var image: any = {stock: {}}
+	for (var i in request.db.cache.image.data) {
+		var dir = "";
+		if (request.db.cache.image.data [i].type_of === "brand") dir = "brand/";
+		image.stock [request.db.cache.image.data [i].id] = dir + request.db.cache.image.data [i].file;
+		if (request.db.cache.image.data [i].slug) image.stock [request.db.cache.image.data [i].slug] = dir + request.db.cache.image.data [i].file;
+		}
+	response.image.stock = image.stock
 	}
 
 var library: any = class {
@@ -261,6 +292,12 @@ var library: any = class {
 		this.response.var ["og:image"] = ""
 		this.response.var ["og:type"] = "website"
 		this.response.var ["og:locale"] = "en"
+		this.response.var ["ld+json organization:name"] = this.request.client.site.name
+		this.response.var ["ld+json organization:url"] = this.request.base_url
+		this.response.var ["ld+json organization:logo"] = this.request.router ("image:logo", {logo: this.response.image.stock [this.request.client.object.image.logo]})
+		this.response.var ["date:publish"] = new Date ().toUTCString ()
+		this.response.var ["article:published_time"] = new Date ().toISOString ()
+		this.response.var ["article:modified_time"] = new Date ().toISOString ()
 		if (this.response.var ["c:type"] = "index") {
 			for (var i in this.app.router) {
 				if (i === "$") continue
@@ -298,12 +335,20 @@ var library: any = class {
 			this.response.var ["meta:description"] = this.response.var ["twitter:description"] = this.response.var ["og:description"] = description
 			this.response.var ["twitter:image"] = ""
 			this.response.var ["og:image"] = ""
-			this.response.var ["og:type"] = "website"
+			if (data.article) {
+				this.response.var ["article"] = true
+				this.response.var ["og:type"] = "article"
+				}
 			if (data.layout) this.response.var ["theme:layout"] = data.layout
 			if (data.router) this.response.var ["router"] = data.router
+			if (data ["ld+json webpage"]) {
+				this.response.var ["ld+json webpage"] = true
+				this.response.var ["ld+json webpage:image"] = data ["ld+json webpage"].image || "#"
+				this.response.var ["ld+json webpage:thumbnail"] = data ["ld+json webpage"].image || "#"
+				}
 			}
 		this.request.client.theme.layout = this.response.var ["theme:layout"]
-		this.response.var ["bacot"] = php.help ["script.js"] (this.app, this.request, this.response).render ()
+		this.response.var ["scriptag"] = php.help ["script.js"] (this.app, this.request, this.response).render ()
 		}
 	plugin () {
 		if (this.request.client.data ["tmdb:api"]) {

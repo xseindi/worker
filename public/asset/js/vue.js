@@ -54,6 +54,9 @@ vue.js = function (v) {
 		mounted () {
 			if (vue.mount) vue.mount (this);
 			if (v.mount) v.mount (this);
+			if (v.type === "layout") if (vue.mount.layout) vue.mount.layout (this);
+			if (v.type === "component") if (vue.mount.component) vue.mount.component (this);
+			if (v.type === "element") if (vue.mount.element) vue.mount.element (this);
 			},
 		methods: v.method || {},
 		template: v.template || ``,
@@ -66,9 +69,9 @@ vue.start = function () {
 
 vue.reactive = function (value = {}) { return reactive (value); }
 vue.reference = function (value = null) { return ref (value); }
-vue.component = function (key, value) { vue.markup [key] = value; }
-vue.element = function (key, value) { vue.markup [key] = value; }
-vue.layout = function (key, value) { vue.markup [vue.layout.key (key)] = value; }
+vue.component = function (key, value) { vue.markup [key] = vue.js ({type: "component", ... value}); }
+vue.element = function (key, value) { vue.markup [key] = vue.js ({type: "element", ... value}); }
+vue.layout = function (key, value) { vue.markup [vue.layout.key (key)] = vue.js ({type: "layout", ... value}); }
 vue.layout.key = function (layout) { return "layout:" + layout; }
 vue.markup = {
 	"theme:layout": vue.js ({

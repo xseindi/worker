@@ -8,22 +8,22 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.element ("string", vue.js ({
+vue.element ("string", {
 	template: `
 		<span string>
 			<slot name="default"/>
 		</span>
 		`,
-	}))
+	})
 
-vue.element ("icon", vue.js ({
+vue.element ("icon", {
 	prop: ["src"],
 	template: `
 		<icon:material v-bind:src="prop.src">
 			<slot name="default"/>
 		</icon:material>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -35,7 +35,7 @@ vue.element ("icon", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.element ("a:material", vue.js ({
+vue.element ("a:material", {
 	prop: ["text", "description", "url", "icon"],
 	template: `
 		<a v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
@@ -45,9 +45,9 @@ vue.element ("a:material", vue.js ({
 			<string v-if="prop.description" class="font:small font-bold:pop font-color:green">{{ prop.description }}</string>
 		</a>
 		`,
-	}))
+	})
 
-vue.element ("button:material", vue.js ({
+vue.element ("button:material", {
 	prop: ["text", "description", "icon", "icon-position"],
 	template: `
 		<button class="button background-hover:mono background-focus:mono" element="button:material">
@@ -61,9 +61,9 @@ vue.element ("button:material", vue.js ({
 			<slot name="default"/>
 		</button>
 		`,
-	}))
+	})
 
-vue.element ("button:awesome", vue.js ({
+vue.element ("button:awesome", {
 	prop: ["color"],
 	setup (prop) {
 		return {color: ("background-color:{color} background-hover:{color}").split ("{color}").join (prop.color || "blue")}
@@ -73,7 +73,7 @@ vue.element ("button:awesome", vue.js ({
 			<slot name="default"/>
 		</button>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -85,7 +85,7 @@ vue.element ("button:awesome", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.element ("icon:material", vue.js ({
+vue.element ("icon:material", {
 	prop: ["src"],
 	template: `
 		<div class="icon:container" icon>
@@ -93,7 +93,7 @@ vue.element ("icon:material", vue.js ({
 			<span class="icon:material" v-else><slot name="default"/></span>
 		</div>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -105,7 +105,7 @@ vue.element ("icon:material", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.element ("img:logo", vue.js ({
+vue.element ("img:logo", {
 	prop: ["src", "type"],
 	method: {
 		url (src) {
@@ -116,9 +116,9 @@ vue.element ("img:logo", vue.js ({
 	template: `
 		<img v-bind:src="url (prop.src)">
 		`,
-	}))
+	})
 
-vue.element ("img:avatar", vue.js ({
+vue.element ("img:avatar", {
 	prop: ["src"],
 	method: {
 		url (src) {
@@ -129,9 +129,9 @@ vue.element ("img:avatar", vue.js ({
 	template: `
 		<img v-bind:src="url (prop.src)">
 		`,
-	}))
+	})
 
-vue.element ("img:undraw", vue.js ({
+vue.element ("img:undraw", {
 	prop: ["src"],
 	method: {
 		svg (src) { return ("/asset/image/illustration/undraw/undraw_{src}.svg").split ("{src}").join (src) },
@@ -139,9 +139,9 @@ vue.element ("img:undraw", vue.js ({
 	template: `
 		<img v-bind:src="svg (prop.src)">
 		`,
-	}))
+	})
 
-vue.element ("img:spinner", vue.js ({
+vue.element ("img:spinner", {
 	template: `
 		<div class="spinner">
 			<svg class="spinner-circular" viewBox="25 25 50 50">
@@ -149,7 +149,7 @@ vue.element ("img:spinner", vue.js ({
 			</svg>
 		</div>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -161,35 +161,35 @@ vue.element ("img:spinner", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.element ("separator:mono", vue.js ({
+vue.element ("separator:mono", {
 	template: `
 		<div class="height background-color:mono"></div>
 		`,
-	}))
+	})
 
-vue.element ("separator:vertical", vue.js ({
+vue.element ("separator:vertical", {
 	template: `
 		<div class="width height:size background-color:mono-sky"></div>
 		`,
-	}))
+	})
 
-vue.element ("separator:small", vue.js ({
+vue.element ("separator:small", {
 	template: `
 		<div class="width height:small background-color:mono-sky"></div>
 		`,
-	}))
+	})
 
-vue.element ("separator:pop", vue.js ({
+vue.element ("separator:pop", {
 	template: `
 		<div class="width height:pop background-color:mono-sky"></div>
 		`,
-	}))
+	})
 
-vue.element ("separator:medium", vue.js ({
+vue.element ("separator:medium", {
 	template: `
 		<div class="width height:medium background-color:mono-sky"></div>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -201,11 +201,11 @@ vue.element ("separator:medium", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.element ("status:online", vue.js ({
+vue.element ("status:online", {
 	template: `
 		<div class="absolute border-radius:circle index" style="width: 10px; height: 10px; border: 2px solid white; bottom: -2px; right: -2px;"></div>
 		`,
-	}))
+	})
 
 /**
  * xxx

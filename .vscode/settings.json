@@ -4,7 +4,7 @@
 "editor.detectIndentation": false,
 "editor.lineHeight": 2,
 "editor.fontFamily": "Courier New",
-"editor.fontSize": 13,
+"editor.fontSize": 12,
 "editor.fontWeight": "bold",
 "files.eol": "\n",
 "files.associations": {"wrangler.json": "jsonc"}

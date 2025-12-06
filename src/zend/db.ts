@@ -107,6 +107,12 @@ php.db = class {
 			resolve (log);
 			});
 		}
+	async defrag () {
+		var db = await this.adapter.prepare ("vacuum").bind ().run ();
+		return new Promise (function (resolve, reject) {
+			resolve (db);
+			});
+		}
 	}
 
 /**

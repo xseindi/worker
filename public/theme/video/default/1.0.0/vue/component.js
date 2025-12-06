@@ -8,21 +8,23 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("loading", vue.js ({
+vue.component ("for:each", {
+	prop: ["component"],
+	setup () {},
 	template: `
-		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
-			Loading ...
-		</div>
+		<component v-for="data in prop.component" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
 		`,
-	}))
+	})
 
-vue.component ("loading:spinner", vue.js ({
+vue.component ("block", {
+	prop: ["component"],
+	setup () {},
 	template: `
-		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
-			<img:spinner class="size:large"/>
+		<div>
+			<component v-for="data in prop.component" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
 		</div>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -34,7 +36,33 @@ vue.component ("loading:spinner", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("logo-simple", vue.js ({
+vue.component ("loading", {
+	template: `
+		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
+			Loading ...
+		</div>
+		`,
+	})
+
+vue.component ("loading:spinner", {
+	template: `
+		<div id="loading" class="viewport fixed flex align:item justify:item background:color">
+			<img:spinner class="size:large"/>
+		</div>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+vue.component ("logo-simple", {
 	prop: ["src", "title", "description"],
 	template: `
 		<a class="flex align:item gap" component="logo-simple">
@@ -45,7 +73,7 @@ vue.component ("logo-simple", vue.js ({
 			</div>
 		</a>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -57,7 +85,7 @@ vue.component ("logo-simple", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("account-simple", vue.js ({
+vue.component ("account-simple", {
 	prop: ["name", "email", "avatar"],
 	template: `
 		<button id="account-simple" class="button padding:pop border:radius border-radius-bottom:none" component="account:avatar">
@@ -75,9 +103,9 @@ vue.component ("account-simple", vue.js ({
 			<slot name="default"/>
 		</button>
 		`,
-	}))
+	})
 
-vue.component ("account-simple:float", vue.js ({
+vue.component ("account-simple:float", {
 	setup () {
 		return {}
 		},
@@ -95,8 +123,8 @@ vue.component ("account-simple:float", vue.js ({
 				<div class="flex flex:column gap:space">
 					<string class="font-bold:pop">Google One Tap</string>
 					<string class="font-size:pop font-color:mono">Third-party Sign In Required</string>
-					<string v-if="vue.loading.google_auth_sign_in" class="font-size:small font-color:mono"><i>Loading</i></string>
-					<string v-if="vue.loading.google_auth_sign_in_done" class="font-size:small font-color:mono"><i>OK, Reloading</i></string>
+					<string v-if="vue.loading.google_auth_sign_in" class="font-size:small font-color:mono">Loading</string>
+					<string v-if="vue.loading.google_auth_sign_in_done" class="font-size:small font-color:mono">OK, Reloading</string>
 				</div>
 			</div>
 			<div v-if="google.auth.credential" class="padding:top padding-horizontal:medium">
@@ -113,9 +141,9 @@ vue.component ("account-simple:float", vue.js ({
 			</div>
 		</section>
 		`,
-	}))
+	})
 
-vue.component ("account-simple:anonymous", vue.js ({
+vue.component ("account-simple:anonymous", {
 	setup () {
 		var account = {name: "Anonymous", email: "Sign In", avatar: php.app.image.avatar}
 		if (php.google.auth.credential) account = {name: php.google.auth.profile.name, email: php.google.auth.profile.email, avatar: php.google.auth.profile.picture}
@@ -126,17 +154,17 @@ vue.component ("account-simple:anonymous", vue.js ({
 			<slot name="default"/>
 		</account-simple>
 		`,
-	}))
+	})
 
-vue.component ("notification-simple", vue.js ({
+vue.component ("notification-simple", {
 	template: `
 		<button:material icon="notifications_unread" class="icon:large padding:pop border:radius border-radius-bottom:none">
 			<slot name="default"/>
 		</button:material>
 		`,
-	}))
+	})
 
-vue.component ("notification-simple:float", vue.js ({
+vue.component ("notification-simple:float", {
 	template: `
 		<section class="flex flex:column float:size top:port right text-align:left border:radius border-radius-top-right:none background:color box-shadow no-overflow index transition:visibility">
 			<div class="flex align:item gap padding padding-horizontal:medium">
@@ -154,7 +182,7 @@ vue.component ("notification-simple:float", vue.js ({
 			</div>
 		</section>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -166,7 +194,7 @@ vue.component ("notification-simple:float", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("nav-simple", vue.js ({
+vue.component ("nav-simple", {
 	prop: ["text", "data", "position"],
 	setup (prop) {
 		var style = []
@@ -183,9 +211,9 @@ vue.component ("nav-simple", vue.js ({
 			</section>
 		</button:material>
 		`,
-	}))
+	})
 
-vue.component ("nav-simple:genre", vue.js ({
+vue.component ("nav-simple:genre", {
 	prop: ["left", "right"],
 	template: `
 		<div class="flex font-size:small text-align:left gap padding">
@@ -201,7 +229,7 @@ vue.component ("nav-simple:genre", vue.js ({
 			</div>
 		</div>
 		`,
-	}))
+	})
 
 /**
  * xxx
@@ -223,7 +251,7 @@ vue.component ("nav-simple:genre", vue.js ({
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("the-movie:nav", vue.js ({
+vue.component ("the-movie:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
@@ -243,9 +271,9 @@ vue.component ("the-movie:nav", vue.js ({
 	template: `
 		<nav-simple text="Movie" v-bind:data="data"/>
 		`,
-	}))
+	})
 
-vue.component ("the-tv:nav", vue.js ({
+vue.component ("the-tv:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
@@ -265,9 +293,9 @@ vue.component ("the-tv:nav", vue.js ({
 	template: `
 		<nav-simple text="TV Show" v-bind:data="data"/>
 		`,
-	}))
+	})
 
-vue.component ("the-people:nav", vue.js ({
+vue.component ("the-people:nav", {
 	prop: ["position"],
 	setup () {
 		var css = "padding:sky"
@@ -287,7 +315,7 @@ vue.component ("the-people:nav", vue.js ({
 	template: `
 		<nav-simple text="People" v-bind:data="data" v-bind:position="prop.position"/>
 		`,
-	}))
+	})
 
 /**
  * the end

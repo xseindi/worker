@@ -8,41 +8,24 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.sleep = 0.1
-
-/*
 vue.start = function () {
-	if (localStorage.getItem (php.google.auth.client.credential)) {
-		vue.ready.value = true
-		}
-	else {
-		var data = {g_auth: php.google.auth.profile}
-		php.ajax.post ("/test", data, {
-			success: function (response) {
-				if (response.success) localStorage.setItem (php.google.auth.client.credential, php.google.auth.credential)
-				vue.ready.value = true
-				console.log ("post:response", response)
-				},
-			error: function (error) {
-				vue.ready.value = true
-				console.error ("error", error)
-				},
-			})
-		}
+	vue.ready.value = true
 	}
-*/
 
 vue.mount = function (v) {
-	if (vue.mount.layout) {
-		if (vue.mount.layout.loaded) {}
-		else if (vue.mount.layout.loaded = true) vue.mount.layout ()
-		}
+	//
 	}
 
 vue.mount.layout = function () {
 	php.body.css (function (type, orientation) {
-		if (php.device.computer ()) $ ("#menu").css ("display", "flex");
-		if (php.device.phone ()) $ ("#menu").css ("display", "none");
+		if (php.device.computer ()) {
+			$ ("#menu").css ("display", "block").removeClass ("box-shadow");
+			$ ("#menu-simple").removeClass ("box-shadow");
+			}
+		if (php.device.phone ()) {
+			$ ("#menu").css ("display", "block");
+			$ ("#menu-simple").addClass ("box-shadow");
+			}
 		})
 	}
 

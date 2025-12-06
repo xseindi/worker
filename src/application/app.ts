@@ -12,8 +12,8 @@ import php, {express} from "../zend/engine"
 import "../zend/constant"
 import "../zend/lib"
 import "../zend/library"
-import "../zend/html"
 import "../zend/help"
+import "../zend/html"
 import "../zend/worker"
 import "../zend/db"
 import "../zend/theme"
@@ -87,26 +87,7 @@ app.get (app.router ["style.css"], async function (request: any, response: any, 
 	})
 
 app.get (app.router ["script.js"], async function (request: any, response: any, next: any) {
-	// var json = JSON.stringify ({var: {}, theme: request.client.theme, image: request.client.image, router: app.router})
-	// return response.js (`var $$$ = ${json}`)
-	var output = []
-	var image: any = {stock: {}}
-	for (var i in request.db.cache.image.data) {
-		var dir = ""
-		if (request.db.cache.image.data [i].type_of === "brand") dir = "brand/"
-		image.stock [request.db.cache.image.data [i].id] = dir + request.db.cache.image.data [i].file
-		if (request.db.cache.image.data [i].slug) image.stock [request.db.cache.image.data [i].slug] = dir + request.db.cache.image.data [i].file
-		}
-	output.push (`php.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"})}`)
-	output.push (`php.app.theme = ${JSON.stringify (request.client.theme)}`)
-	output.push (`php.app.router = "${response.var ['router']}"`)
-	output.push (`php.app.image = ${JSON.stringify (request.client.object.image)}`)
-	output.push (`php.router.link = ${JSON.stringify (app.router)}`)
-	output.push (`php.image.stock = ${JSON.stringify (image.stock)}`)
-	output.push (`php.cookie ()`)
-	output.push (`php.cookie.set ({domain: "${request.client.host.cookie}"})`)
-	output.push (`php.google.auth.start ()`)
-	return response.js (output.join (ln))
+	return response.js ("")
 	})
 
 app.get (app.router ["feed"], async function (request: any, response: any, next: any) {
@@ -145,7 +126,12 @@ app.get (app.router ["search"])
  */
 
 app.get (app.router.index, function (request: any, response: any, next: any) {
-	response.set ({layout: "index", router: "home"})
+	response.set ({
+		layout: "index",
+		router: "home",
+		// article: {},
+		// "ld+json webpage": {},
+		})
 	return response.vue ()
 	})
 

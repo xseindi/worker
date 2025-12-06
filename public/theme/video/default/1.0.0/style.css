@@ -475,6 +475,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .img\:big { height: var(--size-big); }
 
 .header\:size { min-height: var(--header-size); }
+.menu\:size { min-width: var(--menu-size); }
 .float\:size { width: var(--float-size); }
 .float\:medium, .float-size\:medium { width: var(--float-medium); }
 
@@ -569,6 +570,9 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 
 .border-hover\:mono { border: 1px solid transparent; }
 .border-hover\:mono:hover, .border-hover\:mono:focus { border-color: rgba(var(--mono),0.98); }
+
+.phone #menu [outter] { position: fixed; width: 100vw; height: calc(100vh - var(--header-size)); background-color: rgba(var(--black),0.3); }
+.phone #menu-simple { position: fixed; height: calc(100vh - var(--header-size)); overflow-y: scroll; }
 
 /*
 .font\:flex [primary] { flex-grow: 1; font-weight: 500; color: rgb(var(--font-color)); }
