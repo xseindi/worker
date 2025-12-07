@@ -149,7 +149,7 @@ php.AD__.link ["adsterra:adult"] = "https://www.effectivegatecpm.com/yndh9p11?ke
 php.AD__.link ["monetag"] = "";
 php.AD__.link.default = php.AD__.link ["adsterra"];
 php.AD__.block = function () { return php.AD__.block.forbidden; }
-php.AD__.detect = function (url) { $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block.forbidden = true; if (php.AD__.error) php.AD__.error (php.AD__.block.forbidden); }}) }
+php.AD__.detect = function (url) { if (false) $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block.forbidden = true; if (php.AD__.error) php.AD__.error (php.AD__.block.forbidden); }}); }
 php.AD__.detect ();
 
 /**
@@ -413,6 +413,12 @@ php.owl.carousel ["item:pop"] = {
 	0: {items: 2},
 	600: {items: 4},
 	1000: {items: 6},
+	}
+
+php.owl.carousel ["item:best"] = {
+	0: {items: 1},
+	600: {items: 2},
+	1000: {items: 3},
 	}
 
 /**

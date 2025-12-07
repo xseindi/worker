@@ -243,6 +243,25 @@ vue.element ("status:online", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("adsterra", {
+	prop: ["type"],
+	template: `
+		<div v-if="prop.type === 'horizontal:long'" class="flex align:item justify:item">
+			<iframe src="/file/ad/adsterra-horizontal-long.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
+		</div>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 /**
  * the end
  *

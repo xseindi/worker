@@ -128,8 +128,8 @@ $ (document).ready (function () {
 
 $ (window).on ("resize", function (event) {
 	php.body.css (null)
-	if (php.body.width === $ ("body").width ()) {}
-	else location.reload ()
+	// if (php.body.width === $ ("body").width ()) {}
+	// else location.reload ()
 	})
 
 $ (document).click (function (event) {

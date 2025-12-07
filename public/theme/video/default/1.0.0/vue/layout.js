@@ -42,6 +42,29 @@ vue.layout ("index", {
 						</div>
 					</div>
 					<video-card id="test"/>
+					<adsterra type="horizontal:long"/>
+					<div class="flex align:item gap padding">
+						<icon src="hotel_class" class="font:big"/>
+						<string class="font-size:large font:bold padding">Top Global</string>
+						<div class="flex:grow"></div>
+						<div></div>
+					</div>
+					<video-card id="test-002" item="item:best"/>
+					<adsterra type="horizontal:long"/>
+					<div class="flex align:item gap padding">
+						<icon src="local_fire_department" class="font:big"/>
+						<string class="font-size:large font:bold padding">Trending</string>
+						<div class="flex:grow"></div>
+						<div></div>
+					</div>
+					<video-card id="video-trending"/>
+					<div class="flex align:item gap padding">
+						<icon src="local_fire_department" class="font:big"/>
+						<string class="font-size:large font:bold padding">Popular</string>
+						<div class="flex:grow"></div>
+						<div></div>
+					</div>
+					<video-card id="video-popular"/>
 					<!--div id="test-oc-container" class="relative">
 						<div id="test-oc" class="owl-carousel owl-theme padding">
 							<div v-for="oc in oc" class="owl-carousel-item">

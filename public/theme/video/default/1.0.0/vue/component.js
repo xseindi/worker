@@ -249,7 +249,7 @@ vue.component ("nav-simple:genre", {
  */
 
 vue.component ("video-card", {
-	prop: ["id", "data"],
+	prop: ["id", "data", "item"],
 	setup (prop) {
 		var data = [
 			{title: "Gone in 60s second Revolution", date: "September 99, 2025", rating: "7.89", country: "ID", quality: "HD"},
@@ -260,7 +260,7 @@ vue.component ("video-card", {
 	mount (v) {
 		console.log (v.prop)
 		var id = "#" + v.prop.id
-		php.owl.carousel (id, "#main", {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel ["item:pop"]})
+		php.owl.carousel (id, "#main", {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [v.prop.item || "item:pop"]})
 		},
 	template: `
 		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background">
