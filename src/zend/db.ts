@@ -27,9 +27,11 @@ import table_client from "../db/table_client.json";
 import table_theme from "../db/table_theme.json";
 import table_image from "../db/table_image.json";
 
-import table_extra_bioskop_movie from "../db/bioskop/movie.json";
-import table_extra_bioskop_tv from "../db/bioskop/tv.json";
-import table_extra_bioskop_genre from "../db/bioskop/genre.json";
+import table_the_bioskop_movie from "../db/bioskop/movie.json";
+import table_the_bioskop_tv from "../db/bioskop/tv.json";
+import table_the_bioskop_genre from "../db/bioskop/genre.json";
+
+import table_the_bokep_genre from "../db/bioskop/genre.json";
 
 /**
  * xxx
@@ -43,9 +45,17 @@ import table_extra_bioskop_genre from "../db/bioskop/genre.json";
 
 php.db = class {
 	adapter: any;
-	json: any = {"config": table_config, "client": table_client, "theme": table_theme, "image": table_image}
-	extra: any = {bioskop: {movie: table_extra_bioskop_movie, tv: table_extra_bioskop_tv, genre: table_extra_bioskop_genre}}
 	cache: any = {}
+	json: any = {
+		"config": table_config,
+		"client": table_client,
+		"theme": table_theme,
+		"image": table_image,
+		"bioskop:movie": table_the_bioskop_movie,
+		"bioskop:tv": table_the_bioskop_tv,
+		"bioskop:genre": table_the_bioskop_genre,
+		"bokep:genre": table_the_bokep_genre,
+		}
 	constructor (adapter: any) {
 		this.adapter = adapter;
 		}
@@ -58,12 +68,12 @@ php.db = class {
 	delete (table: string) {
 		return new php.db.delete (this, table);
 		}
-	value (value: any) {
-		if (value === "true") return true;
-		else if (value === "false") return false;
-		else if (value === "null") return null;
-		else if (typeof value === "string") if (value.trim ().startsWith ("[") || value.trim ().startsWith ("{")) return JSON.parse (value); else return value;
-		else return value;
+	value (data: any) {
+		if (data === "true") return true;
+		else if (data === "false") return false;
+		else if (data === "null") return null;
+		else if (typeof data === "string") if (data.trim ().startsWith ("[") || data.trim ().startsWith ("{")) return JSON.parse (data); else return data;
+		else return data;
 		}
 	merge (data: any, dummy: any) {
 		var id = [];

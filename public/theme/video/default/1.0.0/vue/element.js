@@ -105,19 +105,31 @@ vue.element ("icon:material", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("images", {
+	prop: ["src", "type"],
+	template: `
+		<img:cover v-if="prop.type === 'cover'" v-bind:src="prop.src"/>
+		<img v-bind:src="prop.src" v-else>
+		`,
+	})
+
+vue.element ("img:cover", {
+	prop: ["src"],
+	method: {
+		url (src) { return "background-image: url('" + src + "'); background-position: center center; background-size: cover;" },
+		},
+	template: `
+		<div class="absolute top left width:height" v-bind:style="url (prop.src)"></div>
+		`,
+	})
+
 vue.element ("img:file", {
 	prop: ["src", "type"],
-	setup (prop) {
-		var absolute = null
-		if (prop.type === "absolute") absolute = "background-image: url('/file/" + prop.src + "'); background-position: center center; background-size: cover;"
-		return {absolute}
-		},
 	method: {
 		url (src) { return "/file/" + src },
 		},
 	template: `
-		<div v-if="absolute" class="width:height absolute top left" v-bind:style="absolute"></div>
-		<img v-bind:src="url (prop.src)" v-else>
+		<images v-bind:src="url (prop.src)" v-bind:type="prop.type"/>
 		`,
 	})
 
@@ -132,7 +144,7 @@ vue.element ("img:asset", {
 	})
 
 vue.element ("img:logo", {
-	prop: ["src", "type"],
+	prop: ["src"],
 	method: {
 		url (src) {
 			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
@@ -160,10 +172,10 @@ vue.element ("img:avatar", {
 vue.element ("img:undraw", {
 	prop: ["src"],
 	method: {
-		svg (src) { return ("/asset/image/illustration/undraw/undraw_{src}.svg").split ("{src}").join (src) },
+		url (src) { return ("/asset/image/illustration/undraw/undraw_{src}.svg").split ("{src}").join (src) },
 		},
 	template: `
-		<img v-bind:src="svg (prop.src)">
+		<img v-bind:src="url (prop.src)">
 		`,
 	})
 
@@ -174,6 +186,28 @@ vue.element ("img:spinner", {
 				<circle class="spinner-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
 			</svg>
 		</div>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+vue.element ("a:genre", {
+	prop: ["text"],
+	setup () {},
+	method: {
+		css () { return "font-size:pop font-bold:pop font:static padding:pop border-radius:round border border-color:mono background-hover:mono-pop" },
+		},
+	template: `
+		<a v-if="prop.text" v-bind:class="css ()">{{ prop.text }}</a>
+		<a v-bind:class="css ()" v-else><slot name="default"/></a>
 		`,
 	})
 
@@ -243,12 +277,42 @@ vue.element ("status:online", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 vue.element ("adsterra", {
 	prop: ["type"],
 	template: `
-		<div v-if="prop.type === 'horizontal:long'" class="flex align:item justify:item">
-			<iframe src="/file/ad/adsterra-horizontal-long.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
+		<div v-if="true" class="flex align:item justify:item">
+			<div v-if="vue.is_device_computer ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
+			<div v-if="vue.is_device_phone ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
 		</div>
+		<div v-else-if="prop.type === 'horizontal'" class="flex align:item justify:item">
+			<iframe v-if="vue.is_device_computer ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
+			<iframe v-if="vue.is_device_phone ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
+		</div>
+		<div v-else></div>
+		`,
+	})
+
+vue.element ("monetag", {
+	prop: ["type"],
+	template: `
+		<div v-if="true" class="flex align:item justify:item">
+			<img:asset />
+		</div>
+		<div v-else-if="prop.type === 'horizontal'" class="flex align:item justify:item">
+			<iframe v-if="vue.is_device_computer ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
+			<iframe v-if="vue.is_device_phone ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
+		</div>
+		<div v-else></div>
 		`,
 	})
 

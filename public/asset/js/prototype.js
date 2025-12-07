@@ -175,16 +175,15 @@ php.body.css = function (context) {
 	if (body > 600) type = "phone";
 	if (body > 1000) type = "computer";
 	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
-	php.device.type = type;
-	php.device.orientation = orientation;
-	if (context) context (type, orientation);
-	if (context !== null) php.body.css.rc (type, orientation);
+	if (php.device.type || php.device.orientation) {
+		if (php.device.type === type && php.device.orientation === orientation) {}
+		else php.body.css.reset (type, orientation);
+		}
+	else php.body.css.reset (type, orientation);
 	}
-php.body.css.rc = function (type, orientation) {
-	type = type || php.device.type;
-	orientation = orientation || php.device.orientation;
+php.body.css.reset = function (type, orientation) {
 	$ ("body").removeClass ("computer mobile tablet phone");
-	$ ("body").addClass (type).addClass (orientation);
+	$ ("body").addClass (php.device.type = type).addClass (php.device.orientation = orientation);
 	php.emit ("body:css", type, orientation);
 	}
 
@@ -363,6 +362,7 @@ php.on ("load", function () {
 php.owl = function () {}
 php.owl.carousel = function (element, reference, option) {
 	option = option || {}
+	var padding = option.padding || 0;
 	var setting = {
 		onTranslated: option ["on:translate"] || function () {},
 		gap: (option.gap || 0),
@@ -379,12 +379,12 @@ php.owl.carousel = function (element, reference, option) {
 		}
 	php.owl.carousel.event.push ({element, reference, setting});
 	setTimeout (function () {
-		var oc = $ (element);
+		var oc = $ (element).removeClass ("none");
 		if (oc) {
-			if (reference) oc.width ($ (reference).width () - setting.gap);
+			if (reference) oc.width ($ (reference).width () - setting.gap - padding);
 			oc.owlCarousel (setting);
 			}
-		}, 1000);
+		}, 1500);
 	}
 
 php.owl.carousel.event = [];
@@ -419,6 +419,12 @@ php.owl.carousel ["item:best"] = {
 	0: {items: 1},
 	600: {items: 2},
 	1000: {items: 3},
+	}
+
+php.owl.carousel ["item:sky"] = {
+	0: {items: 1},
+	600: {items: 3},
+	1000: {items: 4},
 	}
 
 /**

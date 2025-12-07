@@ -65,6 +65,7 @@
 :root
 {
 --size-tiny: 8px;
+--size-atom: 10px;
 --size-small: 16px;
 --size-pop: 24px;
 --size-regular: 32px;
@@ -379,7 +380,7 @@ a:visited { color: rgb(var(--font-anchor-color-visited)); }
 .border-left\:none { border-left: none; }
 .border-right\:none { border-right: none; }
 
-.border { border-width: 1px; border-style: solid; border-color: rgb(var(--color)); }
+.border { border-width: 1px; border-style: solid; border-color: rgb(var(--border-color)); }
 .border-size, .border\:size { border-width: 1px; } .border\:bold { border-width: 2px; }
 .border\:solid, .border-style\:solid { border-style: solid; }
 .border\:dash, .border-style\:dash { border-style: dashed; }
@@ -469,6 +470,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .size\:big { width: var(--size-big); height: var(--size-big); }
 
 .img\:tiny { height: var(--size-tiny); }
+.img\:atom { height: var(--size-atom); }
 .img\:small { height: var(--size-small); }
 .img\:pop { height: var(--size-pop); }
 .img\:size { height: var(--size-regular); }
@@ -570,7 +572,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 #app { height: 100%; }
 #application { height: 100%; }
 
-
+.a\:genre {  }
 
 .phone #menu [outter] { position: fixed; width: 100vw; height: calc(100vh - var(--header-size)); background-color: rgba(var(--black),0.75); }
 .phone #menu-simple { position: fixed; height: calc(100vh - var(--header-size)); overflow-y: scroll; }

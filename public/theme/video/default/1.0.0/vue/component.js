@@ -249,39 +249,39 @@ vue.component ("nav-simple:genre", {
  */
 
 vue.component ("video-card", {
-	prop: ["id", "data", "item"],
+	prop: ["id", "reference", "data", "item", "option"],
 	setup (prop) {
 		var data = [
 			{title: "Gone in 60s second Revolution", date: "September 99, 2025", rating: "7.89", country: "ID", quality: "HD"},
 			{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
 			]
 		return {data}
-	},
+		},
 	mount (v) {
-		console.log (v.prop)
 		var id = "#" + v.prop.id
-		php.owl.carousel (id, "#main", {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [v.prop.item || "item:pop"]})
+		var reference = "#" + (v.prop.reference || "main")
+		php.owl.carousel (id, reference, {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [v.prop.item || "item:pop"], ... (v.prop.option || {})})
 		},
 	template: `
-		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background">
+		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background none">
 			<div v-for="data in data" class="owl-carousel-item gap:small">
 				<a href="/" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg" class=""/>
-					<img:file src="movie-tron.webp" type="absolute"/>
+					<img:file src="movie-tron.webp" type="cover"/>
 					<div class="flex gap:small absolute" style="top: 10px; left: 10px; color: yellow;">
 						<icon src="star"/>
 						<string class="font-bold:pop">7.89</string>
 					</div>
 					<div class="absolute" style="top: 10px; right: 10px;">
-						<img src="https://blogger-spot.github.io/asset/image/flag/korea_south.jpg" class="img:small">
+						<img src="https://blogger-spot.github.io/asset/image/flag/korea_south.jpg" class="img:small border-radius:pop">
 					</div>
 					<div class="absolute" style="bottom: 10px; left: 10px;">
 						<div class="font-size:tiny font:bold padding:pop border-radius:pop font:color background:color">HD</div>
 					</div>
 					<div class="absolute" style="bottom: 10px; right: 10px;">X</div>
 				</a>
-				<div class="font-size:pop font-color:mono">September 99, 2025</div>
-				<div style="height: 40px;">Gone in 60s second Revolution</div>
+				<string class="font-size:pop font-color:mono padding-top:small">September 99, 2025</string>
+				<string class="font-bold:pop" style="height: 40px;">Gone in 60s second Revolution</string>
 			</div>
 		</div>
 		`,

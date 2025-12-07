@@ -10,6 +10,14 @@
 
 vue.var ["device:computer"] = true
 vue.var ["device:phone"] = false
+vue.is_device_computer = function (value) {
+	if (value === undefined) return vue.var ["device:computer"]
+	else return vue.var ["device:computer"] = value
+	}
+vue.is_device_phone = function (value) {
+	if (value === undefined) return vue.var ["device:phone"]
+	else return vue.var ["device:phone"] = value
+	}
 
 /**
  * xxx
@@ -33,14 +41,14 @@ php.on ("body:css", function (type, orientation) {
 	if (php.device.computer ()) {
 		$ ("#menu").css ("display", "block").removeClass ("box-shadow")
 		$ ("#menu [aria-modal='menu']").removeClass ("box-shadow")
-		vue.var ["device:computer"] = true
-		vue.var ["device:phone"] = false
+		vue.is_device_computer (true)
+		vue.is_device_phone (false)
 		}
 	if (php.device.phone ()) {
 		$ ("#menu").css ("display", "none")
 		$ ("#menu [aria-modal='menu']").addClass ("box-shadow")
-		vue.var ["device:computer"] = false
-		vue.var ["device:phone"] = true
+		vue.is_device_computer (false)
+		vue.is_device_phone (true)
 		}
 	})
 
@@ -126,12 +134,6 @@ $ (document).ready (function () {
 	php.body.css ()
 	})
 
-$ (window).on ("resize", function (event) {
-	php.body.css (null)
-	// if (php.body.width === $ ("body").width ()) {}
-	// else location.reload ()
-	})
-
 $ (document).click (function (event) {
 	// if ($ ("body").hasClass ("phone")) {
 		// if ($ (event.target).is ("[id='menu:toggle']") || $ (event.target).is ("[id='menu:toggle'] *")) $ ("#menu").css ("display", "flex");
@@ -147,6 +149,12 @@ $ (document).click (function (event) {
 			else menu.css ("display", "none")
 			}
 		}
+	})
+
+$ (window).on ("resize", function (event) {
+	php.body.css ()
+	// if (php.body.width === $ ("body").width ()) {}
+	// else location.reload ()
 	})
 
 /**

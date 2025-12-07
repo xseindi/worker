@@ -26,6 +26,10 @@ const __api: any = {
 	"image:original": "https://image.tmdb.org/t/p/original",
 	}
 
+const __genres: any = [
+	{id: 28, name: "", icon: ""},
+	];
+
 const __genre: any = {
 	movie: {
 		28: "Action",

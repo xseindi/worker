@@ -98,6 +98,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (0, output);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue.js }}?cache={{ cache }}"></script>`);
+	// markup.push (2, `<script type="text/javascript" src="//pl28208808.effectivegatecpm.com/a2/f4/d1/a2f4d1914c60b6ef74a76a3117320a2f.js"></script>`);
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();
@@ -136,6 +137,7 @@ php.help ["script.js"] = function (app: any, request: any, response: any, next: 
 	markup.push (2, `<script>php.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
 	markup.push (2, `<script>php.app.router = "${response.var ['router']}"</script>`);
 	markup.push (2, `<script>php.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
+	markup.push (2, `<script>php.app.data = ${JSON.stringify (request.app.data)}</script>`);
 	markup.push (2, `<script>php.router.link = ${JSON.stringify (app.router)}</script>`);
 	markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
 	markup.push (2, `<script>php.cookie ()</script>`);

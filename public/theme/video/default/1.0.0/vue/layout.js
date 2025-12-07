@@ -33,7 +33,7 @@ vue.layout ("index", {
 						<menu-simple></menu-simple>
 					</div>
 				</menu>
-				<main id="main" class="flex flex:column flex:grow index">
+				<main id="main" class="flex flex:column flex:grow index" style="border-left: 1px solid #f1f1f1;">
 					<div v-if="null" class="flex align:item justify:item padding:vertical" phone>
 						<div class="flex align:item gap" phone>
 							<the-movie:nav />
@@ -41,8 +41,43 @@ vue.layout ("index", {
 							<the-people:nav position="right"/>
 						</div>
 					</div>
+					<div class="flex gap">
+						<div id="video-top-container" class="flex:grow" style="max-width: 100%;">
+							<video-card id="video-top" reference="video-top-container" item="item:sky"/>
+						</div>
+						<div class="flex flex:column gap padding:vertical padding:right" computer>
+							<img:asset src="16x9.svg" height="165" class="border:radius"/>
+							<img:asset src="16x9.svg" height="165" class="border:radius"/>
+						</div>
+						<div class="flex flex:column gap padding:vertical padding:right" phone>
+							<img:asset src="16x9.svg" width="150" class="border:radius"/>
+							<img:asset src="16x9.svg" width="150" class="border:radius"/>
+							<img:asset src="16x9.svg" width="150" class="border:radius"/>
+							<img:asset src="16x9.svg" width="150" class="border:radius"/>
+						</div>
+					</div>
+					<div class="flex flex:wrap align:item justify:item gap padding">
+						<a:genre href="#" text="Genre"/>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
+						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+					</div>
 					<video-card id="test"/>
-					<adsterra type="horizontal:long"/>
+					<adsterra type="horizontal"/>
 					<div class="flex align:item gap padding">
 						<icon src="hotel_class" class="font:big"/>
 						<string class="font-size:large font:bold padding">Top Global</string>
@@ -50,7 +85,7 @@ vue.layout ("index", {
 						<div></div>
 					</div>
 					<video-card id="test-002" item="item:best"/>
-					<adsterra type="horizontal:long"/>
+					<adsterra type="horizontal"/>
 					<div class="flex align:item gap padding">
 						<icon src="local_fire_department" class="font:big"/>
 						<string class="font-size:large font:bold padding">Trending</string>
@@ -117,7 +152,6 @@ vue.layout (404, {
 vue.component ("header-simple:float", {
 	mount () {
 		vue.mount.search ()
-		vue.mount.menu ()
 		},
 	template: `
 		<div id="header-simple" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header-simple:float">
@@ -179,6 +213,9 @@ vue.component ("menu-simple", {
 				],
 			}
 		return {menu}
+		},
+	mount () {
+		vue.mount.menu ()
 		},
 	template: `
 		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color" aria-modal="menu">

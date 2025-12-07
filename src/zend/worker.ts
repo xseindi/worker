@@ -90,6 +90,7 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.agent = function () {}
 	request.agent.crawler = function () { return request.visitor ["agent:crawler"]; }
 	request.db = new php.db (io.env.db);
+	request.app = {data: {}}
 	request.client = {id: null, site: {}, image: {}}
 	return request;
 	}
@@ -146,6 +147,12 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			plugin: {
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
+			}
+		if (app.config.type === "bioskop") {
+			request.db.cache.movie = await request.db.select ("bioskop:movie").json ().find ().query ()
+			request.db.cache.tv = await request.db.select ("bioskop:tv").json ().find ().query ()
+			request.db.cache.genre = await request.db.select ("bioskop:genre").json ().find ().query ()
+			request.app.data.genre = request.db.cache.genre.data
 			}
 		for (var i in request.db.cache.config.data) {
 			app.config [request.db.cache.config.data [i].key] = request.db.value (request.db.cache.config.data [i].value)
@@ -351,10 +358,10 @@ var library: any = class {
 		this.response.var ["scriptag"] = php.help ["script.js"] (this.app, this.request, this.response).render ()
 		}
 	plugin () {
-		if (this.request.client.data ["tmdb:api"]) {
+		if (this.request.client.object ["tmdb:api"]) {
 			var tmdb = {
-				api: this.request.client.data ["tmdb:api"],
-				token: this.request.client.data ["tmdb:api access:token"],
+				api: this.request.client.object ["tmdb:api"],
+				token: this.request.client.object ["tmdb:api access:token"],
 				}
 			this.request.tmdb = new php.plugin.tmdb (tmdb, this)
 			this.request.video = {src: new php.plugin.video.src ()}
