@@ -137,7 +137,7 @@ php.help ["script.js"] = function (app: any, request: any, response: any, next: 
 	markup.push (2, `<script>php.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
 	markup.push (2, `<script>php.app.router = "${response.var ['router']}"</script>`);
 	markup.push (2, `<script>php.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
-	markup.push (2, `<script>php.app.data = ${JSON.stringify (request.app.data)}</script>`);
+	markup.push (2, `<script>php.app.data = ${JSON.stringify (response.app.data)}</script>`);
 	markup.push (2, `<script>php.router.link = ${JSON.stringify (app.router)}</script>`);
 	markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
 	markup.push (2, `<script>php.cookie ()</script>`);

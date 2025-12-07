@@ -26,52 +26,6 @@ const __api: any = {
 	"image:original": "https://image.tmdb.org/t/p/original",
 	}
 
-const __genres: any = [
-	{id: 28, name: "", icon: ""},
-	];
-
-const __genre: any = {
-	movie: {
-		28: "Action",
-		12: "Adventure",
-		16: "Animation",
-		35: "Comedy",
-		80: "Crime",
-		99: "Documentary",
-		18: "Drama",
-		10751: "Family",
-		14: "Fantasy",
-		36: "History",
-		27: "Horror",
-		10402: "Music",
-		9648: "Mystery",
-		10749: "Romance",
-		878: "Science Fiction",
-		10770: "TV Movie",
-		53: "Thriller",
-		10752: "War",
-		37: "Western",
-		},
-	tv: {
-		10759: "Action & Adventure",
-		16: "Animation",
-		35: "Comedy",
-		80: "Crime",
-		99: "Documentary",
-		18: "Drama",
-		10751: "Family",
-		10762: "Kids",
-		9648: "Mystery",
-		10763: "News",
-		10764: "Reality",
-		10765: "Sci-Fi & Fantasy",
-		10766: "Soap",
-		10767: "Talk",
-		10768: "War & Politics",
-		37: "Western",
-		},
-	}
-
 php.plugin.tmdb = class {
 	api: string;
 	token: string;
@@ -83,9 +37,12 @@ php.plugin.tmdb = class {
 		this.api = tmdb.api;
 		this.token = tmdb.token;
 		this.adapter = adapter;
-		this.genre = php.object.assign (__genre.movie, __genre.tv);
+		this.setup ();
 		this.movie = new php.plugin.tmdb.movie (this);
 		this.tv = new php.plugin.tmdb.tv (this);
+		}
+	setup () {
+		for (var i in this.adapter.request.db.cache.genre.data) this.genre [this.adapter.request.db.cache.genre.data [i].id] = this.adapter.request.db.cache.genre.data [i]
 		}
 	head () {
 		return {
@@ -113,21 +70,23 @@ php.plugin.tmdb = class {
 		return response.json ();
 		}
 	array (respond: any, option: any = {}) {
+		var tmdb = this;
 		var adapter = this.adapter;
 		return new Promise (function (resolve, reject) {
 			resolve ({
 				page: respond.page,
 				"page:total": respond.total_pages,
 				"data:total": respond.total_results,
-				data: revamp (respond.results, option.type, adapter),
-				tmdb: respond.results,
+				data: revamp (respond.results, option.type, adapter, tmdb),
+				// tmdb: respond.results,
 				});
 			});
 		}
 	object (respond: any, option: any = {}) {
+		var tmdb = this;
 		var adapter = this.adapter;
 		return new Promise (function (resolve, reject) {
-			resolve (revamp.json (respond, option.type, adapter));
+			resolve (revamp.json (respond, option.type, adapter, tmdb));
 			});
 		}
 	image (path: string, size: string = "default") {
@@ -164,7 +123,6 @@ php.plugin.tmdb = class {
 
 php.plugin.tmdb.movie = class {
 	tmdb: any;
-	__genre: any = __genre.movie;
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
@@ -175,23 +133,10 @@ php.plugin.tmdb.movie = class {
 	async popular (option: any = {}) {
 		return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option);
 		}
-	genre (id: any) {
-		if (id === "split") return this.tmdb.genre_split (this.__genre, "movie");
-		else if (id === undefined) return this.tmdb.genre_array (this.__genre, "movie");
-		else if (id in this.__genre) return {
-			id,
-			title: this.__genre [id],
-			name: this.tmdb.slugify (this.__genre [id]),
-			permalink: this.tmdb.genre_permalink (id, this.__genre, "movie"),
-			}
-		}
 	}
-
-php.plugin.tmdb.movie.genre = __genre.movie;
 
 php.plugin.tmdb.tv = class {
 	tmdb: any;
-	__genre: any = __genre.tv;
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
@@ -202,19 +147,7 @@ php.plugin.tmdb.tv = class {
 	async popular (option: any = {}) {
 		return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option);
 		}
-	genre (id: any) {
-		if (id === "split") return this.tmdb.genre_split (this.__genre, "tv");
-		else if (id === undefined) return this.tmdb.genre_array (this.__genre, "tv");
-		else if (id in this.__genre) return {
-			id,
-			title: this.__genre [id],
-			name: this.tmdb.slugify (this.__genre [id]),
-			permalink: this.tmdb.genre_permalink (id, this.__genre, "tv"),
-			}
-		}
 	}
-
-php.plugin.tmdb.tv.genre = __genre.tv;
 
 php.plugin.tmdb.image = function (path: string, size: string = "default") {
 	return __api [["image", size].join (":")] + path;
@@ -222,28 +155,29 @@ php.plugin.tmdb.image = function (path: string, size: string = "default") {
 
 php.plugin.tmdb.slugify = function (name: string) {
 	var slugify = (name || "").toLocaleLowerCase ().split (" ").join ("-").split ("'").join ("").split ("&").join ("").split (":").join ("-").split ("--").join ("-");
-	if (slugify.endsWith ("-")) return slugify.substr (- 1);
+	if (slugify.endsWith ("-")) return slugify.slice (0, (- 1));
 	else return slugify;
 	}
 
-function revamp (input: any, type: any = null, adapter: any = {}) {
+function revamp (input: any, type: any = null, adapter: any = {}, tmdb: any = {}) {
 	return input.map (function (data: any, index: number) {
-		return revamp.json (data, type, adapter);
+		return revamp.json (data, type, adapter, tmdb);
 		});
 	}
 
-revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
+revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tmdb: any = {}) {
 	var id = input.id;
 	var title = (input.title || input.name) || "";
 	var title_original = (input.original_title || input.original_name) || "";
-	var name = php.plugin.tmdb.slugify (title);
+	var slug = php.plugin.tmdb.slugify (title);
 	var description = input.overview;
 	var poster = {path: input.poster_path, url: php.plugin.tmdb.image (input.poster_path), "url:original": php.plugin.tmdb.image (input.poster_path, "original")}
 	var backdrop = null; if (input.backdrop_path) backdrop = {path: input.backdrop_path, url: php.plugin.tmdb.image (input.backdrop_path), "url:original": php.plugin.tmdb.image (input.backdrop_path, "original")}
 	var release_date = (input.release_date || input.first_air_date), r_date = new Date (release_date);
-	var release_date_string = "";
+	var release_date_string = php.date.month.name [r_date.getMonth () + 1] + " " + r_date.getDate () + ", " + r_date.getFullYear ();
 	var year = r_date.getFullYear ();
 	var popularity = input.popularity;
+	var vote = {average: input.vote_average || 0, count: input.vote_count || 0}
 	var country = input.origin_country || [];
 	var adult = input.adult || false;
 	var budget = input.budget || 0;
@@ -256,23 +190,23 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 		genre_id_list = input.genre_ids;
 		for (var i in input.genre_ids) {
 			var genre_id = input.genre_ids [i];
-			var genre_title = __genre [type][genre_id];
-			var genre_name = php.plugin.tmdb.slugify (genre_title);
-			var genre_permalink = adapter.request.router.permalink (type + ":genre", {id: genre_id, name: genre_name});
-			genre.push ({id: genre_id, name: genre_name, title: genre_title, permalink: genre_permalink});
+			var genre_name = tmdb.genre [genre_id].name;
+			var genre_slug = tmdb.genre [genre_id].slug;
+			var genre_permalink = adapter.request.router (type + ":genre", {id: genre_id, name: genre_slug});
+			genre.push ({id: genre_id, name: genre_name, slug: genre_slug, permalink: genre_permalink});
 			}
 		}
 	else if (input.genres) {
 		for (var i in input.genres) {
 			var genre_id = input.genres [i].id;
-			var genre_title = __genre [type][genre_id];
-			var genre_name = php.plugin.tmdb.slugify (genre_title);
-			var genre_permalink = adapter.request.router.permalink (type + ":genre", {id: genre_id, name: genre_name});
-			genre.push ({id: genre_id, name: genre_name, title: genre_title, permalink: genre_permalink});
+			var genre_name = tmdb.genre [genre_id].name;
+			var genre_slug = tmdb.genre [genre_id].slug;
+			var genre_permalink = adapter.request.router (type + ":genre", {id: genre_id, name: genre_slug});
+			genre.push ({id: genre_id, name: genre_name, slug: genre_slug, permalink: genre_permalink});
 			genre_id_list.push (genre_id);
 			}
 		}
-	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":name").join (name);
+	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":name").join (slug);
 	if (type === "movie") {}
 	if (type === "tv") {}
 	var credit: any = {image: {poster: [], backdrop: []}, video: {trailer: [], teaser: [], s: [], list: []}, people: {cast: [], crew: []}}
@@ -319,7 +253,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 			}
 		}
 	var output = {
-		id, type, name,
+		id, type, slug,
 		"title": title, "title:original": title_original,
 		tagline,
 		description,
@@ -328,7 +262,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}) {
 		"release_date": release_date, "release_date:string": release_date_string, year,
 		"genre:id": genre_id_list, genre,
 		status, adult, budget, revenue,
-		popularity,
+		popularity, vote,
 		country,
 		credit,
 		}

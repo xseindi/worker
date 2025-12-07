@@ -113,6 +113,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 		return response.html (php.render (markup, {slot}, 2), code);
 		}
 	response.var = {}
+	response.app = {data: {}}
 	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
 	}
@@ -152,7 +153,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			request.db.cache.movie = await request.db.select ("bioskop:movie").json ().find ().query ()
 			request.db.cache.tv = await request.db.select ("bioskop:tv").json ().find ().query ()
 			request.db.cache.genre = await request.db.select ("bioskop:genre").json ().find ().query ()
-			request.app.data.genre = request.db.cache.genre.data
+			response.app.data.genre = request.db.cache.genre.data
 			}
 		for (var i in request.db.cache.config.data) {
 			app.config [request.db.cache.config.data [i].key] = request.db.value (request.db.cache.config.data [i].value)
@@ -244,7 +245,7 @@ var library: any = class {
 		this.request = request
 		this.response = response
 		this.next = next
-		// this.plugin ()
+		this.plugin ()
 		}
 	async variable () {
 		this.request.client.site = {

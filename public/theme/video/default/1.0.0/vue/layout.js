@@ -33,7 +33,7 @@ vue.layout ("index", {
 						<menu-simple></menu-simple>
 					</div>
 				</menu>
-				<main id="main" class="flex flex:column flex:grow index" style="border-left: 1px solid #f1f1f1;">
+				<main id="main" class="flex flex:column flex:grow index">
 					<div v-if="null" class="flex align:item justify:item padding:vertical" phone>
 						<div class="flex align:item gap" phone>
 							<the-movie:nav />
@@ -57,24 +57,7 @@ vue.layout ("index", {
 						</div>
 					</div>
 					<div class="flex flex:wrap align:item justify:item gap padding">
-						<a:genre href="#" text="Genre"/>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Genre</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Category</a>
-						<a href="#" class="font-size:pop padding:pop border-radius:round background-color:mono">Topic</a>
+						<a:genre v-for="genre in app.data.genre" v-bind:href="genre.permalink" v-bind:text="genre.name"/>
 					</div>
 					<video-card id="test"/>
 					<adsterra type="horizontal"/>
@@ -111,7 +94,6 @@ vue.layout ("index", {
 							</div>
 						</div>
 					</div-->
-					<div><img:asset src="blank-portrait.svg" width="100"/></div>
 					<div><img:undraw src="cloud" class="img:big"/></div>
 					<img width="1" height="750">
 				</main>

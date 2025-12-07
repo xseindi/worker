@@ -251,10 +251,7 @@ vue.component ("nav-simple:genre", {
 vue.component ("video-card", {
 	prop: ["id", "reference", "data", "item", "option"],
 	setup (prop) {
-		var data = [
-			{title: "Gone in 60s second Revolution", date: "September 99, 2025", rating: "7.89", country: "ID", quality: "HD"},
-			{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-			]
+		var data = php.app.data.movie.popular
 		return {data}
 		},
 	mount (v) {
@@ -267,21 +264,23 @@ vue.component ("video-card", {
 			<div v-for="data in data" class="owl-carousel-item gap:small">
 				<a href="/" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg" class=""/>
-					<img:file src="movie-tron.webp" type="cover"/>
+					<images v-bind:src="data.poster.url" type="cover"/>
 					<div class="flex gap:small absolute" style="top: 10px; left: 10px; color: yellow;">
 						<icon src="star"/>
-						<string class="font-bold:pop">7.89</string>
+						<string class="font-bold:pop">{{ data.vote.average }}</string>
 					</div>
 					<div class="absolute" style="top: 10px; right: 10px;">
 						<img src="https://blogger-spot.github.io/asset/image/flag/korea_south.jpg" class="img:small border-radius:pop">
 					</div>
 					<div class="absolute" style="bottom: 10px; left: 10px;">
-						<div class="font-size:tiny font:bold padding:pop border-radius:pop font:color background:color">HD</div>
+						<div class="font:tiny font:bold border-radius:pop font:color background:color" style="padding: 3px 7px;">HD</div>
 					</div>
-					<div class="absolute" style="bottom: 10px; right: 10px;">X</div>
+					<div class="absolute" style="bottom: 10px; right: 10px;">
+						<!---->
+					</div>
 				</a>
-				<string class="font-size:pop font-color:mono padding-top:small">September 99, 2025</string>
-				<string class="font-bold:pop" style="height: 40px;">Gone in 60s second Revolution</string>
+				<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
+				<string class="font-bold:pop" style="height: 40px;">{{ data.title }}</string>
 			</div>
 		</div>
 		`,

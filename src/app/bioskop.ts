@@ -125,7 +125,9 @@ app.get (app.router ["search"])
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router.index, function (request: any, response: any, next: any) {
+app.get (app.router.index, async function (request: any, response: any, next: any) {
+	var test = await request.tmdb.movie.popular ()
+	response.app.data.movie = {popular: test.data}
 	response.set ({
 		layout: "index",
 		router: "home",
