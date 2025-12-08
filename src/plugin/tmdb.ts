@@ -60,10 +60,13 @@ php.plugin.tmdb = class {
 			delete option.id;
 			}
 		option.page = option.page || 1;
+		option.sort = option.sort || "popularity.desc";
 		if  (option.page) url = [url, ["page", option.page].join ("=")].join ("&");
 		if  (option.genre) url = [url, ["with_genres", option.genre].join ("=")].join ("&");
 		if  (option.append_to_response) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
 		if  (option.country) url = [url, ["with_origin_country", option.country].join ("=")].join ("&");
+		if  (option.up_coming) url = [url, ["release_date.gte", option.up_coming].join ("=")].join ("&");
+		if  (option.sort_by) url = [url, ["sort_by", option.sort].join ("=")].join ("&");
 		return url;
 		}
 	async fetch (api: string, option: any = {}, single: boolean = false) {

@@ -251,7 +251,7 @@ vue.component ("nav-simple:genre", {
 vue.component ("video-card", {
 	prop: ["id", "reference", "data", "item", "option"],
 	setup (prop) {
-		var data = php.app.data.movie.popular
+		var data = php.app.data.movie.popular.shuffle ()
 		return {data}
 		},
 	mount (v) {
@@ -262,26 +262,27 @@ vue.component ("video-card", {
 	template: `
 		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background none">
 			<div v-for="data in (prop.data || data)" class="owl-carousel-item gap:small">
-				<a href="/" class="relative border:radius no-overflow">
+				<a v-bind:href="data.permalink" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg" class=""/>
-					<images v-bind:src="data.poster.url" type="cover"/>
+					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
 					<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
 						<icon src="star"/>
 						<string class="font-bold:pop">{{ data.vote.average }}</string>
 					</div>
 					<div class="flex align:item gap:tiny absolute position:top-right">
-						<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:pop"/>
-						<img:flag v-else-if="data.language" v-bind:src="'lang-' + data.language" class="img:atom border-radius:pop"/>
+						<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:regular opacity:small"/>
+						<img:flag v-else-if="data.language" v-bind:src="data.language" type="language" class="img:atom border-radius:regular opacity:small"/>
 					</div>
 					<div class="absolute position:bottom-left">
-						<div class="owl-carousel-quality font:tiny font:bold border-radius:pop font:color">HD</div>
+						<div class="owl-carousel-quality font:tiny font:bold border-radius:pop">HD</div>
 					</div>
-					<div class="absolute" style="bottom: 10px; right: 10px;">
-						<!---->
+					<div class="flex flex:column align:end gap:tiny absolute position:bottom-right">
+						<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
+						<!--div v-for="genre in data.genre"><a v-bind:href="genre.permalink" class="owl-carousel-tag font:tiny border-radius:round index" string>{{ genre.name }}</a></div-->
 					</div>
 				</a>
 				<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
-				<string class="font-bold:pop" style="height: 40px;">{{ data.title }}</string>
+				<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
 			</div>
 		</div>
 		`,

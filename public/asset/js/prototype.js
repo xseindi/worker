@@ -136,6 +136,11 @@ var php = function () {}
  */
 
 php.app = function () {}
+php.app.data = {
+	genre: [],
+	movie: {trending: [], popular: [], top_rated: [], up_coming: [], country: {}},
+	tv: {trending: [], popular: [], top_rated: [], airing_today: [], country: {}},
+	}
 
 /**
  * xxx

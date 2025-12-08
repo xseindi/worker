@@ -180,13 +180,17 @@ vue.element ("img:undraw", {
 	})
 
 vue.element ("img:flag", {
-	prop: ["src"],
+	prop: ["src", "type"],
 	method: {
-		// https://static-files.motogp.pulselive.com/assets/flags/{src}.svg
-		url (src) { return ("/asset/image/flag/{src}.svg").split ("{src}").join (src.small ()) },
+		url (src, type) {
+			var path = "https://static-files.motogp.pulselive.com/assets/flags/{src}.svg"
+			path = "/asset/image/flag/{src}.svg"
+			if (type == "language") path = path = "/asset/image/flag/language/{src}.svg"
+			return path.split ("{src}").join (src.small ())
+			},
 		},
 	template: `
-		<img v-bind:src="url (prop.src)">
+		<img v-bind:src="url (prop.src, prop.type)">
 		`,
 	})
 
@@ -290,6 +294,19 @@ vue.element ("status:online", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("title-simple", {
+	prop: ["text", "icon"],
+	template: `
+		<div class="flex align:item gap padding">
+			<icon src="local_fire_department" class="font:big"/>
+			<string v-if="prop.text" class="font-size:large font:bold padding">{{ prop.text }}</string>
+			<string class="font-size:large font:bold padding" v-else><slot name="default"/></string>
+			<div class="flex:grow"></div>
+			<div></div>
+		</div>
+		`,
+	})
+
 /**
  * xxx
  *
@@ -300,10 +317,20 @@ vue.element ("status:online", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("img:ad", {
+	prop: ["src"],
+	method: {
+		url (src) { return ("/ad/{src}").split ("{src}").join (src) },
+		},
+	template: `
+		<img v-bind:src="url (prop.src)">
+		`,
+	})
+
 vue.element ("adsterra", {
 	prop: ["type"],
 	template: `
-		<div v-if="true" class="flex align:item justify:item">
+		<div v-if="null" class="flex align:item justify:item">
 			<div v-if="vue ['is:computer'] ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
 			<div v-if="vue ['is:mobile'] ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
 		</div>

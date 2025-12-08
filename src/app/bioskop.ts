@@ -126,7 +126,7 @@ app.get (app.router ["search"])
  */
 
 app.get (app.router.index, async function (request: any, response: any, next: any) {
-	var test = await request.tmdb.movie.popular ()
+	var test = await request.tmdb.movie.popular ({page: 2})
 	response.app.data.movie = {popular: test.data}
 	var tv_korea = await request.tmdb.tv.discover ({country: "KR"})
 	response.app.data.tv = {country: {KR: tv_korea.data}}

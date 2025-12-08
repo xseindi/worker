@@ -64,8 +64,8 @@ vue.layout ("index", {
 							</div>
 						</div>
 						<div class="flex flex:column gap padding:vertical padding:right" style="width: 30%;">
-							<img:asset src="16x9.svg" class="width:size"/>
-							<img:asset src="16x9.svg" class="width:size"/>
+							<a href="/"><img:ad src="referral-vultr-001.png" class="width:size border:radius"/></a>
+							<a href="/"><img:ad src="referral-vultr-004.jpg" class="width:size border:radius"/></a>
 						</div>
 					</div>
 					<div class="flex flex:wrap align:item justify:item gap padding">
@@ -73,27 +73,12 @@ vue.layout ("index", {
 					</div>
 					<video-card id="test" v-bind:data="app.data.tv.country.KR"/>
 					<adsterra type="horizontal"/>
-					<div class="flex align:item gap padding">
-						<icon src="hotel_class" class="font:big"/>
-						<string class="font-size:large font:bold padding">Top Global</string>
-						<div class="flex:grow"></div>
-						<div></div>
-					</div>
+					<title-simple text="Title" icon="local_fire_department" class="padding-bottom:none"/>
 					<video-card id="test-002" item="item:best"/>
 					<adsterra type="horizontal"/>
-					<div class="flex align:item gap padding">
-						<icon src="local_fire_department" class="font:big"/>
-						<string class="font-size:large font:bold padding">Trending</string>
-						<div class="flex:grow"></div>
-						<div></div>
-					</div>
+					<title-simple text="Trending" icon="local_fire_department" class="padding-bottom:none"/>
 					<video-card id="video-trending"/>
-					<div class="flex align:item gap padding">
-						<icon src="local_fire_department" class="font:big"/>
-						<string class="font-size:large font:bold padding">Popular</string>
-						<div class="flex:grow"></div>
-						<div></div>
-					</div>
+					<title-simple text="Popular" icon="local_fire_department" class="padding-bottom:none"/>
 					<video-card id="video-popular"/>
 					<!--div id="test-oc-container" class="relative">
 						<div id="test-oc" class="owl-carousel owl-theme padding">

@@ -153,7 +153,10 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			request.db.cache.movie = await request.db.select ("bioskop:movie").json ().find ().query ()
 			request.db.cache.tv = await request.db.select ("bioskop:tv").json ().find ().query ()
 			request.db.cache.genre = await request.db.select ("bioskop:genre").json ().find ().query ()
-			response.app.data.genre = request.db.cache.genre.data
+			response.app.data.genre = request.db.cache.genre.data.map (function (genre: any) {
+				genre.permalink = request.router ("genre", {id: genre.id, genre: genre.slug})
+				return genre
+				})
 			}
 		for (var i in request.db.cache.config.data) {
 			app.config [request.db.cache.config.data [i].key] = request.db.value (request.db.cache.config.data [i].value)

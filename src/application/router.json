@@ -10,8 +10,7 @@
 "manifest.json": "/manifest.json",
 "sitemap:index": "/sitemap/", "sitemap.xml": "/sitemap.xml", "sitemap.xsl": "/sitemap.xsl",
 "opensearch": "/opensearch.xml", "opensearch:description": "/osd.xml",
-"cgi-bin": "/cgi-bin/", "cpanel": "/cpanel/",
-"*": "/:path{.+}",
+"cpanel": "/cpanel/",
 "feed": "/feed/", "feed:atom": "/feed/atom/",
 "search": "/search",
 "archive": "/archive/", "archive:year": "/:year{[0-9]+}/", "archive:month": "/:year{[0-9]+}/:month{[0-9]+}/", "archive:day": "/:year{[0-9]+}/:month{[0-9]+}/:day{[0-9]+}/",
@@ -25,7 +24,7 @@
 "category": "/category/:category/", "category:index": "/category/",
 "tag": "/tag/:tag/", "tag:index": "/tag/",
 "label": "/label/:label/", "label:index": "/label/",
-"genre": "/genre/:genre/", "genre:index": "/genre/",
+"genre": "/genre/:id/:genre/", "genre:index": "/genre/",
 "country": "/country/:country/", "country:index": "/country/", "country:by_type": "/country/:country/:type/",
 "image": "/image/:image/", "image:index": "/image/",
 "picture": "/picture/:picture/", "picture:index": "/picture/",
@@ -73,5 +72,8 @@
 	"asia:japan": "/drama/asia/japan/",
 	"asia:china": "/drama/asia/china/",
 	"*": "*"
-	}
+	},
+"cgi-bin": "/cgi-bin/",
+"cgi-bin:api movie:up_coming": "/cgi-bin/api/movie/up_coming",
+"*": "/:path{.+}"
 }
