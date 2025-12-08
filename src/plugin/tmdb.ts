@@ -182,6 +182,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 	var popularity = input.popularity;
 	var vote = {average: input.vote_average || 0, count: input.vote_count || 0}
 	var country = input.origin_country || [];
+	var language = input.original_language || "en";
 	var adult = input.adult || false;
 	var budget = input.budget || 0;
 	var revenue = input.revenue || 0;
@@ -266,7 +267,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 		"genre:id": genre_id_list, genre,
 		status, adult, budget, revenue,
 		popularity, vote,
-		country,
+		country, language,
 		credit,
 		}
 	return output;

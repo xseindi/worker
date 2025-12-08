@@ -179,6 +179,17 @@ vue.element ("img:undraw", {
 		`,
 	})
 
+vue.element ("img:flag", {
+	prop: ["src"],
+	method: {
+		// https://static-files.motogp.pulselive.com/assets/flags/{src}.svg
+		url (src) { return ("/asset/image/flag/{src}.svg").split ("{src}").join (src.small ()) },
+		},
+	template: `
+		<img v-bind:src="url (prop.src)">
+		`,
+	})
+
 vue.element ("img:spinner", {
 	template: `
 		<div class="spinner">
@@ -188,6 +199,8 @@ vue.element ("img:spinner", {
 		</div>
 		`,
 	})
+
+// https://static-files.motogp.pulselive.com/assets/flags/id.svg
 
 /**
  * xxx

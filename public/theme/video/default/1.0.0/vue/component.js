@@ -265,15 +265,16 @@ vue.component ("video-card", {
 				<a href="/" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg" class=""/>
 					<images v-bind:src="data.poster.url" type="cover"/>
-					<div class="flex gap:small absolute" style="top: 10px; left: 10px; color: yellow;">
+					<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
 						<icon src="star"/>
 						<string class="font-bold:pop">{{ data.vote.average }}</string>
 					</div>
-					<div class="absolute" style="top: 10px; right: 10px;">
-						<img src="https://blogger-spot.github.io/asset/image/flag/korea_south.jpg" class="img:small border-radius:pop">
+					<div class="flex align:item gap:tiny absolute position:top-right">
+						<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:pop"/>
+						<img:flag v-else-if="data.language" v-bind:src="'lang-' + data.language" class="img:atom border-radius:pop"/>
 					</div>
-					<div class="absolute" style="bottom: 10px; left: 10px;">
-						<div class="font:tiny font:bold border-radius:pop font:color background:color" style="padding: 3px 7px;">HD</div>
+					<div class="absolute position:bottom-left">
+						<div class="owl-carousel-quality font:tiny font:bold border-radius:pop font:color">HD</div>
 					</div>
 					<div class="absolute" style="bottom: 10px; right: 10px;">
 						<!---->

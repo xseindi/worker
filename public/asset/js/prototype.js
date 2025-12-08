@@ -8,6 +8,77 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
+function Define (descriptor, key, value) {
+	Object.defineProperty (descriptor, key, {value, writable: true, enumerable: true, configurable: true});
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Define (Array.prototype, "clone", function () { return JSON.parse (JSON.stringify (this)); });
+Define (Array.prototype, "first", function () { for (var i in this) return this [i]; return undefined; }); Define (Array.prototype, "one", function () { return this.first (); });
+Define (Array.prototype, "last", function () { var value; for (var i in this) value = this [i]; return value; });
+Define (Array.prototype, "shuffle", function () { var array = this.clone (); var current = array.length, random; while (current !== 0) { random = Math.floor (Math.random () * current); current --; [array [current], array [random]] = [array [random], array [current]]; } return array; });
+Define (Array.prototype, "implode", function (array) { return [... this.clone (), ... array.clone ()]; });
+
+Define (Array.prototype, "select", function (filter) {
+	return this.filter (function (array, index) {
+		var error = 0;
+		for (var i in filter) {
+			if (typeof filter [i] === "object") {
+				if (filter [i].equal === false) {
+					if (filter [i].value !== array [i]) continue;
+					else error ++;
+					}
+				}
+			else if (filter [i] === array [i]) continue;
+			else error ++;
+			}
+		if (error) return false;
+		else return true;
+		});
+	});
+
+Define (String.prototype, "small", function () { return this.toLocaleLowerCase (); });
+Define (String.prototype, "big", function () { return this.toUpperCase (); });
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 $.meta = function () {}
 $.meta.get = function (meta) {
 	for (var i in meta) {
@@ -193,6 +264,9 @@ php.body.css.reset = function (type, type_of, orientation) {
 
 php.sleep = function (context, second = 0) { return setTimeout (context, (second * 1000)); }
 
+php.str_after = function str_after (search, string) { var pos = string.indexOf (search); if (pos !== undefined) return string.substr (pos + search.length); else return ""; }
+php.str_before = function str_before (search, string) { return string.split (search) [0]; }
+
 /**
  * xxx
  *
@@ -218,10 +292,10 @@ php.image = function () {}
 php.cookie = function (key, value) {
 	var cookie = document.cookie.split (";").map (function (data) { return data.trim ().split ("="); });
 	for (var i in cookie) {
-		var key = cookie [i][0].trim (), value;
+		var key = cookie [i][0], value;
 		if (key) {
 			value = cookie [i][1].trim ();
-			php.cookie.data [key] = value;
+			php.cookie.data [key.trim ()] = value;
 			}
 		}
 	}

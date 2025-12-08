@@ -582,23 +582,20 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .mobile #menu [outter] { position: fixed; width: 100vw; height: calc(100vh - var(--header-size)); background-color: rgba(var(--black),0.75); }
 #menu-simple { position: fixed; height: calc(100vh - var(--header-size)); overflow-y: scroll; }
 
-/*
-.font\:flex [primary] { flex-grow: 1; font-weight: 500; color: rgb(var(--font-color)); }
+.position\:top-left { top: 10px; left: 10px; }
+.position\:top-right { top: 10px; right: 10px; }
+.position\:bottom-left { bottom: 10px; left: 10px; }
+.position\:bottom-right { bottom: 10px; right: 10px; }
 
-<div class="spinner">
-  <svg class="circular" viewBox="25 25 50 50">
-    <circle
-      class="path"
-      cx="50"
-      cy="50"
-      r="20"
-      fill="none"
-      stroke-width="2"
-      stroke-miterlimit="10"
-    />
-  </svg>
-</div>
-*/
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
 :root{--color-red:#ea4335;--color-blue:#4285f4;--color-yellow:#fbbc05;--color-green:#34a853}
 .spinner{position:relative;margin:0 auto;width:100px}
@@ -612,8 +609,20 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 @-webkit-keyframes color{0%,100%{stroke:var(--color-red)}40%{stroke:var(--color-blue)}66%{stroke:var(--color-green)}80%,90%{stroke:var(--color-yellow)}}
 @keyframes color{0%,100%{stroke:var(--color-red)}40%{stroke:var(--color-blue)}66%{stroke:var(--color-green)}80%,90%{stroke:var(--color-yellow)}}
 
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 .tmdb-background::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; background-image: url('/asset/image/tmdb-bg-001.svg'); background-size: cover; background-repeat: no-repeat; background-position-y: 70px; z-index: -1; }
 .owl-carousel-item { display: flex; flex-direction: column; }
+.owl-carousel-rating { padding: 2px 5px; color: rgb(var(--yellow)); background-color: rgba(var(--black),0.75); }
+.owl-carousel-quality { padding: 2px 5px; background-color: rgba(var(--background-color),0.75); }
 
 /*
 .owl-carousel-container { display: flex; }
