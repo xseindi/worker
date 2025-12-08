@@ -31,18 +31,19 @@ vue.layout ("index", {
 				<menu id="menu" class="block relative index:small">
 					<div outter>
 						<menu-simple></menu-simple>
+						<div class="menu:size" computer></div>
 					</div>
 				</menu>
 				<main id="main" class="flex flex:column flex:grow index">
-					<div v-if="null" class="flex align:item justify:item padding:vertical" phone>
+					<!--div v-if="null" class="flex align:item justify:item padding:vertical" phone>
 						<div class="flex align:item gap" phone>
 							<the-movie:nav />
 							<the-tv:nav position="left: -75px;"/>
 							<the-people:nav position="right"/>
 						</div>
-					</div>
-					<div class="flex gap">
-						<div id="video-top-container" class="flex:grow" style="max-width: 100%;">
+					</div-->
+					<!--div class="flex">
+						<div id="video-top-container" class="flex:grow" styles="max-width: 100%;">
 							<video-card id="video-top" reference="video-top-container" item="item:sky"/>
 						</div>
 						<div class="flex flex:column gap padding:vertical padding:right" computer>
@@ -55,11 +56,22 @@ vue.layout ("index", {
 							<img:asset src="16x9.svg" width="150" class="border:radius"/>
 							<img:asset src="16x9.svg" width="150" class="border:radius"/>
 						</div>
+					</div-->
+					<div class="flex">
+						<div class="padding" style="width: 70%;">
+							<div class="background-color:mono width:height">
+								Hello World
+							</div>
+						</div>
+						<div class="flex flex:column gap padding:vertical padding:right" style="width: 30%;">
+							<img:asset src="16x9.svg" class="width:size"/>
+							<img:asset src="16x9.svg" class="width:size"/>
+						</div>
 					</div>
 					<div class="flex flex:wrap align:item justify:item gap padding">
 						<a:genre v-for="genre in app.data.genre" v-bind:href="genre.permalink" v-bind:text="genre.name"/>
 					</div>
-					<video-card id="test"/>
+					<video-card id="test" v-bind:data="app.data.tv.country.KR"/>
 					<adsterra type="horizontal"/>
 					<div class="flex align:item gap padding">
 						<icon src="hotel_class" class="font:big"/>
@@ -137,7 +149,7 @@ vue.component ("header-simple:float", {
 		},
 	template: `
 		<div id="header-simple" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header-simple:float">
-			<div class="padding:left" phone>
+			<div class="padding:left" mobile>
 				<button:material id="menu:toggle" icon="menu" class="icon:large padding-horizontal:small padding:vertical background:clear"/>
 			</div>
 			<div class="padding-left:small" computer></div>
@@ -200,7 +212,7 @@ vue.component ("menu-simple", {
 		vue.mount.menu ()
 		},
 	template: `
-		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color" aria-modal="menu">
+		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color" aria-modal="menu" style="scrollbar-width: thin; scrollbar-color: rgb(var(--background-color)) rgb(var(--background-color));">
 			<div class="flex flex:column padding">
 				<a:material v-for="a in menu.general" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/>
 			</div>

@@ -164,27 +164,31 @@ php.AD__.detect ();
 
 php.device = function () {}
 php.device.computer = function () { return php.device.type === "computer"; }
+php.device.mobile = function () { return php.device.type_of === "mobile"; }
+php.device.tablet = function () { return php.device.type === "tablet"; }
 php.device.phone = function () { return php.device.type === "phone"; }
 php.html = function () {}
 php.body = function () {}
 php.body.width = $ ("body").width ();
 php.body.css = function (context) {
 	var type = "phone";
+	var type_of = "mobile";
 	var orientation = "portrait";
 	var body = $ ("body").innerWidth ();
-	if (body > 600) type = "phone";
-	if (body > 1000) type = "computer";
+	if (body > 600) { type = "tablet"; type_of = "mobile"; }
+	if (body > 1000) { type = "computer"; type_of = ""; }
 	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
 	if (php.device.type || php.device.orientation) {
 		if (php.device.type === type && php.device.orientation === orientation) {}
 		else php.body.css.reset (type, orientation);
 		}
-	else php.body.css.reset (type, orientation);
+	else php.body.css.reset (type, type_of, orientation);
 	}
-php.body.css.reset = function (type, orientation) {
+php.body.css.reset = function (type, type_of, orientation) {
 	$ ("body").removeClass ("computer mobile tablet phone");
 	$ ("body").addClass (php.device.type = type).addClass (php.device.orientation = orientation);
-	php.emit ("body:css", type, orientation);
+	if (type_of) $ ("body").addClass (php.device.type_of = type_of);
+	php.emit ("body:css", type, type_of, orientation);
 	}
 
 php.sleep = function (context, second = 0) { return setTimeout (context, (second * 1000)); }

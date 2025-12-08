@@ -291,26 +291,12 @@ vue.element ("adsterra", {
 	prop: ["type"],
 	template: `
 		<div v-if="true" class="flex align:item justify:item">
-			<div v-if="vue.is_device_computer ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
-			<div v-if="vue.is_device_phone ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
+			<div v-if="vue ['is:computer'] ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
+			<div v-if="vue ['is:mobile'] ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
 		</div>
 		<div v-else-if="prop.type === 'horizontal'" class="flex align:item justify:item">
-			<iframe v-if="vue.is_device_computer ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
-			<iframe v-if="vue.is_device_phone ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
-		</div>
-		<div v-else></div>
-		`,
-	})
-
-vue.element ("monetag", {
-	prop: ["type"],
-	template: `
-		<div v-if="true" class="flex align:item justify:item">
-			<img:asset />
-		</div>
-		<div v-else-if="prop.type === 'horizontal'" class="flex align:item justify:item">
-			<iframe v-if="vue.is_device_computer ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
-			<iframe v-if="vue.is_device_phone ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
+			<iframe v-if="vue ['is:computer'] ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
+			<iframe v-if="vue ['is:mobile'] ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
 		</div>
 		<div v-else></div>
 		`,

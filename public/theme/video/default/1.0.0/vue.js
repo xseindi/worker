@@ -8,16 +8,15 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.var ["device:computer"] = true
-vue.var ["device:phone"] = false
-vue.is_device_computer = function (value) {
-	if (value === undefined) return vue.var ["device:computer"]
-	else return vue.var ["device:computer"] = value
-	}
-vue.is_device_phone = function (value) {
-	if (value === undefined) return vue.var ["device:phone"]
-	else return vue.var ["device:phone"] = value
-	}
+vue.var ("is:computer", true)
+vue.var ("is:mobile", false)
+vue.var ("is:tablet", false)
+vue.var ("is:phone", false)
+
+vue.is_computer = vue ["is:computer"] = function (value) { return vue.var ("is:computer", value) }
+vue.is_mobile = vue ["is:mobile"] = function (value) { return vue.var ("is:mobile", value) }
+vue.is_tablet = vue ["is:tablet"] = function (value) { return vue.var ("is:tablet", value) }
+vue.is_phone = vue ["is:phone"] = function (value) { return vue.var ("is:phone", value) }
 
 /**
  * xxx
@@ -41,14 +40,18 @@ php.on ("body:css", function (type, orientation) {
 	if (php.device.computer ()) {
 		$ ("#menu").css ("display", "block").removeClass ("box-shadow")
 		$ ("#menu [aria-modal='menu']").removeClass ("box-shadow")
-		vue.is_device_computer (true)
-		vue.is_device_phone (false)
+		vue ["is:computer"] (true)
+		vue ["is:mobile"] (false)
+		vue ["is:tablet"] (false)
+		vue ["is:phone"] (false)
 		}
-	if (php.device.phone ()) {
+	else {
 		$ ("#menu").css ("display", "none")
 		$ ("#menu [aria-modal='menu']").addClass ("box-shadow")
-		vue.is_device_computer (false)
-		vue.is_device_phone (true)
+		vue ["is:computer"] (false)
+		vue ["is:mobile"] (true)
+		vue ["is:tablet"] (php.device.tablet ())
+		vue ["is:phone"] (php.device.phone ())
 		}
 	})
 
@@ -135,14 +138,10 @@ $ (document).ready (function () {
 	})
 
 $ (document).click (function (event) {
-	// if ($ ("body").hasClass ("phone")) {
-		// if ($ (event.target).is ("[id='menu:toggle']") || $ (event.target).is ("[id='menu:toggle'] *")) $ ("#menu").css ("display", "flex");
-		// else if ($ ('#menu').css ('display') === 'flex') if (!$ (event.target).is ('.phone #menu *')) $ ('#menu').css ('display', 'none');
-		// }
 	var toggle = $ ("[id='menu:toggle']")
 	var menu = $ ("#menu")
 	var modal = $ ("[aria-modal='menu']")
-	if (vue.var ["device:phone"]) {
+	if (vue ["is:mobile"] ()) {
 		if (modal.is (event.target) || modal.has (event.target).length) {}
 		else {
 			if (toggle.is (event.target) || toggle.has (event.target).length) {}

@@ -261,7 +261,7 @@ vue.component ("video-card", {
 		},
 	template: `
 		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background none">
-			<div v-for="data in data" class="owl-carousel-item gap:small">
+			<div v-for="data in (prop.data || data)" class="owl-carousel-item gap:small">
 				<a href="/" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg" class=""/>
 					<images v-bind:src="data.poster.url" type="cover"/>

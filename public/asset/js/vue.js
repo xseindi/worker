@@ -114,7 +114,8 @@ vue.markup = {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.var = vue.reactive ();
+vue.var = function (key, value) { if (value === undefined) return vue.variable [key]; else return vue.variable [key] = value; }
+vue.variable = vue.reactive ();
 vue.loading = vue.reactive ();
 vue.ready = vue.reference (false);
 

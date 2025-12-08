@@ -364,6 +364,9 @@ a:visited { color: rgb(var(--font-anchor-color-visited)); }
 .padding\:vertical { padding-top: 10px; padding-bottom: 10px; } .padding-vertical\:small { padding-top: 5px; padding-bottom: 5px; } .padding-vertical\:medium { padding-top: 15px; padding-bottom: 15px; } .padding-vertical\:large { padding-top: 20px; padding-bottom: 20px; } .padding-vertical\:big { padding-top: 25px; padding-bottom: 25px; }
 .padding\:horizontal { padding-left: 10px; padding-right: 10px; } .padding-horizontal\:small { padding-left: 5px; padding-right: 5px; } .padding-horizontal\:medium { padding-left: 15px; padding-right: 15px; } .padding-horizontal\:large { padding-left: 20px; padding-right: 20px; } .padding-horizontal\:big { padding-left: 25px; padding-right: 25px; }
 
+.padding-top\:none { padding-top: 0px; }
+.padding-bottom\:none { padding-top: 0px; }
+
 /**
  * xxx
  *
@@ -549,7 +552,11 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 [device="mobile"] {}
 [device="tablet"] {}
 [device="phone"] {}
+.computer [mobile] { display: none; }
+.computer [tablet] { display: none; }
 .computer [phone] { display: none; }
+.mobile [computer] { display: none; }
+.tablet [computer] { display: none; }
 .phone [computer] { display: none; }
 :disabled { opacity: 0.55; }
 ::placeholder { color: darkgray; }
@@ -572,10 +579,8 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 #app { height: 100%; }
 #application { height: 100%; }
 
-.a\:genre {  }
-
-.phone #menu [outter] { position: fixed; width: 100vw; height: calc(100vh - var(--header-size)); background-color: rgba(var(--black),0.75); }
-.phone #menu-simple { position: fixed; height: calc(100vh - var(--header-size)); overflow-y: scroll; }
+.mobile #menu [outter] { position: fixed; width: 100vw; height: calc(100vh - var(--header-size)); background-color: rgba(var(--black),0.75); }
+#menu-simple { position: fixed; height: calc(100vh - var(--header-size)); overflow-y: scroll; }
 
 /*
 .font\:flex [primary] { flex-grow: 1; font-weight: 500; color: rgb(var(--font-color)); }
