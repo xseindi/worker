@@ -9,5 +9,8 @@
 
 {"id": 20001, "reference": 0, "name": "Male Colorize", "type": "avatar", "file": "male_v.png", "description": ""},
 
+{"id": 90001, "reference": 100, "name": "Bioskop Cover", "file": "cover.png", "description": ""},
+{"id": 90002, "reference": 101, "name": "Bokep Cover", "file": "cover.png", "description": ""},
+
 {}
 ]

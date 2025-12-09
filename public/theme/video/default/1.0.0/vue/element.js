@@ -330,7 +330,7 @@ vue.element ("img:ad", {
 vue.element ("adsterra", {
 	prop: ["type"],
 	template: `
-		<div v-if="null" class="flex align:item justify:item">
+		<div v-if="true" class="flex align:item justify:item">
 			<div v-if="vue ['is:computer'] ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
 			<div v-if="vue ['is:mobile'] ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
 		</div>

@@ -98,7 +98,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (0, output);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue.js }}?cache={{ cache }}"></script>`);
-	// markup.push (2, `<script type="text/javascript" src="//pl28208808.effectivegatecpm.com/a2/f4/d1/a2f4d1914c60b6ef74a76a3117320a2f.js"></script>`);
+	if (variable ["ad adsterra:social"]) markup.push (2, `<script type="text/javascript" src="${variable ["ad adsterra:social"]}"></script>`);
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();

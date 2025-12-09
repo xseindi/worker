@@ -16,18 +16,23 @@
 	"google-site-verification": "",
 	"tmdb:api": "d4b47b5286ba1ff0ddf4ddf78f70d6d8",
 	"tmdb:api access:token": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNGI0N2I1Mjg2YmExZmYwZGRmNGRkZjc4ZjcwZDZkOCIsIm5iZiI6MTc2MzQzOTc5Ny45MSwic3ViIjoiNjkxYmY0YjU5Y2Y0Mzc3NzMzNjA5YzJjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.fsGVgPtDUktUWh02_mZZyi-cdqlzbdXd5uzc97_Os1U",
-	"ad:adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
-	"ad adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
-	"ad:monetag": "",
-	"referral:do": "",
-	"referral:vultr": "https://www.vultr.com/?ref=9837557",
-	"referral vultr:special": "https://www.vultr.com/?ref=9837558-9J",
-	"affiliate": {
-		"ds": [{"url": "https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=IAFmarketing"}]
-		},
 	"image": {
 		"logo": 10001,
-		"avatar": 20001
+		"avatar": 20001,
+		"cover": 90001
+		},
+	"ad": {
+		"adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
+		"adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
+		"-- adsterra:float": "//pl28208808.effectivegatecpm.com/a2/f4/d1/a2f4d1914c60b6ef74a76a3117320a2f.js",
+		"monetag": ""
+		},
+	"affiliate": {
+		"digistore": [{"url": "https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=IAFmarketing"}]
+		},
+	"referral": {
+		"vultr": "https://www.vultr.com/?ref=9837557",
+		"vultr:special": "https://www.vultr.com/?ref=9837558-9J"
 		}
 	}},
 
@@ -44,12 +49,23 @@
 	"google-site-verification": "",
 	"tmdb:api": "d4b47b5286ba1ff0ddf4ddf78f70d6d8",
 	"tmdb:api access:token": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNGI0N2I1Mjg2YmExZmYwZGRmNGRkZjc4ZjcwZDZkOCIsIm5iZiI6MTc2MzQzOTc5Ny45MSwic3ViIjoiNjkxYmY0YjU5Y2Y0Mzc3NzMzNjA5YzJjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.fsGVgPtDUktUWh02_mZZyi-cdqlzbdXd5uzc97_Os1U",
-	"ad:adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
-	"ad adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
-	"ad:monetag": "",
 	"image": {
 		"logo": 10001,
-		"avatar": 20001
+		"avatar": 20001,
+		"cover": 90002
+		},
+	"ad": {
+		"adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
+		"adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
+		"-- adsterra:float": "//pl28208808.effectivegatecpm.com/a2/f4/d1/a2f4d1914c60b6ef74a76a3117320a2f.js",
+		"monetag": ""
+		},
+	"affiliate": {
+		"digistore": [{"url": "https://www.advancedbionutritionals.com/DS24/Advanced-Amino/Muscle-Mass-Loss/HD.htm#aff=IAFmarketing"}]
+		},
+	"referral": {
+		"vultr": "https://www.vultr.com/?ref=9837557",
+		"vultr:special": "https://www.vultr.com/?ref=9837558-9J"
 		}
 	}},
 

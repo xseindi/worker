@@ -36,7 +36,6 @@ Define (Array.prototype, "clone", function () { return JSON.parse (JSON.stringif
 Define (Array.prototype, "first", function () { for (var i in this) return this [i]; return undefined; }); Define (Array.prototype, "one", function () { return this.first (); });
 Define (Array.prototype, "last", function () { var value; for (var i in this) value = this [i]; return value; });
 Define (Array.prototype, "shuffle", function () { var array = this.clone (); var current = array.length, random; while (current !== 0) { random = Math.floor (Math.random () * current); current --; [array [current], array [random]] = [array [random], array [current]]; } return array; });
-Define (Array.prototype, "implode", function (array) { return [... this.clone (), ... array.clone ()]; });
 
 Define (Array.prototype, "select", function (filter) {
 	return this.filter (function (array, index) {

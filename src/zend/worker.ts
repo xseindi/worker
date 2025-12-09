@@ -136,7 +136,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				}
 			}
 		request.router = function (key: string, value: any = {}) {
-			var router = request.base_url + app.router [key]
+			var router = request.base_url + (app.router [key] || key)
 			for (var i in value) router = router.split (":" + i).join (value [i])
 			return router
 			}
@@ -149,13 +149,21 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
-		if (app.config.type === "bioskop") {
+		if (app.config.type === "website") {}
+		else if (app.config.type === "bioskop") {
 			request.db.cache.movie = await request.db.select ("bioskop:movie").json ().find ().query ()
 			request.db.cache.tv = await request.db.select ("bioskop:tv").json ().find ().query ()
 			request.db.cache.genre = await request.db.select ("bioskop:genre").json ().find ().query ()
 			response.app.data.genre = request.db.cache.genre.data.map (function (genre: any) {
 				genre.permalink = request.router ("genre", {id: genre.id, genre: genre.slug})
 				return genre
+				})
+			}
+		else if (app.config.type === "bokep") {
+			request.db.cache.category = await request.db.select ("bokep:category").json ().find ().query ()
+			response.app.data.category = request.db.cache.category.data.map (function (category: any) {
+				category.permalink = request.router ("category", {id: category.id, category: category.slug})
+				return category
 				})
 			}
 		for (var i in request.db.cache.config.data) {
@@ -262,6 +270,22 @@ var library: any = class {
 				keyword: this.request.client.object ["meta:keyword"],
 				rating: this.request.client.object ["meta:rating"],
 				},
+			image: {
+				logo: this.request.client.object.image.logo,
+				avatar: this.request.client.object.image.avatar,
+				cover: this.request.client.object.image.cover,
+				},
+			ad: {
+				"adsterra": this.request.client.object.ad ["adsterra"],
+				"adsterra:adult": this.request.client.object.ad ["adsterra:adult"],
+				"adsterra:float": this.request.client.object.ad ["adsterra:float"],
+				"monetag": this.request.client.object.ad ["monetag"],
+				},
+			affiliate: {},
+			referral: {
+				"vultr": this.request.client.object.referral ["vultr"],
+				"vultr:special": this.request.client.object.referral ["vultr:special"],
+				},
 			}
 		this.response.var ["theme:id"] = this.request.client.theme.id
 		this.response.var ["theme:slug"] = this.request.client.theme.slug
@@ -295,17 +319,17 @@ var library: any = class {
 		this.response.var ["twitter:card"] = "summary_large_image"
 		this.response.var ["twitter:title"] = this.request.client.site.title
 		this.response.var ["twitter:description"] = this.request.client.site.description
-		this.response.var ["twitter:image"] = ""
+		this.response.var ["twitter:image"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: this.response.image.stock [this.request.client.site.image.cover]})
 		this.response.var ["og:site-name"] = this.request.client.site.name
 		this.response.var ["og:title"] = this.request.client.site.title
 		this.response.var ["og:description"] = this.request.client.site.description
 		this.response.var ["og:url"] = this.request.canonical_url
-		this.response.var ["og:image"] = ""
+		this.response.var ["og:image"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: this.response.image.stock [this.request.client.site.image.cover]})
 		this.response.var ["og:type"] = "website"
 		this.response.var ["og:locale"] = "en"
 		this.response.var ["ld+json organization:name"] = this.request.client.site.name
 		this.response.var ["ld+json organization:url"] = this.request.base_url
-		this.response.var ["ld+json organization:logo"] = this.request.router ("image:logo", {logo: this.response.image.stock [this.request.client.object.image.logo]})
+		this.response.var ["ld+json organization:logo"] = this.request.router ("image:logo", {logo: this.response.image.stock [this.request.client.site.image.logo]})
 		this.response.var ["date:publish"] = new Date ().toUTCString ()
 		this.response.var ["article:published_time"] = new Date ().toISOString ()
 		this.response.var ["article:modified_time"] = new Date ().toISOString ()
@@ -344,8 +368,10 @@ var library: any = class {
 		if (data) {
 			this.response.var ["title"] = this.response.var ["twitter:title"] = this.response.var ["og:title"] = title
 			this.response.var ["meta:description"] = this.response.var ["twitter:description"] = this.response.var ["og:description"] = description
-			this.response.var ["twitter:image"] = ""
-			this.response.var ["og:image"] = ""
+			if (data ["image:cover"]) {
+				this.response.var ["twitter:image"] = data ["image:cover"]
+				this.response.var ["og:image"] = data ["image:cover"]
+				}
 			if (data.article) {
 				this.response.var ["article"] = true
 				this.response.var ["og:type"] = "article"
@@ -354,8 +380,8 @@ var library: any = class {
 			if (data.router) this.response.var ["router"] = data.router
 			if (data ["ld+json webpage"]) {
 				this.response.var ["ld+json webpage"] = true
-				this.response.var ["ld+json webpage:image"] = data ["ld+json webpage"].image || "#"
-				this.response.var ["ld+json webpage:thumbnail"] = data ["ld+json webpage"].image || "#"
+				this.response.var ["ld+json webpage:image"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
+				this.response.var ["ld+json webpage:thumbnail"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
 				}
 			}
 		this.request.client.theme.layout = this.response.var ["theme:layout"]

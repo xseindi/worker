@@ -42,30 +42,78 @@ vue.layout ("index", {
 							<the-people:nav position="right"/>
 						</div>
 					</div-->
-					<!--div class="flex">
-						<div id="video-top-container" class="flex:grow" styles="max-width: 100%;">
-							<video-card id="video-top" reference="video-top-container" item="item:sky"/>
-						</div>
-						<div class="flex flex:column gap padding:vertical padding:right" computer>
-							<img:asset src="16x9.svg" height="165" class="border:radius"/>
-							<img:asset src="16x9.svg" height="165" class="border:radius"/>
-						</div>
-						<div class="flex flex:column gap padding:vertical padding:right" phone>
-							<img:asset src="16x9.svg" width="150" class="border:radius"/>
-							<img:asset src="16x9.svg" width="150" class="border:radius"/>
-							<img:asset src="16x9.svg" width="150" class="border:radius"/>
-							<img:asset src="16x9.svg" width="150" class="border:radius"/>
-						</div>
-					</div-->
-					<div class="flex">
-						<div class="padding" style="width: 70%;">
-							<div class="background-color:mono width:height">
-								Hello World
+					<div class="flex gap padding" computer>
+						<div class="flex flex:column flex:grow gap padding:large border:radius box-shadow background-color">
+							<div class="flex align:item font:big">
+								<string class="font-family:logo font:bold text:gradient">Welcome ... !!!</string>
+								<div class="flex:grow"></div>
+								<icon src="military_tech"/>
+							</div>
+							<div class="flex flex:grow align:item justify:item"><img:undraw src="designer" height="150" class=""/></div>
+							<div class="">
+								<separator:mono/>
+							</div>
+							<div class="font:large font-bold:pop">Million's of Movie's, TV Show's and People to discover.</div>
+							<div class="flex align:item gap font:big">
+								<icon src="play_circle" class="text:gradient"/>
+								<string>Explore now.</string>
 							</div>
 						</div>
-						<div class="flex flex:column gap padding:vertical padding:right" style="width: 30%;">
-							<a href="/"><img:ad src="referral-vultr-001.png" class="width:size border:radius"/></a>
-							<a href="/"><img:ad src="referral-vultr-004.jpg" class="width:size border:radius"/></a>
+						<div class="flex flex:column gap" style="width: 375px;">
+							<div class="flex align:item gap font:large font:bold">
+								<icon src="play_circle"/>
+								<string>Must Watch</string>
+							</div>
+							<div class="flex gap border:radius box-shadow no-overflow">
+								<div><img:asset src="3x4.svg" class="" width="128"/></div>
+								<div class="flex flex:column gap:small padding:vertical padding:right">
+									<div class="flex align:item gap">
+										<icon src="tv_guide"/>
+										<icon src="star"/>
+										<string>7.89</string>
+										<img:flag src="KR" class="img:atom"/>
+									</div>
+									<string class="font:intermediate font-bold:pop">Lorem ipsum dolor sit amet</string>
+									<div class="flex:grow"></div>
+									<string class="font:small font-color:mono">December 99, 9999</string>
+									<string class="font:small">lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</string>
+								</div>
+							</div>
+							<div class="flex gap border:radius box-shadow no-overflow">
+								<div><img:asset src="3x4.svg" class="" width="128"/></div>
+								<div class="flex flex:column gap:small padding:vertical padding:right">
+									<div class="flex align:item gap">
+										<icon src="tv_guide"/>
+										<icon src="star"/>
+										<string>7.89</string>
+										<img:flag src="KR" class="img:atom"/>
+									</div>
+									<string class="font:intermediate font-bold:pop">Lorem ipsum dolor sit amet</string>
+									<div class="flex:grow"></div>
+									<string class="font:small font-color:mono">December 99, 9999</string>
+									<string class="font:small">lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</string>
+								</div>
+							</div>
+							<!--a href="/"><img:asset src="16x9.svg" class="width:size border:radius"/></a>
+							<a href="/"><img:asset src="16x9.svg" class="width:size border:radius"/></a-->
+						</div>
+					</div>
+					<div class="padding background-color:mono-pop" mobile>
+						<div class="flex flex:column flex:grow gap padding:large border:radius box-shadow background-color">
+							<div class="flex align:item font:large">
+								<string class="font-family:logo font:bold text:gradient">Welcome ... !!!</string>
+								<div class="flex:grow"></div>
+								<icon src="military_tech"/>
+							</div>
+							<div class="flex flex:grow align:item justify:item"><img:undraw src="designer" height="150" class=""/></div>
+							<div class="">
+								<separator:mono/>
+							</div>
+							<div class="font:intermediate font-bold:pop">Million's of Movie's, TV Show's, People to discover.</div>
+							<div class="flex align:item gap font:large">
+								<icon src="play_circle" class="text:gradient"/>
+								<string>Explore now.</string>
+							</div>
 						</div>
 					</div>
 					<div class="flex flex:wrap align:item justify:item gap padding">
@@ -80,17 +128,6 @@ vue.layout ("index", {
 					<video-card id="video-trending"/>
 					<title-simple text="Popular" icon="local_fire_department" class="padding-bottom:none"/>
 					<video-card id="video-popular"/>
-					<!--div id="test-oc-container" class="relative">
-						<div id="test-oc" class="owl-carousel owl-theme padding">
-							<div v-for="oc in oc" class="owl-carousel-item">
-								<div class="relative border:radius no-overflow">
-									<img:asset src="3x4.svg" class=""/>
-									<img:file src="movie-tron.webp" type="absolute"/>
-								</div>
-								<div>asd</div>
-							</div>
-						</div>
-					</div-->
 					<div><img:undraw src="cloud" class="img:big"/></div>
 					<img width="1" height="750">
 				</main>
