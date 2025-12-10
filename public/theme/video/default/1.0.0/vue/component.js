@@ -251,10 +251,11 @@ vue.component ("nav-simple:genre", {
 vue.component ("video-card", {
 	prop: ["id", "reference", "data", "item", "option"],
 	setup (prop) {
+		prop.option = prop.option || {}
 		var data = prop.data || php.app.data.trending.today
 		var option = prop.option || {}
 		if (option.shuffle) data = data.shuffle ()
-		return {data}
+		return {prop, data}
 		},
 	mount (v) {
 		var id = "#" + v.prop.id
@@ -265,7 +266,7 @@ vue.component ("video-card", {
 		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background none">
 			<div v-for="data in (prop.data || data)" class="owl-carousel-item gap:small">
 				<a v-bind:href="data.permalink" class="relative border:radius no-overflow">
-					<img:asset src="3x4.svg" class=""/>
+					<img:asset src="3x4.svg"/>
 					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
 					<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
 						<icon src="star"/>
@@ -275,17 +276,65 @@ vue.component ("video-card", {
 						<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:regular opacity:small"/>
 						<img:flag v-else-if="data.language" v-bind:src="data.language" type="language" class="img:atom border-radius:regular opacity:small"/>
 					</div>
-					<div class="absolute position:bottom-left">
+					<div class="flex flex:column gap:tiny absolute position:bottom-left">
+						<icon v-bind:src="prop.option.icon || 'movie'" class="font:intermediate text:gradient"/>
 						<div class="owl-carousel-quality font:tiny font:bold border-radius:pop">HD</div>
 					</div>
 					<div class="flex flex:column align:end gap:tiny absolute position:bottom-right">
 						<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
-						<!--div v-for="genre in data.genre"><a v-bind:href="genre.permalink" class="owl-carousel-tag font:tiny border-radius:round index" string>{{ genre.name }}</a></div-->
 					</div>
 				</a>
 				<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
 				<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
 			</div>
+		</div>
+		`,
+	})
+
+vue.component ("video-card:vertical", {
+	prop: ["data", "option"],
+	setup (prop) {
+		prop.option = prop.option || {}
+		var data = (prop.data || php.app.data.trending.today).shuffle ().limit (2)
+		return {prop, data}
+		},
+	template: `
+		<div v-for="data in data" class="flex gap border:radius box-shadow no-overflow">
+			<div class="relative no-overflow" style="min-width: 128px;">
+				<a v-bind:href="data.permalink">
+					<img:asset src="3x4.svg" class="width:size" style="width: 128px;"/>
+					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
+				</a>
+			</div>
+			<div class="flex flex:column gap:small padding:vertical padding:right">
+				<string class="font:small font-color:mono">{{ data ["release_date:string"] }}</string>
+				<a v-bind:href="data.permalink" class="font:intermediate font-bold:pop font:static" string>{{ data.title }}</a>
+				<div class="flex:grow"></div>
+				<a v-for="genre in data.genre" v-bind:href="genre.permalink" class="font:tiny" string>{{ genre.name }}</a>
+				<div class="flex align:item gap">
+					<icon src="tv_guide"/>
+					<icon src="star"/>
+					<string>{{ data.vote.average }}</string>
+					<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:regular opacity:small"/>
+					<img:flag v-else-if="data.language" v-bind:src="data.language" type="language" class="img:atom border-radius:regular opacity:small"/>
+				</div>
+			</div>
+		</div>
+		`,
+	})
+
+vue.component ("video-card:poster", {
+	prop: ["data", "option"],
+	setup (prop) {
+		prop.option = prop.option || {}
+		var data = (prop.data || php.app.data.trending.today).shuffle ().limit (prop.option.limit || 3)
+		return {prop, data}
+		},
+	template: `
+		<div class="flex align:item gap">
+			<a v-for="data in data" v-bind:href="data.permalink">
+				<img:ratio v-bind:src="data.poster.url" ratio="3:4" width="128" class="border:radius">
+			</a>
 		</div>
 		`,
 	})

@@ -117,10 +117,10 @@
 --black: 17, 17, 17; /* #111111 */
 --white: 255, 255, 255;
 --gray: 128, 128, 128;
---red: 224, 108, 117;
---green: 152, 195, 121;
---blue: 66, 133, 244;
---yellow: 229, 192, 123;
+--red: 224, 108, 117; --red-pop: 234, 67, 53;
+--green: 152, 195, 121; --green-pop: 52, 168, 83;
+--blue: 66, 133, 244; --blue-pop: 66, 133, 244;
+--yellow: 229, 192, 123; --yellow-pop: 251, 188, 5;
 --orange: 210, 132, 69;
 --purple: 198, 120, 221;
 --pink: 255, 192, 203;
@@ -237,13 +237,15 @@ iframe:focus { outline: none; } iframe[seamless] { display: block; }
 .font-color, .font\:color { color: rgb(var(--font-color)); }
 .font-color\:mono { color: rgb(var(--font-color-mono)); }
 .font-color\:white { color: rgb(var(--white)); }
-.font-color\:red { color: rgb(var(--red)); }
-.font-color\:green { color: rgb(var(--green)); }
-.font-color\:blue { color: rgb(var(--blue)); }
+.font-color\:red { color: rgb(var(--red)); } .font-color\:red-pop { color: rgb(var(--red-pop)); }
+.font-color\:green { color: rgb(var(--green)); } .font-color\:green-pop { color: rgb(var(--green-pop)); }
+.font-color\:blue { color: rgb(var(--blue)); } .font-color\:blue-pop { color: rgb(var(--blue-pop)); }
+.font-color\:yellow { color: rgb(var(--yellow)); } .font-color\:yellow-pop { color: rgb(var(--yellow-pop)); }
 .font-hover\:mono:hover { color: rgb(var(--font-color-mono)); }
-.font-hover\:red:hover { color: rgb(var(--red)); }
-.font-hover\:green:hover { color: rgb(var(--green)); }
-.font-hover\:blue:hover { color: rgb(var(--blue)); }
+.font-hover\:red:hover { color: rgb(var(--red)); } .font-hover\:red-pop:hover { color: rgb(var(--red-pop)); }
+.font-hover\:green:hover { color: rgb(var(--green)); } .font-hover\:green-pop:hover { color: rgb(var(--green-pop)); }
+.font-hover\:blue:hover { color: rgb(var(--blue)); } .font-hover\:blue-pop:hover { color: rgb(var(--blue-pop)); }
+.font-hover\:yellow:hover { color: rgb(var(--yellow)); } .font-hover\:yellow-pop:hover { color: rgb(var(--yellow-pop)); }
 
 .font\:static, .font\:static:hover, .font\:static:focus, .font\:static:active, .font\:static:visited { color: rgb(var(--font-color)); }
 .font\:flex [primary] { flex-grow: 1; font-weight: 500; }
@@ -503,9 +505,10 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .background-color\:mono-pop { background-color: rgb(var(--mono-pop)); }
 .background-color\:mono-extra { background-color: rgb(var(--mono-extra)); }
 .background-color\:mono-sky { background-color: rgb(var(--mono-sky)); }
-.background-color\:red { background-color: rgb(var(--red)); }
-.background-color\:green { background-color: rgb(var(--green)); }
-.background-color\:blue { background-color: rgb(var(--blue)); }
+.background-color\:red { background-color: rgb(var(--red)); } .background-color\:red-pop { background-color: rgb(var(--red-pop)); }
+.background-color\:green { background-color: rgb(var(--green)); } .background-color\:green-pop { background-color: rgb(var(--green-pop)); }
+.background-color\:blue { background-color: rgb(var(--blue)); } .background-color\:blue-pop { background-color: rgb(var(--blue-pop)); }
+.background-color\:yellow { background-color: rgb(var(--yellow)); } .background-color\:yellow-pop { background-color: rgb(var(--yellow-pop)); }
 
 .background-hover\:transparent:hover { background-color: transparent; }
 .background-hover\:mono:hover { background-color: rgb(var(--mono)); }

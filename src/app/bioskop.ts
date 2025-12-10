@@ -113,7 +113,59 @@ app.get (app.router ["manifest.json"], async function (request: any, response: a
 		})
 	})
 
-app.get (app.router ["search"])
+app.get ("/cache/js", async function (request: any, response: any, next: any) {
+	response.app.data.movie = {
+		popular: (await request.tmdb.movie.popular ()).data,
+		country: {
+			KR: (await request.tmdb.movie.discover ({country: "KR"})).data,
+			JP: (await request.tmdb.movie.discover ({country: "JP"})).data,
+			CN: (await request.tmdb.movie.discover ({country: "CN"})).data,
+			},
+		}
+	response.app.data.tv = {
+		popular: (await request.tmdb.tv.popular ()).data,
+		country: {
+			KR: (await request.tmdb.tv.discover ({country: "KR"})).data,
+			JP: (await request.tmdb.tv.discover ({country: "JP"})).data,
+			CN: (await request.tmdb.tv.discover ({country: "CN"})).data,
+			},
+		}
+	response.app.data.trending = {
+		today: (await request.tmdb.trending ("today")).data,
+		week: (await request.tmdb.trending ("week")).data,
+		}
+	var output: any = []
+	output.push (`php.app.data.movie = ${JSON.stringify (response.app.data.movie)}`)
+	output.push (`php.app.data.tv = ${JSON.stringify (response.app.data.tv)}`)
+	output.push (`php.app.data.trending = ${JSON.stringify (response.app.data.trending)}`)
+	return response.js (output.join (ln))
+	})
+
+app.get ("/cache/json", async function (request: any, response: any, next: any) {
+	var json: any = {
+		movie: {
+			popular: (await request.tmdb.movie.popular ()).data,
+			country: {
+				KR: (await request.tmdb.movie.discover ({country: "KR"})).data,
+				JP: (await request.tmdb.movie.discover ({country: "JP"})).data,
+				CN: (await request.tmdb.movie.discover ({country: "CN"})).data,
+				},
+			},
+		tv: {
+			popular: (await request.tmdb.tv.popular ()).data,
+			country: {
+				KR: (await request.tmdb.tv.discover ({country: "KR"})).data,
+				JP: (await request.tmdb.tv.discover ({country: "JP"})).data,
+				CN: (await request.tmdb.tv.discover ({country: "CN"})).data,
+				},
+			},
+		trending: {
+			today: (await request.tmdb.trending ("today")).data,
+			week: (await request.tmdb.trending ("week")).data,
+			},
+		}
+	return response.json (json)
+	})
 
 /**
  * xxx
@@ -126,12 +178,14 @@ app.get (app.router ["search"])
  */
 
 app.get (app.router.index, async function (request: any, response: any, next: any) {
+	/*
 	response.app.data.movie = {popular: (await request.tmdb.movie.popular ()).data}
 	response.app.data.tv = {popular: (await request.tmdb.tv.popular ()).data}
 	response.app.data.trending = {
 		today: (await request.tmdb.trending ("today")).data,
 		week: (await request.tmdb.trending ("week")).data,
 		}
+	*/
 	response.set ({
 		layout: "index",
 		router: "home",
@@ -148,6 +202,18 @@ app.get (app.router ["cgi-bin:api trending:today"], async function (request: any
 app.get (app.router ["cgi-bin:api trending:week"], async function (request: any, response: any, next: any) {
 	return response.json (await request.tmdb.trending ("week"))
 	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router ["search"])
 
 app.get (app.router.page ["about"], function (request: any, response: any, next: any) {
 	response.set ({title: "About"})

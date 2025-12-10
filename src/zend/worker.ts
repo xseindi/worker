@@ -92,6 +92,7 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.db = new php.db (io.env.db);
 	request.app = {data: {}}
 	request.client = {id: null, site: {}, image: {}}
+	request.cache = {io: "0000-00-00"}
 	return request;
 	}
 
@@ -149,6 +150,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
+		if (app.config ["cache:io"]) request.cache.io = app.config ["cache:io"]
 		if (app.config.type === "website") {}
 		else if (app.config.type === "bioskop") {
 			request.db.cache.movie = await request.db.select ("bioskop:movie").json ().find ().query ()
@@ -290,6 +292,8 @@ var library: any = class {
 				"vultr:special": this.request.client.object.referral ["vultr:special"],
 				},
 			}
+		this.response.var ["cache-io.js"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.js").split ("file").join (this.request.cache.io)})
+		this.response.var ["cache-io.json"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.json").split ("file").join (this.request.cache.io)})
 		this.response.var ["theme:id"] = this.request.client.theme.id
 		this.response.var ["theme:slug"] = this.request.client.theme.slug
 		this.response.var ["theme:type"] = this.request.client.theme.type

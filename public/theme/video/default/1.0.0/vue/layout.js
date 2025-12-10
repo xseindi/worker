@@ -43,11 +43,19 @@ vue.layout ("index", {
 						</div>
 					</div-->
 					<div class="flex gap padding" computer>
+						<div class="flex flex:column gap">
+							<video-card:poster v-bind:data="app.data.asia.all"/>
+							<video-card:poster v-bind:data="app.data.asia.all"/>
+						</div>
 						<div class="flex flex:column flex:grow gap padding:large border:radius box-shadow background-color">
-							<div class="flex align:item font:big">
-								<string class="font-family:logo font:bold text:gradient">Welcome ... !!!</string>
+							<div class="flex align:item gap font:large">
+								<div class="border-radius:circle background-color:red-pop" style="width: 8px; height: 8px;"></div>
+								<div class="border-radius:circle background-color:green-pop" style="width: 8px; height: 8px;"></div>
+								<div class="border-radius:circle background-color:blue-pop" style="width: 8px; height: 8px;"></div>
 								<div class="flex:grow"></div>
-								<icon src="military_tech"/>
+								<div class="border-radius:circle background-color:yellow-pop" style="width: 8px; height: 8px;"></div>
+								<!--string class="font-family:logo font:bold text:gradient">Welcome ... !!!</string-->
+								<!--icon src="military_tech"/-->
 							</div>
 							<div class="flex flex:grow align:item justify:item"><img:undraw src="designer" height="150" class=""/></div>
 							<div class="">
@@ -59,44 +67,14 @@ vue.layout ("index", {
 								<string>Explore now.</string>
 							</div>
 						</div>
-						<div class="flex flex:column gap" style="width: 375px;">
-							<div class="flex align:item gap font:large font:bold">
+						<!---->
+						<!--div class="flex flex:column gap" style="width: 375px;">
+							<div class="flex align:item gap font:large font:bold" style="margin-bottom: -5px;">
 								<icon src="play_circle"/>
 								<string>Must Watch</string>
 							</div>
-							<div class="flex gap border:radius box-shadow no-overflow">
-								<div><img:asset src="3x4.svg" class="" width="128"/></div>
-								<div class="flex flex:column gap:small padding:vertical padding:right">
-									<div class="flex align:item gap">
-										<icon src="tv_guide"/>
-										<icon src="star"/>
-										<string>7.89</string>
-										<img:flag src="KR" class="img:atom"/>
-									</div>
-									<string class="font:intermediate font-bold:pop">Lorem ipsum dolor sit amet</string>
-									<div class="flex:grow"></div>
-									<string class="font:small font-color:mono">December 99, 9999</string>
-									<string class="font:small">lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</string>
-								</div>
-							</div>
-							<div class="flex gap border:radius box-shadow no-overflow">
-								<div><img:asset src="3x4.svg" class="" width="128"/></div>
-								<div class="flex flex:column gap:small padding:vertical padding:right">
-									<div class="flex align:item gap">
-										<icon src="tv_guide"/>
-										<icon src="star"/>
-										<string>7.89</string>
-										<img:flag src="KR" class="img:atom"/>
-									</div>
-									<string class="font:intermediate font-bold:pop">Lorem ipsum dolor sit amet</string>
-									<div class="flex:grow"></div>
-									<string class="font:small font-color:mono">December 99, 9999</string>
-									<string class="font:small">lorem ipsum dolor sit amet, lorem ipsum dolor sit amet</string>
-								</div>
-							</div>
-							<!--a href="/"><img:asset src="16x9.svg" class="width:size border:radius"/></a>
-							<a href="/"><img:asset src="16x9.svg" class="width:size border:radius"/></a-->
-						</div>
+							<video-card:vertical v-bind:data="app.data.trending.week"/>
+						</div-->
 					</div>
 					<div class="padding background-color:mono-pop" mobile>
 						<div class="flex flex:column flex:grow gap padding:large border:radius box-shadow background-color">
@@ -120,14 +98,14 @@ vue.layout ("index", {
 						<a:genre v-for="genre in app.data.genre" v-bind:href="genre.permalink" v-bind:text="genre.name"/>
 					</div>
 					<title-simple text="Trending" icon="local_fire_department" class="padding-bottom:none">
-						<div class="flex align:item gap font:intermediate font:bold">
+						<div class="flex align:item gap font:intermediate font:bold" computer>
 							<a class="font:static" string>Today</a>
 							<icon src="toggle_off"/>
 							<a class="font:static" string>This Week</a>
 						</div>
 					</title-simple>
-						<video-card id="video-trending" v-bind:data="app.data.trending.today"/>
-							<adsterra type="horizontal"/>
+					<video-card id="video-trending" v-bind:data="app.data.trending.today"/>
+					<adsterra type="horizontal"/>
 					<title-simple text="Must Watch" icon="local_fire_department" class="padding-bottom:none"/>
 						<video-card id="video-mw" item="item:best" v-bind:option="{shuffle: true}"/>
 							<adsterra type="horizontal"/>
@@ -135,8 +113,20 @@ vue.layout ("index", {
 						<video-card id="video-movie" v-bind:data="app.data.movie.popular"/>
 							<adsterra type="horizontal"/>
 					<title-simple text="TV Show" icon="tv_guide" class="padding-bottom:none"/>
-						<video-card id="video-tv" v-bind:data="app.data.tv.popular"/>
+						<video-card id="video-tv" v-bind:data="app.data.tv.popular" v-bind:option="{icon: 'tv_guide'}"/>
 							<adsterra type="horizontal"/>
+					<title-simple text="South Korea" icon="globe" class="padding-bottom:none">
+						-
+					</title-simple>
+					<video-card id="video-asia-KR" v-bind:data="app.data.asia.KR"/>
+					<title-simple text="Japan" icon="globe" class="padding-bottom:none">
+						-
+					</title-simple>
+					<video-card id="video-asia-JP" v-bind:data="app.data.asia.JP"/>
+					<title-simple text="China" icon="globe" class="padding-bottom:none">
+						-
+					</title-simple>
+					<video-card id="video-asia-CN" v-bind:data="app.data.asia.CN"/>
 					<div><img:undraw src="cloud" class="img:big"/></div>
 					<img width="1" height="750">
 				</main>

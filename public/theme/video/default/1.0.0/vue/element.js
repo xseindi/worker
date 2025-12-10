@@ -204,7 +204,28 @@ vue.element ("img:spinner", {
 		`,
 	})
 
-// https://static-files.motogp.pulselive.com/assets/flags/id.svg
+vue.element ("img:ratio", {
+	prop: ["src", "ratio", "width", "height"],
+	setup (prop) {
+		var img, ratio = prop.ratio || "9:16"
+		var style, sheet
+		if (ratio === "3:4") img = "3x4.svg"
+		if (ratio === "4:3") img = "4x3.svg"
+		if (ratio === "9:16") img = "9x16.svg"
+		if (ratio === "16:9") img = "16x9.svg"
+		if (prop.width) {
+			style = ("min-width: {size}px").split ("{size}").join (prop.width)
+			sheet = ("width: {size}px").split ("{size}").join (prop.width)
+			}
+		return {img, style, sheet}
+		},
+	template: `
+		<div class="relative no-overflow" v-bind:style="style">
+			<img:asset v-bind:src="img" class="width:size" v-bind:style="sheet"/>
+			<images v-bind:src="prop.src" type="cover" class="opacity:small transition:opacity"/>
+		</div>
+		`,
+	})
 
 /**
  * xxx
