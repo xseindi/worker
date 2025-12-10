@@ -65,8 +65,9 @@ php.plugin.tmdb = class {
 		if  (option.genre) url = [url, ["with_genres", option.genre].join ("=")].join ("&");
 		if  (option.append_to_response) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
 		if  (option.country) url = [url, ["with_origin_country", option.country].join ("=")].join ("&");
-		if  (option.up_coming) url = [url, ["release_date.gte", option.up_coming].join ("=")].join ("&");
 		if  (option.sort_by) url = [url, ["sort_by", option.sort].join ("=")].join ("&");
+		if  (option.up_coming) if (option.up_coming === true) url = [url, ["release_date.gte", new php.date ().string ()].join ("=")].join ("&");
+		else url = [url, ["release_date.gte", option.up_coming].join ("=")].join ("&");
 		return url;
 		}
 	async fetch (api: string, option: any = {}, single: boolean = false) {
@@ -99,6 +100,10 @@ php.plugin.tmdb = class {
 	slugify (name: string) {
 		return php.plugin.tmdb.slugify (name);
 		}
+	async trending (trending: string, option: any = {}) {
+		return this.array (await this.fetch ("trending:" + trending, option), option);
+		}
+	/*
 	genre_array (list: any, type: string) {
 		var genre = [];
 		for (var id in list) {
@@ -123,6 +128,7 @@ php.plugin.tmdb = class {
 	genre_permalink (id: any, list: any, type: string) {
 		return this.adapter.request.router.permalink ((type + ":genre"), {id, name: this.slugify (list [id])});
 		}
+	*/
 	}
 
 php.plugin.tmdb.movie = class {
@@ -130,7 +136,9 @@ php.plugin.tmdb.movie = class {
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
-	async discover () {}
+	async discover (option: any = {}) {
+		return this.tmdb.array (await this.tmdb.fetch ("movie:discover", (option = php.object.assign ({type: "movie"}, option))), option);
+		}
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: true}, option))), option);
 		}

@@ -81,7 +81,22 @@ php.render.tag = function (id: string) { return [php.render.tag.open, id, php.re
 php.render.tag.open = "{{";
 php.render.tag.close = "}}";
 
-php.date = function (... date: any) { return new Date (... date as []); }
+php.date = class {
+	date: any;
+	constructor (date: any) {
+		if (date instanceof Date) this.date = date;
+		else if (date) this.date = new Date (date);
+		else this.date = new Date ();
+		}
+	string () {
+		return [this.year (), this.month (), this.day ()].join ("-");
+		}
+	year () { return this.date.getFullYear (); }
+	month (pad: boolean = true) { if (pad) return (this.date.getMonth () + 1).toString ().padStart (2, "0"); else return this.date.getMonth () + 1; }
+	day (pad: boolean = true) { if (pad) return this.date.getDate ().toString ().padStart (2, "0"); else return this.date.getDate (); }
+	}
+
+php.date.time = function (... date: any) { return new Date (... date as []); }
 php.date.month = {name: {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}}
 php.date.day = {name: {1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Sunday"}}
 

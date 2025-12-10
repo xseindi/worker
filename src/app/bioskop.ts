@@ -126,10 +126,12 @@ app.get (app.router ["search"])
  */
 
 app.get (app.router.index, async function (request: any, response: any, next: any) {
-	var test = await request.tmdb.movie.popular ({page: 2})
-	response.app.data.movie = {popular: test.data}
-	var tv_korea = await request.tmdb.tv.discover ({country: "KR"})
-	response.app.data.tv = {country: {KR: tv_korea.data}}
+	response.app.data.movie = {popular: (await request.tmdb.movie.popular ()).data}
+	response.app.data.tv = {popular: (await request.tmdb.tv.popular ()).data}
+	response.app.data.trending = {
+		today: (await request.tmdb.trending ("today")).data,
+		week: (await request.tmdb.trending ("week")).data,
+		}
 	response.set ({
 		layout: "index",
 		router: "home",
@@ -137,6 +139,14 @@ app.get (app.router.index, async function (request: any, response: any, next: an
 		// "ld+json webpage": {},
 		})
 	return response.vue ()
+	})
+
+app.get (app.router ["cgi-bin:api trending:today"], async function (request: any, response: any, next: any) {
+	return response.json (await request.tmdb.trending ("today"))
+	})
+
+app.get (app.router ["cgi-bin:api trending:week"], async function (request: any, response: any, next: any) {
+	return response.json (await request.tmdb.trending ("week"))
 	})
 
 app.get (app.router.page ["about"], function (request: any, response: any, next: any) {

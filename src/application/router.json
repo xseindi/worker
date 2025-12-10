@@ -59,7 +59,7 @@
 	},
 "p": {
 	"short": "/short/",
-	"trending": "/trending/",
+	"trending": "/trending/", "trending:today": "/trending/today/", "trending:week": "/trending/week/",
 	"top_global": "/top_global/",
 	"editor-choice": "/editor-choice/",
 	"live": "/live/",
@@ -75,6 +75,8 @@
 	"*": "*"
 	},
 "cgi-bin": "/cgi-bin/",
+"cgi-bin:api trending:today": "/cgi-bin/api/trending/today",
+"cgi-bin:api trending:week": "/cgi-bin/api/trending/week",
 "cgi-bin:api movie:up_coming": "/cgi-bin/api/movie/up_coming",
 "*": "/:path{.+}"
 }

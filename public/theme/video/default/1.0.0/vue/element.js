@@ -298,11 +298,11 @@ vue.element ("title-simple", {
 	prop: ["text", "icon"],
 	template: `
 		<div class="flex align:item gap padding">
-			<icon src="local_fire_department" class="font:big"/>
-			<string v-if="prop.text" class="font-size:large font:bold padding">{{ prop.text }}</string>
-			<string class="font-size:large font:bold padding" v-else><slot name="default"/></string>
+			<icon v-bind:src="icon" class="font:big"/>
+			<string v-if="prop.text" class="font:large font:bold padding">{{ prop.text }}</string>
+			<string class="font:large font:bold padding" v-else><slot name="default"/></string>
 			<div class="flex:grow"></div>
-			<div></div>
+			<slot name="default"/>
 		</div>
 		`,
 	})

@@ -158,6 +158,9 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				genre.permalink = request.router ("genre", {id: genre.id, genre: genre.slug})
 				return genre
 				})
+			response.app.data.movie = {trending: [], popular: [], top_rated: [], now_playing: [], up_coming: [], country: {KR: [], JP: [], CN: []}}
+			response.app.data.tv = {trending: [], popular: [], top_rated: [], airing_today: [], on_air: [], country: {KR: [], JP: [], CN: []}}
+			response.app.data.people = {}
 			}
 		else if (app.config.type === "bokep") {
 			request.db.cache.category = await request.db.select ("bokep:category").json ().find ().query ()

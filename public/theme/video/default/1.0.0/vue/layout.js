@@ -119,15 +119,24 @@ vue.layout ("index", {
 					<div class="flex flex:wrap align:item justify:item gap padding">
 						<a:genre v-for="genre in app.data.genre" v-bind:href="genre.permalink" v-bind:text="genre.name"/>
 					</div>
-					<video-card id="test" v-bind:data="app.data.tv.country.KR"/>
-					<adsterra type="horizontal"/>
-					<title-simple text="Title" icon="local_fire_department" class="padding-bottom:none"/>
-					<video-card id="test-002" item="item:best"/>
-					<adsterra type="horizontal"/>
-					<title-simple text="Trending" icon="local_fire_department" class="padding-bottom:none"/>
-					<video-card id="video-trending"/>
-					<title-simple text="Popular" icon="local_fire_department" class="padding-bottom:none"/>
-					<video-card id="video-popular"/>
+					<title-simple text="Trending" icon="local_fire_department" class="padding-bottom:none">
+						<div class="flex align:item gap font:intermediate font:bold">
+							<a class="font:static" string>Today</a>
+							<icon src="toggle_off"/>
+							<a class="font:static" string>This Week</a>
+						</div>
+					</title-simple>
+						<video-card id="video-trending" v-bind:data="app.data.trending.today"/>
+							<adsterra type="horizontal"/>
+					<title-simple text="Must Watch" icon="local_fire_department" class="padding-bottom:none"/>
+						<video-card id="video-mw" item="item:best" v-bind:option="{shuffle: true}"/>
+							<adsterra type="horizontal"/>
+					<title-simple text="Movie" icon="movie" class="padding-bottom:none"/>
+						<video-card id="video-movie" v-bind:data="app.data.movie.popular"/>
+							<adsterra type="horizontal"/>
+					<title-simple text="TV Show" icon="tv_guide" class="padding-bottom:none"/>
+						<video-card id="video-tv" v-bind:data="app.data.tv.popular"/>
+							<adsterra type="horizontal"/>
 					<div><img:undraw src="cloud" class="img:big"/></div>
 					<img width="1" height="750">
 				</main>

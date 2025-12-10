@@ -251,13 +251,15 @@ vue.component ("nav-simple:genre", {
 vue.component ("video-card", {
 	prop: ["id", "reference", "data", "item", "option"],
 	setup (prop) {
-		var data = php.app.data.movie.popular.shuffle ()
+		var data = prop.data || php.app.data.trending.today
+		var option = prop.option || {}
+		if (option.shuffle) data = data.shuffle ()
 		return {data}
 		},
 	mount (v) {
 		var id = "#" + v.prop.id
 		var reference = "#" + (v.prop.reference || "main")
-		php.owl.carousel (id, reference, {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [v.prop.item || "item:pop"], ... (v.prop.option || {})})
+		php.owl.carousel (id, reference, {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [v.prop.item || "item:pop"]})
 		},
 	template: `
 		<div v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background none">
