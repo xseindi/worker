@@ -225,8 +225,7 @@ php.AD__.link ["adsterra:adult"] = "https://www.effectivegatecpm.com/yndh9p11?ke
 php.AD__.link ["monetag"] = "";
 php.AD__.link.default = php.AD__.link ["adsterra"];
 php.AD__.block = function () { return php.AD__.block.forbidden; }
-php.AD__.detect = function (url) { if (false) $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block.forbidden = true; if (php.AD__.error) php.AD__.error (php.AD__.block.forbidden); }}); }
-php.AD__.detect ();
+php.AD__.detect = function (url) { $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block.forbidden = true; if (php.AD__.error) php.AD__.error (php.AD__.block.forbidden); }}); }
 
 /**
  * xxx
@@ -256,7 +255,7 @@ php.body.css = function (context) {
 	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
 	if (php.device.type || php.device.orientation) {
 		if (php.device.type === type && php.device.orientation === orientation) {}
-		else php.body.css.reset (type, orientation);
+		else php.body.css.reset (type, type_of, orientation);
 		}
 	else php.body.css.reset (type, type_of, orientation);
 	}
@@ -268,6 +267,9 @@ php.body.css.reset = function (type, type_of, orientation) {
 	}
 
 php.sleep = function (context, second = 0) { return setTimeout (context, (second * 1000)); }
+php.date = class {}
+php.time = function () { return Date.now (); }
+php.time.interval = function (context, second = 0) { return setInterval (context, (second * 1000)); }
 
 php.str_after = function str_after (search, string) { var pos = string.indexOf (search); if (pos !== undefined) return string.substr (pos + search.length); else return ""; }
 php.str_before = function str_before (search, string) { return string.split (search) [0]; }
@@ -461,13 +463,11 @@ php.owl.carousel = function (element, reference, option) {
 		responsive: option.responsive || php.owl.carousel ["item:default"],
 		}
 	php.owl.carousel.event.push ({element, reference, setting});
-	setTimeout (function () {
-		var oc = $ (element).removeClass ("none");
-		if (oc) {
-			if (reference) oc.width ($ (reference).width () - setting.gap - padding);
-			oc.owlCarousel (setting);
-			}
-		}, 1500);
+	var oc = $ (element).removeClass ("none");
+	if (oc) {
+		if (reference) oc.width ($ (reference).width () - setting.gap - padding);
+		oc.owlCarousel (setting);
+		}
 	}
 
 php.owl.carousel.event = [];

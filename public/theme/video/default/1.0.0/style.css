@@ -590,6 +590,8 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .position\:bottom-left { bottom: 10px; left: 10px; }
 .position\:bottom-right { bottom: 10px; right: 10px; }
 
+.mobile [component="footer-simple"] { flex-direction: column; }
+
 /**
  * xxx
  *

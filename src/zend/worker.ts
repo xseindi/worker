@@ -114,7 +114,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 		return response.html (php.render (markup, {slot}, 2), code);
 		}
 	response.var = {}
-	response.app = {data: {}}
+	response.app = {config: {}, data: {}}
 	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
 	}
@@ -150,6 +150,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
+		response.app.config ["ad:show"] = app.config ["ad:show"]
 		if (app.config ["cache:io"]) request.cache.io = app.config ["cache:io"]
 		if (app.config.type === "website") {}
 		else if (app.config.type === "bioskop") {
@@ -392,7 +393,7 @@ var library: any = class {
 				}
 			}
 		this.request.client.theme.layout = this.response.var ["theme:layout"]
-		this.response.var ["scriptag"] = php.help ["script.js"] (this.app, this.request, this.response).render ()
+		this.response.var ["scriptag"] = php.help.scriptag (this.app, this.request, this.response).render ()
 		}
 	plugin () {
 		if (this.request.client.object ["tmdb:api"]) {

@@ -84,6 +84,7 @@ php.html = function (output: string, variable: any = {}) {
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
+		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:router }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ cache-io.js }}?cache={{ cache }}"></script>`);
 		// markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		}
@@ -132,22 +133,25 @@ php.vue.html = function () {
 	return markup.data;
 	}
 
-php.help ["script.js"] = function (app: any, request: any, response: any, next: any) {
+php.help.scriptag = function (app: any, request: any, response: any, next: any) {
 	var markup = new php.markup ();
 	markup.push (2, `<script>php.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"})}</script>`);
+	markup.push (2, `<script>php.app.config = ${JSON.stringify (response.app.config)}</script>`);
 	markup.push (2, `<script>php.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
 	markup.push (2, `<script>php.app.router = "${response.var ['router']}"</script>`);
 	markup.push (2, `<script>php.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
 	markup.push (2, `<script>php.app.external = {"cache-io.json":"${response.var ['cache-io.json']}"}</script>`);
-	markup.push (2, `<script>php.app.data.genre = ${JSON.stringify (response.app.data.genre)}</script>`);
-	markup.push (2, `<script>php.app.data.asia = {KR: [... php.app.data.movie.country.KR, ... php.app.data.tv.country.KR], JP: [... php.app.data.movie.country.JP, ... php.app.data.tv.country.JP], CN: [... php.app.data.movie.country.CN, ... php.app.data.tv.country.CN]}</script>`);
-	markup.push (2, `<script>php.app.data.asia.all = [... php.app.data.movie.country.KR, ... php.app.data.movie.country.JP, ... php.app.data.movie.country.CN, ... php.app.data.tv.country.KR, ... php.app.data.tv.country.JP, ... php.app.data.tv.country.CN]</script>`);
+	// markup.push (2, `<script>php.app.data.genre = ${JSON.stringify (response.app.data.genre)}</script>`);
+	// markup.push (2, `<script>php.app.data.asia = {KR: [... php.app.data.movie.country.KR, ... php.app.data.tv.country.KR], JP: [... php.app.data.movie.country.JP, ... php.app.data.tv.country.JP], CN: [... php.app.data.movie.country.CN, ... php.app.data.tv.country.CN]}</script>`);
+	// markup.push (2, `<script>php.app.data.asia.all = [... php.app.data.movie.country.KR, ... php.app.data.movie.country.JP, ... php.app.data.movie.country.CN, ... php.app.data.tv.country.KR, ... php.app.data.tv.country.JP, ... php.app.data.tv.country.CN]</script>`);
 	markup.push (2, `<script>php.router.link = ${JSON.stringify (app.router)}</script>`);
-	markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
+	// markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
 	markup.push (2, `<script>php.cookie ()</script>`);
 	markup.push (2, `<script>php.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
 	markup.push (2, `<script>php.cookie.start ()</script>`);
 	markup.push (2, `<script>php.google.auth.start ()</script>`);
+	markup.push (2, `<script>php.google.auth.start ()</script>`);
+	markup.push (2, `<script>if (php.app.config ["ad:show"]) php.AD__.detect ()</script>`);
 	markup.push (2, `<script>window.onload = function () { php.emit ("load") }</script>`);
 	return markup;
 	}

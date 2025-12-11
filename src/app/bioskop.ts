@@ -113,9 +113,10 @@ app.get (app.router ["manifest.json"], async function (request: any, response: a
 		})
 	})
 
-app.get ("/cache/js", async function (request: any, response: any, next: any) {
+app.get ("/cache.js", async function (request: any, response: any, next: any) {
 	response.app.data.movie = {
 		popular: (await request.tmdb.movie.popular ()).data,
+		up_coming: (await request.tmdb.movie.discover ({up_coming: true})).data,
 		country: {
 			KR: (await request.tmdb.movie.discover ({country: "KR"})).data,
 			JP: (await request.tmdb.movie.discover ({country: "JP"})).data,
@@ -124,6 +125,7 @@ app.get ("/cache/js", async function (request: any, response: any, next: any) {
 		}
 	response.app.data.tv = {
 		popular: (await request.tmdb.tv.popular ()).data,
+		up_coming: (await request.tmdb.tv.discover ({up_coming: true})).data,
 		country: {
 			KR: (await request.tmdb.tv.discover ({country: "KR"})).data,
 			JP: (await request.tmdb.tv.discover ({country: "JP"})).data,
@@ -138,6 +140,11 @@ app.get ("/cache/js", async function (request: any, response: any, next: any) {
 	output.push (`php.app.data.movie = ${JSON.stringify (response.app.data.movie)}`)
 	output.push (`php.app.data.tv = ${JSON.stringify (response.app.data.tv)}`)
 	output.push (`php.app.data.trending = ${JSON.stringify (response.app.data.trending)}`)
+	output.push (`php.app.data.genre = ${JSON.stringify (response.app.data.genre)}`)
+	output.push (`php.app.data.asia = {KR: [... php.app.data.movie.country.KR, ... php.app.data.tv.country.KR], JP: [... php.app.data.movie.country.JP, ... php.app.data.tv.country.JP], CN: [... php.app.data.movie.country.CN, ... php.app.data.tv.country.CN]}`)
+	output.push (`php.app.data.asia.all = [... php.app.data.movie.country.KR, ... php.app.data.movie.country.JP, ... php.app.data.movie.country.CN, ... php.app.data.tv.country.KR, ... php.app.data.tv.country.JP, ... php.app.data.tv.country.CN]`)
+	output.push (`php.router.link = ${JSON.stringify (app.router)}`)
+	output.push (`php.image.stock = ${JSON.stringify (response.image.stock)}`)
 	return response.js (output.join (ln))
 	})
 
