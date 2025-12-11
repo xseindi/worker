@@ -34,7 +34,9 @@ vue.layout ("index", {
 				</menu>
 				<main id="main" class="flex flex:column flex:grow index">
 					<router v-bind:src="app.router"/>
-					<div><img:undraw src="cloud" class="img:big"/></div>
+					<div class="flex align:item justify:item padding:large">
+						<img:undraw src="construction_worker" class="" width="300"/>
+					</div>
 					<footer id="footer" class="flex flex:column padding">
 						<div class="flex gap" component="footer-simple">
 							<div class="flex flex:column flex:grow gap:medium">

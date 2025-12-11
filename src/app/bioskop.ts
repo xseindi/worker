@@ -113,9 +113,11 @@ app.get (app.router ["manifest.json"], async function (request: any, response: a
 		})
 	})
 
-app.get ("/cache.js", async function (request: any, response: any, next: any) {
+if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js", async function (request: any, response: any, next: any) {
 	response.app.data.movie = {
 		popular: (await request.tmdb.movie.popular ()).data,
+		top_rated: (await request.tmdb.movie.top_rated ()).data,
+		now_playing: (await request.tmdb.movie.now_playing ()).data,
 		up_coming: (await request.tmdb.movie.discover ({up_coming: true})).data,
 		country: {
 			KR: (await request.tmdb.movie.discover ({country: "KR"})).data,
@@ -125,6 +127,8 @@ app.get ("/cache.js", async function (request: any, response: any, next: any) {
 		}
 	response.app.data.tv = {
 		popular: (await request.tmdb.tv.popular ()).data,
+		top_rated: (await request.tmdb.tv.top_rated ()).data,
+		airing_today: (await request.tmdb.tv.airing_today ()).data,
 		up_coming: (await request.tmdb.tv.discover ({up_coming: true})).data,
 		country: {
 			KR: (await request.tmdb.tv.discover ({country: "KR"})).data,

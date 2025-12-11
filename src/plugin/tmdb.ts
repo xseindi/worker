@@ -9,17 +9,17 @@ const __api: any = {
 	"movie trending:week": "https://api.themoviedb.org/3/trending/movie/week?language=en",
 	"movie:discover": "https://api.themoviedb.org/3/discover/movie?language=en",
 	"movie:popular": "https://api.themoviedb.org/3/movie/popular?language=en",
-	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en",
 	"movie:top_rated": "https://api.themoviedb.org/3/movie/top_rated?language=en",
+	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en",
 	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming?language=en",
 	"tv": "https://api.themoviedb.org/3/tv/{id}?language=en",
 	"tv trending:today": "https://api.themoviedb.org/3/trending/tv/day?language=en",
 	"tv trending:week": "https://api.themoviedb.org/3/trending/tv/week?language=en",
 	"tv:discover": "https://api.themoviedb.org/3/discover/tv?language=en",
 	"tv:popular": "https://api.themoviedb.org/3/tv/popular?language=en",
-	"tv:airing_today": "https://api.themoviedb.org/3/tv/airing_today?language=en",
-	"tv:on_air": "https://api.themoviedb.org/3/tv/on_the_air?language=en",
 	"tv:top_rated": "https://api.themoviedb.org/3/tv/top_rated?language=en",
+	"tv:on_air": "https://api.themoviedb.org/3/tv/on_the_air?language=en",
+	"tv:airing_today": "https://api.themoviedb.org/3/tv/airing_today?language=en",
 	"people trending:today": "https://api.themoviedb.org/3/trending/person/day?language=en",
 	"people trending:week": "https://api.themoviedb.org/3/trending/person/week?language=en",
 	"image:default": "https://image.tmdb.org/t/p/w500",
@@ -142,9 +142,9 @@ php.plugin.tmdb.movie = class {
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: true}, option))), option);
 		}
-	async popular (option: any = {}) {
-		return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option);
-		}
+	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option); }
+	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:top_rated", (option = php.object.assign ({type: "movie"}, option))), option); }
+	async now_playing (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:now_playing", (option = php.object.assign ({type: "movie"}, option))), option); }
 	}
 
 php.plugin.tmdb.tv = class {
@@ -158,9 +158,10 @@ php.plugin.tmdb.tv = class {
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("tv", (option = php.object.assign ({id, type: "tv", append_to_response: true}, option))), option);
 		}
-	async popular (option: any = {}) {
-		return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option);
-		}
+	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option); }
+	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:top_rated", (option = php.object.assign ({type: "tv"}, option))), option); }
+	async on_air (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:on_air", (option = php.object.assign ({type: "tv"}, option))), option); }
+	async airing_today (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:airing_today", (option = php.object.assign ({type: "tv"}, option))), option); }
 	}
 
 php.plugin.tmdb.image = function (path: string, size: string = "default") {
