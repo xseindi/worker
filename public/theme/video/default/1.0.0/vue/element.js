@@ -148,7 +148,7 @@ vue.element ("img:logo", {
 	method: {
 		url (src) {
 			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
-			return "/asset/image/logo/" + php.image.stock [src]
+			return "/asset/image/logo/" + lib.image.stock [src]
 			},
 		},
 	template: `
@@ -161,7 +161,7 @@ vue.element ("img:avatar", {
 	method: {
 		url (src) {
 			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
-			return "/asset/image/avatar/" + php.image.stock [src]
+			return "/asset/image/avatar/" + lib.image.stock [src]
 			},
 		},
 	template: `
@@ -351,7 +351,7 @@ vue.element ("img:ad", {
 vue.element ("adsterra", {
 	prop: ["type"],
 	template: `
-		<div v-if="app.config ['ad:show'] && prop.type === 'horizontal'" class="flex align:item justify:item">
+		<div v-if="vue.app.config ['AD__.show'] && prop.type === 'horizontal'" class="flex align:item justify:item">
 			<iframe v-if="vue ['is:computer'] ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
 			<iframe v-if="vue ['is:mobile'] ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
 		</div>

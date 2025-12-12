@@ -32,13 +32,15 @@ function Define (descriptor, key, value) {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-Define (Array.prototype, "clone", function () { return JSON.parse (JSON.stringify (this)); });
-Define (Array.prototype, "first", function () { for (var i in this) return this [i]; return undefined; }); Define (Array.prototype, "one", function () { return this.first (); });
-Define (Array.prototype, "last", function () { var value; for (var i in this) value = this [i]; return value; });
-Define (Array.prototype, "shuffle", function () { var array = this.clone (); var current = array.length, random; while (current !== 0) { random = Math.floor (Math.random () * current); current --; [array [current], array [random]] = [array [random], array [current]]; } return array; });
-Define (Array.prototype, "limit", function (limit) { return this.clone ().slice (0, limit); });
+Define (Array, "proto", function (key, value) { Define (Array.prototype, key, value); });
+Array.proto ("clone", function () { return JSON.parse (JSON.stringify (this)); });
+Array.proto ("first", function () { for (var i in this) return this [i]; return undefined; }); Array.proto ("one", function () { return this.first (); });
+Array.proto ("last", function () { var value; for (var i in this) value = this [i]; return value; });
+Array.proto ("shuffle", function () { var array = this.clone (); var current = array.length, random; while (current !== 0) { random = Math.floor (Math.random () * current); current --; [array [current], array [random]] = [array [random], array [current]]; } return array; });
+Array.proto ("limit", function (limit) { return this.clone ().slice (0, limit); });
+Array.proto ("json", function () { return JSON.stringify (this); });
 
-Define (Array.prototype, "select", function (filter) {
+Array.proto ("select", function (filter) {
 	return this.filter (function (array, index) {
 		var error = 0;
 		for (var i in filter) {
@@ -56,8 +58,22 @@ Define (Array.prototype, "select", function (filter) {
 		});
 	});
 
-Define (String.prototype, "small", function () { return this.toLocaleLowerCase (); });
-Define (String.prototype, "big", function () { return this.toUpperCase (); });
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Define (String, "proto", function (key, value) { Define (String.prototype, key, value); });
+String.proto ("after", function (search) { var pos = this.indexOf (search); if (pos !== undefined) return this.substr (pos + search.length); else return ""; });
+String.proto ("before", function (search) { return string.split (search) [0] || ""; });
+String.proto ("small", function () { return this.toLocaleLowerCase (); });
+String.proto ("big", function () { return this.toUpperCase (); });
+String.proto ("json", function () { return JSON.parse (this); });
 
 /**
  * xxx
@@ -69,6 +85,9 @@ Define (String.prototype, "big", function () { return this.toUpperCase (); });
  * xxx://xxx.xxx.xxx/xxx
  */
 
+Define (Number, "proto", function (key, value) { Define (Number.prototype, key, value); });
+Number.proto ("string", function () { return this.toString (); });
+
 /**
  * xxx
  *
@@ -79,13 +98,134 @@ Define (String.prototype, "big", function () { return this.toUpperCase (); });
  * xxx://xxx.xxx.xxx/xxx
  */
 
-$.meta = function () {}
-$.meta.get = function (meta) {
-	for (var i in meta) {
-		var element = document.querySelector ("meta[" + i + "='" + meta [i] + "']");
-		if (element) return element.content;
+Event.data = {}
+Event.on = function (key, value) { if (Event.data [key]) Event.data [key].push (value); else Event.data [key] = [value]; }
+Event.emit = function (key, ... value) { for (var i in Event.data [key]) Event.data [key][i] (... value); }
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Promise.io = function (context) {
+	return new Promise (function (resolve, reject) {
+		context (function (data = true) { resolve (data); }, function (error) { reject (error); });
+		});
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Date.io = class {
+	constructor (date) {
+		if (date instanceof Date) this.date = date;
+		else if (date) this.date = new Date (date);
+		else this.date = new Date ();
+		}
+	string () { return this.format ("Y-M-D"); }
+	format (format = "default") {
+		var date = {
+			"Y": this.year (),
+			"M": this.month (), "m": Date.month.name [this.month ()],
+			"D": this.day (), "d": Date.month.name [this.week ()], "W": this.week (),
+			"H": this.hour (), "h": this.hour ("meredian"),
+			"I": this.minute (),
+			"S": this.second (),
+			"A": this.meredian (),
+			}
+		format = Date.format [format] || format;
+		for (var i in date) format = format.split (i).join (date [i]);
+		return format;
+		}
+	year () { return this.date.getFullYear (); }
+	month () { return (this.date.getMonth () + 1).toString ().padStart (2, "0"); }
+	day () { return this.date.getDate ().toString ().padStart (2, "0"); }
+	week () { return this.date.getDay ().toString ().padStart (2, "0"); }
+	hour (meredian) { if (meredian) { var hour = this.date.getHours (); if (this.meredian () === "PM") if (hour === 12) return hour.toString (); else return (hour - 12).toString ().padStart (2, "0"); else return hour.toString ().padStart (2, "0"); } else return this.date.getHours ().toString ().padStart (2, "0"); }
+	minute () { return this.date.getMinutes ().toString ().padStart (2, "0"); }
+	second () { return this.date.getSeconds ().toString ().padStart (2, "0"); }
+	mili () { return this.date.getMilliseconds ().toString ().padStart (3, "0"); }
+	meredian () { if (this.date.getHours () > 11) return "PM"; else return "AM"; }
+	}
+
+Date.format = function (format, date) { return new Date.io (date).format (format); }
+Date.format ["string"] = "Y-M-D";
+Date.format ["number"] = "YMD";
+Date.format ["default"] = "m D, Y";
+Date.format ["full"] = "d, m D, Y - h:I:S A";
+
+Date.month = {
+	name: {
+		1: "January", "01": "January",
+		2: "February", "02": "February",
+		3: "March", "03": "March",
+		4: "April", "04": "April",
+		5: "May", "05": "May",
+		6: "June", "06": "June",
+		7: "July", "07": "July",
+		8: "August", "08": "August",
+		9: "September", "09": "September",
+		10: "October",
+		11: "November",
+		12: "December",
+		},
+	}
+Date.day = {
+	name: {
+		1: "Monday", "01": "Monday",
+		2: "Tuesday", "02": "Tuesday",
+		3: "Wednesday", "03": "Wednesday",
+		4: "Thursday", "04": "Thursday",
+		5: "Friday", "05": "Friday",
+		6: "Saturday", "06": "Saturday",
+		7: "Sunday", "07": "Sunday",
+		},
+	}
+
+Date.time = function () { return Date.now (); }
+Date.time.interval = function (context, second = 1) { return setInterval (context, (second * 1000)); }
+Date.time.interval.clear = function (context) { clearInterval (context); }
+Date.timeout = function (context, second = 1) { return setTimeout (context, (second * 1000)); }
+Date.timeout.clear = function (context) { clearTimeout (context); }
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+URL.parse = function (input) {
+	var url = new URL (input);
+	return {
+		address: url.origin,
+		canonical: url.href,
+		host: {name: url.hostname, address: url.host},
+		domain: {},
+		protocol: url.protocol.substring (0, (url.protocol.length - 1)),
+		path: url.pathname,
+		query: url.searchParams,
+		// parse: url,
 		}
 	}
+
+URL.reload = function () { location.reload (); }
+URL.document = URL.parse (window.location.href.toString ());
 
 /**
  * xxx
@@ -108,40 +248,62 @@ JSON.token.parse = function (token) {
 		}
 	}
 
-function JWT_parse (token) {
-	var data = JSON.parse (decodeURIComponent (atob (token.split (".") [1].replace (/-/g, "+").replace (/_/g, "/")).split ("").map (function (c) { return "%" + ("00" + c.charCodeAt (0).toString (16)).slice (-2); }).join("")));
-	return {name: data.name, email: data.email, picture: data.picture}
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.cookie = function (key, value) {
+	var cookie = document.cookie.split (";").map (function (data) { return data.trim ().split ("="); });
+	for (var i in cookie) {
+		var key = cookie [i][0], value;
+		if (key) {
+			value = cookie [i][1].trim ();
+			Function.cookie.data [key.trim ()] = value;
+			}
+		}
 	}
 
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-var php = function () {}
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.app = function () {}
-php.app.data = {
-	genre: [],
-	movie: {trending: [], popular: [], top_rated: [], up_coming: [], country: {}},
-	tv: {trending: [], popular: [], top_rated: [], airing_today: [], country: {}},
+Function.cookie.get = function (key) {
+	if (key) return Function.cookie.data [key];
+	else return Function.cookie.get (Function.cookie.id);
 	}
 
+Function.cookie.delete = function (key) {
+	Function.cookie.set (key)
+	}
+
+Function.cookie.set = function (key, value = "", expire = 0, domain = null, path = "/") {
+	if (typeof key === "string") {
+		expire = expire || Function.cookie._expire;
+		domain = domain || Function.cookie._domain;
+		document.cookie = `${key}=${value};expires=${expire};domain=${domain};path=/;samesite=lax`;
+		Function.cookie.data [key] = value;
+		}
+	else {
+		if ("domain" in key) Function.cookie._domain = key.domain;
+		if ("expire:day" in key) {
+			var expire = new Date ();
+			expire.setTime (expire.getTime () + (key ["expire:day"] * 24 * 60 * 60 * 1000));
+			Function.cookie._expire = expire.toUTCString ();
+			}
+		}
+	}
+
+Function.cookie.start = function () {
+	if (Function.cookie.get (Function.cookie.id)) {}
+	else Function.cookie.set (Function.cookie.id, Function.randomize ());
+	Event.emit ("cookie:start");
+	}
+
+Function.cookie.id = "session";
+Function.cookie.data = {}
+
 /**
  * xxx
  *
@@ -152,53 +314,50 @@ php.app.data = {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-php.router = function (key, value = {}, query = {}) {
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.router = function (key, value = {}, query = {}) {
 	var router, param = [];
-	if (typeof key === "string") router = php.router.link [key] || "";
-	else for (var i in key) if (php.router.link [i]) router = php.router.link [i][key [i]] || "";
+	if (typeof key === "string") router = Function.router.link.data [key] || "";
+	else for (var i in key) if (Function.router.link.data [i]) router = Function.router.link.data [i][key [i]] || "";
 	for (var i in value) router = router.split (":" + i).join (value [i]);
 	for (var i in query) param.push (`${i}=${query [i]}`);
 	if (param.length) router = router + "?" + param.join ("&");
 	return router;
 	}
 
-php.router.reload = function () { location.reload (); }
-php.router.link = {}
+Function.router.link = function (router) {
+	return Function.router.link.data = router;
+	}
 
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
+Function.ajax = function () {}
 
-php.event = {}
-php.on = function (key, value) { if (php.event [key]) php.event [key].push (value); else php.event [key] = [value]; }
-php.emit = function (key, ... value) { for (var i in php.event [key]) php.event [key][i] (... value); }
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.ajax = function () {}
-
-php.ajax.get = function (url, data, context) {
+Function.ajax.get = function (url, context) {
 	return $.ajax ({
 		url,
 		... context,
 		});
 	}
 
-php.ajax.post = function (url, data, context) {
+Function.ajax.post = function (url, data, context) {
 	return $.ajax ({
 		url,
 		data: JSON.stringify (data),
@@ -218,14 +377,14 @@ php.ajax.post = function (url, data, context) {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-php.AD__ = function () {}
-php.AD__.link = function () {}
-php.AD__.link ["adsterra"] = "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e";
-php.AD__.link ["adsterra:adult"] = "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e";
-php.AD__.link ["monetag"] = "";
-php.AD__.link.default = php.AD__.link ["adsterra"];
-php.AD__.block = function () { return php.AD__.block.forbidden; }
-php.AD__.detect = function (url) { $.ajax ({url: (url || php.AD__.link.default), success: function () {}, error: function () { php.AD__.block.forbidden = true; if (php.AD__.error) php.AD__.error (php.AD__.block.forbidden); }}); }
+Function.AD__ = function () {}
+Function.AD__.link = function () {}
+Function.AD__.link ["adsterra"] = "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e";
+Function.AD__.link ["adsterra:adult"] = "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e";
+Function.AD__.link ["monetag"] = "";
+Function.AD__.link.default = Function.AD__.link ["adsterra"];
+Function.AD__.block = function () { return Function.AD__.block.forbidden; }
+Function.AD__.detect = function (url) { $.ajax ({url: (url || Function.AD__.link.default), success: function () {}, error: function () { Function.AD__.block.forbidden = true; if (Function.AD__.error) Function.AD__.error (Function.AD__.block.forbidden); }}); }
 
 /**
  * xxx
@@ -237,215 +396,8 @@ php.AD__.detect = function (url) { $.ajax ({url: (url || php.AD__.link.default),
  * xxx://xxx.xxx.xxx/xxx
  */
 
-php.device = function () {}
-php.device.computer = function () { return php.device.type === "computer"; }
-php.device.mobile = function () { return php.device.type_of === "mobile"; }
-php.device.tablet = function () { return php.device.type === "tablet"; }
-php.device.phone = function () { return php.device.type === "phone"; }
-php.html = function () {}
-php.body = function () {}
-php.body.width = $ ("body").width ();
-php.body.css = function (context) {
-	var type = "phone";
-	var type_of = "mobile";
-	var orientation = "portrait";
-	var body = $ ("body").innerWidth ();
-	if (body > 600) { type = "tablet"; type_of = "mobile"; }
-	if (body > 1000) { type = "computer"; type_of = ""; }
-	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
-	if (php.device.type || php.device.orientation) {
-		if (php.device.type === type && php.device.orientation === orientation) {}
-		else php.body.css.reset (type, type_of, orientation);
-		}
-	else php.body.css.reset (type, type_of, orientation);
-	}
-php.body.css.reset = function (type, type_of, orientation) {
-	$ ("body").removeClass ("computer mobile tablet phone");
-	$ ("body").addClass (php.device.type = type).addClass (php.device.orientation = orientation);
-	if (type_of) $ ("body").addClass (php.device.type_of = type_of);
-	php.emit ("body:css", type, type_of, orientation);
-	}
-
-php.sleep = function (context, second = 0) { return setTimeout (context, (second * 1000)); }
-php.date = class {}
-php.time = function () { return Date.now (); }
-php.time.interval = function (context, second = 0) { return setInterval (context, (second * 1000)); }
-
-php.str_after = function str_after (search, string) { var pos = string.indexOf (search); if (pos !== undefined) return string.substr (pos + search.length); else return ""; }
-php.str_before = function str_before (search, string) { return string.split (search) [0]; }
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.image = function () {}
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.cookie = function (key, value) {
-	var cookie = document.cookie.split (";").map (function (data) { return data.trim ().split ("="); });
-	for (var i in cookie) {
-		var key = cookie [i][0], value;
-		if (key) {
-			value = cookie [i][1].trim ();
-			php.cookie.data [key.trim ()] = value;
-			}
-		}
-	}
-
-php.cookie.get = function (key) {
-	if (key) return php.cookie.data [key];
-	else return php.cookie.get ("session");
-	}
-
-php.cookie.delete = function (key) {
-	php.cookie.set (key)
-	}
-
-php.cookie.set = function (key, value = "", expire = 0, domain = null, path = "/") {
-	if (typeof key === "string") {
-		expire = expire || php.cookie._expire;
-		domain = domain || php.cookie._domain;
-		document.cookie = `${key}=${value};expires=${expire};domain=${domain};path=/;samesite=lax`;
-		php.cookie.data [key] = value;
-		}
-	else {
-		if ("domain" in key) php.cookie._domain = key.domain;
-		if ("expire:day" in key) {
-			var date_expire = new Date ();
-			date_expire.setTime (date_expire.getTime () + (key ["expire:day"] * 24 * 60 * 60 * 1000));
-			php.cookie._expire = date_expire.toUTCString ();
-			}
-		}
-	}
-
-php.cookie.start = function () {
-	if (php.cookie.get ("session")) {}
-	else php.cookie.set ("session", php.randomize ());
-	php.emit ("cookie:start");
-	}
-
-php.cookie.data = {}
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.randomize = function () {
-	return ("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx").replace (/[xy]/g, function (c) {
-		const r = (Math.random () * 16) | 0;
-		const v = c === 'x' ? r : (r & 0x3) | 0x8;
-		return v.toString (16);
-		});
-	}
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.google = function () {}
-php.google.auth = function () {}
-php.google.auth.client = {credential: "g_auth", id: "863870409218-moufehk4or38mut7c9lgqq91a010tq2l.apps.googleusercontent.com"}
-
-php.google.auth.empty = function () {
-	return ! php.google.auth.credential;
-	}
-
-php.google.auth.parse = function (token) {
-	var data = JSON.token.parse (token);
-	return {p_id: data.sub, name: data.name, email: data.email, picture: data.picture}
-	}
-
-php.google.auth.prompt = function () {
-	google.accounts.id.prompt ();
-	php.emit ("google:auth prompt");
-	}
-
-php.google.auth.sign = function () {
-	if (php.google.auth.credential) php.google.auth.sign.out ();
-	else php.google.auth.prompt ();
-	}
-
-php.google.auth.sign.in = function (response) {
-	var credential = {string: response.credential.toString ()}
-	credential.object = php.google.auth.parse (credential.string);
-	php.cookie.set (php.google.auth.client.credential, credential.string);
-	php.emit ("google:auth sign-in", credential.string, credential.object);
-	php.ajax.post ("/g_auth", {g_auth: credential.object}, {
-		success: function (response) {
-			php.emit ("google:auth sign-in:done", response);
-			location.reload ();
-			},
-		error: function (error) {
-			php.emit ("google:auth sign-in:done", {error});
-			location.reload ();
-			},
-		})
-	}
-
-php.google.auth.sign.out = function () {
-	php.cookie.delete (php.google.auth.client.credential);
-	google.accounts.id.disableAutoSelect ();
-	location.reload ();
-	}
-
-php.google.auth.set = function (key, value) {
-	if (key === "client:id") php.google.auth.client.id = value;
-	}
-
-php.google.auth.start = function () {
-	if (php.google.auth.credential = php.cookie.get (php.google.auth.client.credential)) php.google.auth.profile = php.google.auth.parse (php.google.auth.credential);
-	}
-
-php.on ("load", function () {
-	google.accounts.id.initialize ({
-		client_id: php.google.auth.client.id,
-		callback: php.google.auth.sign.in,
-		auto_select: false,
-		});
-	if (php.google.auth.credential) {}
-	else if (false) php.google.auth.prompt ();
-	else {}
-	});
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-php.owl = function () {}
-php.owl.carousel = function (element, reference, option) {
+Function.owl = function () {}
+Function.owl.carousel = function (element, reference, option) {
 	option = option || {}
 	var padding = option.padding || 0;
 	var setting = {
@@ -460,54 +412,224 @@ php.owl.carousel = function (element, reference, option) {
 		stagePadding: (option ["stage:padding"] || 0),
 		autoplayTimeout: (option.timeout || 10000),
 		autoplayHoverPause: true,
-		responsive: option.responsive || php.owl.carousel ["item:default"],
+		responsive: option.responsive || Function.owl.carousel ["item:default"],
 		}
-	php.owl.carousel.event.push ({element, reference, setting});
-	var oc = $ (element).removeClass ("none");
-	if (oc) {
-		if (reference) oc.width ($ (reference).width () - setting.gap - padding);
-		oc.owlCarousel (setting);
-		}
-	}
-
-php.owl.carousel.event = [];
-
-php.owl.carousel.emit = function () {
-	for (var i in php.owl.carousel.event) {
-		var oc = $ (php.owl.carousel.event [i].element);
-		if (oc) {
-			oc.css ("display", "none");
-			setTimeout (function () {
-				oc.css ("display", "flex");
-				if (php.owl.carousel.event [i].reference) oc.width ($ (php.owl.carousel.event [i].reference).width ()), console.log ($ (php.owl.carousel.event [i].reference).width ());
-				oc.owlCarousel (php.owl.carousel.event [i].setting);
-				}, 1000);
-			}
+	var el = $ (element).removeClass ("none");
+	if (el) {
+		if (reference) el.width ($ (reference).width () - setting.gap - padding);
+		el.owlCarousel (setting);
 		}
 	}
 
-php.owl.carousel ["item:default"] = {
+Function.owl.carousel ["item:default"] = {
 	0: {items: 1},
 	600: {items: 3},
 	1000: {items: 5},
 	}
 
-php.owl.carousel ["item:pop"] = {
+Function.owl.carousel ["item:pop"] = {
 	0: {items: 2},
 	600: {items: 4},
 	1000: {items: 6},
 	}
 
-php.owl.carousel ["item:best"] = {
+Function.owl.carousel ["item:best"] = {
 	0: {items: 1},
 	600: {items: 2},
 	1000: {items: 3},
 	}
 
-php.owl.carousel ["item:sky"] = {
+Function.owl.carousel ["item:sky"] = {
 	0: {items: 1},
 	600: {items: 3},
 	1000: {items: 4},
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.google = function () {}
+Function.google.auth = function () {}
+Function.google.auth.client = {credential: "g_auth", id: "863870409218-moufehk4or38mut7c9lgqq91a010tq2l.apps.googleusercontent.com"}
+
+Function.google.auth.empty = function () {
+	return ! Function.google.auth.credential;
+	}
+
+Function.google.auth.parse = function (token) {
+	var data = JSON.token.parse (token);
+	return {p_id: data.sub, name: data.name, email: data.email, picture: data.picture}
+	}
+
+Function.google.auth.prompt = function () {
+	if (false) {
+		google.accounts.id.prompt ();
+		Function.emit ("google:auth prompt");
+		}
+	}
+
+Function.google.auth.sign = function () {
+	if (Function.google.auth.credential) Function.google.auth.sign.out ();
+	else Function.google.auth.prompt ();
+	}
+
+Function.google.auth.sign.in = function (response) {
+	var credential = {string: response.credential.toString ()}
+	credential.object = Function.google.auth.parse (credential.string);
+	Function.cookie.set (Function.google.auth.client.credential, credential.string);
+	Function.emit ("google:auth sign-in", credential.string, credential.object);
+	Function.ajax.post ("/g_auth", {g_auth: credential.object}, {
+		success: function (response) {
+			Function.emit ("google:auth sign-in:done", response);
+			location.reload ();
+			},
+		error: function (error) {
+			Function.emit ("google:auth sign-in:done", {error});
+			location.reload ();
+			},
+		})
+	}
+
+Function.google.auth.sign.out = function () {
+	Function.cookie.delete (Function.google.auth.client.credential);
+	google.accounts.id.disableAutoSelect ();
+	location.reload ();
+	}
+
+Function.google.auth.set = function (key, value) {
+	if (key === "client:id") Function.google.auth.client.id = value;
+	}
+
+Function.google.auth.start = function () {
+	if (Function.google.auth.credential = Function.cookie.get (Function.google.auth.client.credential)) Function.google.auth.profile = Function.google.auth.parse (Function.google.auth.credential);
+	}
+
+Event.on ("load", function () {
+	if (false) {
+		google.accounts.id.initialize ({
+			client_id: Function.google.auth.client.id,
+			callback: Function.google.auth.sign.in,
+			auto_select: false,
+			});
+		if (Function.google.auth.credential) {}
+		else if (false) Function.google.auth.prompt ();
+		else {}
+		}
+	});
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.image = function () {}
+
+Function.randomize = function () {
+	return ("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx").replace (/[xy]/g, function (c) {
+		const r = (Math.random () * 16) | 0;
+		const v = c === "x" ? r : (r & 0x3) | 0x8;
+		return v.toString (16);
+		});
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.device = function () {}
+Function.device.computer = function () { return Function.device.type === "computer"; }
+Function.device.mobile = function () { return Function.device.type_of === "mobile"; }
+Function.device.tablet = function () { return Function.device.type === "tablet"; }
+Function.device.phone = function () { return Function.device.type === "phone"; }
+Function.html = function () {}
+Function.body = function () {}
+Function.body.width = $ ("body").width ();
+Function.body.css = function (context) {
+	var type = "phone";
+	var type_of = "mobile";
+	var orientation = "portrait";
+	var body = $ ("body").innerWidth ();
+	if (body > 600) { type = "tablet"; type_of = "mobile"; }
+	if (body > 1000) { type = "computer"; type_of = ""; }
+	if ($ ("body").width () > $ ("body").height ()) orientation = "landscape";
+	if (Function.device.type || Function.device.orientation) {
+		if (Function.device.type === type && Function.device.orientation === orientation) {}
+		else Function.body.css.reset (type, type_of, orientation);
+		}
+	else Function.body.css.reset (type, type_of, orientation);
+	}
+Function.body.css.reset = function (type, type_of, orientation) {
+	$ ("body").removeClass ("computer mobile tablet phone");
+	$ ("body").addClass (Function.device.type = type).addClass (Function.device.orientation = orientation);
+	if (type_of) $ ("body").addClass (Function.device.type_of = type_of);
+	Event.emit ("body:css", type, type_of, orientation);
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.export = {
+	object: Object,
+	array: Array,
+	string: String,
+	number: Number,
+	function: Function,
+	event: Event,
+	promise: Promise,
+	date: Date, time: Date.time, timeout: Date.timeout,
+	url: URL,
+	json: JSON,
+	cookie: Function.cookie,
+	image: Function.image,
+	router: Function.router,
+	ajax: Function.ajax,
+	owl: Function.owl,
+	google: Function.google,
+	AD__: Function.AD__,
+	device: Function.device, body: Function.body,
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+$.meta = function () {}
+$.meta.get = function (meta) {
+	for (var i in meta) {
+		var element = document.querySelector ("meta[" + i + "='" + meta [i] + "']");
+		if (element) return element.content;
+		}
 	}
 
 /**

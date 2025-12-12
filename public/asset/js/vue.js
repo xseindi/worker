@@ -9,9 +9,10 @@
  */
 
 var {createApp, ref, reactive} = Vue;
+var lib = Function.export;
 
 function vue (data = {}) {
-	return {vue, php, app: php.app, google: php.google, ... data}
+	return {vue, lib, ... data}
 	}
 
 vue.create = function (context) {
@@ -65,12 +66,14 @@ vue.js = function (v) {
 	}
 
 vue.start = function () {
-	php.sleep (function () { vue.ready.value = true; }, (vue.sleep || 0.1));
+	lib.timeout (function () { vue.ready.value = true; }, (vue.sleep || 0.1));
 	}
 
 vue.reactive = function (value = {}) { return reactive (value); }
 vue.reference = function (value = null) { return ref (value); }
-vue.router = function (key, value) { vue.markup ["router:" + key] = vue.js ({type: "router", ... value}); }
+vue.route = function (key, value) { vue.markup ["route:" + key] = vue.js ({type: "route", ... value}); }
+vue.router = function (key, value = {}, query = {}) { return lib.router (key, value, query); }
+vue.router.link = function (router) { return lib.router.link (router); }
 vue.component = function (key, value) { vue.markup [key] = vue.js ({type: "component", ... value}); }
 vue.element = function (key, value) { vue.markup [key] = vue.js ({type: "element", ... value}); }
 vue.layout = function (key, value) { vue.markup [vue.layout.key (key)] = vue.js ({type: "layout", ... value}); }
@@ -78,7 +81,7 @@ vue.layout.key = function (layout) { return "layout:" + layout; }
 vue.markup = {
 	"theme:layout": vue.js ({
 		setup () {
-			return {src: php.app.theme.layout}
+			return {src: vue.app.theme.layout}
 			},
 		template: `
 			<component v-bind:is="vue.layout.key (src)"></component>
@@ -130,6 +133,24 @@ vue.is_computer = vue ["is:computer"] = function (value) { return vue.var ("is:c
 vue.is_mobile = vue ["is:mobile"] = function (value) { return vue.var ("is:mobile", value) }
 vue.is_tablet = vue ["is:tablet"] = function (value) { return vue.var ("is:tablet", value) }
 vue.is_phone = vue ["is:phone"] = function (value) { return vue.var ("is:phone", value) }
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+vue.app = function () {}
+vue.app.var = vue.reactive ();
+vue.app.data = vue.reactive ({
+	genre: [],
+	movie: {trending: [], popular: [], top_rated: [], now_playing: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
+	tv: {trending: [], popular: [], top_rated: [], airing_today: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
+	});
 
 /**
  * the end

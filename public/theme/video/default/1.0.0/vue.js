@@ -28,8 +28,8 @@ vue.mount = function (v) {
 	//
 	}
 
-php.on ("body:css", function (type, orientation) {
-	if (php.device.computer ()) {
+lib.event.on ("body:css", function (type, orientation) {
+	if (lib.device.computer ()) {
 		$ ("#menu").css ("display", "block").removeClass ("box-shadow")
 		$ ("#menu [aria-modal='menu']").removeClass ("box-shadow")
 		vue ["is:computer"] (true)
@@ -42,18 +42,13 @@ php.on ("body:css", function (type, orientation) {
 		$ ("#menu [aria-modal='menu']").addClass ("box-shadow")
 		vue ["is:computer"] (false)
 		vue ["is:mobile"] (true)
-		vue ["is:tablet"] (php.device.tablet ())
-		vue ["is:phone"] (php.device.phone ())
+		vue ["is:tablet"] (lib.device.tablet ())
+		vue ["is:phone"] (lib.device.phone ())
 		}
 	})
 
-php.on ("google:auth sign-in", function () {
-	vue.loading.google_auth_sign_in = true
-	})
-
-php.on ("google:auth sign-in:done", function () {
-	vue.loading.google_auth_sign_in_done = true
-	})
+lib.event.on ("google:auth sign-in", function () { vue.loading.google_auth_sign_in = true })
+lib.event.on ("google:auth sign-in:done", function () { vue.loading.google_auth_sign_in_done = true })
 
 /**
  * xxx
@@ -76,7 +71,7 @@ php.on ("google:auth sign-in:done", function () {
  */
 
 vue.mount.layout = function () {
-	php.body.css ()
+	lib.body.css ()
 	}
 
 vue.mount.main = function () {
@@ -126,7 +121,7 @@ vue.mount.search = function () {
  */
 
 $ (document).ready (function () {
-	php.body.css ()
+	lib.body.css ()
 	})
 
 $ (document).click (function (event) {
@@ -143,9 +138,7 @@ $ (document).click (function (event) {
 	})
 
 $ (window).on ("resize", function (event) {
-	php.body.css ()
-	// if (php.body.width === $ ("body").width ()) {}
-	// else location.reload ()
+	lib.body.css ()
 	})
 
 /**

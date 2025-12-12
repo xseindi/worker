@@ -10,8 +10,10 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<meta http-equiv="X-Cross-Origin" content="{{ http-equiv:x-cross-origin }}">`);
 	if (false) markup.push (2, `<meta name="title" content="{{ title }}">`);
 	markup.push (2, `<meta itemprop="name" content="{{ title }}">`);
-	markup.push (2, `<meta name="viewport" content="{{ meta:viewport }}">`);
 	markup.push (2, `<meta name="author" content="{{ meta:author }}">`);
+	markup.push (2, `<meta name="author:email" content="{{ author:email }}">`);
+	markup.push (2, `<meta name="email:support" content="{{ email:support }}">`);
+	markup.push (2, `<meta name="viewport" content="{{ meta:viewport }}">`);
 	markup.push (2, `<meta name="generator" content="{{ meta:generator }}">`);
 	markup.push (2, `<meta name="keywords" content="{{ meta:keyword }}">`);
 	markup.push (2, `<meta name="robots" content="{{ meta:robot }}">`);
@@ -72,7 +74,7 @@ php.html = function (output: string, variable: any = {}) {
 		markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
 		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
 		if (php ["config.json"]["internet"]) {
-			markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
+			// markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
 			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
 			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
 			markup.push (2, `<script src="https://unpkg.com/lodash@4.17.21/core.min.js"></script>`);
@@ -80,12 +82,13 @@ php.html = function (output: string, variable: any = {}) {
 			markup.push (2, `<script src="https://unpkg.com/vue-router@4.6.3/dist/vue-router.global.prod.js"></script>`);
 			}
 		markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:prototype.js }}?cache={{ cache }}"></script>`);
+		markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:php.js }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:vue.js }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
 		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:router }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ cache-io.js }}?cache={{ cache }}"></script>`);
+		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:route }}?cache={{ cache }}"></script>`);
+		markup.push (2, `<script src="{{ cache:data.js }}?cache={{ cache }}"></script>`);
 		// markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 		}
 	markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].organization ()}</script>`);
@@ -135,23 +138,36 @@ php.vue.html = function () {
 
 php.help.scriptag = function (app: any, request: any, response: any, next: any) {
 	var markup = new php.markup ();
-	markup.push (2, `<script>php.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"})}</script>`);
-	markup.push (2, `<script>php.app.config = ${JSON.stringify (response.app.config)}</script>`);
-	markup.push (2, `<script>php.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
-	markup.push (2, `<script>php.app.router = "${response.var ['router']}"</script>`);
-	markup.push (2, `<script>php.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
-	markup.push (2, `<script>php.app.external = {"cache-io.json":"${response.var ['cache-io.json']}"}</script>`);
-	// markup.push (2, `<script>php.app.data.genre = ${JSON.stringify (response.app.data.genre)}</script>`);
-	// markup.push (2, `<script>php.app.data.asia = {KR: [... php.app.data.movie.country.KR, ... php.app.data.tv.country.KR], JP: [... php.app.data.movie.country.JP, ... php.app.data.tv.country.JP], CN: [... php.app.data.movie.country.CN, ... php.app.data.tv.country.CN]}</script>`);
-	// markup.push (2, `<script>php.app.data.asia.all = [... php.app.data.movie.country.KR, ... php.app.data.movie.country.JP, ... php.app.data.movie.country.CN, ... php.app.data.tv.country.KR, ... php.app.data.tv.country.JP, ... php.app.data.tv.country.CN]</script>`);
-	markup.push (2, `<script>php.router.link = ${JSON.stringify (app.router)}</script>`);
-	// markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
-	markup.push (2, `<script>php.cookie ()</script>`);
-	markup.push (2, `<script>php.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
-	markup.push (2, `<script>php.cookie.start ()</script>`);
-	markup.push (2, `<script>php.google.auth.start ()</script>`);
-	markup.push (2, `<script>php.google.auth.start ()</script>`);
-	markup.push (2, `<script>if (php.app.config ["ad:show"]) php.AD__.detect ()</script>`);
+	if (true) {
+		markup.push (2, `<script>vue.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"}), "author:email": $.meta.get ({name: "author:email"}), "email:support": $.meta.get ({name: "email:support"})}</script>`);
+		markup.push (2, `<script>vue.app.config = ${JSON.stringify (response.app.config)}</script>`);
+		markup.push (2, `<script>vue.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
+		markup.push (2, `<script>vue.app.route = "${response.var ['route']}"</script>`);
+		markup.push (2, `<script>vue.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
+		markup.push (2, `<script>vue.router.link (${JSON.stringify (app.router)})</script>`);
+		markup.push (2, `<script>Function.cookie ()</script>`);
+		markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
+		markup.push (2, `<script>Function.cookie.start ()</script>`);
+		markup.push (2, `<script>if (vue.app.config ["AD__.show"]) Function.AD__.detect ()</script>`);
+		}
+	else {
+		markup.push (2, `<script>php.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"}), "author:email": $.meta.get ({name: "author:email"}), "email:support": $.meta.get ({name: "email:support"})}</script>`);
+		markup.push (2, `<script>php.app.config = ${JSON.stringify (response.app.config)}</script>`);
+		markup.push (2, `<script>php.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
+		markup.push (2, `<script>php.app.router = "${response.var ['router']}"</script>`);
+		markup.push (2, `<script>php.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
+		// markup.push (2, `<script>php.app.external = {"cache-io.json":"${response.var ['cache-io.json']}"}</script>`);
+		// markup.push (2, `<script>php.app.data.genre = ${JSON.stringify (response.app.data.genre)}</script>`);
+		// markup.push (2, `<script>php.app.data.asia = {KR: [... php.app.data.movie.country.KR, ... php.app.data.tv.country.KR], JP: [... php.app.data.movie.country.JP, ... php.app.data.tv.country.JP], CN: [... php.app.data.movie.country.CN, ... php.app.data.tv.country.CN]}</script>`);
+		// markup.push (2, `<script>php.app.data.asia.all = [... php.app.data.movie.country.KR, ... php.app.data.movie.country.JP, ... php.app.data.movie.country.CN, ... php.app.data.tv.country.KR, ... php.app.data.tv.country.JP, ... php.app.data.tv.country.CN]</script>`);
+		markup.push (2, `<script>php.router.link = ${JSON.stringify (app.router)}</script>`);
+		// markup.push (2, `<script>php.image.stock = ${JSON.stringify (response.image.stock)}</script>`);
+		markup.push (2, `<script>php.cookie ()</script>`);
+		markup.push (2, `<script>php.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
+		markup.push (2, `<script>php.cookie.start ()</script>`);
+		markup.push (2, `<script>php.google.auth.start ()</script>`);
+		markup.push (2, `<script>if (php.app.config ["ad:show"]) php.AD__.detect ()</script>`);
+		}
 	markup.push (2, `<script>window.onload = function () { php.emit ("load") }</script>`);
 	return markup;
 	}

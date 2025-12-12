@@ -3,10 +3,10 @@
 "internet": true,
 "type": "bioskop",
 "cache": "0.0.0",
-"cache:io": "2025-12-001",
+"cache:io": "2025-12-002",
 "cache:generator": true,
 "cd:io": false,
 "cd:base_url": "https://vcredist.github.io",
-"ad:show": false,
+"AD__.show": false,
 "*": "*"
 }

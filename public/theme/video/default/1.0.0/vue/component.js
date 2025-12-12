@@ -8,11 +8,11 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.component ("router", {
+vue.component ("route", {
 	prop: ["src"],
 	setup () {},
 	template: `
-		<component v-bind:is="'router:' + prop.src"/>
+		<component v-bind:is="'route:' + prop.src"/>
 		`,
 	})
 
@@ -115,37 +115,37 @@ vue.component ("menu-simple", {
 		var nav = {
 			general: [
 				{component: "a:material", text: "Home", icon: "home", url: "/", css},
-				{component: "a:material", text: "Short", icon: "subscriptions", url: php.router ({p: "short"}), css},
-				{component: "a:material", text: "Trending", icon: "local_fire_department", url: php.router ({p: "trending"}), css},
-				{component: "a:material", text: "Popular", icon: "local_fire_department", url: php.router ({p: "popular"}), css},
-				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: php.router ({p: "editor-choice"}), css},
-				{component: "a:material", text: "Live", icon: "live_tv", url: php.router ({p: "live"}), css},
+				{component: "a:material", text: "Short", icon: "subscriptions", url: vue.router ({p: "short"}), css},
+				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ({p: "trending"}), css},
+				{component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
+				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: vue.router ({p: "editor-choice"}), css},
+				{component: "a:material", text: "Live", icon: "live_tv", url: vue.router ({p: "live"}), css},
 				]
 			}
 		var menu = {
 			general: [
 				{component: "a:material", text: "Home", icon: "home", url: "/", css},
-				{component: "a:material", text: "Short", icon: "subscriptions", url: php.router ({p: "short"}), css},
-				{component: "a:material", text: "Trending", icon: "local_fire_department", url: php.router ({p: "trending"}), css},
-				{component: "a:material", text: "Popular", icon: "local_fire_department", url: php.router ({p: "popular"}), css},
-				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: php.router ({p: "editor-choice"}), css},
-				{component: "a:material", text: "Live", icon: "live_tv", url: php.router ({p: "live"}), css},
+				{component: "a:material", text: "Short", icon: "subscriptions", url: vue.router ({p: "short"}), css},
+				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ({p: "trending"}), css},
+				{component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
+				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: vue.router ({p: "editor-choice"}), css},
+				{component: "a:material", text: "Live", icon: "live_tv", url: vue.router ({p: "live"}), css},
 				],
 			visitor: [
-				{component: "a:material", text: "History", icon: "search_activity", url: php.router ({p: "history"})},
-				{component: "a:material", text: "Watch Later", icon: "timer_play", url: php.router ("playlist:default")},
-				{component: "a:material", text: "Playlist", icon: "playlist_play", url: php.router ("playlist:index")},
+				{component: "a:material", text: "History", icon: "search_activity", url: vue.router ({p: "history"})},
+				{component: "a:material", text: "Watch Later", icon: "timer_play", url: vue.router ("playlist:default")},
+				{component: "a:material", text: "Playlist", icon: "playlist_play", url: vue.router ("playlist:index")},
 				],
 			explore: [
-				{component: "a:material", text: "Star", icon: "hotel_class", url: php.router ("people:index")},
-				{component: "a:material", text: "Movie", icon: "movie", url: php.router ("movie:index")},
-				{component: "a:material", text: "TV Show", icon: "tv_guide", url: php.router ("tv:index")},
-				{component: "a:material", text: "Photo", icon: "photo_camera", url: php.router ("photo:index")},
+				{component: "a:material", text: "Star", icon: "hotel_class", url: vue.router ("people:index")},
+				{component: "a:material", text: "Movie", icon: "movie", url: vue.router ("movie:index")},
+				{component: "a:material", text: "TV Show", icon: "tv_guide", url: vue.router ("tv:index")},
+				{component: "a:material", text: "Photo", icon: "photo_camera", url: vue.router ("photo:index")},
 				],
 			drama: [
-				{component: "a:material", text: "Korea", icon: "globe_asia", url: php.router ("country:by_type", {country: "korea", type: "tv"})},
-				{component: "a:material", text: "Japan", icon: "globe_asia", url: php.router ("country:by_type", {country: "japan", type: "tv"})},
-				{component: "a:material", text: "China", icon: "globe_asia", url: php.router ("country:by_type", {country: "china", type: "tv"})},
+				{component: "a:material", text: "Korea", icon: "globe_asia", url: vue.router ("country:by_type", {country: "korea", type: "tv"})},
+				{component: "a:material", text: "Japan", icon: "globe_asia", url: vue.router ("country:by_type", {country: "japan", type: "tv"})},
+				{component: "a:material", text: "China", icon: "globe_asia", url: vue.router ("country:by_type", {country: "china", type: "tv"})},
 				],
 			}
 		return {menu, nav}
@@ -181,6 +181,52 @@ vue.component ("menu-simple", {
 		`,
 	})
 
+vue.component ("footer-simple", {
+	template: `
+		<div class="flex gap" component="footer-simple">
+			<div class="flex flex:column flex:grow gap:medium">
+				<logo-simple href="/"/>
+				<div class="flex flex:column gap padding border:radius background-color:mono">
+					<string class="font:medium font-bold:pop font-color:red">Sensitive Content Warning</string>
+					<string>
+						This site may contain sensitive content.
+						We does not review nor do we endorse the content of this site.
+						For more information please visit Privacy <a href="/">Content Policy</a>.
+					</string>
+				</div>
+			</div>
+			<div class="" style="min-width: 30px;"></div>
+			<div class="" style="min-width: 140px;">
+				<a:material v-bind:text="'About'" v-bind:href="vue.router ({page: 'about'})" v-bind:icon="'description'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Contact'" v-bind:href="vue.router ({page: 'contact'})" v-bind:icon="'contacts'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Blog'" v-bind:href="vue.router ('index')" v-bind:icon="'link'" class="padding:io border:radius"/>
+			</div>
+			<div class="" style="min-width: 200px;">
+				<a:material v-bind:text="'Privacy Policy'" v-bind:href="vue.router ({page: 'privacy-policy'})" v-bind:icon="'health_and_safety'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Terms of Use'" v-bind:href="vue.router ({page: 'term_of_use'})" v-bind:icon="'settings_accessibility'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Cookie Preference'" v-bind:href="vue.router ({page: 'cookie:preference'})" v-bind:icon="'cookie'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Disclaimer'" v-bind:href="vue.router ({page: 'disclaimer'})" v-bind:icon="'safety_check'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'DMCA'" v-bind:href="vue.router ({page: 'DMCA'})" v-bind:icon="'admin_panel_settings'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Sitemap'" v-bind:href="vue.router ('index')" v-bind:icon="'rss_feed'" class="padding:io border:radius"/>
+			</div>
+			<div class="" style="min-width: 10px;"></div>
+		</div>
+		`,
+	})
+
+vue.component ("footer-simple:info", {
+	template: `
+		<div class="flex flex:column align:item gap:small font:tiny padding padding-bottom:small" component="footer-simple:info">
+			<string>Copyright &copy; 2025 <a href="/">{{ vue.app.var ["site:name"] }}</a></string>
+			<string>All Right's Reserved</string>
+			<string>Logo's Trademark's on this Site are the Property of their Respective Owner</string>
+			<string>Web Engine Code and Design is Powered by <a v-bind:href="'mailto:support@' + lib.url.document.host.name">{{ vue.app.var ["site:name"] }}</a></string>
+			<div></div>
+			<string class="font:tiny font-color:mono">Version (1.0.0)</string>
+		</div>
+		`,
+	})
+
 /**
  * xxx
  *
@@ -195,10 +241,10 @@ vue.component ("logo-simple", {
 	prop: ["src", "title", "description"],
 	template: `
 		<a class="flex align:item gap" component="logo-simple">
-			<img:logo v-bind:src="prop.src || app.image.logo" class="img:size"/>
+			<img:logo v-bind:src="prop.src || vue.app.image.logo" class="img:size"/>
 			<div class="flex flex:column gap:space" margin>
-				<span class="font-family:logo font:intermediate font:bold text:gradient">{{ prop.title || app.var ["site:name"] }}</span>
-				<string class="font:small font:bold font:static">{{ prop.description || app.var ["site:description"] }}</string>
+				<span class="font-family:logo font:intermediate font:bold text:gradient">{{ prop.title || vue.app.var ["site:name"] }}</span>
+				<string class="font:small font:bold font:static">{{ prop.description || vue.app.var ["site:description"] }}</string>
 			</div>
 		</a>
 		`,
@@ -247,7 +293,7 @@ vue.component ("account-simple:float", {
 				<string class="font:small font-bold:pop"></string>
 			</div>
 			<separator:mono />
-			<div v-if="google.auth.empty ()" v-on:click="google.auth.prompt ()" class="flex align:start gap padding padding-horizontal:medium">
+			<div v-if="lib.google.auth.empty ()" v-on:click="lib.google.auth.prompt ()" class="flex align:start gap padding padding-horizontal:medium">
 				<icon src="person_shield" class="font:big text:gradient"/>
 				<div class="flex flex:column gap:space">
 					<string class="font-bold:pop">Google One Tap</string>
@@ -256,8 +302,8 @@ vue.component ("account-simple:float", {
 					<string v-if="vue.loading.google_auth_sign_in_done" class="font-size:small font-color:mono">OK, Reloading</string>
 				</div>
 			</div>
-			<div v-if="google.auth.credential" class="padding:top padding-horizontal:medium">
-				<button:awesome v-on:click="google.auth.sign.out ()" class="flex align:item justify:item width:size padding" color="red">Sign Out</button:awesome>
+			<div v-if="lib.google.auth.credential" class="padding:top padding-horizontal:medium">
+				<button:awesome v-on:click="lib.google.auth.sign.out ()" class="flex align:item justify:item width:size padding" color="red">Sign Out</button:awesome>
 			</div>
 			<div class="padding-horizontal:medium" v-else>
 				<button:awesome class="flex align:item justify:item width:size padding">Continue as Guest</button:awesome>
@@ -265,7 +311,7 @@ vue.component ("account-simple:float", {
 			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
 				<string class="line-spacing:small">
 					We do not Store your Information nor do we Track your Activity in this Website's.
-					Visit our <a v-bind:href="php.router.link.page ['privacy-policy']">Privacy Policy</a> and <a v-bind:href="php.router.link.page ['term_of_use']">Term's of Use</a>.
+					Visit our <a v-bind:href="vue.router ({page: 'privacy-policy'})">Privacy Policy</a> and <a v-bind:href="vue.router ({page: 'term_of_use'})">Term's of Use</a>.
 				</string>
 			</div>
 		</section>
@@ -274,8 +320,8 @@ vue.component ("account-simple:float", {
 
 vue.component ("account-simple:anonymous", {
 	setup () {
-		var account = {name: "Anonymous", email: "Sign In", avatar: php.app.image.avatar}
-		if (php.google.auth.credential) account = {name: php.google.auth.profile.name, email: php.google.auth.profile.email, avatar: php.google.auth.profile.picture}
+		var account = {name: "Anonymous", email: "Sign In", avatar: vue.app.image.avatar}
+		if (lib.google.auth.credential) account = {name: lib.google.auth.profile.name, email: lib.google.auth.profile.email, avatar: lib.google.auth.profile.picture}
 		return {account}
 		},
 	template: `
@@ -303,7 +349,7 @@ vue.component ("notification-simple:float", {
 			</div>
 			<separator:mono />
 			<div class="flex flex:column gap padding padding-horizontal:medium">
-				<div v-if="php.AD__.block ()" class="flex gap">
+				<div v-if="lib.AD__.block ()" class="flex gap">
 					<icon src="do_not_touch" class="font:big text:gradient"/>
 					<div class="flex flex:column">
 						<string class="font-bold:pop font-color:red">AD Block</string>
@@ -381,24 +427,19 @@ vue.component ("video-card", {
 	prop: ["id", "reference", "data", "item", "option"],
 	setup (prop) {
 		var ready = vue.reference (false)
-		php.sleep (function () {
+		lib.timeout (function () {
 			ready.value = true
-			php.sleep (function () {
+			lib.timeout (function () {
 				var id = "#" + prop.id
 				var reference = "#" + (prop.reference || "main")
-				php.owl.carousel (id, reference, {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [prop.item || "item:pop"]})
+				lib.owl.carousel (id, reference, {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: lib.owl.carousel [prop.item || "item:pop"]})
 				}, 1)
 			}, 3)
 		prop.option = prop.option || {}
-		var data = prop.data || php.app.data.trending.today
+		var data = prop.data || vue.app.data.trending.today
 		var option = prop.option || {}
 		if (option.shuffle) data = data.shuffle ()
 		return {prop, data, ready}
-		},
-	mount (v) {
-		// var id = "#" + v.prop.id
-		// var reference = "#" + (v.prop.reference || "main")
-		// php.owl.carousel (id, reference, {play: "auto", loop: true, gap: 20, "nav": false, "nav:dot": true, responsive: php.owl.carousel [v.prop.item || "item:pop"]})
 		},
 	method: {
 		ico (icon, type) {
@@ -443,10 +484,10 @@ vue.component ("video-card:poster", {
 	prop: ["data", "option"],
 	setup (prop) {
 		prop.option = prop.option || {}
-		var array = prop.data || php.app.data.trending.today
+		var array = prop.data || vue.app.data.trending.today
 		var limit = prop.option.limit || 3
 		var data = vue.reactive ({tmp: array.shuffle ().limit (limit)})
-		php.time.interval (function () { data.tmp = array.shuffle ().limit (limit) }, 60)
+		lib.time.interval (function () { data.tmp = array.shuffle ().limit (limit) }, 60)
 		return {prop, data}
 		},
 	template: `
@@ -472,15 +513,15 @@ vue.component ("the-movie:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: php.router ("movie:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("movie:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Trending", description: "—", url: php.router ("movie:trending"), icon: "hotel_class", css},
-			{component: "a:material", text: "Popular", description: "—", url: php.router ("movie:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: php.router ("movie:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Now Playing", description: "—", url: php.router ("movie:now_playing"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Up Coming", description: "—", url: php.router ("movie:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Trending", description: "—", url: vue.router ("movie:trending"), icon: "hotel_class", css},
+			{component: "a:material", text: "Popular", description: "—", url: vue.router ("movie:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: vue.router ("movie:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Now Playing", description: "—", url: vue.router ("movie:now_playing"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Up Coming", description: "—", url: vue.router ("movie:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "0", url: php.router ("movie:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router ("movie:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
 			// {component: "nav-simple:genre", left: [], right: []},
 			]
@@ -495,15 +536,15 @@ vue.component ("the-tv:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: php.router ("tv:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("tv:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Trending", description: "—", url: php.router ("tv:trending"), icon: "hotel_class", css},
-			{component: "a:material", text: "Popular", description: "—", url: php.router ("tv:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: php.router ("tv:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Airing Today", description: "—", url: php.router ("tv:airing_today"), icon: "timer_play", css},
-			{component: "a:material", text: "Up Coming", description: "—", url: php.router ("tv:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Trending", description: "—", url: vue.router ("tv:trending"), icon: "hotel_class", css},
+			{component: "a:material", text: "Popular", description: "—", url: vue.router ("tv:popular"), icon: "hotel_class", css},
+			{component: "a:material", text: "Top Rated", description: "—", url: vue.router ("tv:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Airing Today", description: "—", url: vue.router ("tv:airing_today"), icon: "timer_play", css},
+			{component: "a:material", text: "Up Coming", description: "—", url: vue.router ("tv:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "0", url: php.router ("tv:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router ("tv:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
 			// {component: "nav-simple:genre", left: [], right: []},
 			]
@@ -519,12 +560,12 @@ vue.component ("the-people:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: php.router ("people:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("people:index"), icon: "more_horiz", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Male", description: "—", url: php.router ("people:index", {}, {gender: "male"}), icon: "male", css},
-			{component: "a:material", text: "Female", description: "—", url: php.router ("people:index", {}, {gender: "female"}), icon: "female", css},
+			{component: "a:material", text: "Male", description: "—", url: vue.router ("people:index", {}, {gender: "male"}), icon: "male", css},
+			{component: "a:material", text: "Female", description: "—", url: vue.router ("people:index", {}, {gender: "female"}), icon: "female", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "0", url: php.router ("people:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router ("people:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [{text: "Passed Away", url: "/"}], right: []},
 			]

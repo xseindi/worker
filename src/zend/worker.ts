@@ -150,7 +150,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
-		response.app.config ["ad:show"] = app.config ["ad:show"]
+		response.app.config ["AD__.show"] = app.config ["AD__.show"]
 		if (app.config ["cache:io"]) request.cache.io = app.config ["cache:io"]
 		if (app.config.type === "website") {}
 		else if (app.config.type === "bioskop") {
@@ -270,7 +270,7 @@ var library: any = class {
 			title: this.request.client.object ["site:title"],
 			description: this.request.client.object ["site:description"],
 			meta: {
-				author: this.request.client.object ["meta:author"],
+				author: {name: this.request.client.object ["meta:author"], email: {address: "support@host".split ("host").join (this.request.url.host.name), support: "support"}},
 				generator: this.request.client.object ["meta:generator"],
 				description: this.request.client.object ["meta:description"],
 				keyword: this.request.client.object ["meta:keyword"],
@@ -293,15 +293,15 @@ var library: any = class {
 				"vultr:special": this.request.client.object.referral ["vultr:special"],
 				},
 			}
-		this.response.var ["cache-io.js"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.js").split ("file").join (this.request.cache.io)})
-		this.response.var ["cache-io.json"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.json").split ("file").join (this.request.cache.io)})
+		this.response.var ["cache:data.js"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.js").split ("file").join (this.request.cache.io)})
+		this.response.var ["cache:data.json"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.json").split ("file").join (this.request.cache.io)})
 		this.response.var ["theme:id"] = this.request.client.theme.id
 		this.response.var ["theme:slug"] = this.request.client.theme.slug
 		this.response.var ["theme:type"] = this.request.client.theme.type
 		this.response.var ["theme:version"] = this.request.client.theme.version
 		this.response.var ["theme:layout"] = "default"
 		this.response.var ["cache"] = this.app.config.cache
-		this.response.var ["router"] = "index"
+		this.response.var ["route"] = "index"
 		this.response.var ["base_url"] = this.request.base_url
 		this.response.var ["canonical_url"] = this.request.canonical_url
 		this.response.var ["site:name"] = this.request.client.site.name, this.response.var ["alternate:site-name"] = this.request.client.site.name
@@ -315,7 +315,9 @@ var library: any = class {
 		this.response.var ["http-equiv:x-cross-origin"] = "*"
 		this.response.var ["meta:charset"] = "UTF-8"
 		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_s)
-		this.response.var ["meta:author"] = this.request.client.site.meta.author
+		this.response.var ["meta:author"] = this.request.client.site.meta.author.name
+		this.response.var ["author:email"] = this.request.client.site.meta.author.email.address
+		this.response.var ["email:support"] = this.request.client.site.meta.author.email.support
 		this.response.var ["meta:generator"] = this.request.client.site.meta.generator
 		this.response.var ["meta:keyword"] = this.request.client.site.meta.keyword
 		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_s)
@@ -385,7 +387,7 @@ var library: any = class {
 				this.response.var ["og:type"] = "article"
 				}
 			if (data.layout) this.response.var ["theme:layout"] = data.layout
-			if (data.router) this.response.var ["router"] = data.router
+			if (data.route) this.response.var ["route"] = data.route
 			if (data ["ld+json webpage"]) {
 				this.response.var ["ld+json webpage"] = true
 				this.response.var ["ld+json webpage:image"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
