@@ -14,6 +14,7 @@
 	"meta:rating": "general",
 	"manifest:id": "t2738",
 	"google-site-verification": "",
+	"g-tag:id": "G-6JM1DVVQPT",
 	"tmdb:api": "d4b47b5286ba1ff0ddf4ddf78f70d6d8",
 	"tmdb:api access:token": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNGI0N2I1Mjg2YmExZmYwZGRmNGRkZjc4ZjcwZDZkOCIsIm5iZiI6MTc2MzQzOTc5Ny45MSwic3ViIjoiNjkxYmY0YjU5Y2Y0Mzc3NzMzNjA5YzJjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.fsGVgPtDUktUWh02_mZZyi-cdqlzbdXd5uzc97_Os1U",
 	"image": {
@@ -23,7 +24,8 @@
 		},
 	"ad": {
 		"adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
-		"adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
+		"adsterra:horizontal computer": "7qvt6.html",
+		"adsterra:horizontal mobile": "t2738.html",
 		"-- adsterra:float": "//pl28208808.effectivegatecpm.com/a2/f4/d1/a2f4d1914c60b6ef74a76a3117320a2f.js",
 		"monetag": ""
 		},
@@ -47,8 +49,8 @@
 	"meta:rating": "adult",
 	"manifest:id": "wrkjb",
 	"google-site-verification": "",
-	"tmdb:api": "d4b47b5286ba1ff0ddf4ddf78f70d6d8",
-	"tmdb:api access:token": "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNGI0N2I1Mjg2YmExZmYwZGRmNGRkZjc4ZjcwZDZkOCIsIm5iZiI6MTc2MzQzOTc5Ny45MSwic3ViIjoiNjkxYmY0YjU5Y2Y0Mzc3NzMzNjA5YzJjIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.fsGVgPtDUktUWh02_mZZyi-cdqlzbdXd5uzc97_Os1U",
+	"tmdb:api": "",
+	"tmdb:api access:token": "",
 	"image": {
 		"logo": 10001,
 		"avatar": 20001,
@@ -56,7 +58,8 @@
 		},
 	"ad": {
 		"adsterra": "https://www.effectivegatecpm.com/h83jmjq7?key=5a9ef1496ac083c698ab74f41502102e",
-		"adsterra:adult": "https://www.effectivegatecpm.com/yndh9p11?key=4b2e330f757e5a69f7ef0785a939878e",
+		"adsterra:horizontal computer": "7qvt6.html",
+		"adsterra:horizontal mobile": "t2738.html",
 		"-- adsterra:float": "//pl28208808.effectivegatecpm.com/a2/f4/d1/a2f4d1914c60b6ef74a76a3117320a2f.js",
 		"monetag": ""
 		},

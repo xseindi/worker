@@ -73,7 +73,7 @@ vue.reactive = function (value = {}) { return reactive (value); }
 vue.reference = function (value = null) { return ref (value); }
 vue.route = function (key, value) { vue.markup ["route:" + key] = vue.js ({type: "route", ... value}); }
 vue.router = function (key, value = {}, query = {}) { return lib.router (key, value, query); }
-vue.router.link = function (router) { return lib.router.link (router); }
+vue.router.link = function (client, router) { return lib.router.link (client, router); }
 vue.component = function (key, value) { vue.markup [key] = vue.js ({type: "component", ... value}); }
 vue.element = function (key, value) { vue.markup [key] = vue.js ({type: "element", ... value}); }
 vue.layout = function (key, value) { vue.markup [vue.layout.key (key)] = vue.js ({type: "layout", ... value}); }

@@ -350,6 +350,7 @@ vue.element ("img:ad", {
 
 vue.element ("adsterra", {
 	prop: ["type"],
+	setup () {},
 	template: `
 		<div v-if="vue.app.config ['AD__.show'] && prop.type === 'horizontal'" class="flex align:item justify:item">
 			<iframe v-if="vue ['is:computer'] ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>

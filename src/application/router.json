@@ -5,7 +5,7 @@
 "asset:php.js": "/asset/js/php.js",
 "vue.js": "/vue.js", "asset:vue.js": "/asset/js/vue.js", "vue:layout": "/vue/layout.js", "vue:component": "/vue/component.js", "vue:element": "/vue/element.js", "vue:route": "/vue/route.js",
 "image:logo": "/asset/image/logo/:logo", "image:avatar": "/asset/image/avatar/:avatar",
-"file": "/file/:file", "files": "/file/:id/:file",
+"file": "/file/:file", "file:path": "/file/:id/", "files": "/file/:id/:file",
 "robot:text": "/robots.txt",
 "ad:text": "/ads.txt",
 "favorite.ico": "/favicon.ico",

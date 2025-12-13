@@ -344,8 +344,13 @@ Function.router = function (key, value = {}, query = {}) {
 	return router;
 	}
 
-Function.router.link = function (router) {
+Function.router.link = function (client, router) {
+	if (client) Function.router.client = client;
 	return Function.router.link.data = router;
+	}
+
+Function.router.files = function (file) {
+	return Function.router ("files", {id: "", file});
 	}
 
 Function.ajax = function () {}

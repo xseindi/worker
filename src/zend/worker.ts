@@ -293,6 +293,7 @@ var library: any = class {
 				"vultr:special": this.request.client.object.referral ["vultr:special"],
 				},
 			}
+		this.response.var ["client:id"] = this.request.client.id
 		this.response.var ["cache:data.js"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.js").split ("file").join (this.request.cache.io)})
 		this.response.var ["cache:data.json"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.json").split ("file").join (this.request.cache.io)})
 		this.response.var ["theme:id"] = this.request.client.theme.id
@@ -326,6 +327,8 @@ var library: any = class {
 		this.response.var ["meta:google"] = "notranslate"
 		this.response.var ["meta:google-bot"] = "notranslate"
 		this.response.var ["meta:google-bot-article"] = ["index", "follow"].join (ln_s)
+		this.response.var ["google-site-verification"] = this.request.client.object ["google-site-verification"]
+		this.response.var ["g-tag:id"] = this.request.client.object ["g-tag:id"]
 		this.response.var ["twitter:card"] = "summary_large_image"
 		this.response.var ["twitter:title"] = this.request.client.site.title
 		this.response.var ["twitter:description"] = this.request.client.site.description

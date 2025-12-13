@@ -60,42 +60,42 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<link rel="preconnect" href="https://resources.blogblog.com" crossorigin>`);
 	markup.push (2, `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>`);
 	markup.push (2, `<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>`);
-	if (true) {
-		if (php ["config.json"]["internet"]) {
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">`);
-			markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">`);
-			if (false) markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
-			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">`);
-			markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">`);
-			}
-		markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
-		markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
-		if (php ["config.json"]["internet"]) {
-			// markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
-			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
-			markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
-			markup.push (2, `<script src="https://unpkg.com/lodash@4.17.21/core.min.js"></script>`);
-			markup.push (2, `<script src="https://unpkg.com/vue@3.5.25/dist/vue.global.prod.js"></script>`);
-			markup.push (2, `<script src="https://unpkg.com/vue-router@4.6.3/dist/vue-router.global.prod.js"></script>`);
-			}
-		markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:prototype.js }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:php.js }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:vue.js }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:route }}?cache={{ cache }}"></script>`);
-		markup.push (2, `<script src="{{ cache:data.js }}?cache={{ cache }}"></script>`);
-		// markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
+	if (php ["config.json"]["internet"]) {
+		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
+		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
+		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
+		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">`);
+		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,GRAD,ROND@6..144,-10..0,25..151,1..1000,0..100,0..100&display=swap">`);
+		if (false) markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans+Text:400,500,700,400i,500i,700i|Google+Sans:400,500,700|Google+Sans+Display:400,500,700|Product+Sans:400&lang=en">`);
+		markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">`);
+		markup.push (2, `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">`);
 		}
+	markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
+	markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
+	if (false) markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
+	if (variable ["g-tag:id"])  markup.push (2, `<script src="https://www.googletagmanager.com/gtag/js?id={{ g-tag:id }}" async></script>`);
+	if (php ["config.json"]["internet"]) {
+		markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
+		markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
+		markup.push (2, `<script src="https://unpkg.com/lodash@4.17.21/core.min.js"></script>`);
+		markup.push (2, `<script src="https://unpkg.com/vue@3.5.25/dist/vue.global.prod.js"></script>`);
+		markup.push (2, `<script src="https://unpkg.com/vue-router@4.6.3/dist/vue-router.global.prod.js"></script>`);
+		}
+	markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:prototype.js }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:php.js }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:vue.js }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:element }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:route }}?cache={{ cache }}"></script>`);
+	markup.push (2, `<script src="{{ cache:data.js }}?cache={{ cache }}"></script>`);
+	if (false) markup.push (2, `<script src="{{ base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].organization ()}</script>`);
 	markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].website ()}</script>`);
 	if (variable ["ld+json webpage"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].webpage ()}</script>`);
 	if (variable ["breadcrumb:list"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].breadcrumb.list (variable ["breadcrumb:list"])}</script>`);
 	markup.push (0, `{{ scriptag }}`);
+	if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[application] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);
@@ -103,7 +103,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (0, output);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router script.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue.js }}?cache={{ cache }}"></script>`);
-	if (variable ["ad adsterra:social"]) markup.push (2, `<script type="text/javascript" src="${variable ["ad adsterra:social"]}"></script>`);
+	if (variable ["ad adsterra:pop"]) markup.push (2, `<script type="text/javascript" src="${variable ["ad adsterra:pop"]}"></script>`);
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();
@@ -139,12 +139,13 @@ php.vue.html = function () {
 php.help.scriptag = function (app: any, request: any, response: any, next: any) {
 	var markup = new php.markup ();
 	if (true) {
+		markup.push (2, `<script>vue.app.id = ${request.client.id}</script>`);
 		markup.push (2, `<script>vue.app.var = {"site:name": $.meta.get ({property: "og:site_name"}), "site:description": $.meta.get ({property: "og:site_description"}), "author:email": $.meta.get ({name: "author:email"}), "email:support": $.meta.get ({name: "email:support"})}</script>`);
 		markup.push (2, `<script>vue.app.config = ${JSON.stringify (response.app.config)}</script>`);
 		markup.push (2, `<script>vue.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
 		markup.push (2, `<script>vue.app.route = "${response.var ['route']}"</script>`);
 		markup.push (2, `<script>vue.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
-		markup.push (2, `<script>vue.router.link (${JSON.stringify (app.router)})</script>`);
+		markup.push (2, `<script>vue.router.link (vue.app.id, ${JSON.stringify (app.router)})</script>`);
 		markup.push (2, `<script>Function.cookie ()</script>`);
 		markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
 		markup.push (2, `<script>Function.cookie.start ()</script>`);
