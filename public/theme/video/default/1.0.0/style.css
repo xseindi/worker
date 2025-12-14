@@ -439,6 +439,7 @@ a:visited { color: rgb(var(--font-anchor-color-visited)); }
 .icon\:material.icon-face\:round, .icon-material\:line.icon-face\:round { font-family: "Material Symbols Rounded"; }
 .icon-variant\:fill { font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24; }
 .icon-variant\:line { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
+.icon\:tiny .icon\:container:first-child { font-size: var(--font-tiny); }
 .icon\:small .icon\:container:first-child { font-size: var(--font-small); }
 .icon\:medium .icon\:container:first-child { font-size: var(--font-medium); }
 .icon\:large > .icon\:container:first-child { font-size: var(--font-large); }

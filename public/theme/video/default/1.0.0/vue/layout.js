@@ -15,11 +15,6 @@ vue.layout ("default", {
 	})
 
 vue.layout ("index", {
-	setup () {
-		},
-	mount () {
-		vue.mount.main ()
-		},
 	template: `
 		<div layout="index" class="flex flex:column height:size">
 			<header id="header" class="header:size relative index:large">
@@ -34,8 +29,8 @@ vue.layout ("index", {
 				</menu>
 				<main id="main" class="flex flex:column flex:grow index">
 					<route v-bind:src="vue.app.route"/>
-					<div class="flex align:item justify:item padding:large">
-						<img:undraw src="construction_worker" class="" width="300"/>
+					<div class="flex align:item justify:item padding:big">
+						<img:undraw src="construction_worker" class="" width="280"/>
 					</div>
 					<footer id="footer" class="flex flex:column padding">
 						<footer-simple />

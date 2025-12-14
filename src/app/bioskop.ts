@@ -46,22 +46,157 @@ app.start (async function (request: any, response: any, next: any) {
 	return next ()
 	})
 
-app.post ("/g_auth", async function (request: any, response: any, next: any) {
-	var post = await request.json ()
-	var g_auth = post.g_auth || {}
-	if ("email" in g_auth) {
-		if (request.db.cache.plugin.g_auth.array ().filter ({email: g_auth.email}).one ()) {}
-		else {
-			var insert = await request.db.cache.plugin.g_auth.insert ({
-				p_id: g_auth.p_id,
-				name: g_auth.name,
-				email: g_auth.email,
-				picture: g_auth.picture,
-				})
-			}
-		return response.json ({success: true})
-		}
-	return response.json ({})
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router.index, async function (request: any, response: any, next: any) {
+	response.set ({
+		layout: "index",
+		route: "home",
+		// article: {},
+		// "ld+json webpage": {},
+		})
+	return response.vue ()
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router.page ["about"], function (request: any, response: any, next: any) {
+	response.set ({title: "About"})
+	return response.vue ()
+	})
+
+app.get (app.router.page ["contact"])
+
+app.get (app.router.page ["help"])
+
+app.get (app.router.page ["privacy"])
+
+app.get (app.router.page ["privacy-policy"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Privacy Policy",
+		layout: "index",
+		route: "page:privacy-policy",
+		variable: {
+			title: "Privacy Policy",
+			last_update: "September 11, 2025",
+			name: request.client.site.name,
+			email: request.client.site.meta.author.email.address,
+			base_url: request.base_url,
+			url: request.router ({page: "privacy-policy"}),
+			},
+		})
+	return response.vue ({
+		"post:date": "2025-09-11",
+		"post:content": php.render (php.page ["privacy-policy"] (), {
+			"var:last_update": "September 11, 2025",
+			"var:name": request.client.site.name,
+			"var:email": request.client.site.meta.author.email.address,
+			"var:base_url": request.base_url,
+			"var:url": request.router ({page: "privacy-policy"}),
+			}),
+		})
+	})
+
+app.get (app.router.page ["privacy-policy:content"])
+
+app.get (app.router.page ["term_of_use"])
+
+app.get (app.router.page ["term_of_service"])
+
+app.get (app.router.page ["cookie"])
+
+app.get (app.router.page ["cookie:preference"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Cookie",
+		layout: "index",
+		route: "page:cookie-preference",
+		variable: {
+			title: "Cookie",
+			last_update: "September 11, 2025",
+			name: request.client.site.name,
+			email: request.client.site.meta.author.email.address,
+			base_url: request.base_url,
+			url: request.router ({page: "privacy-policy"}),
+			},
+		})
+	return response.vue ({
+		"post:date": "2025-09-11",
+		"post:content": php.render (php.page ["privacy-policy"] (), {
+			"var:last_update": "September 11, 2025",
+			"var:name": request.client.site.name,
+			"var:email": request.client.site.meta.author.email.address,
+			"var:base_url": request.base_url,
+			"var:url": request.router ({page: "privacy-policy"}),
+			}),
+		})
+	})
+
+app.get (app.router.page ["disclaimer"])
+
+app.get (app.router.page ["FAQ"])
+
+app.get (app.router.page ["DMCA"])
+
+app.get (app.router.page ["EULA"])
+
+app.get (app.router.page ["service"])
+
+app.get (app.router.page ["partner"])
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router ["search"])
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router ["cgi-bin:api trending:today"], async function (request: any, response: any, next: any) {
+	return response.json (await request.tmdb.trending ("today"))
+	})
+
+app.get (app.router ["cgi-bin:api trending:week"], async function (request: any, response: any, next: any) {
+	return response.json (await request.tmdb.trending ("week"))
 	})
 
 /**
@@ -162,30 +297,10 @@ if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router.index, async function (request: any, response: any, next: any) {
-	/*
-	response.app.data.movie = {popular: (await request.tmdb.movie.popular ()).data}
-	response.app.data.tv = {popular: (await request.tmdb.tv.popular ()).data}
-	response.app.data.trending = {
-		today: (await request.tmdb.trending ("today")).data,
-		week: (await request.tmdb.trending ("week")).data,
-		}
-	*/
-	response.set ({
-		layout: "index",
-		route: "home",
-		// article: {},
-		// "ld+json webpage": {},
-		})
-	return response.vue ()
-	})
-
-app.get (app.router ["cgi-bin:api trending:today"], async function (request: any, response: any, next: any) {
-	return response.json (await request.tmdb.trending ("today"))
-	})
-
-app.get (app.router ["cgi-bin:api trending:week"], async function (request: any, response: any, next: any) {
-	return response.json (await request.tmdb.trending ("week"))
+app.catch (function (request: any, response: any, next: any) {
+	response.set ({layout: 404})
+	return response.vue (404)
+	return response ("404 Not Found", 404)
 	})
 
 /**
@@ -198,80 +313,22 @@ app.get (app.router ["cgi-bin:api trending:week"], async function (request: any,
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router ["search"])
-
-app.get (app.router.page ["about"], function (request: any, response: any, next: any) {
-	response.set ({title: "About"})
-	return response.vue ()
-	})
-
-app.get (app.router.page ["contact"])
-
-app.get (app.router.page ["help"])
-
-app.get (app.router.page ["privacy"])
-
-app.get (app.router.page ["privacy-policy"])
-
-app.get (app.router.page ["privacy-policy:content"])
-
-app.get (app.router.page ["term_of_use"])
-
-app.get (app.router.page ["term_of_service"])
-
-app.get (app.router.page ["cookie"])
-
-app.get (app.router.page ["cookie:preference"])
-
-app.get (app.router.page ["disclaimer"])
-
-app.get (app.router.page ["FAQ"])
-
-app.get (app.router.page ["DMCA"])
-
-app.get (app.router.page ["EULA"])
-
-app.get (app.router.page ["service"])
-
-app.get (app.router.page ["partner"])
+export default app.export ()
 
 /**
- * xxx
- *
- * title
- * description
- * sub description
+ * the end
  *
  * xxx://xxx.xxx.xxx/xxx
  */
 
+/*
 app.get (app.router ["archive"])
 app.get (app.router ["archive:year"])
 app.get (app.router ["archive:month"])
 app.get (app.router ["archive:day"])
 
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
 app.get (app.router ["author:index"])
 app.get (app.router ["author"])
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
 
 app.get (app.router ["blog:index"])
 app.get (app.router ["blog"])
@@ -284,16 +341,6 @@ app.get (app.router ["event"])
 
 app.get (app.router ["promo:index"])
 app.get (app.router ["promo"])
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
 
 app.get (app.router ["playlist:index"])
 app.get (app.router ["playlist"])
@@ -313,16 +360,6 @@ app.get (app.router ["genre"])
 app.get (app.router ["country:index"])
 app.get (app.router ["country"])
 
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
 app.get (app.router ["image:index"])
 app.get (app.router ["image"])
 
@@ -340,16 +377,6 @@ app.get (app.router ["music"])
 
 app.get (app.router ["video:index"])
 app.get (app.router ["video"])
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
 
 app.get (app.router ["movie:index"])
 app.get (app.router ["movie"])
@@ -399,36 +426,21 @@ app.get (app.router ["people"])
 app.get (app.router ["people:top_global"])
 app.get (app.router ["people:editor-choice"])
 
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-app.catch (function (request: any, response: any, next: any) {
-	response.set ({layout: 404})
-	return response.vue (404)
-	return response ("404 Not Found", 404)
+app.post ("/g_auth", async function (request: any, response: any, next: any) {
+	var post = await request.json ()
+	var g_auth = post.g_auth || {}
+	if ("email" in g_auth) {
+		if (request.db.cache.plugin.g_auth.array ().filter ({email: g_auth.email}).one ()) {}
+		else {
+			var insert = await request.db.cache.plugin.g_auth.insert ({
+				p_id: g_auth.p_id,
+				name: g_auth.name,
+				email: g_auth.email,
+				picture: g_auth.picture,
+				})
+			}
+		return response.json ({success: true})
+		}
+	return response.json ({})
 	})
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-export default app.export ()
-
-/**
- * the end
- *
- * xxx://xxx.xxx.xxx/xxx
- */
+*/

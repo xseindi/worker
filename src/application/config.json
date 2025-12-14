@@ -7,6 +7,6 @@
 "cache:generator": true,
 "cd:io": false,
 "cd:base_url": "https://vcredist.github.io",
-"AD__.show": true,
+"AD__.s": true,
 "*": "*"
 }

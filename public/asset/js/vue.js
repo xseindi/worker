@@ -74,6 +74,7 @@ vue.reference = function (value = null) { return ref (value); }
 vue.route = function (key, value) { vue.markup ["route:" + key] = vue.js ({type: "route", ... value}); }
 vue.router = function (key, value = {}, query = {}) { return lib.router (key, value, query); }
 vue.router.link = function (client, router) { return lib.router.link (client, router); }
+vue.router.files = function (file) { return lib.router.files (vue.app (), file); }
 vue.component = function (key, value) { vue.markup [key] = vue.js ({type: "component", ... value}); }
 vue.element = function (key, value) { vue.markup [key] = vue.js ({type: "element", ... value}); }
 vue.layout = function (key, value) { vue.markup [vue.layout.key (key)] = vue.js ({type: "layout", ... value}); }
@@ -124,15 +125,16 @@ vue.variable = vue.reactive ();
 vue.loading = vue.reactive ();
 vue.ready = vue.reference (false);
 
-vue.var ("is:computer", true)
-vue.var ("is:mobile", false)
-vue.var ("is:tablet", false)
-vue.var ("is:phone", false)
+vue.var ("device:computer", true)
+vue.var ("device:mobile", false)
+vue.var ("device:tablet", false)
+vue.var ("device:phone", false)
 
-vue.is_computer = vue ["is:computer"] = function (value) { return vue.var ("is:computer", value) }
-vue.is_mobile = vue ["is:mobile"] = function (value) { return vue.var ("is:mobile", value) }
-vue.is_tablet = vue ["is:tablet"] = function (value) { return vue.var ("is:tablet", value) }
-vue.is_phone = vue ["is:phone"] = function (value) { return vue.var ("is:phone", value) }
+vue.device = function () {}
+vue.device.computer = function (value) { return vue.var ("device:computer", value) }
+vue.device.mobile = function (value) { return vue.var ("device:mobile", value) }
+vue.device.tablet = function (value) { return vue.var ("device:tablet", value) }
+vue.device.phone = function (value) { return vue.var ("device:phone", value) }
 
 /**
  * xxx
@@ -144,12 +146,17 @@ vue.is_phone = vue ["is:phone"] = function (value) { return vue.var ("is:phone",
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.app = function () {}
+vue.app = function () { return (vue.app.reference || vue.app.id); }
 vue.app.var = vue.reactive ();
 vue.app.data = vue.reactive ({
 	genre: [],
 	movie: {trending: [], popular: [], top_rated: [], now_playing: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
 	tv: {trending: [], popular: [], top_rated: [], airing_today: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
+	asia: {all: [], KR: [], JP: [], CN: []},
+	});
+
+lib.event.on ("load", function () {
+	if (vue.app.config ["AD__.s"]) lib.AD__.detect ();
 	});
 
 /**

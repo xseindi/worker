@@ -89,7 +89,7 @@ vue.element ("icon:material", {
 	prop: ["src"],
 	template: `
 		<div class="icon:container" icon>
-			<span v-if="prop.src" class="icon:material">{{ prop.src }}</span>
+			<span v-if="prop.src" class="icon:material" v-html="lib.google.icon (prop.src)"></span>
 			<span class="icon:material" v-else><slot name="default"/></span>
 		</div>
 		`,
@@ -289,6 +289,26 @@ vue.element ("separator:medium", {
 		`,
 	})
 
+vue.element ("circle:pop", {
+	prop: ["size"],
+	method: {
+		size_of (size = 8) { return "width: " + size + "px; height: " + size + "px;" },
+		},
+	template: `
+		<div class="border-radius:circle" v-bind:style="size_of (prop.size)"></div>
+		`,
+	})
+
+vue.element ("circle:line", {
+	prop: ["size"],
+	method: {
+		size_of (size = 8) { return "width: " + (size.integer () * 3) + "px; height: " + size + "px;" },
+		},
+	template: `
+		<div class="flex align:item border-radius:round" v-bind:style="size_of (prop.size)"></div>
+		`,
+	})
+
 /**
  * xxx
  *
@@ -350,15 +370,19 @@ vue.element ("img:ad", {
 
 vue.element ("adsterra", {
 	prop: ["type"],
-	setup () {},
+	setup () {
+		var large = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__L"}).__html ()))
+		var small = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__S"}).__html ()))
+		return {large, small}
+		},
 	template: `
-		<div v-if="vue.app.config ['AD__.show'] && prop.type === 'horizontal'" class="flex align:item justify:item">
-			<iframe v-if="vue ['is:computer'] ()" src="/ad/adsterra/7qvt6.html" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
-			<iframe v-if="vue ['is:mobile'] ()" src="/ad/adsterra/t2738.html" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
+		<div v-if="vue.app.config ['AD__.s'] && prop.type === 'horizontal'" class="flex align:item justify:item">
+			<iframe v-if="vue.device.computer ()" v-bind:src="large" width="728" height="90" class="border:radius border:none background-color:mono"></iframe>
+			<iframe v-if="vue.device.mobile ()" v-bind:src="small" width="320" height="50" class="border:radius border:none background-color:mono"></iframe>
 		</div>
 		<div class="flex align:item justify:item" v-else>
-			<div v-if="vue ['is:computer'] ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
-			<div v-if="vue ['is:mobile'] ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
+			<div v-if="vue.device.computer ()" class="border:radius background-color:mono" style="width: 728px; height: 90px;"></div>
+			<div v-if="vue.device.mobile ()" class="border:radius background-color:mono" style="width: 320px; height: 50px;"></div>
 		</div>
 		<!--div v-else></div-->
 		`,

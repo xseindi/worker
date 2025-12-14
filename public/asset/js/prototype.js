@@ -8,9 +8,8 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-function Define (descriptor, key, value) {
-	Object.defineProperty (descriptor, key, {value, writable: true, enumerable: true, configurable: true});
-	}
+function Define (descriptor, key, value) { Object.defineProperty (descriptor, key, {value, writable: true, enumerable: true, configurable: true}); }
+function DefineGETTER (descriptor, key, value) { Object.defineProperty (descriptor, key, {get: value, writable: true, enumerable: true, configurable: true}); }
 
 /**
  * xxx
@@ -69,14 +68,19 @@ Array.proto ("select", function (filter) {
  */
 
 Define (String, "proto", function (key, value) { Define (String.prototype, key, value); });
+String.proto ("number", function () { return new Number (this); });
+String.proto ("integer", function () { return parseInt (this); });
+String.proto ("exist", function (search) { return this.indexOf (search) !== undefined; });
 String.proto ("after", function (search) { var pos = this.indexOf (search); if (pos !== undefined) return this.substr (pos + search.length); else return ""; });
 String.proto ("before", function (search) { return string.split (search) [0] || ""; });
 String.proto ("small", function () { return this.toLocaleLowerCase (); });
 String.proto ("big", function () { return this.toUpperCase (); });
 String.proto ("json", function () { return JSON.parse (this); });
+String.proto ("__html", function () { return this + ".html"; });
+String.proto ("to_email", function () { if (this.exist ("@")) return this; else return [this, URL.document.host.name].join ("@"); });
 
 /**
- * xxx
+ * number
  *
  * title
  * description
@@ -86,10 +90,13 @@ String.proto ("json", function () { return JSON.parse (this); });
  */
 
 Define (Number, "proto", function (key, value) { Define (Number.prototype, key, value); });
+Number.proto ("number", function () { return this; });
+Number.proto ("integer", function () { return this; });
 Number.proto ("string", function () { return this.toString (); });
+Number.proto ("randomize", function (number) { return Math.floor (Math.random () * (number - this + 1)) + this; });
 
 /**
- * xxx
+ * event
  *
  * title
  * description
@@ -103,7 +110,7 @@ Event.on = function (key, value) { if (Event.data [key]) Event.data [key].push (
 Event.emit = function (key, ... value) { for (var i in Event.data [key]) Event.data [key][i] (... value); }
 
 /**
- * xxx
+ * promise
  *
  * title
  * description
@@ -119,7 +126,7 @@ Promise.io = function (context) {
 	}
 
 /**
- * xxx
+ * date
  *
  * title
  * description
@@ -314,6 +321,24 @@ Function.cookie.data = {}
  * xxx://xxx.xxx.xxx/xxx
  */
 
+Function.path = function (... path) { return path.join ("/"); }
+
+Function.file = function () {}
+
+Function.dir = function () {}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+Function.email = function () {}
+
 /**
  * xxx
  *
@@ -349,8 +374,8 @@ Function.router.link = function (client, router) {
 	return Function.router.link.data = router;
 	}
 
-Function.router.files = function (file) {
-	return Function.router ("files", {id: "", file});
+Function.router.files = function (id, file) {
+	return Function.router ("files", {id, file});
 	}
 
 Function.ajax = function () {}
@@ -516,6 +541,74 @@ Function.google.auth.start = function () {
 	if (Function.google.auth.credential = Function.cookie.get (Function.google.auth.client.credential)) Function.google.auth.profile = Function.google.auth.parse (Function.google.auth.credential);
 	}
 
+Function.google.icon = function (icon) { if (Function.google.icon.src [icon]) return "&#x" + Function.google.icon.src [icon] + ";"; else return icon; }
+Function.google.icon.src = {
+	home: "e88a",
+	home_app_logo: "e295",
+	home_storage: "f86c",
+	home_lot_device: "e283",
+	notification: "e7f4",
+	notification_unread: "f4fe",
+	notification_audio: "eec1",
+	notification_setting: "f367",
+	chat: "e0b7",
+	chat_unread: "f189",
+	chat_error: "f7ac",
+	check_circle: "e86c",
+	close: "e5cd",
+	cookie: "eaac",
+	flash_on: "e3e7",
+	mobile_vibrate: "f2cb",
+	admin_panel_setting: "ef3d",
+	cloud_lock: "f386",
+	comedy_mask: "f4d6",
+	encrypted: "e593",
+	fingerprint: "e90d",
+	health_safety: "e1d5",
+	security: "e32a",
+	lock: "e897",
+	lock_clock: "ef57",
+	password: "f042",
+	person_shield: "e384",
+	shield: "e9e0",
+	shield_lock: "f686",
+	shield_locked: "f592",
+	shield_toggle: "f2ad",
+	shield_watch: "f30f",
+	verified_user: "e8e8",
+	supervisor_account: "e8d3",
+	visibility: "e8f4",
+	id_card: "e8f4",
+	passkey: "f87f",
+	globe: "e64c",
+	globe_asia: "f799",
+	circle: "ef4a",
+	dns: "e875",
+	eco: "ea35",
+	explore: "e87a",
+	share_location: "f05f",
+	arrow_circle_down: "f181",
+	arrow_drop_down: "e5c5",
+	search: "e8b6",
+	movie: "e02c",
+	local_activity: "e53f",
+	play_circle: "e1c4",
+	slide_show: "e41b",
+	tv: "e333",
+	tv_guide: "e1dc",
+	live_tv: "e639",
+	menu: "e5d2",
+	more: "e619",
+	more_vertical: "e5d4",
+	more_horizontal: "e5d3",
+	sms: "e625",
+	local_fire_department: "ef55",
+	image: "e3f4",
+	animated_image: "f49a",
+	photo: "e410",
+	photo_camera: "e412",
+	}
+
 Event.on ("load", function () {
 	if (false) {
 		google.accounts.id.initialize ({
@@ -610,6 +703,7 @@ Function.export = {
 	url: URL,
 	json: JSON,
 	cookie: Function.cookie,
+	path: Function.path, file: Function.file, dir: Function.dir,
 	image: Function.image,
 	router: Function.router,
 	ajax: Function.ajax,

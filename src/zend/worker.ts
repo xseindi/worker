@@ -108,13 +108,13 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.redirect = io.redirect;
 	response.set = function (data: any) { request.library.set (data); }
 	response.vue = function (slot: any, code: number = 200) {
-		if (typeof slot === "number") if (code = slot) slot = null;
-		if (slot) {} else slot = "\t\t\t<!---->";
+		if (typeof slot === "number") if (code = slot) slot = {}
+		// if (slot) {} else slot = "\t\t\t<!---->";
 		var markup = php.vue.html ();
-		return response.html (php.render (markup, {slot}, 2), code);
+		return response.html (php.render (markup, slot, 2), code);
 		}
 	response.var = {}
-	response.app = {config: {}, data: {}}
+	response.app = {config: {}, data: {}, variable: {}}
 	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
 	}
@@ -136,8 +136,10 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				await request.db.setup ({drop: true, data: true})
 				}
 			}
-		request.router = function (key: string, value: any = {}) {
-			var router = request.base_url + (app.router [key] || key)
+		request.router = function (key: any, value: any = {}) {
+			var router = request.base_url
+			if (typeof key === "string") router = router + (app.router [key] || key)
+			else for (var i in key) router = router + app.router [i][key [i]]
 			for (var i in value) router = router.split (":" + i).join (value [i])
 			return router
 			}
@@ -150,7 +152,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
-		response.app.config ["AD__.show"] = app.config ["AD__.show"]
+		response.app.config ["AD__.s"] = app.config ["AD__.s"]
 		if (app.config ["cache:io"]) request.cache.io = app.config ["cache:io"]
 		if (app.config.type === "website") {}
 		else if (app.config.type === "bioskop") {
@@ -270,7 +272,7 @@ var library: any = class {
 			title: this.request.client.object ["site:title"],
 			description: this.request.client.object ["site:description"],
 			meta: {
-				author: {name: this.request.client.object ["meta:author"], email: {address: "support@host".split ("host").join (this.request.url.host.name), support: "support"}},
+				author: {name: this.request.client.object ["meta:author"], email: {address: ("support@host").split ("host").join (this.request.url.host.name), support: "support"}},
 				generator: this.request.client.object ["meta:generator"],
 				description: this.request.client.object ["meta:description"],
 				keyword: this.request.client.object ["meta:keyword"],
@@ -283,7 +285,8 @@ var library: any = class {
 				},
 			ad: {
 				"adsterra": this.request.client.object.ad ["adsterra"],
-				"adsterra:adult": this.request.client.object.ad ["adsterra:adult"],
+				"adsterra:horizontal large": this.request.client.object.ad ["adsterra:horizontal large"],
+				"adsterra:horizontal small": this.request.client.object.ad ["adsterra:horizontal small"],
 				"adsterra:float": this.request.client.object.ad ["adsterra:float"],
 				"monetag": this.request.client.object.ad ["monetag"],
 				},
@@ -346,6 +349,8 @@ var library: any = class {
 		this.response.var ["date:publish"] = new Date ().toUTCString ()
 		this.response.var ["article:published_time"] = new Date ().toISOString ()
 		this.response.var ["article:modified_time"] = new Date ().toISOString ()
+		this.response.var ["ad adsterra:horizontal large"] = this.request.client.site.ad ["adsterra:horizontal large"]
+		this.response.var ["ad adsterra:horizontal small"] = this.request.client.site.ad ["adsterra:horizontal small"]
 		if (this.response.var ["c:type"] = "index") {
 			for (var i in this.app.router) {
 				if (i === "$") continue
@@ -396,6 +401,7 @@ var library: any = class {
 				this.response.var ["ld+json webpage:image"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
 				this.response.var ["ld+json webpage:thumbnail"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
 				}
+			if (data.var || data.variable) this.response.app.variable = (data.var || data.variable)
 			}
 		this.request.client.theme.layout = this.response.var ["theme:layout"]
 		this.response.var ["scriptag"] = php.help.scriptag (this.app, this.request, this.response).render ()
