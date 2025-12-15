@@ -255,10 +255,31 @@ app.get (app.router ["movie:index"], async function (request: any, response: any
 		}
 	if (page = request.url.query ("page")) {
 		variable.data = (await request.tmdb.movie.popular ({page})).data
-		// variable.data = (await request.tmdb.movie.discover ({page, vote_average: 4})).data
 		}
 	response.set ({
 		title: "Movie",
+		layout: "index",
+		route: "listing",
+		variable,
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
+	var page, variable: any = {
+		title: "TV Show",
+		icon: "tv_guide",
+		cache: "tv",
+		}
+	if (page = request.url.query ("page")) {
+		variable.data = (await request.tmdb.tv.popular ({page})).data
+		}
+	response.set ({
+		title: "TV Show",
 		layout: "index",
 		route: "listing",
 		variable,

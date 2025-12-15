@@ -101,7 +101,7 @@ vue.route ("listing", {
 		else if (variable.cache) variable.data = vue.app.data [variable.cache].popular
 		else variable.data = []
 		var data = vue.reactive ({list: variable.data, page})
-		// if (data.page > 1) lib.timeout (function () { data.list = vue.app.data.tv.popular }, 3)
+		if (false) if (data.page > 1) lib.timeout (function () { data.list = vue.app.data.tv.popular }, 3)
 		return {variable, data}
 		},
 	method: {
@@ -123,11 +123,27 @@ vue.route ("listing", {
 			for (var i = left; i <= right; i ++) page.push (i)
 			return page
 			},
-		ch_page (page) {
+		paging_style (current, page) {
+			if (current === page) return "font-weight: bold; text-decoration: underline;"
+			else return ""
+			},
+		paging_url (page) {
 			var url = lib.url.document.path + '?page=' + page
 			return url
 			},
-		style_grid (computer) {
+		paging_back (page) {
+			page = page - 1
+			if (page < 1) page = 1
+			var url = lib.url.document.path + '?page=' + page
+			return url
+			},
+		paging_next (page) {
+			page = page + 1
+			if (page > 500) page = 500
+			var url = lib.url.document.path + '?page=' + page
+			return url
+			},
+		grid (computer) {
 			if (computer) return "grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"
 			else return "grid-template-columns: repeat(2, 1fr); grid-gap: 10px;"
 			},
@@ -135,7 +151,7 @@ vue.route ("listing", {
 	template: `
 		<div class="flex flex:column">
 			<title-simple v-bind:text="variable.title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
-			<div class="grid padding" v-bind:style="style_grid (vue.device.computer ())">
+			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
 				<div v-for="data in data.list" class="flex flex:column gap:small width:max" item>
 					<div class="relative border:radius no-overflow">
 						<img:asset src="3x4.svg" class="width:height"/>
@@ -161,23 +177,131 @@ vue.route ("listing", {
 				</div>
 			</div>
 			<div class="flex align:item gap padding">
-				<a class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+				<a v-bind:href="paging_back (data.page)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
 					<icon src="arrow_left_alt"/>
 					<string>Back</string>
 				</a>
 				<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
-					<a v-for="page in paging (data.page)" v-bind:href="ch_page (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="page === data.page ? 'font-weight: bold' : ''">
+					<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
 						{{ page }}
 					</a>
 				</div>
 				<flex:grow v-else/>
-				<a class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+				<a v-bind:href="paging_next (data.page)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
 					<string>Next</string>
 					<icon src="arrow_right_alt"/>
 				</a>
 			</div>
-			<div class="flex align:item justify:item gap:small paging" mobile>
-				<a v-for="page in paging (data.page)" v-bind:href="ch_page (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="page === data.page ? 'font-weight: bold; text-decoration: underline;' : ''">
+			<div class="flex align:item justify:item gap:small padding paging" mobile>
+				<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
+					{{ page }}
+				</a>
+			</div>
+		</div>
+		`,
+	})
+
+vue.route ("listing:all", {
+	setup () {
+		var page = (lib.url.document.query.get ("page") || 1).integer ()
+		var variable = vue.app.variable
+		if (variable.data) {}
+		else if (variable.cache) variable.data = vue.app.data [variable.cache].popular
+		else variable.data = []
+		var data = vue.reactive ({list: variable.data, page})
+		if (false) if (data.page > 1) lib.timeout (function () { data.list = vue.app.data.tv.popular }, 3)
+		return {variable, data}
+		},
+	method: {
+		ico (type) {
+			if (type === "movie") return "movie"
+			else if (type === "tv") return "tv_guide"
+			else return icon || "movie"
+			},
+		paging (current) {
+			current = current.integer ()
+			var page = []
+			var stage = 2
+			var left = current - stage
+			var right = current + stage
+			if (current <= stage) {
+				left = 1
+				right = (stage * 2) + left
+				}
+			for (var i = left; i <= right; i ++) page.push (i)
+			return page
+			},
+		paging_style (current, page) {
+			if (current === page) return "font-weight: bold; text-decoration: underline;"
+			else return ""
+			},
+		paging_url (page) {
+			var url = lib.url.document.path + '?page=' + page
+			return url
+			},
+		paging_back (page) {
+			page = page - 1
+			if (page < 1) page = 1
+			var url = lib.url.document.path + '?page=' + page
+			return url
+			},
+		paging_next (page) {
+			page = page + 1
+			if (page > 500) page = 500
+			var url = lib.url.document.path + '?page=' + page
+			return url
+			},
+		grid (computer) {
+			if (computer) return "grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"
+			else return "grid-template-columns: repeat(2, 1fr); grid-gap: 10px;"
+			},
+		},
+	template: `
+		<div class="flex flex:column">
+			<title-simple v-bind:text="variable.title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
+			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
+				<div v-for="data in data.list" class="flex flex:column gap:small width:max" item>
+					<div class="relative border:radius no-overflow">
+						<img:asset src="3x4.svg" class="width:height"/>
+						<a v-bind:href="data.permalink"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a>
+						<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
+							<icon src="star"/>
+							<string class="font-bold:pop">{{ data.vote.average }}</string>
+						</div>
+						<div class="flex align:item gap:tiny absolute position:top-right">
+							<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:regular opacity:small"/>
+							<img:flag v-else-if="data.language" v-bind:src="data.language" type="language" class="img:atom border-radius:regular opacity:small"/>
+						</div>
+						<div class="flex flex:column gap:tiny absolute position:bottom-left">
+							<icon v-bind:src="ico (data.type)" class="text:gradient"/>
+							<div class="owl-carousel-quality font:tiny font:bold border-radius:pop">HD</div>
+						</div>
+						<div class="flex flex:column align:end gap:tiny absolute position:bottom-right">
+							<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
+						</div>
+					</div>
+					<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
+					<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+				</div>
+			</div>
+			<div class="flex align:item gap padding">
+				<a v-bind:href="paging_back (data.page)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+					<icon src="arrow_left_alt"/>
+					<string>Back</string>
+				</a>
+				<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
+					<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
+						{{ page }}
+					</a>
+				</div>
+				<flex:grow v-else/>
+				<a v-bind:href="paging_next (data.page)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+					<string>Next</string>
+					<icon src="arrow_right_alt"/>
+				</a>
+			</div>
+			<div class="flex align:item justify:item gap:small padding paging" mobile>
+				<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
 					{{ page }}
 				</a>
 			</div>
