@@ -320,7 +320,7 @@ a:visited { color: rgb(var(--font-anchor-color-visited)); }
 .index\:big { z-index: 10000; }
 
 .width { width: 1px; } .width\:bold { width: 2px; }
-.width\:size { width: 100%; } .width\:port { width: 100vw; } .width\:half { width: 50%; }
+.width\:size { width: 100%; } .width\:port { width: 100vw; } .width\:half { width: 50%; } .width\:max { max-width: 100%; }
 .width\:tiny { width: var(--size-tiny); }
 .width\:small { width: var(--size-small); }
 .width\:pop { width: var(--size-pop); }
@@ -592,6 +592,10 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .position\:bottom-right { bottom: 10px; right: 10px; }
 
 .mobile [component="footer-simple"] { flex-direction: column; }
+
+.paging > a { padding: 5px 10px; }
+.paging :nth-child(2), .paging :nth-child(4) { font-size: var(--font-medium); }
+.paging :nth-child(3) { font-size: var(--font-large); }
 
 /**
  * xxx

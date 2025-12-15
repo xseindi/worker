@@ -126,7 +126,7 @@ vue.component ("menu-simple", {
 		var menu = {
 			general: [
 				{component: "a:material", text: "Home", icon: "home_app_logo", url: "/", css},
-				{component: "a:material", text: "Short", icon: "subscriptions", url: vue.router ({p: "short"}), css},
+				{component: "a:material", text: "Short", icon: "subscription", url: vue.router ({p: "short"}), css},
 				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ({p: "trending"}), css},
 				{component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
 				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: vue.router ({p: "editor-choice"}), css},
@@ -210,15 +210,15 @@ vue.component ("footer-simple", {
 			<div class="" style="min-width: 30px;"></div>
 			<div class="" style="min-width: 140px;">
 				<a:material v-bind:text="'About'" v-bind:href="vue.router ({page: 'about'})" v-bind:icon="'description'" class="padding:io border:radius"/>
-				<a:material v-bind:text="'Contact'" v-bind:href="vue.router ({page: 'contact'})" v-bind:icon="'contacts'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Contact'" v-bind:href="vue.router ({page: 'contact'})" v-bind:icon="'contact'" class="padding:io border:radius"/>
 				<a:material v-bind:text="'Blog'" v-bind:href="vue.router ('index')" v-bind:icon="'link'" class="padding:io border:radius"/>
 			</div>
 			<div class="" style="min-width: 200px;">
 				<a:material v-bind:text="'Privacy Policy'" v-bind:href="vue.router ({page: 'privacy-policy'})" v-bind:icon="'health_and_safety'" class="padding:io border:radius"/>
-				<a:material v-bind:text="'Terms of Use'" v-bind:href="vue.router ({page: 'term_of_use'})" v-bind:icon="'settings_accessibility'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'Terms of Use'" v-bind:href="vue.router ({page: 'term_of_use'})" v-bind:icon="'setting_accessibility'" class="padding:io border:radius"/>
 				<a:material v-bind:text="'Cookie Preference'" v-bind:href="vue.router ({page: 'cookie:preference'})" v-bind:icon="'cookie'" class="padding:io border:radius"/>
 				<a:material v-bind:text="'Disclaimer'" v-bind:href="vue.router ({page: 'disclaimer'})" v-bind:icon="'safety_check'" class="padding:io border:radius"/>
-				<a:material v-bind:text="'DMCA'" v-bind:href="vue.router ({page: 'DMCA'})" v-bind:icon="'admin_panel_settings'" class="padding:io border:radius"/>
+				<a:material v-bind:text="'DMCA'" v-bind:href="vue.router ({page: 'DMCA'})" v-bind:icon="'admin_panel_setting'" class="padding:io border:radius"/>
 				<a:material v-bind:text="'Sitemap'" v-bind:href="vue.router ('index')" v-bind:icon="'rss_feed'" class="padding:io border:radius"/>
 			</div>
 			<div class="" style="min-width: 10px;"></div>
@@ -528,15 +528,15 @@ vue.component ("the-movie:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("movie:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("movie:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
 			{component: "a:material", text: "Trending", description: "—", url: vue.router ("movie:trending"), icon: "hotel_class", css},
-			{component: "a:material", text: "Popular", description: "—", url: vue.router ("movie:popular"), icon: "hotel_class", css},
+			// {component: "a:material", text: "Popular", description: "—", url: vue.router ("movie:popular"), icon: "hotel_class", css},
 			{component: "a:material", text: "Top Rated", description: "—", url: vue.router ("movie:top_rated"), icon: "local_fire_department", css},
 			{component: "a:material", text: "Now Playing", description: "—", url: vue.router ("movie:now_playing"), icon: "local_fire_department", css},
 			{component: "a:material", text: "Up Coming", description: "—", url: vue.router ("movie:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router ("movie:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("movie:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
 			// {component: "nav-simple:genre", left: [], right: []},
 			]
@@ -551,15 +551,15 @@ vue.component ("the-tv:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("tv:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("tv:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
 			{component: "a:material", text: "Trending", description: "—", url: vue.router ("tv:trending"), icon: "hotel_class", css},
-			{component: "a:material", text: "Popular", description: "—", url: vue.router ("tv:popular"), icon: "hotel_class", css},
+			//  {component: "a:material", text: "Popular", description: "—", url: vue.router ("tv:popular"), icon: "hotel_class", css},
 			{component: "a:material", text: "Top Rated", description: "—", url: vue.router ("tv:top_rated"), icon: "local_fire_department", css},
 			{component: "a:material", text: "Airing Today", description: "—", url: vue.router ("tv:airing_today"), icon: "timer_play", css},
 			{component: "a:material", text: "Up Coming", description: "—", url: vue.router ("tv:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router ("tv:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("tv:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
 			// {component: "nav-simple:genre", left: [], right: []},
 			]
@@ -575,12 +575,12 @@ vue.component ("the-people:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("people:index"), icon: "more_horiz", css},
+			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("people:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
 			{component: "a:material", text: "Male", description: "—", url: vue.router ("people:index", {}, {gender: "male"}), icon: "male", css},
 			{component: "a:material", text: "Female", description: "—", url: vue.router ("people:index", {}, {gender: "female"}), icon: "female", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "0", url: vue.router ("people:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("people:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [{name: "Passed Away", permalink: "/"}], right: []},
 			]

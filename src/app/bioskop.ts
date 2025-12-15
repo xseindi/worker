@@ -24,6 +24,10 @@ import "../plugin/video-src"
 var {ln, ln_r, ln_tab, ln_s} = php.constant
 var {zero, one} = php.constant
 
+var POST_DATE = "2025-09-11"
+var POST_DATE_STRING = "September 11, 2025"
+var POST_CONTENT = "Million's of Movie's, TV Show's and People to discover."
+
 /**
  * xxx
  *
@@ -60,10 +64,14 @@ app.get (app.router.index, async function (request: any, response: any, next: an
 	response.set ({
 		layout: "index",
 		route: "home",
+		variable: {},
 		// article: {},
 		// "ld+json webpage": {},
 		})
-	return response.vue ()
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:content": POST_CONTENT,
+		})
 	})
 
 /**
@@ -76,12 +84,31 @@ app.get (app.router.index, async function (request: any, response: any, next: an
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router.page ["about"], function (request: any, response: any, next: any) {
-	response.set ({title: "About"})
-	return response.vue ()
+app.get (app.router.page ["about"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "About",
+		layout: "index",
+		route: "home",
+		variable: {},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:content": POST_CONTENT,
+		})
 	})
 
-app.get (app.router.page ["contact"])
+app.get (app.router.page ["contact"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Contact",
+		layout: "index",
+		route: "home",
+		variable: {},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:content": POST_CONTENT,
+		})
+	})
 
 app.get (app.router.page ["help"])
 
@@ -94,21 +121,22 @@ app.get (app.router.page ["privacy-policy"], async function (request: any, respo
 		route: "page:privacy-policy",
 		variable: {
 			title: "Privacy Policy",
-			last_update: "September 11, 2025",
+			last_update: POST_DATE_STRING,
 			name: request.client.site.name,
 			email: request.client.site.meta.author.email.address,
 			base_url: request.base_url,
-			url: request.router ({page: "privacy-policy"}),
+			url: request.router ({page: "contact"}),
 			},
 		})
 	return response.vue ({
-		"post:date": "2025-09-11",
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
 		"post:content": php.render (php.page ["privacy-policy"] (), {
-			"var:last_update": "September 11, 2025",
+			"var:last_update":POST_DATE_STRING,
 			"var:name": request.client.site.name,
 			"var:email": request.client.site.meta.author.email.address,
 			"var:base_url": request.base_url,
-			"var:url": request.router ({page: "privacy-policy"}),
+			"var:url": request.router ({page: "contact"}),
 			}),
 		})
 	})
@@ -128,7 +156,7 @@ app.get (app.router.page ["cookie:preference"], async function (request: any, re
 		route: "page:cookie-preference",
 		variable: {
 			title: "Cookie",
-			last_update: "September 11, 2025",
+			last_update: POST_DATE_STRING,
 			name: request.client.site.name,
 			email: request.client.site.meta.author.email.address,
 			base_url: request.base_url,
@@ -136,9 +164,10 @@ app.get (app.router.page ["cookie:preference"], async function (request: any, re
 			},
 		})
 	return response.vue ({
-		"post:date": "2025-09-11",
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
 		"post:content": php.render (php.page ["privacy-policy"] (), {
-			"var:last_update": "September 11, 2025",
+			"var:last_update": POST_DATE_STRING,
 			"var:name": request.client.site.name,
 			"var:email": request.client.site.meta.author.email.address,
 			"var:base_url": request.base_url,
@@ -147,11 +176,48 @@ app.get (app.router.page ["cookie:preference"], async function (request: any, re
 		})
 	})
 
-app.get (app.router.page ["disclaimer"])
+app.get (app.router.page ["disclaimer"], async function (request: any, response: any, next: any) {
+	var variable = response.set ({
+		title: "Disclaimer",
+		layout: "index",
+		route: "page:disclaimer",
+		variable: {
+			title: "Disclaimer",
+			last_update: POST_DATE_STRING,
+			name: request.client.site.name,
+			email: request.client.site.meta.author.email.address,
+			base_url: request.base_url,
+			url: {contact: request.router ({page: "contact"})},
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
 
 app.get (app.router.page ["FAQ"])
 
-app.get (app.router.page ["DMCA"])
+app.get (app.router.page ["DMCA"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "DMCA",
+		layout: "index",
+		route: "page:DMCA",
+		variable: {
+			title: "DMCA",
+			last_update: POST_DATE_STRING,
+			name: request.client.site.name,
+			email: request.client.site.meta.author.email.address,
+			base_url: request.base_url,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
 
 app.get (app.router.page ["EULA"])
 
@@ -180,6 +246,29 @@ app.get (app.router ["search"])
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+app.get (app.router ["movie:index"], async function (request: any, response: any, next: any) {
+	var page, variable: any = {
+		title: "Movie",
+		icon: "movie",
+		cache: "movie",
+		}
+	if (page = request.url.query ("page")) {
+		variable.data = (await request.tmdb.movie.popular ({page})).data
+		// variable.data = (await request.tmdb.movie.discover ({page, vote_average: 4})).data
+		}
+	response.set ({
+		title: "Movie",
+		layout: "index",
+		route: "listing",
+		variable,
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
 
 /**
  * xxx
@@ -314,6 +403,8 @@ app.catch (function (request: any, response: any, next: any) {
  */
 
 export default app.export ()
+
+console.log ("let's go")
 
 /**
  * the end

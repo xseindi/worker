@@ -405,6 +405,7 @@ var library: any = class {
 			}
 		this.request.client.theme.layout = this.response.var ["theme:layout"]
 		this.response.var ["scriptag"] = php.help.scriptag (this.app, this.request, this.response).render ()
+		return (data.var || data.variable)
 		}
 	plugin () {
 		if (this.request.client.object ["tmdb:api"]) {

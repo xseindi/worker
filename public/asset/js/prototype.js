@@ -70,7 +70,7 @@ Array.proto ("select", function (filter) {
 Define (String, "proto", function (key, value) { Define (String.prototype, key, value); });
 String.proto ("number", function () { return new Number (this); });
 String.proto ("integer", function () { return parseInt (this); });
-String.proto ("exist", function (search) { return this.indexOf (search) !== undefined; });
+String.proto ("exist", function (search) { return this.includes (search); });
 String.proto ("after", function (search) { var pos = this.indexOf (search); if (pos !== undefined) return this.substr (pos + search.length); else return ""; });
 String.proto ("before", function (search) { return string.split (search) [0] || ""; });
 String.proto ("small", function () { return this.toLocaleLowerCase (); });
@@ -541,7 +541,7 @@ Function.google.auth.start = function () {
 	if (Function.google.auth.credential = Function.cookie.get (Function.google.auth.client.credential)) Function.google.auth.profile = Function.google.auth.parse (Function.google.auth.credential);
 	}
 
-Function.google.icon = function (icon) { if (Function.google.icon.src [icon]) return "&#x" + Function.google.icon.src [icon] + ";"; else return icon; }
+Function.google.icon = function (icon) { if (Function.google.icon.src [icon]) return "&#x" + Function.google.icon.src [icon] + ";"; else return "XXXXXXXXXXXX"; }
 Function.google.icon.src = {
 	home: "e88a",
 	home_app_logo: "e295",
@@ -607,6 +607,31 @@ Function.google.icon.src = {
 	animated_image: "f49a",
 	photo: "e410",
 	photo_camera: "e412",
+	subscription: "e064",
+	editor_choice: "f528",
+	search_activity: "f3e5",
+	timer_play: "f4ba",
+	playlist_play: "e05f",
+	hotel_class: "e743",
+	description: "e873",
+	contact: "e0ba",
+	link: "e157",
+	health_and_safety: "e1d5",
+	setting_accessibility: "f05d",
+	safety_check: "ebef",
+	admin_panel_setting: "ef3d",
+	rss_feed: "e0e5",
+	star: "e838",
+	male: "e58e",
+	female: "e590",
+	transgender: "e58d",
+	setting: "e8b8",
+	delete: "e872",
+	delete_auto: "ea4c",
+	delete_forever: "e92b",
+	recycling: "e760",
+	arrow_left_alt: "ef7d",
+	arrow_right_alt: "e941",
 	}
 
 Event.on ("load", function () {

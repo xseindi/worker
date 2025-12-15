@@ -81,6 +81,8 @@ php.render.tag = function (id: string) { return [php.render.tag.open, id, php.re
 php.render.tag.open = "{{";
 php.render.tag.close = "}}";
 
+php.char = {alpha: {numeric: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"}}
+
 php.date = class {
 	date: any;
 	constructor (date: any) {

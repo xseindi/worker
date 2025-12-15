@@ -259,6 +259,12 @@ vue.element ("a:genre", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("flex:grow", {
+	template: `
+		<div class="flex:grow"></div>
+		`,
+	})
+
 vue.element ("separator:mono", {
 	template: `
 		<div class="height background-color:mono"></div>

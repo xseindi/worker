@@ -66,6 +66,7 @@ php.plugin.tmdb = class {
 		if  (option.append_to_response) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
 		if  (option.country) url = [url, ["with_origin_country", option.country].join ("=")].join ("&");
 		if  (option.sort_by) url = [url, ["sort_by", option.sort].join ("=")].join ("&");
+		if  (option.vote_average) url = [url, ["vote_average.gte", option.sort].join ("=")].join ("&");
 		if  (option.up_coming) if (option.up_coming === true) url = [url, ["release_date.gte", new php.date ().string ()].join ("=")].join ("&");
 		else url = [url, ["release_date.gte", option.up_coming].join ("=")].join ("&");
 		return url;
@@ -168,8 +169,15 @@ php.plugin.tmdb.image = function (path: string, size: string = "default") {
 	return __api [["image", size].join (":")] + path;
 	}
 
-php.plugin.tmdb.slugify = function (name: string) {
-	var slugify = (name || "").toLocaleLowerCase ().split (" ").join ("-").split ("'").join ("").split ("&").join ("").split (":").join ("-").split ("--").join ("-");
+php.plugin.tmdb.slugify = function (name: any) {
+	var slug: any = [];
+	var char = php.char.alpha.numeric.split ("")
+	for (var i in name) {
+		if (char.includes (name [i])) slug.push (name [i]);
+		else slug.push ("-");
+		}
+	slug = slug.join ("");
+	var slugify = slug.toLocaleLowerCase ().split ("--").join ("-").split ("--").join ("-").split ("--").join ("-");
 	if (slugify.endsWith ("-")) return slugify.slice (0, (- 1));
 	else return slugify;
 	}

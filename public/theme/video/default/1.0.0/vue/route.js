@@ -93,11 +93,96 @@ vue.route ("home", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.route ("page", {
+vue.route ("listing", {
 	setup () {
-		return {variable: vue.app.variable}
+		var page = (lib.url.document.query.get ("page") || 1).integer ()
+		var variable = vue.app.variable
+		if (variable.data) {}
+		else if (variable.cache) variable.data = vue.app.data [variable.cache].popular
+		else variable.data = []
+		var data = vue.reactive ({list: variable.data, page})
+		// if (data.page > 1) lib.timeout (function () { data.list = vue.app.data.tv.popular }, 3)
+		return {variable, data}
 		},
-	template: ``,
+	method: {
+		ico (type) {
+			if (type === "movie") return "movie"
+			else if (type === "tv") return "tv_guide"
+			else return icon || "movie"
+			},
+		paging (current) {
+			current = current.integer ()
+			var page = []
+			var stage = 2
+			var left = current - stage
+			var right = current + stage
+			if (current <= stage) {
+				left = 1
+				right = (stage * 2) + left
+				}
+			for (var i = left; i <= right; i ++) page.push (i)
+			return page
+			},
+		ch_page (page) {
+			var url = lib.url.document.path + '?page=' + page
+			return url
+			},
+		style_grid (computer) {
+			if (computer) return "grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"
+			else return "grid-template-columns: repeat(2, 1fr); grid-gap: 10px;"
+			},
+		},
+	template: `
+		<div class="flex flex:column">
+			<title-simple v-bind:text="variable.title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
+			<div class="grid padding" v-bind:style="style_grid (vue.device.computer ())">
+				<div v-for="data in data.list" class="flex flex:column gap:small width:max" item>
+					<div class="relative border:radius no-overflow">
+						<img:asset src="3x4.svg" class="width:height"/>
+						<a v-bind:href="data.permalink"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a>
+						<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
+							<icon src="star"/>
+							<string class="font-bold:pop">{{ data.vote.average }}</string>
+						</div>
+						<div class="flex align:item gap:tiny absolute position:top-right">
+							<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:regular opacity:small"/>
+							<img:flag v-else-if="data.language" v-bind:src="data.language" type="language" class="img:atom border-radius:regular opacity:small"/>
+						</div>
+						<div class="flex flex:column gap:tiny absolute position:bottom-left">
+							<icon v-bind:src="ico (data.type)" class="text:gradient"/>
+							<div class="owl-carousel-quality font:tiny font:bold border-radius:pop">HD</div>
+						</div>
+						<div class="flex flex:column align:end gap:tiny absolute position:bottom-right">
+							<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
+						</div>
+					</div>
+					<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
+					<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+				</div>
+			</div>
+			<div class="flex align:item gap padding">
+				<a class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+					<icon src="arrow_left_alt"/>
+					<string>Back</string>
+				</a>
+				<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
+					<a v-for="page in paging (data.page)" v-bind:href="ch_page (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="page === data.page ? 'font-weight: bold' : ''">
+						{{ page }}
+					</a>
+				</div>
+				<flex:grow v-else/>
+				<a class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+					<string>Next</string>
+					<icon src="arrow_right_alt"/>
+				</a>
+			</div>
+			<div class="flex align:item justify:item gap:small paging" mobile>
+				<a v-for="page in paging (data.page)" v-bind:href="ch_page (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="page === data.page ? 'font-weight: bold; text-decoration: underline;' : ''">
+					{{ page }}
+				</a>
+			</div>
+		</div>
+		`,
 	})
 
 /**
@@ -365,6 +450,99 @@ vue.route ("page:cookie-preference", {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+vue.route ("page:DMCA", {
+	setup () {
+		return {variable: vue.app.variable}
+		},
+	template: `
+<div class="padding:horizontal">
+<h1>{{ variable.title }}</h1>
+<p>This Digital Millennium Copyright Act policy (“Policy”) applies to the <a v-bind:href="variable.base_url">{{ lib.url.document.host.name }}</a> website (“Website” or “Service”) and any of its related products and services (collectively, “Services”) and outlines how {{ variable.name }} (“{{ variable.name }}”, “we”, “us” or “our”) addresses copyright infringement notifications and how you (“you” or “your”) may submit a copyright infringement complaint.</p>
+<p>Protection of intellectual property is of utmost importance to us and we ask our users and their authorized agents to do the same. It is our policy to expeditiously respond to clear notifications of alleged copyright infringement that comply with the United States Digital Millennium Copyright Act (“DMCA”) of 1998, the text of which can be found at the U.S. Copyright Office.</p>
+<div class="index"><h3>Table of contents</h3><ol class="index"><li><a href="#what-to-consider-before-submitting-a-copyright-complaint">What to consider before submitting a copyright complaint</a></li><li><a href="#notifications-of-infringement">Notifications of infringement</a></li><li><a href="#counter-notifications">Counter-notifications</a></li><li><a href="#changes-and-amendments">Changes and amendments</a></li><li><a href="#reporting-copyright-infringement">Reporting copyright infringement</a></li></ol></div>
+<h2 id="what-to-consider-before-submitting-a-copyright-complaint">What to consider before submitting a copyright complaint</h2>
+<p>Before submitting a copyright complaint to us, consider whether the use could be considered fair use. Fair use states that brief excerpts of copyrighted material may, under certain circumstances, be quoted verbatim for purposes such as criticism, news reporting, teaching, and research, without the need for permission from or payment to the copyright holder. If you have considered fair use, and you still wish to continue with a copyright complaint, you may want to first reach out to the user in question to see if you can resolve the matter directly with the user.</p>
+<p>Please note that if you are unsure whether the material you are reporting is in fact infringing, you may wish to contact an attorney before filing a notification with us.</p>
+<p>We may, at our discretion or as required by law, share a copy of your notification or counter-notification with third parties. This may include sharing the information with the account holder engaged in the allegedly infringing activity or for publication.</p>
+<h2 id="notifications-of-infringement">Notifications of infringement</h2>
+<p>If you are a copyright owner or an agent thereof, and you believe that any material available on our Services infringes your copyrights, then you may submit a written copyright infringement notification (“Notification”) using the contact details below pursuant to the DMCA. All such Notifications must comply with the DMCA requirements.</p>
+<p>Filing a DMCA complaint is the start of a pre-defined legal process. Your complaint will be reviewed for accuracy, validity, and completeness. If your complaint has satisfied these requirements, our response may include the removal or restriction of access to allegedly infringing material as well as a permanent termination of repeat infringers’ accounts. A backup of the terminated account’s data may be requested, however, we may not be able to provide you with one and, as such, you are strongly encouraged to take your own backups.</p>
+<p>If we remove or restrict access to materials or terminate an account in response to a Notification of alleged infringement, we will make a good faith effort to contact the affected user with information concerning the removal or restriction of access, which may include a full copy of your Notification (including your name, address, phone, and email address), along with instructions for filing a counter-notification.</p>
+<p>Notwithstanding anything to the contrary contained in any portion of this Policy, {{ variable.name }} reserves the right to take no action upon receipt of a DMCA copyright infringement notification if it fails to comply with all the requirements of the DMCA for such notifications.</p>
+<h2 id="counter-notifications">Counter-notifications</h2>
+<p>A user who receives a copyright infringement Notification may make a counter-Notification pursuant to sections 512(g)(2) and (3) of the US Copyright Act. If you receive a copyright infringement Notification, it means that the material described in the Notification has been removed from our Services or access to the material has been restricted. Please take the time to read through the Notification, which includes information on the Notification we received. To file a counter-notification with us, you must provide a written communication compliant with the DMCA requirements.</p>
+<p>Please note that if you are not sure whether certain material infringes the copyrights of others or that the material or activity was removed or restricted by mistake or misidentification, you may wish to contact an attorney before filing a counter-notification.</p>
+<p>Notwithstanding anything to the contrary contained in any portion of this Policy, {{ variable.name }} reserves the right to take no action upon receipt of a counter-notification. If we receive a counter-notification that complies with the terms of 17 U.S.C. § 512(g), we may forward it to the person who filed the original Notification.</p>
+<p>The process described in this Policy does not limit our ability to pursue any other remedies we may have to address suspected infringement.</p>
+<h2 id="changes-and-amendments">Changes and amendments</h2>
+<p>We reserve the right to modify this Policy or its terms related to the Website and Services at any time at our discretion. When we do, we will revise the updated date at the bottom of this page, post a notification on the main page of the Website. We may also provide notice to you in other ways at our discretion, such as through the contact information you have provided.</p>
+<p>An updated version of this Policy will be effective immediately upon the posting of the revised Policy unless otherwise specified. Your continued use of the Website and Services after the effective date of the revised Policy (or such other act specified at that time) will constitute your consent to those changes.</p>
+<h2 id="reporting-copyright-infringement">Reporting copyright infringement</h2>
+<p>If you would like to notify us of the infringing material or activity, we encourage you to contact us using the details below:</p>
+<p><a v-bind:href="'mailto:' + variable.email">{{ variable.email }}</a></p>
+<p>This document was last updated on {{ variable.last_update }}
+</div>
+	`,
+	})
+
+vue.route ("page:disclaimer", {
+	setup () {
+		return {variable: vue.app.variable}
+		},
+	template: `
+<div class="padding:horizontal">
+<h1>{{ variable.title }}</h1>
+<p>Last updated: {{ variable.last_update }}</p>
+<h2>Interpretation and Definitions</h2>
+<h3>Interpretation</h3>
+<p>The words whose initial letters are capitalized have meanings defined under the following conditions.
+The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
+<h3>Definitions</h3>
+<p>For the purposes of this Disclaimer:</p>
+<ul>
+<li><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Disclaimer) refers to {{ variable.name }}.</li>
+<li><strong>Service</strong> refers to the Website.</li>
+<li><strong>You</strong> means the individual accessing the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</li>
+<li><strong>Website</strong> refers to {{ variable.name }}, accessible from <a v-bind:href="variable.base_url" rel="external nofollow noopener" target="_blank">{{ variable.base_url }}</a></li>
+</ul>
+<h2>Disclaimer</h2>
+<p>The information contained on the Service is for general information purposes only.</p>
+<p>The Company assumes no responsibility for errors or omissions in the contents of the Service.</p>
+<p>In no event shall the Company be liable for any special, direct, indirect, consequential, or incidental damages or any damages whatsoever, whether in an action of contract, negligence or other tort, arising out of or in connection with the use of the Service or the contents of the Service. The Company reserves the right to make additions, deletions, or modifications to the contents on the Service at any time without prior notice.</p>
+<p>The Company does not warrant that the Service is free of viruses or other harmful components.</p>
+<h2>External Links Disclaimer</h2>
+<p>The Service may contain links to external websites that are not provided or maintained by or in any way affiliated with the Company.</p>
+<p>Please note that the Company does not guarantee the accuracy, relevance, timeliness, or completeness of any information on these external websites.</p>
+<h2>Errors and Omissions Disclaimer</h2>
+<p>The information given by the Service is for general guidance on matters of interest only. Even if the Company takes every precaution to ensure that the content of the Service is both current and accurate, errors can occur. Plus, given the changing nature of laws, rules and regulations, there may be delays, omissions or inaccuracies in the information contained on the Service.</p>
+<p>The Company is not responsible for any errors or omissions, or for the results obtained from the use of this information.</p>
+<h2>Fair Use Disclaimer</h2>
+<p>The Company may use copyrighted material which has not always been specifically authorized by the copyright owner. The Company is making such material available for criticism, comment, news reporting, teaching, scholarship, or research.</p>
+<p>The Company believes this constitutes a &quot;fair use&quot; of any such copyrighted material as provided for in section 107 of the United States Copyright law.</p>
+<p>If You wish to use copyrighted material from the Service for your own purposes that go beyond fair use, You must obtain permission from the copyright owner.</p>
+<h2>Views Expressed Disclaimer</h2>
+<p>The Service may contain views and opinions which are those of the authors and do not necessarily reflect the official policy or position of any other author, agency, organization, employer or company, including the Company.</p>
+<p>Comments published by users are their sole responsibility and the users will take full responsibility, liability and blame for any libel or litigation that results from something written in or as a direct result of something written in a comment. The Company is not liable for any comment published by users and reserves the right to delete any comment for any reason whatsoever.</p>
+<h2>No Responsibility Disclaimer</h2>
+<p>The information on the Service is provided with the understanding that the Company is not herein engaged in rendering legal, accounting, tax, or other professional advice and services. As such, it should not be used as a substitute for consultation with professional accounting, tax, legal or other competent advisers.</p>
+<p>In no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever arising out of or in connection with your access or use or inability to access or use the Service.</p>
+<h2>&quot;Use at Your Own Risk&quot; Disclaimer</h2>
+<p>All information in the Service is provided &quot;as is&quot;, with no guarantee of completeness, accuracy, timeliness or of the results obtained from the use of this information, and without warranty of any kind, express or implied, including, but not limited to warranties of performance, merchantability and fitness for a particular purpose.</p>
+<p>The Company will not be liable to You or anyone else for any decision made or action taken in reliance on the information given by the Service or for any consequential, special or similar damages, even if advised of the possibility of such damages.</p>
+<h2>Contact Us</h2>
+<p>If you have any questions about this Disclaimer, You can contact Us:</p>
+<ul>
+<li>
+<p>By email: {{ variable.email }}</p>
+</li>
+<li>
+<p>By visiting this page on our website: <a v-bind:href="variable.url.contact" rel="external nofollow noopener" target="_blank">{{ variable.url.contact }}</a></p>
+</li>
+</ul>
+</div>
+	`,
+	})
 
 /**
  * xxx
