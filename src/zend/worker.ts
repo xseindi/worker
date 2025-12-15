@@ -152,7 +152,6 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				g_auth: await request.db.select ("plugin:google-auth").find ().query (),
 				},
 			}
-		response.app.config ["AD__.s"] = app.config ["AD__.s"]
 		if (app.config ["cache:io"]) request.cache.io = app.config ["cache:io"]
 		if (app.config.type === "website") {}
 		else if (app.config.type === "bioskop") {
@@ -241,6 +240,10 @@ php.worker.client = async function (app: any, request: any, response: any, next:
 	else {
 		request.client.theme.version = php.array.last (request.client.theme.version)
 		}
+	response.app.config ["AD__.s"] = app.config ["AD__.s"]
+	response.app.config ["firebase"] = null
+	response.app.config ["tmdb:api"] = null // request.client.object ["tmdb:api"]
+	response.app.config ["tmdb:token"] = null // request.client.object ["tmdb:api access:token"]
 	}
 
 php.worker.image = async function (app: any, request: any, response: any, next: any) {

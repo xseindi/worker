@@ -44,7 +44,8 @@ app.start (async function (request: any, response: any, next: any) {
 	if (request.redirect.url) return response.redirect (request.redirect.url, request.redirect.code)
 	if (request.error.length) {
 		for (var i in request.error) {
-			if (request.error [i].type === "host") return response ("Host Not Found", 404)
+			if (request.error [i].type === "host") return response ("Not Found", 404)
+			if (request.error [i].type === "agent") return response ("Forbidden", 404)
 			}
 		}
 	return next ()
@@ -60,7 +61,7 @@ app.start (async function (request: any, response: any, next: any) {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router.index, async function (request: any, response: any, next: any) {
+var test = async function (request: any, response: any, next: any) {
 	response.set ({
 		layout: "index",
 		route: "home",
@@ -72,7 +73,12 @@ app.get (app.router.index, async function (request: any, response: any, next: an
 		"post:date": POST_DATE,
 		"post:content": POST_CONTENT,
 		})
-	})
+	}
+
+app.get (app.router.index, test)
+app.get ("/001", test)
+app.get ("/002", test)
+app.get ("/003", test)
 
 /**
  * xxx
@@ -235,6 +241,33 @@ app.get (app.router.page ["partner"])
  * xxx://xxx.xxx.xxx/xxx
  */
 
+app.get (app.router.p ["short"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Short",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "Short",
+			icon: "subscription",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 app.get (app.router ["search"])
 
 /**
@@ -269,6 +302,78 @@ app.get (app.router ["movie:index"], async function (request: any, response: any
 		})
 	})
 
+app.get (app.router ["movie:trending"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Movie (Trending)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "Movie (Trending)",
+			icon: "movie",
+			data: (await request.tmdb.movie.trending ({page: (request.url.query ("page") || one)})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["movie:top_rated"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Movie (Top Rated)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "Movie (Top Rated)",
+			icon: "movie",
+			data: (await request.tmdb.movie.top_rated ({page: (request.url.query ("page") || one)})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["movie:now_playing"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Movie (Now Playing)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "Movie (Now Playing)",
+			icon: "movie",
+			data: (await request.tmdb.movie.now_playing ({page: (request.url.query ("page") || one)})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["movie:up_coming"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Movie (Coming Soon)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "Movie (Coming Soon)",
+			icon: "movie",
+			data: (await request.tmdb.movie.discover ({page: (request.url.query ("page") || one), up_coming: true})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
 app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
 	var page, variable: any = {
 		title: "TV Show",
@@ -283,6 +388,78 @@ app.get (app.router ["tv:index"], async function (request: any, response: any, n
 		layout: "index",
 		route: "listing",
 		variable,
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["tv:trending"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "TV Show (Trending)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "TV Show (Trending)",
+			icon: "tv_guide",
+			data: (await request.tmdb.tv.trending ({page: (request.url.query ("page") || one)})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["tv:top_rated"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "TV Show (Top Rated)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "TV Show (Top Rated)",
+			icon: "tv_guide",
+			data: (await request.tmdb.tv.top_rated ({page: (request.url.query ("page") || one)})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["tv:airing_today"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "TV Show (Airing Today)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "TV Show (Airing Today)",
+			icon: "tv_guide",
+			data: (await request.tmdb.tv.airing_today ({page: (request.url.query ("page") || one)})).data,
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["tv:up_coming"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "TV Show (Coming Soon)",
+		layout: "index",
+		route: "listing",
+		variable: {
+			title: "TV Show (Coming Soon)",
+			icon: "tv_guide",
+			data: (await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), up_coming_air: true})).data,
+			},
 		})
 	return response.vue ({
 		"post:date": POST_DATE,
@@ -386,6 +563,7 @@ if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js
 		week: (await request.tmdb.trending ("week")).data,
 		}
 	var output: any = []
+	output.push (`vue.app.config = ${JSON.stringify (response.app.config)}`)
 	output.push (`vue.app.data.movie = ${JSON.stringify (response.app.data.movie)}`)
 	output.push (`vue.app.data.tv = ${JSON.stringify (response.app.data.tv)}`)
 	output.push (`vue.app.data.trending = ${JSON.stringify (response.app.data.trending)}`)

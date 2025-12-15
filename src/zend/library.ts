@@ -23,15 +23,15 @@ php.is_agent_phone = function (agent: string) {
 
 php.is_agent_crawler = function (agent: string) {
 	var pattern = [
-		/Googlebot/i,
-		/Bingbot/i,
+		// /Googlebot/i,
+		// /Bingbot/i,
+		// /YandexBot/i,
+		// /Facebot/i,
+		// /Twitterbot/i,
+		// /WhatsApp/i,
 		/Slurp/i,
 		/DuckDuckBot/i,
 		/Baiduspider/i,
-		/YandexBot/i,
-		/Facebot/i,
-		/Twitterbot/i,
-		/WhatsApp/i,
 		/rogerbot/i,
 		/DotBot/i,
 		/SemrushBot/i,

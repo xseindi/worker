@@ -28,9 +28,9 @@ vue.layout ("index", {
 					</div>
 				</menu>
 				<main id="main" class="flex flex:column flex:grow index">
-					<route v-bind:src="vue.app.route"/>
+					<route v-bind:src="vue.app.route" class="flex:grow"/>
 					<div class="flex align:item justify:item padding:big">
-						<img:undraw src="construction_worker" class="" width="280"/>
+						<!--img:undraw src="construction_worker" class="" width="280"/-->
 					</div>
 					<footer id="footer" class="flex flex:column padding">
 						<footer-simple />

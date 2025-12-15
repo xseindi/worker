@@ -185,7 +185,8 @@ vue.element ("img:flag", {
 		url (src, type) {
 			var path = "https://static-files.motogp.pulselive.com/assets/flags/{src}.svg"
 			path = "/asset/image/flag/{src}.svg"
-			if (type == "language") path = path = "/asset/image/flag/language/{src}.svg"
+			if (type == "language") src = lib.language.to_country (src)
+			if (false) if (type == "language") path = "/asset/image/flag/language/{src}.svg"
 			return path.split ("{src}").join (src.small ())
 			},
 		},

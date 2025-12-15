@@ -117,8 +117,8 @@ vue.route ("listing", {
 			var left = current - stage
 			var right = current + stage
 			if (current <= stage) {
-				left = 1
-				right = (stage * 2) + left
+				// left = 1
+				// right = (stage * 2) + left
 				}
 			for (var i = left; i <= right; i ++) page.push (i)
 			return page
@@ -127,19 +127,36 @@ vue.route ("listing", {
 			if (current === page) return "font-weight: bold; text-decoration: underline;"
 			else return ""
 			},
+		paging_number (page) {
+			if (page === 0) return "500"
+			else if (page === - 1) return "499"
+			else if (page === 501) return "1"
+			else if (page === 502) return "2"
+			else return page
+			},
 		paging_url (page) {
-			var url = lib.url.document.path + '?page=' + page
+			var p = 1
+			if (page === 0) p = 500
+			else if (page === - 1) p = 499
+			else if (page === 501) p = 1
+			else if (page === 502) p = 2
+			else p = page
+			var url = lib.url.document.path + '?page=' + p
 			return url
 			},
 		paging_back (page) {
 			page = page - 1
-			if (page < 1) page = 1
+			// if (page < 1) page = 1
+			if (page === 0) page = 500
+			if (page === - 1) page = 499
 			var url = lib.url.document.path + '?page=' + page
 			return url
 			},
 		paging_next (page) {
 			page = page + 1
-			if (page > 500) page = 500
+			// if (page > 500) page = 500
+			if (page === 501) page = 1
+			if (page === 502) page = 2
 			var url = lib.url.document.path + '?page=' + page
 			return url
 			},
@@ -183,7 +200,7 @@ vue.route ("listing", {
 				</a>
 				<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
 					<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
-						{{ page }}
+						{{ paging_number (page) }}
 					</a>
 				</div>
 				<flex:grow v-else/>
@@ -196,6 +213,9 @@ vue.route ("listing", {
 				<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
 					{{ page }}
 				</a>
+			</div>
+			<div class="padding">
+				<adsterra type="horizontal"/>
 			</div>
 		</div>
 		`,
@@ -677,6 +697,30 @@ The following definitions shall have the same meaning regardless of whether they
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+vue.route ("under-construction", {
+	setup () {
+		return {variable: vue.app.variable}
+		},
+	template: `
+		<div class="flex flex:column">
+			<title-simple v-bind:text="variable.title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
+			<div class="flex align:item justify:item padding-vertical:big">
+				<img:undraw src="construction_worker" class="" width="280"/>
+			</div>
+		</div>
+		`,
+	})
 
 /**
  * the end

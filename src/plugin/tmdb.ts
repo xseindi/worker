@@ -67,8 +67,10 @@ php.plugin.tmdb = class {
 		if  (option.country) url = [url, ["with_origin_country", option.country].join ("=")].join ("&");
 		if  (option.sort_by) url = [url, ["sort_by", option.sort].join ("=")].join ("&");
 		if  (option.vote_average) url = [url, ["vote_average.gte", option.sort].join ("=")].join ("&");
-		if  (option.up_coming) if (option.up_coming === true) url = [url, ["release_date.gte", new php.date ().string ()].join ("=")].join ("&");
-		else url = [url, ["release_date.gte", option.up_coming].join ("=")].join ("&");
+		if  (option.up_coming) if (option.up_coming === true) url = [url, ["primary_release_date.gte", new php.date ().string ()].join ("=")].join ("&");
+		else url = [url, ["primary_release_date.gte", option.up_coming].join ("=")].join ("&");
+		if  (option.up_coming_air) if (option.up_coming_air === true) url = [url, ["first_air_date.gte", new php.date ().string ()].join ("=")].join ("&");
+		else url = [url, ["first_air_date.gte", option.up_coming_air].join ("=")].join ("&");
 		return url;
 		}
 	async fetch (api: string, option: any = {}, single: boolean = false) {
@@ -143,6 +145,7 @@ php.plugin.tmdb.movie = class {
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: true}, option))), option);
 		}
+	async trending (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie trending:today", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:top_rated", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async now_playing (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:now_playing", (option = php.object.assign ({type: "movie"}, option))), option); }
@@ -159,6 +162,7 @@ php.plugin.tmdb.tv = class {
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("tv", (option = php.object.assign ({id, type: "tv", append_to_response: true}, option))), option);
 		}
+	async trending (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv trending:today", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:top_rated", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async on_air (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:on_air", (option = php.object.assign ({type: "tv"}, option))), option); }

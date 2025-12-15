@@ -91,9 +91,9 @@ String.proto ("to_email", function () { if (this.exist ("@")) return this; else 
 
 Define (Number, "proto", function (key, value) { Define (Number.prototype, key, value); });
 Number.proto ("number", function () { return this; });
-Number.proto ("integer", function () { return this; });
+Number.proto ("integer", function () { return parseInt (this); });
 Number.proto ("string", function () { return this.toString (); });
-Number.proto ("randomize", function (number) { return Math.floor (Math.random () * (number - this + 1)) + this; });
+Number.proto ("shuffle", function (number) { return Math.floor (Math.random () * (number - this + 1)) + this; });
 
 /**
  * event
@@ -304,7 +304,7 @@ Function.cookie.set = function (key, value = "", expire = 0, domain = null, path
 
 Function.cookie.start = function () {
 	if (Function.cookie.get (Function.cookie.id)) {}
-	else Function.cookie.set (Function.cookie.id, Function.randomize ());
+	else Function.cookie.set (Function.cookie.id, Function.unique.id ());
 	Event.emit ("cookie:start");
 	}
 
@@ -337,7 +337,15 @@ Function.dir = function () {}
  * xxx://xxx.xxx.xxx/xxx
  */
 
-Function.email = function () {}
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
 /**
  * xxx
@@ -657,9 +665,69 @@ Event.on ("load", function () {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+Function.tmdb = class {}
+
+Function.tmdb.api = {
+	"trending:today": "https://api.themoviedb.org/3/trending/all/day?language=en",
+	"trending:week": "https://api.themoviedb.org/3/trending/all/week?language=en",
+	"movie": "https://api.themoviedb.org/3/movie/{id}?language=en",
+	"movie trending:today": "https://api.themoviedb.org/3/trending/movie/day?language=en",
+	"movie trending:week": "https://api.themoviedb.org/3/trending/movie/week?language=en",
+	"movie:discover": "https://api.themoviedb.org/3/discover/movie?language=en",
+	"movie:popular": "https://api.themoviedb.org/3/movie/popular?language=en",
+	"movie:top_rated": "https://api.themoviedb.org/3/movie/top_rated?language=en",
+	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en",
+	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming?language=en",
+	"tv": "https://api.themoviedb.org/3/tv/{id}?language=en",
+	"tv trending:today": "https://api.themoviedb.org/3/trending/tv/day?language=en",
+	"tv trending:week": "https://api.themoviedb.org/3/trending/tv/week?language=en",
+	"tv:discover": "https://api.themoviedb.org/3/discover/tv?language=en",
+	"tv:popular": "https://api.themoviedb.org/3/tv/popular?language=en",
+	"tv:top_rated": "https://api.themoviedb.org/3/tv/top_rated?language=en",
+	"tv:on_air": "https://api.themoviedb.org/3/tv/on_the_air?language=en",
+	"tv:airing_today": "https://api.themoviedb.org/3/tv/airing_today?language=en",
+	"people trending:today": "https://api.themoviedb.org/3/trending/person/day?language=en",
+	"people trending:week": "https://api.themoviedb.org/3/trending/person/week?language=en",
+	"image:default": "https://image.tmdb.org/t/p/w500",
+	"image:original": "https://image.tmdb.org/t/p/original",
+	}
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 Function.image = function () {}
 
-Function.randomize = function () {
+Function.language = function () {}
+
+Function.language.to_country = function (language) {
+	return Function.language.to_country [language = language.toLocaleLowerCase ()] || language;
+	}
+
+Function.language.to_country ["kn"] = "in";
+Function.language.to_country ["hi"] = "in";
+Function.language.to_country ["ml"] = "in";
+Function.language.to_country ["ta"] = "in";
+Function.language.to_country ["te"] = "in";
+Function.language.to_country ["tl"] = "ph";
+Function.language.to_country ["zh"] = "cn";
+Function.language.to_country ["en"] = "us";
+Function.language.to_country ["ja"] = "jp";
+Function.language.to_country ["da"] = "de";
+Function.language.to_country ["cs"] = "cz";
+Function.language.to_country ["ko"] = "kr";
+
+Function.email = function () {}
+
+Function.unique = function () {}
+
+Function.unique.id = function () {
 	return ("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx").replace (/[xy]/g, function (c) {
 		const r = (Math.random () * 16) | 0;
 		const v = c === "x" ? r : (r & 0x3) | 0x8;
@@ -736,6 +804,8 @@ Function.export = {
 	google: Function.google,
 	AD__: Function.AD__,
 	device: Function.device, body: Function.body,
+	language: Function.language,
+	email: Function.email,
 	}
 
 /**
