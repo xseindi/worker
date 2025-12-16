@@ -258,6 +258,74 @@ app.get (app.router.p ["short"], async function (request: any, response: any, ne
 		})
 	})
 
+app.get (app.router.p ["live"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Live",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "Live",
+			icon: "live_tv",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router.p ["history"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "History",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "History",
+			icon: "search_activity",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["playlist:index"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Playlist",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "Playlist",
+			icon: "playlist_play",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["playlist:default"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Watch Later",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "Watch Later",
+			icon: "timer_play",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
 /**
  * xxx
  *
@@ -394,6 +462,34 @@ app.get (app.router ["movie:up_coming"], async function (request: any, response:
 		})
 	})
 
+app.get (app.router ["movie:editor-choice"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "Movie (Editor Choice)",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "Movie",
+			sub_title: "Editor Choice",
+			icon: "editor_choice",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
 	response.set ({
 		title: "TV Show",
@@ -480,6 +576,79 @@ app.get (app.router ["tv:up_coming"], async function (request: any, response: an
 			sub_title: "Coming Soon",
 			icon: "tv_guide",
 			data: await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), up_coming_air: true}),
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+app.get (app.router ["tv:editor-choice"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "TV Show (Editor Choice)",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "TV Show",
+			sub_title: "Editor Choice",
+			icon: "editor_choice",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router ["people:index"], async function (request: any, response: any, next: any) {
+	response.set ({
+		title: "People",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "People",
+			icon: "person",
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+app.get (app.router ["genre"], async function (request: any, response: any, next: any) {
+	var genre = {id: request.url.param ("id"), slug: request.url.param ("genre")}
+	response.set ({
+		title: "Genre",
+		layout: "index",
+		route: "under-construction",
+		variable: {
+			title: "Genre",
+			icon: "comedy_mask",
 			},
 		})
 	return response.vue ({

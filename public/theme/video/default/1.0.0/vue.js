@@ -8,7 +8,22 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-
+vue.dummy.movie_count = "1M +"
+vue.dummy.movie_trending_count = "10K"
+vue.dummy.movie_top_rated_count = "10K +"
+vue.dummy.movie_now_playing_count = "5K +"
+vue.dummy.movie_up_coming_count = "99 +"
+vue.dummy.movie_editor_choice_count = "—"
+vue.dummy.tv_count = "200K +"
+vue.dummy.tv_trending_count = "10K"
+vue.dummy.tv_top_rated_count = "2K +"
+vue.dummy.tv_airing_today_count = "99 +"
+vue.dummy.tv_up_coming_count = "99 +"
+vue.dummy.tv_editor_choice_count = "—"
+vue.dummy.star_count = "1K +"
+vue.dummy.star_male_count = "99 +"
+vue.dummy.star_female_count = "99 +"
+vue.dummy.star_editor_choice_count = "—"
 
 /**
  * xxx

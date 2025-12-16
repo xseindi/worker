@@ -65,20 +65,24 @@ vue.route ("home", {
 			<video-card id="video-trending" v-bind:data="vue.app.data.trending.today"/>
 			<adsterra type="horizontal"/>
 			<title-simple text="Must Watch" icon="local_fire_department" class="padding-bottom:none"/>
-			<video-card id="video-mw" item="item:best" v-bind:option="{shuffle: true}"/>
+			<video-card v-if="vue.device.computer ()" id="video-mw" item="item:best" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-mw" item="item:best" v-bind:option="{shuffle: true, limit: 10}" v-else/>
 			<adsterra type="horizontal"/>
-			<title-simple text="Movie" icon="movie" class="padding-bottom:none"/>
+			<title-simple text="Movie" description="Popular" icon="movie" class="padding-bottom:none"/>
 			<video-card id="video-movie" v-bind:data="vue.app.data.movie.popular"/>
 			<adsterra type="horizontal"/>
-			<title-simple text="TV Show" icon="tv_guide" class="padding-bottom:none"/>
-			<video-card id="video-tv" v-bind:data="vue.app.data.tv.popular" v-bind:option="{icon: 'tv_guide'}"/>
+			<title-simple text="TV Show" description="Popular" icon="tv_guide" class="padding-bottom:none"/>
+			<video-card id="video-tv" v-bind:data="vue.app.data.tv.popular"/>
 			<adsterra type="horizontal"/>
-			<title-simple text="South Korea" icon="globe" class="padding-bottom:none"/>
-			<video-card id="video-asia-KR" v-bind:data="vue.app.data.asia.KR"/>
-			<title-simple text="Japan" icon="globe" class="padding-bottom:none"/>
-			<video-card id="video-asia-JP" v-bind:data="vue.app.data.asia.JP"/>
-			<title-simple text="China" icon="globe" class="padding-bottom:none"/>
-			<video-card id="video-asia-CN" v-bind:data="vue.app.data.asia.CN"/>
+			<title-simple text="South Korea" description="Movie — TV Show" icon="globe" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-asia-KR" v-bind:data="vue.app.data.asia.KR" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-asia-KR" v-bind:data="vue.app.data.asia.KR" v-bind:option="{shuffle: true, limit: 20}" v-else/>
+			<title-simple text="Japan" description="Movie — TV Show" icon="globe" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-asia-JP" v-bind:data="vue.app.data.asia.JP" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-asia-JP" v-bind:data="vue.app.data.asia.JP" v-bind:option="{shuffle: true, limit: 20}" v-else/>
+			<title-simple text="China" description="Movie — TV Show" icon="globe" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-asia-CN" v-bind:data="vue.app.data.asia.CN" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-asia-CN" v-bind:data="vue.app.data.asia.CN" v-bind:option="{shuffle: true, limit: 20}" v-else/>
 		</div>
 		`,
 	})
@@ -165,6 +169,9 @@ vue.route ("listing:search", {
 			</title-simple>
 			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
 				<video-card:simple v-for="data in movie.list" v-bind:data="data"/>
+			</div>
+			<div class="padding padding-bottom:none">
+				<adsterra type="horizontal"/>
 			</div>
 			<title-simple v-bind:text="'TV Show'" v-bind:description="variable.search.query" v-bind:icon="variable.icon" class="padding-bottom:none">
 				<div class="flex align:item gap">
@@ -588,7 +595,7 @@ vue.route ("under-construction", {
 		},
 	template: `
 		<div class="flex flex:column">
-			<title-simple v-bind:text="variable.title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
+			<title-simple v-bind:text="variable.title" v-bind:description="variable.sub_title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
 			<div class="flex align:item justify:item padding-vertical:big">
 				<img:undraw src="construction_worker" class="" width="280"/>
 			</div>

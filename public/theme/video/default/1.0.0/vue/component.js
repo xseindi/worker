@@ -113,19 +113,10 @@ vue.component ("header-simple:float", {
 vue.component ("menu-simple", {
 	setup () {
 		var css = "padding:io border:radius icon:medium"
-		var nav = {
-			general: [
-				{component: "a:material", text: "Home", icon: "home_app_logo", url: "/", css},
-				{component: "a:material", text: "Short", icon: "subscriptions", url: vue.router ({p: "short"}), css},
-				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ({p: "trending"}), css},
-				{component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
-				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: vue.router ({p: "editor-choice"}), css},
-				{component: "a:material", text: "Live", icon: "live_tv", url: vue.router ({p: "live"}), css},
-				]
-			}
+		var sub_css = "padding:io padding-left:big border:radius font:small --mobile"
 		var menu = {
 			general: [
-				{component: "a:material", text: "Home", icon: "home_app_logo", url: "/", css},
+				{component: "a:material", text: "Home", icon: "home", url: "/", css},
 				{component: "a:material", text: "Short", icon: "subscription", url: vue.router ({p: "short"}), css},
 				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ({p: "trending"}), css},
 				{component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
@@ -138,9 +129,19 @@ vue.component ("menu-simple", {
 				{component: "a:material", text: "Playlist", icon: "playlist_play", url: vue.router ("playlist:index"), css},
 				],
 			explore: [
-				{component: "a:material", text: "Star", icon: "hotel_class", url: vue.router ("people:index"), css},
-				{component: "a:material", text: "Movie", icon: "movie", url: vue.router ("movie:index"), css},
-				{component: "a:material", text: "TV Show", icon: "tv_guide", url: vue.router ("tv:index"), css},
+				{component: "a:material", text: "Star", description: vue.dummy.star_count, descriptionColor: "blue", icon: "person", url: vue.router ("people:index"), css},
+					{component: "a:material", text: "Male", description: vue.dummy.star_male_count, icon: "male", url: vue.router ("people:index", {}, {gender: "male"}), css: sub_css},
+					{component: "a:material", text: "Female", description: vue.dummy.star_female_count, icon: "female", url: vue.router ("people:index", {}, {gender: "female"}), css: sub_css},
+				{component: "a:material", text: "Movie", description: vue.dummy.movie_count, descriptionColor: "blue", icon: "movie", url: vue.router ("movie:index"), css},
+					{component: "a:material", text: "Trending", description: vue.dummy.movie_trending_count, icon: "trending_up", url: vue.router ("movie:trending"), css: sub_css},
+					{component: "a:material", text: "Top Rated", description: vue.dummy.movie_top_rated_count, icon: "star_s", url: vue.router ("movie:top_rated"), css: sub_css},
+					{component: "a:material", text: "Now Playing", description: vue.dummy.movie_now_playing_count, icon: "animated_image", url: vue.router ("movie:now_playing"), css: sub_css},
+					{component: "a:material", text: "Up Coming", description: vue.dummy.movie_up_coming_count, icon: "timer_play", url: vue.router ("movie:up_coming"), css: sub_css},
+				{component: "a:material", text: "TV Show", description: vue.dummy.tv_count, descriptionColor: "blue", icon: "tv_guide", url: vue.router ("tv:index"), css},
+					{component: "a:material", text: "Trending", description: vue.dummy.tv_trending_count, icon: "trending_up", url: vue.router ("tv:trending"), css: sub_css},
+					{component: "a:material", text: "Top Rated", description: vue.dummy.tv_top_rated_count, icon: "star_s", url: vue.router ("tv:top_rated"), css: sub_css},
+					{component: "a:material", text: "Airing Today", description: vue.dummy.tv_airing_today_count, icon: "acute", url: vue.router ("tv:airing_today"), css: sub_css},
+					{component: "a:material", text: "Up Coming", description: vue.dummy.tv_up_coming_count, icon: "timer_play", url: vue.router ("tv:up_coming"), css: sub_css},
 				{component: "a:material", text: "Photo", icon: "photo_camera", url: vue.router ("photo:index"), css},
 				],
 			drama: [
@@ -149,7 +150,7 @@ vue.component ("menu-simple", {
 				{component: "a:material", text: "China", icon: "globe_asia", url: vue.router ("country:by_type", {country: "china", type: "tv"})},
 				],
 			}
-		return {menu, nav}
+		return {menu}
 		},
 	mount () {
 		vue.mount.menu ()
@@ -454,6 +455,7 @@ vue.component ("video-card", {
 		var data = prop.data || vue.app.data.trending.today
 		var option = prop.option || {}
 		if (option.shuffle) data = data.shuffle ()
+		if (option.limit) data = data.limit (option.limit)
 		return {prop, data, ready}
 		},
 	method: {
@@ -465,7 +467,7 @@ vue.component ("video-card", {
 		},
 	template: `
 		<div v-if="ready" v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background">
-			<div v-for="data in (prop.data || data)" class="owl-carousel-item gap:small">
+			<div v-for="data in data" class="owl-carousel-item gap:small">
 				<a v-bind:href="data.permalink" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg"/>
 					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
@@ -604,15 +606,15 @@ vue.component ("the-movie:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "1M +", url: vue.router ("movie:index"), icon: "more_horizontal", css},
+			{component: "a:material", text: "ALL", description: vue.dummy.movie_count, descriptionColor: "blue", url: vue.router ("movie:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Trending", description: "10K", url: vue.router ("movie:trending"), icon: "hotel_class", css},
+			{component: "a:material", text: "Trending", description: vue.dummy.movie_trending_count, url: vue.router ("movie:trending"), icon: "trending_up", css},
 			// {component: "a:material", text: "Popular", description: "—", url: vue.router ("movie:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "10K +", url: vue.router ("movie:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Now Playing", description: "5K +", url: vue.router ("movie:now_playing"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Up Coming", description: "99 +", url: vue.router ("movie:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Top Rated", description: vue.dummy.movie_top_rated_count, url: vue.router ("movie:top_rated"), icon: "star_s", css},
+			{component: "a:material", text: "Now Playing", description: vue.dummy.movie_now_playing_count, url: vue.router ("movie:now_playing"), icon: "animated_image", css},
+			{component: "a:material", text: "Up Coming", description: vue.dummy.movie_up_coming_count, url: vue.router ("movie:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("movie:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: vue.dummy.movie_editor_choice_count, url: vue.router ("movie:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
 			// {component: "nav-simple:genre", left: [], right: []},
 			]
@@ -627,15 +629,15 @@ vue.component ("the-tv:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "200K +", url: vue.router ("tv:index"), icon: "more_horizontal", css},
+			{component: "a:material", text: "ALL", description: vue.dummy.tv_count, descriptionColor: "blue", url: vue.router ("tv:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Trending", description: "10K", url: vue.router ("tv:trending"), icon: "hotel_class", css},
+			{component: "a:material", text: "Trending", description: vue.dummy.tv_trending_count, url: vue.router ("tv:trending"), icon: "trending_up", css},
 			//  {component: "a:material", text: "Popular", description: "—", url: vue.router ("tv:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "2K +", url: vue.router ("tv:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Airing Today", description: "99 +", url: vue.router ("tv:airing_today"), icon: "timer_play", css},
-			{component: "a:material", text: "Up Coming", description: "99 +", url: vue.router ("tv:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Top Rated", description: vue.dummy.tv_top_rated_count, url: vue.router ("tv:top_rated"), icon: "star_s", css},
+			{component: "a:material", text: "Airing Today", description: vue.dummy.tv_airing_today_count, url: vue.router ("tv:airing_today"), icon: "acute", css},
+			{component: "a:material", text: "Up Coming", description: vue.dummy.tv_up_coming_count, url: vue.router ("tv:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("tv:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: vue.dummy.tv_editor_choice_count, url: vue.router ("tv:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
 			// {component: "nav-simple:genre", left: [], right: []},
 			]
@@ -651,12 +653,12 @@ vue.component ("the-people:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("people:index"), icon: "more_horizontal", css},
+			{component: "a:material", text: "ALL", description: vue.dummy.star_count, descriptionColor: "blue", url: vue.router ("people:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Male", description: "—", url: vue.router ("people:index", {}, {gender: "male"}), icon: "male", css},
-			{component: "a:material", text: "Female", description: "—", url: vue.router ("people:index", {}, {gender: "female"}), icon: "female", css},
+			{component: "a:material", text: "Male", description: vue.dummy.star_male_count, url: vue.router ("people:index", {}, {gender: "male"}), icon: "male", css},
+			{component: "a:material", text: "Female", description: vue.dummy.star_female_count, url: vue.router ("people:index", {}, {gender: "female"}), icon: "female", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("people:editor-choice"), icon: "editor_choice", css},
+			{component: "a:material", text: "Editor Choice", description: vue.dummy.star_editor_choice_count, url: vue.router ("people:editor-choice"), icon: "editor_choice", css},
 			{component: "separator:mono"},
 			{component: "nav-simple:genre", left: [{name: "Passed Away", permalink: "/"}], right: []},
 			]

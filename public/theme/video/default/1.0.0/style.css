@@ -556,7 +556,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 [device="mobile"] {}
 [device="tablet"] {}
 [device="phone"] {}
-.computer [mobile] { display: none; }
+.computer [mobile] { display: none; } .computer .--mobile { display: none; }
 .computer [tablet] { display: none; }
 .computer [phone] { display: none; }
 .mobile [computer] { display: none; }

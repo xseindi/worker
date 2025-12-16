@@ -36,13 +36,13 @@ vue.element ("icon", {
  */
 
 vue.element ("a:material", {
-	prop: ["text", "description", "url", "icon"],
+	prop: ["text", "description", "url", "icon", "description-color"],
 	template: `
 		<a v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
 			<icon v-bind:src="prop.icon"/>
 			<string v-if="prop.text" primary>{{ prop.text }}</string>
 			<string primary v-else><slot name="default"/></string>
-			<string v-if="prop.description" class="font:small font-bold:pop font-color:green">{{ prop.description }}</string>
+			<string v-if="prop.description" v-bind:class="'font:small font-bold:pop font-color:' + (prop.descriptionColor || 'green')">{{ prop.description }}</string>
 		</a>
 		`,
 	})

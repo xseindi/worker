@@ -123,6 +123,7 @@ vue.markup = {
 vue.var = function (key, value) { if (value === undefined) return vue.variable [key]; else return vue.variable [key] = value; }
 vue.variable = vue.reactive ();
 vue.loading = vue.reactive ();
+vue.dummy = vue.reactive ();
 vue.ready = vue.reference (false);
 
 vue.var ("device:computer", true)
