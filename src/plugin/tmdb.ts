@@ -4,6 +4,7 @@ let {str_after, str_before} = php;
 const __api: any = {
 	"trending:today": "https://api.themoviedb.org/3/trending/all/day?language=en",
 	"trending:week": "https://api.themoviedb.org/3/trending/all/week?language=en",
+	"search": "https://api.themoviedb.org/3/search/multi?include_adult=false&language=en",
 	"movie": "https://api.themoviedb.org/3/movie/{id}?language=en",
 	"movie:search": "https://api.themoviedb.org/3/search/movie?include_adult=false&language=en",
 	"movie trending:today": "https://api.themoviedb.org/3/trending/movie/day?language=en",
@@ -108,6 +109,9 @@ php.plugin.tmdb = class {
 		}
 	async trending (trending: string, option: any = {}) {
 		return this.array (await this.fetch ("trending:" + trending, option), option);
+		}
+	async search (option: any = {}) {
+		return this.array (await this.fetch ("search", option), option);
 		}
 	/*
 	genre_array (list: any, type: string) {

@@ -101,8 +101,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.html = function (output: string, code: number = 200) { return io.html (php.render (php.html (output, response.var), response.var), code); }
 	response.css = function (css: string, code: number = 200) { return io.text (css, code, {"Content-Type": "text/css"}); }
 	response.js = function (js: string, code: number = 200) { return io.text (js, code, {"Content-Type": "text/javascript; charset=UTF-8"}); }
-	// response.js = function (js: string, code: number = 200) { io.header (code); io.status (code); return io.text (js); }
-	response.xml = function (xml: string, code: number = 200) { return io.text (xml, code, {"Content-Type": "application/xml"}); }
+	response.xml = function (xml: string, code: number = 200) { return io.text (xml, code, {"Content-Type": "application/xml; charset=UTF-8"}); }
 	response.image = function () {}
 	response.json = io.json;
 	response.text = io.text;

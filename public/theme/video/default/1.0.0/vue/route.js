@@ -97,7 +97,7 @@ vue.route ("home", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.route ("listing:simple", {
+vue.route ("listing:default", {
 	setup () {
 		var variable = vue.app.variable
 		var data = vue.reactive ({list: variable.data ["data"], total: variable.data ["data:total"], page: {total: variable.data ["page:total"]}})
@@ -136,17 +136,17 @@ vue.route ("listing:simple", {
 		`,
 	})
 
-vue.route ("listing:search", {
+vue.route ("listing:all", {
 	setup () {
-		var page = (lib.url.document.query.get ("page") || 1).integer ()
+		var page = {number: (lib.url.document.query.get ("page") || 1).integer (), total: 5}
 		var variable = vue.app.variable
-		var movie = vue.reactive ({list: variable.data.movie.data, total: variable.data.movie ["data:total"]})
-		var tv = vue.reactive ({list: variable.data.tv.data, total: variable.data.tv ["data:total"]})
-		var total = 5
-		if (variable.data.movie ["page:total"] > variable.data.tv ["page:total"]) total = variable.data.movie ["page:total"]
-		else total = variable.data.tv ["page:total"]
-		if (total < 5) total = 5
-		return {variable, movie, tv, page, total}
+		var movie = vue.reactive ({list: variable.data.movie.data, total: variable.data.movie ["data:total"], page: {total: variable.data.movie ["page:total"]}})
+		var tv = vue.reactive ({list: variable.data.tv.data, total: variable.data.tv ["data:total"], page: {total: variable.data.tv ["page:total"]}})
+		if (movie.page.total > tv.page.total) page.total = movie.page.total
+		else page.total = tv.page.total
+		if (page.total < 5) page.total = 5
+		if (page.total > 500) page.total = 500
+		return {variable, movie, tv, page}
 		},
 	method: {
 		ico (type) {
@@ -161,7 +161,7 @@ vue.route ("listing:search", {
 		},
 	template: `
 		<div class="flex flex:column">
-			<title-simple v-bind:text="'Movie'" v-bind:description="variable.search.query" v-bind:icon="variable.icon" class="padding-bottom:none">
+			<title-simple text="Movie" v-bind:description="variable.sub_title" icon="movie" class="padding-bottom:none">
 				<div class="flex align:item gap">
 					<icon src="description"/>
 					<string>{{ movie.total }}</string>
@@ -173,7 +173,7 @@ vue.route ("listing:search", {
 			<div class="padding padding-bottom:none">
 				<adsterra type="horizontal"/>
 			</div>
-			<title-simple v-bind:text="'TV Show'" v-bind:description="variable.search.query" v-bind:icon="variable.icon" class="padding-bottom:none">
+			<title-simple text="TV Show" v-bind:description="variable.sub_title" icon="tv_guide" class="padding-bottom:none">
 				<div class="flex align:item gap">
 					<icon src="description"/>
 					<string>{{ tv.total }}</string>
@@ -182,27 +182,7 @@ vue.route ("listing:search", {
 			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
 				<video-card:simple v-for="data in tv.list" v-bind:data="data"/>
 			</div>
-			<div class="flex align:item gap padding">
-				<a v-bind:href="lib.p.url.back (page, total)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
-					<icon src="arrow_left_alt"/>
-					<string>Back</string>
-				</a>
-				<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
-					<a v-for="p in lib.p (page, total)" v-bind:href="lib.p.url (p, total)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="lib.p.style (page, p)">
-						{{ lib.p.render (p, total) }}
-					</a>
-				</div>
-				<flex:grow v-else/>
-				<a v-bind:href="lib.p.url.next (page)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
-					<string>Next</string>
-					<icon src="arrow_right_alt"/>
-				</a>
-			</div>
-			<div class="flex align:item justify:item gap:small padding paging" mobile>
-				<a v-for="p in lib.p (page, total)" v-bind:href="lib.p.url (p, total)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="lib.p.style (page, p)">
-					{{ lib.p.render (p, total) }}
-				</a>
-			</div>
+			<paging-simple v-bind:page="page.number" v-bind:total="page.total"/>
 			<div class="padding">
 				<adsterra type="horizontal"/>
 			</div>
