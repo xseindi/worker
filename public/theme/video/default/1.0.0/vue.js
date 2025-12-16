@@ -100,11 +100,17 @@ vue.mount.search = function () {
 			var search_input = $ ("#search-input")
 			var search_button_submit = $ ("#search-button-submit")
 			search_form.css ("display", "flex")
+			search_input.on ("keydown", function (e) {
+				if (e.key === "Enter" || e.key === 13) {
+					location.href = vue.router ("search", {}, {query: search_input.val ()})
+					e.preventDefault ()
+					}
+				})
 			search_button_submit.click (function () {
-				console.log (123)
+				location.href = vue.router ("search", {}, {query: search_input.val ()})
 				})
 			search_input.focus ().blur (function () {
-				setTimeout (function () { $ ("#search-form").css ("display", "none") }, 123)
+				lib.timeout (function () { $ ("#search-form").css ("display", "none") }, 0.123)
 				})
 			})
 		}

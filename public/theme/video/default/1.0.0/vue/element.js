@@ -343,12 +343,14 @@ vue.element ("status:online", {
  */
 
 vue.element ("title-simple", {
-	prop: ["text", "icon"],
+	prop: ["text", "description", "icon"],
 	template: `
 		<div class="flex align:item gap padding">
 			<icon v-bind:src="icon" class="font:big"/>
-			<string v-if="prop.text" class="font:large font:bold padding">{{ prop.text }}</string>
-			<string class="font:large font:bold padding" v-else><slot name="default"/></string>
+			<div class="flex flex:column padding">
+				<string class="font:large font:bold">{{ prop.text }}</string>
+				<string v-if="prop.description" class="font:small">{{ prop.description }}</string>
+			</div>
 			<div class="flex:grow"></div>
 			<slot name="default"/>
 		</div>

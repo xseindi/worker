@@ -268,7 +268,26 @@ app.get (app.router.p ["short"], async function (request: any, response: any, ne
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router ["search"])
+app.get (app.router.search, async function (request: any, response: any, next: any) {
+	var search = {query: request.url.query ("query")}
+	var movie = (await request.tmdb.movie.search ({page: (request.url.query ("page") || one), query: search.query}))
+	var tv = (await request.tmdb.tv.search ({page: (request.url.query ("page") || one), query: search.query}))
+	response.set ({
+		title: "Search : " + search.query,
+		layout: "index",
+		route: "listing:search",
+		variable: {
+			search,
+			icon: "search",
+			data: {movie, tv},
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
 
 /**
  * xxx
@@ -283,6 +302,7 @@ app.get (app.router ["search"])
 app.get (app.router ["movie:index"], async function (request: any, response: any, next: any) {
 	var page, variable: any = {
 		title: "Movie",
+		sub_title: "Popular",
 		icon: "movie",
 		cache: "movie",
 		}
@@ -308,7 +328,8 @@ app.get (app.router ["movie:trending"], async function (request: any, response: 
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "Movie (Trending)",
+			title: "Movie",
+			sub_title: "Trending",
 			icon: "movie",
 			data: (await request.tmdb.movie.trending ({page: (request.url.query ("page") || one)})).data,
 			},
@@ -326,7 +347,8 @@ app.get (app.router ["movie:top_rated"], async function (request: any, response:
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "Movie (Top Rated)",
+			title: "Movie",
+			sub_title: "Top Rated",
 			icon: "movie",
 			data: (await request.tmdb.movie.top_rated ({page: (request.url.query ("page") || one)})).data,
 			},
@@ -344,7 +366,8 @@ app.get (app.router ["movie:now_playing"], async function (request: any, respons
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "Movie (Now Playing)",
+			title: "Movie",
+			sub_title: "Now Playing",
 			icon: "movie",
 			data: (await request.tmdb.movie.now_playing ({page: (request.url.query ("page") || one)})).data,
 			},
@@ -362,7 +385,8 @@ app.get (app.router ["movie:up_coming"], async function (request: any, response:
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "Movie (Coming Soon)",
+			title: "Movie",
+			sub_title: "Coming Soon",
 			icon: "movie",
 			data: (await request.tmdb.movie.discover ({page: (request.url.query ("page") || one), up_coming: true})).data,
 			},
@@ -377,6 +401,7 @@ app.get (app.router ["movie:up_coming"], async function (request: any, response:
 app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
 	var page, variable: any = {
 		title: "TV Show",
+		sub_title: "Popular",
 		icon: "tv_guide",
 		cache: "tv",
 		}
@@ -402,7 +427,8 @@ app.get (app.router ["tv:trending"], async function (request: any, response: any
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "TV Show (Trending)",
+			title: "TV Show",
+			sub_title: "Trending",
 			icon: "tv_guide",
 			data: (await request.tmdb.tv.trending ({page: (request.url.query ("page") || one)})).data,
 			},
@@ -420,7 +446,8 @@ app.get (app.router ["tv:top_rated"], async function (request: any, response: an
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "TV Show (Top Rated)",
+			title: "TV Show",
+			sub_title: "Top Rated",
 			icon: "tv_guide",
 			data: (await request.tmdb.tv.top_rated ({page: (request.url.query ("page") || one)})).data,
 			},
@@ -438,7 +465,8 @@ app.get (app.router ["tv:airing_today"], async function (request: any, response:
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "TV Show (Airing Today)",
+			title: "TV Show",
+			sub_title: "Airing Today",
 			icon: "tv_guide",
 			data: (await request.tmdb.tv.airing_today ({page: (request.url.query ("page") || one)})).data,
 			},
@@ -456,7 +484,8 @@ app.get (app.router ["tv:up_coming"], async function (request: any, response: an
 		layout: "index",
 		route: "listing",
 		variable: {
-			title: "TV Show (Coming Soon)",
+			title: "TV Show",
+			sub_title: "Coming Soon",
 			icon: "tv_guide",
 			data: (await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), up_coming_air: true})).data,
 			},

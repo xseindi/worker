@@ -5,6 +5,7 @@ const __api: any = {
 	"trending:today": "https://api.themoviedb.org/3/trending/all/day?language=en",
 	"trending:week": "https://api.themoviedb.org/3/trending/all/week?language=en",
 	"movie": "https://api.themoviedb.org/3/movie/{id}?language=en",
+	"movie:search": "https://api.themoviedb.org/3/search/movie?include_adult=false&language=en",
 	"movie trending:today": "https://api.themoviedb.org/3/trending/movie/day?language=en",
 	"movie trending:week": "https://api.themoviedb.org/3/trending/movie/week?language=en",
 	"movie:discover": "https://api.themoviedb.org/3/discover/movie?language=en",
@@ -13,6 +14,7 @@ const __api: any = {
 	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en",
 	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming?language=en",
 	"tv": "https://api.themoviedb.org/3/tv/{id}?language=en",
+	"tv:search": "https://api.themoviedb.org/3/search/tv?include_adult=false&language=en",
 	"tv trending:today": "https://api.themoviedb.org/3/trending/tv/day?language=en",
 	"tv trending:week": "https://api.themoviedb.org/3/trending/tv/week?language=en",
 	"tv:discover": "https://api.themoviedb.org/3/discover/tv?language=en",
@@ -62,6 +64,7 @@ php.plugin.tmdb = class {
 		option.page = option.page || 1;
 		option.sort = option.sort || "popularity.desc";
 		if  (option.page) url = [url, ["page", option.page].join ("=")].join ("&");
+		if  (option.query) url = [url, ["query", option.query].join ("=")].join ("&");
 		if  (option.genre) url = [url, ["with_genres", option.genre].join ("=")].join ("&");
 		if  (option.append_to_response) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
 		if  (option.country) url = [url, ["with_origin_country", option.country].join ("=")].join ("&");
@@ -149,6 +152,7 @@ php.plugin.tmdb.movie = class {
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:top_rated", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async now_playing (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:now_playing", (option = php.object.assign ({type: "movie"}, option))), option); }
+	async search (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:search", (option = php.object.assign ({type: "movie"}, option))), option); }
 	}
 
 php.plugin.tmdb.tv = class {
@@ -167,6 +171,7 @@ php.plugin.tmdb.tv = class {
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:top_rated", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async on_air (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:on_air", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async airing_today (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:airing_today", (option = php.object.assign ({type: "tv"}, option))), option); }
+	async search (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:search", (option = php.object.assign ({type: "tv"}, option))), option); }
 	}
 
 php.plugin.tmdb.image = function (path: string, size: string = "default") {
@@ -200,7 +205,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 	var description = input.overview;
 	var poster = {path: input.poster_path, url: php.plugin.tmdb.image (input.poster_path), "url:original": php.plugin.tmdb.image (input.poster_path, "original")}
 	var backdrop = null; if (input.backdrop_path) backdrop = {path: input.backdrop_path, url: php.plugin.tmdb.image (input.backdrop_path), "url:original": php.plugin.tmdb.image (input.backdrop_path, "original")}
-	var release_date = (input.release_date || input.first_air_date), r_date = new Date (release_date);
+	var release_date = (input.release_date || input.first_air_date || Date.now ()), r_date = new Date (release_date);
 	var release_date_string = php.date.month.name [r_date.getMonth () + 1] + " " + r_date.getDate () + ", " + r_date.getFullYear ();
 	var year = r_date.getFullYear ();
 	var popularity = input.popularity;

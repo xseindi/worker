@@ -227,12 +227,39 @@ URL.parse = function (input) {
 		protocol: url.protocol.substring (0, (url.protocol.length - 1)),
 		path: url.pathname,
 		query: url.searchParams,
+		q: URL.query.parse (url.search),
 		// parse: url,
 		}
 	}
 
+URL.query = function () {}
+URL.query.parse = function (query) {
+	var parse = {}, q;
+	if (query.startsWith ("?")) q = query.substr (1);
+	else q = query;
+	var split = q.split ("&");
+	console.log (split.length)
+	for (var i in split) {
+		if (typeof split [i] === "string") {
+			var explode = split [i].split ("=");
+			var key = explode [0];
+			var value = explode [1];
+			parse [key] = value;
+			}
+		}
+	return parse;
+	}
+
 URL.reload = function () { location.reload (); }
 URL.document = URL.parse (window.location.href.toString ());
+URL.document.build = function (query) {
+	var path = URL.document.path;
+	var q = URL.document.q;
+	var param = [];
+	for (var i in query) q [i] = query [i];
+	for (var i in q) param.push (i + "=" + q [i]);
+	return path + "?" + param.join ("&");
+	}
 
 /**
  * xxx

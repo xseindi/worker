@@ -167,7 +167,7 @@ vue.route ("listing", {
 		},
 	template: `
 		<div class="flex flex:column">
-			<title-simple v-bind:text="variable.title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
+			<title-simple v-bind:text="variable.title" v-bind:description="variable.sub_title" v-bind:icon="variable.icon" class="padding-bottom:none"/>
 			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
 				<div v-for="data in data.list" class="flex flex:column gap:small width:max" item>
 					<div class="relative border:radius no-overflow">
@@ -211,7 +211,122 @@ vue.route ("listing", {
 			</div>
 			<div class="flex align:item justify:item gap:small padding paging" mobile>
 				<a v-for="page in paging (data.page)" v-bind:href="paging_url (page)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (data.page, page)">
-					{{ page }}
+					{{ paging_number (page) }}
+				</a>
+			</div>
+			<div class="padding">
+				<adsterra type="horizontal"/>
+			</div>
+		</div>
+		`,
+	})
+
+vue.route ("listing:search", {
+	setup () {
+		var page = (lib.url.document.query.get ("page") || 1).integer ()
+		var variable = vue.app.variable
+		var movie = vue.reactive ({list: variable.data.movie.data, total: variable.data.movie ["data:total"]})
+		var tv = vue.reactive ({list: variable.data.tv.data, total: variable.data.tv ["data:total"]})
+		var total = 5
+		if (variable.data.movie ["page:total"] > variable.data.tv ["page:total"]) total = variable.data.movie ["page:total"]
+		else total = variable.data.tv ["page:total"]
+		if (total < 5) total = 5
+		return {variable, movie, tv, page, total}
+		},
+	method: {
+		ico (type) {
+			if (type === "movie") return "movie"
+			else if (type === "tv") return "tv_guide"
+			else return icon || "movie"
+			},
+		paging (current) {
+			current = current.integer ()
+			var page = []
+			var stage = 2
+			var left = current - stage
+			var right = current + stage
+			for (var i = left; i <= right; i ++) page.push (i)
+			return page
+			},
+		paging_style (current, page) {
+			if (current === page) return "font-weight: bold; text-decoration: underline;"
+			else return ""
+			},
+		paging_number (page, total) {
+			if (page === 0) return total
+			else if (page === - 1) return total - 1
+			else if (page === (total + 1)) return 1
+			else if (page === (total + 2)) return 2
+			else return page
+			},
+		paging_url (page, total) {
+			var p = 1
+			if (page === 0) p = total
+			else if (page === - 1) p = total - 1
+			else if (page === (total + 1)) p = 1
+			else if (page === (total + 2)) p = 2
+			else p = page
+			var url = lib.url.document.build ({page: p})
+			return url
+			},
+		paging_back (page, total) {
+			page = page - 1
+			if (page === 0) page = total
+			if (page === - 1) page = total - 1
+			var url = lib.url.document.build ({page})
+			return url
+			},
+		paging_next (page, total) {
+			page = page + 1
+			if (page === (total + 1)) page = 1
+			if (page === (total + 2)) page = 2
+			var url = lib.url.document.build ({page})
+			return url
+			},
+		grid (computer) {
+			if (computer) return "grid-template-columns: repeat(5, 1fr); grid-gap: 10px;"
+			else return "grid-template-columns: repeat(2, 1fr); grid-gap: 10px;"
+			},
+		},
+	template: `
+		<div class="flex flex:column">
+			<title-simple v-bind:text="'Movie'" v-bind:description="variable.search.query" v-bind:icon="variable.icon" class="padding-bottom:none">
+				<div class="flex align:item gap">
+					<icon src="description"/>
+					<string>{{ movie.total }}</string>
+				</div>
+			</title-simple>
+			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
+				<video-card:simple v-for="data in movie.list" v-bind:data="data"/>
+			</div>
+			<title-simple v-bind:text="'TV Show'" v-bind:description="variable.search.query" v-bind:icon="variable.icon" class="padding-bottom:none">
+				<div class="flex align:item gap">
+					<icon src="description"/>
+					<string>{{ tv.total }}</string>
+				</div>
+			</title-simple>
+			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
+				<video-card:simple v-for="data in tv.list" v-bind:data="data"/>
+			</div>
+			<div class="flex align:item gap padding">
+				<a v-bind:href="paging_back (page, total)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+					<icon src="arrow_left_alt"/>
+					<string>Back</string>
+				</a>
+				<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
+					<a v-for="p in paging (page, total)" v-bind:href="paging_url (p, total)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (page, p, total)">
+						{{ paging_number (p, total) }}
+					</a>
+				</div>
+				<flex:grow v-else/>
+				<a v-bind:href="paging_next (page)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+					<string>Next</string>
+					<icon src="arrow_right_alt"/>
+				</a>
+			</div>
+			<div class="flex align:item justify:item gap:small padding paging" mobile>
+				<a v-for="p in paging (page, total)" v-bind:href="paging_url (p, total)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="paging_style (page, p, total)">
+					{{ paging_number (p, total) }}
 				</a>
 			</div>
 			<div class="padding">

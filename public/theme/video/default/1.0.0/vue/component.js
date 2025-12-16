@@ -514,6 +514,45 @@ vue.component ("video-card:poster", {
 		`,
 	})
 
+vue.component ("video-card:simple", {
+	prop: ["data"],
+	setup (prop) {
+		return {data: prop.data}
+		},
+	method: {
+		ico (type) {
+			if (type === "movie") return "movie"
+			else if (type === "tv") return "tv_guide"
+			else return icon || "movie"
+			},
+		},
+	template: `
+		<div class="flex flex:column gap:small width:max" item>
+			<div class="relative border:radius no-overflow">
+				<img:asset src="3x4.svg" class="width:height"/>
+				<a v-bind:href="data.permalink"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a>
+				<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
+					<icon src="star"/>
+					<string class="font-bold:pop">{{ data.vote.average }}</string>
+				</div>
+				<div class="flex align:item gap:tiny absolute position:top-right">
+					<img:flag v-if="data.country.length" v-for="country in data.country" v-bind:src="country" class="img:atom border-radius:regular opacity:small"/>
+					<img:flag v-else-if="data.language" v-bind:src="data.language" type="language" class="img:atom border-radius:regular opacity:small"/>
+				</div>
+				<div class="flex flex:column gap:tiny absolute position:bottom-left">
+					<icon v-bind:src="ico (data.type)" class="text:gradient"/>
+					<div class="owl-carousel-quality font:tiny font:bold border-radius:pop">HD</div>
+				</div>
+				<div class="flex flex:column align:end gap:tiny absolute position:bottom-right">
+					<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
+				</div>
+			</div>
+			<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
+			<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+		</div>
+		`,
+	})
+
 /**
  * xxx
  *
