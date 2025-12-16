@@ -208,7 +208,7 @@ Date.timeout = function (context, second = 1) { return setTimeout (context, (sec
 Date.timeout.clear = function (context) { clearTimeout (context); }
 
 /**
- * xxx
+ * url
  *
  * title
  * description
@@ -238,13 +238,12 @@ URL.query.parse = function (query) {
 	if (query.startsWith ("?")) q = query.substr (1);
 	else q = query;
 	var split = q.split ("&");
-	console.log (split.length)
 	for (var i in split) {
 		if (typeof split [i] === "string") {
 			var explode = split [i].split ("=");
 			var key = explode [0];
 			var value = explode [1];
-			parse [key] = value;
+			if (key && value) parse [key] = value;
 			}
 		}
 	return parse;
@@ -762,6 +761,53 @@ Function.unique.id = function () {
 		});
 	}
 
+Function.p = function (current) {
+	current = parseInt (current);
+	var page = [];
+	var stage = 2;
+	var left = current - stage;
+	var right = current + stage;
+	for (var i = left; i <= right; i ++) page.push (i);
+	return page;
+	}
+
+Function.p.style = function (current, page) {
+	if (current === page) return "font-weight: bold; text-decoration: underline;";
+	else return "";
+	}
+
+Function.p.render = function (page, total) {
+	if (page === 0) return total;
+	else if (page === - 1) return total - 1;
+	else if (page === (total + 1)) return 1;
+	else if (page === (total + 2)) return 2;
+	else return page;
+	}
+
+Function.p.url = function (page, total) {
+	var p = 1;
+	if (page === 0) p = total;
+	else if (page === - 1) p = total - 1;
+	else if (page === (total + 1)) p = 1;
+	else if (page === (total + 2)) p = 2;
+	else p = page;
+	return URL.document.build ({page: p});
+	}
+
+Function.p.url.back = function (page, total) {
+	page = page - 1;
+	if (page === 0) page = total;
+	if (page === - 1) page = total - 1;
+	return URL.document.build ({page});
+	}
+
+Function.p.url.next = function (page, total) {
+	page = page + 1;
+	if (page === (total + 1)) page = 1;
+	if (page === (total + 2)) page = 2;
+	return URL.document.build ({page});
+	}
+
 /**
  * xxx
  *
@@ -833,6 +879,7 @@ Function.export = {
 	device: Function.device, body: Function.body,
 	language: Function.language,
 	email: Function.email,
+	p: Function.p,
 	}
 
 /**

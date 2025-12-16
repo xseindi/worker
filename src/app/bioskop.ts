@@ -270,8 +270,8 @@ app.get (app.router.p ["short"], async function (request: any, response: any, ne
 
 app.get (app.router.search, async function (request: any, response: any, next: any) {
 	var search = {query: request.url.query ("query")}
-	var movie = (await request.tmdb.movie.search ({page: (request.url.query ("page") || one), query: search.query}))
-	var tv = (await request.tmdb.tv.search ({page: (request.url.query ("page") || one), query: search.query}))
+	var movie = await request.tmdb.movie.search ({page: (request.url.query ("page") || one), query: search.query})
+	var tv = await request.tmdb.tv.search ({page: (request.url.query ("page") || one), query: search.query})
 	response.set ({
 		title: "Search : " + search.query,
 		layout: "index",
@@ -300,20 +300,16 @@ app.get (app.router.search, async function (request: any, response: any, next: a
  */
 
 app.get (app.router ["movie:index"], async function (request: any, response: any, next: any) {
-	var page, variable: any = {
-		title: "Movie",
-		sub_title: "Popular",
-		icon: "movie",
-		cache: "movie",
-		}
-	if (page = request.url.query ("page")) {
-		variable.data = (await request.tmdb.movie.popular ({page})).data
-		}
 	response.set ({
 		title: "Movie",
 		layout: "index",
-		route: "listing",
-		variable,
+		route: "listing:simple",
+		variable: {
+			title: "Movie",
+			sub_title: "Popular",
+			icon: "movie",
+			data: await request.tmdb.movie.popular ({page: (request.url.query ("page") || one)}),
+			},
 		})
 	return response.vue ({
 		"post:date": POST_DATE,
@@ -326,12 +322,12 @@ app.get (app.router ["movie:trending"], async function (request: any, response: 
 	response.set ({
 		title: "Movie (Trending)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "Movie",
 			sub_title: "Trending",
 			icon: "movie",
-			data: (await request.tmdb.movie.trending ({page: (request.url.query ("page") || one)})).data,
+			data: await request.tmdb.movie.trending ({page: (request.url.query ("page") || one)}),
 			},
 		})
 	return response.vue ({
@@ -345,12 +341,12 @@ app.get (app.router ["movie:top_rated"], async function (request: any, response:
 	response.set ({
 		title: "Movie (Top Rated)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "Movie",
 			sub_title: "Top Rated",
 			icon: "movie",
-			data: (await request.tmdb.movie.top_rated ({page: (request.url.query ("page") || one)})).data,
+			data: await request.tmdb.movie.top_rated ({page: (request.url.query ("page") || one)}),
 			},
 		})
 	return response.vue ({
@@ -364,12 +360,12 @@ app.get (app.router ["movie:now_playing"], async function (request: any, respons
 	response.set ({
 		title: "Movie (Now Playing)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "Movie",
 			sub_title: "Now Playing",
 			icon: "movie",
-			data: (await request.tmdb.movie.now_playing ({page: (request.url.query ("page") || one)})).data,
+			data: await request.tmdb.movie.now_playing ({page: (request.url.query ("page") || one)}),
 			},
 		})
 	return response.vue ({
@@ -383,12 +379,12 @@ app.get (app.router ["movie:up_coming"], async function (request: any, response:
 	response.set ({
 		title: "Movie (Coming Soon)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "Movie",
 			sub_title: "Coming Soon",
 			icon: "movie",
-			data: (await request.tmdb.movie.discover ({page: (request.url.query ("page") || one), up_coming: true})).data,
+			data: await request.tmdb.movie.discover ({page: (request.url.query ("page") || one), up_coming: true}),
 			},
 		})
 	return response.vue ({
@@ -399,20 +395,16 @@ app.get (app.router ["movie:up_coming"], async function (request: any, response:
 	})
 
 app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
-	var page, variable: any = {
-		title: "TV Show",
-		sub_title: "Popular",
-		icon: "tv_guide",
-		cache: "tv",
-		}
-	if (page = request.url.query ("page")) {
-		variable.data = (await request.tmdb.tv.popular ({page})).data
-		}
 	response.set ({
 		title: "TV Show",
 		layout: "index",
-		route: "listing",
-		variable,
+		route: "listing:simple",
+		variable: {
+			title: "TV Show",
+			sub_title: "Popular",
+			icon: "tv_guide",
+			data: await request.tmdb.tv.popular ({page: (request.url.query ("page") || one)}),
+			},
 		})
 	return response.vue ({
 		"post:date": POST_DATE,
@@ -425,12 +417,12 @@ app.get (app.router ["tv:trending"], async function (request: any, response: any
 	response.set ({
 		title: "TV Show (Trending)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "TV Show",
 			sub_title: "Trending",
 			icon: "tv_guide",
-			data: (await request.tmdb.tv.trending ({page: (request.url.query ("page") || one)})).data,
+			data: await request.tmdb.tv.trending ({page: (request.url.query ("page") || one)}),
 			},
 		})
 	return response.vue ({
@@ -444,12 +436,12 @@ app.get (app.router ["tv:top_rated"], async function (request: any, response: an
 	response.set ({
 		title: "TV Show (Top Rated)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "TV Show",
 			sub_title: "Top Rated",
 			icon: "tv_guide",
-			data: (await request.tmdb.tv.top_rated ({page: (request.url.query ("page") || one)})).data,
+			data: await request.tmdb.tv.top_rated ({page: (request.url.query ("page") || one)}),
 			},
 		})
 	return response.vue ({
@@ -463,12 +455,12 @@ app.get (app.router ["tv:airing_today"], async function (request: any, response:
 	response.set ({
 		title: "TV Show (Airing Today)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "TV Show",
 			sub_title: "Airing Today",
 			icon: "tv_guide",
-			data: (await request.tmdb.tv.airing_today ({page: (request.url.query ("page") || one)})).data,
+			data: await request.tmdb.tv.airing_today ({page: (request.url.query ("page") || one)}),
 			},
 		})
 	return response.vue ({
@@ -482,12 +474,12 @@ app.get (app.router ["tv:up_coming"], async function (request: any, response: an
 	response.set ({
 		title: "TV Show (Coming Soon)",
 		layout: "index",
-		route: "listing",
+		route: "listing:simple",
 		variable: {
 			title: "TV Show",
 			sub_title: "Coming Soon",
 			icon: "tv_guide",
-			data: (await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), up_coming_air: true})).data,
+			data: await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), up_coming_air: true}),
 			},
 		})
 	return response.vue ({

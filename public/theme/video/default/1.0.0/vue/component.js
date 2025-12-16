@@ -563,17 +563,54 @@ vue.component ("video-card:simple", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.component ("paging-simple", {
+	prop: ["page", "total"],
+	template: `
+		<div class="flex align:item gap padding">
+			<a v-bind:href="lib.p.url.back (prop.page, prop.total)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+				<icon src="arrow_left_alt"/>
+				<string>Back</string>
+			</a>
+			<div v-if="vue.device.computer ()" class="flex flex:grow align:item justify:item gap:small paging">
+				<a v-for="page in lib.p (prop.page, prop.total)" v-bind:href="lib.p.url (page, prop.total)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="lib.p.style (prop.page, page)">
+					{{ lib.p.render (page, total) }}
+				</a>
+			</div>
+			<flex:grow v-else/>
+			<a v-bind:href="lib.p.url.next (prop.page, prop.total)" class="flex align:item gap padding:sky font-bold:pop font:static border-radius:round background-color:mono">
+				<string>Next</string>
+				<icon src="arrow_right_alt"/>
+			</a>
+		</div>
+		<div class="flex align:item justify:item gap:small padding paging" mobile>
+			<a v-for="page in lib.p (prop.page, prop.total)" v-bind:href="lib.p.url (page, prop.total)" class="font-bold:pop font:static border-radius:regular background-color:mono" v-bind:style="lib.p.style (prop.page, page)">
+				{{ lib.p.render (page, total) }}
+			</a>
+		</div>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 vue.component ("the-movie:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("movie:index"), icon: "more_horizontal", css},
+			{component: "a:material", text: "ALL", description: "1M +", url: vue.router ("movie:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Trending", description: "—", url: vue.router ("movie:trending"), icon: "hotel_class", css},
+			{component: "a:material", text: "Trending", description: "10K", url: vue.router ("movie:trending"), icon: "hotel_class", css},
 			// {component: "a:material", text: "Popular", description: "—", url: vue.router ("movie:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: vue.router ("movie:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Now Playing", description: "—", url: vue.router ("movie:now_playing"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Up Coming", description: "—", url: vue.router ("movie:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Top Rated", description: "10K +", url: vue.router ("movie:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Now Playing", description: "5K +", url: vue.router ("movie:now_playing"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Up Coming", description: "99 +", url: vue.router ("movie:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
 			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("movie:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
@@ -590,13 +627,13 @@ vue.component ("the-tv:nav", {
 	setup () {
 		var css = "padding:sky"
 		var data = [
-			{component: "a:material", text: "ALL", description: "99 +", url: vue.router ("tv:index"), icon: "more_horizontal", css},
+			{component: "a:material", text: "ALL", description: "200K +", url: vue.router ("tv:index"), icon: "more_horizontal", css},
 			{component: "separator:mono"},
-			{component: "a:material", text: "Trending", description: "—", url: vue.router ("tv:trending"), icon: "hotel_class", css},
+			{component: "a:material", text: "Trending", description: "10K", url: vue.router ("tv:trending"), icon: "hotel_class", css},
 			//  {component: "a:material", text: "Popular", description: "—", url: vue.router ("tv:popular"), icon: "hotel_class", css},
-			{component: "a:material", text: "Top Rated", description: "—", url: vue.router ("tv:top_rated"), icon: "local_fire_department", css},
-			{component: "a:material", text: "Airing Today", description: "—", url: vue.router ("tv:airing_today"), icon: "timer_play", css},
-			{component: "a:material", text: "Up Coming", description: "—", url: vue.router ("tv:up_coming"), icon: "timer_play", css},
+			{component: "a:material", text: "Top Rated", description: "2K +", url: vue.router ("tv:top_rated"), icon: "local_fire_department", css},
+			{component: "a:material", text: "Airing Today", description: "99 +", url: vue.router ("tv:airing_today"), icon: "timer_play", css},
+			{component: "a:material", text: "Up Coming", description: "99 +", url: vue.router ("tv:up_coming"), icon: "timer_play", css},
 			{component: "separator:mono"},
 			{component: "a:material", text: "Editor Choice", description: "—", url: vue.router ("tv:editor-choice"), icon: "editor_choice", css},
 			// {component: "separator:mono"},
