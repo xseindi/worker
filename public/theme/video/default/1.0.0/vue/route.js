@@ -122,7 +122,7 @@ vue.route ("listing:default", {
 			<title-simple v-bind:text="variable.title" v-bind:description="variable.sub_title" v-bind:icon="variable.icon" class="padding-bottom:none">
 				<div class="flex align:item gap">
 					<icon src="description"/>
-					<string>{{ data.total }}</string>
+					<string>{{ lib.number.format (data.total) }}</string>
 				</div>
 			</title-simple>
 			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
@@ -164,7 +164,7 @@ vue.route ("listing:all", {
 			<title-simple text="Movie" v-bind:description="variable.sub_title" icon="movie" class="padding-bottom:none">
 				<div class="flex align:item gap">
 					<icon src="description"/>
-					<string>{{ movie.total }}</string>
+					<string>{{ lib.number.format (movie.total) }}</string>
 				</div>
 			</title-simple>
 			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">
@@ -176,7 +176,7 @@ vue.route ("listing:all", {
 			<title-simple text="TV Show" v-bind:description="variable.sub_title" icon="tv_guide" class="padding-bottom:none">
 				<div class="flex align:item gap">
 					<icon src="description"/>
-					<string>{{ tv.total }}</string>
+					<string>{{ lib.number.format (tv.total) }}</string>
 				</div>
 			</title-simple>
 			<div class="grid padding" v-bind:style="grid (vue.device.computer ())">

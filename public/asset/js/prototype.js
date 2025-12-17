@@ -8,8 +8,8 @@
  * xxx://xxx.xxx.xxx/xxx
  */
 
-function Define (descriptor, key, value) { Object.defineProperty (descriptor, key, {value, writable: true, enumerable: true, configurable: true}); }
-function DefineGETTER (descriptor, key, value) { Object.defineProperty (descriptor, key, {get: value, writable: true, enumerable: true, configurable: true}); }
+function Define (descriptor, key, value) { Object.defineProperty (descriptor, key, {value, writable: true, enumerable: false, configurable: true}); }
+function DefineGETTER (descriptor, key, value) { Object.defineProperty (descriptor, key, {get: value, writable: true, enumerable: false, configurable: true}); }
 
 /**
  * xxx
@@ -94,6 +94,18 @@ Number.proto ("number", function () { return this; });
 Number.proto ("integer", function () { return parseInt (this); });
 Number.proto ("string", function () { return this.toString (); });
 Number.proto ("shuffle", function (number) { return Math.floor (Math.random () * (number - this + 1)) + this; });
+
+Number.format = function (input, separator = ",") {
+	var number = input.toString ().split (""), n = [], x = 0;
+	number.reverse ();
+	for (var i in number) {
+		if (x > 2) if ((x = 0) === 0) n.push (separator);
+		x ++
+		n.push (number [i]);
+		}
+	n.reverse ();
+	return n.join ("");
+	}
 
 /**
  * event
