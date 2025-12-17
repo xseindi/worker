@@ -110,7 +110,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.vue = function (slot: any, code: number = 200) {
 		if (typeof slot === "number") if (code = slot) slot = {}
 		// if (slot) {} else slot = "\t\t\t<!---->";
-		var markup = php.vue.html ();
+		var markup = php.vue.html (response.app.nav);
 		return response.html (php.render (markup, slot, 2), code);
 		}
 	response.var = {}

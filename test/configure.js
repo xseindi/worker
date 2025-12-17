@@ -48,9 +48,10 @@ wrangler.target = "./wrangler.jsonc";
 function generate (the, type_of) {
 	writeFileSync (wrangler.target, JSON.stringify (wrangler (the.name, the.main)));
 	writeFileSync (config.json, JSON.stringify (config.j_son (the.type, type_of)));
+	console.log ("OK");
 	}
 
 var the = config.wrangler [process.argv [2]]
 var type_of = process.argv [3]
 
-generate (the, type_of)
+if (the) generate (the, type_of)

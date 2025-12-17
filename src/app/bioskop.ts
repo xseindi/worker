@@ -29,7 +29,7 @@ var POST_DATE_STRING = "September 11, 2025"
 var POST_CONTENT = "Million's of Movie's, TV Show's and People to discover."
 
 /**
- * xxx
+ * setup
  *
  * title
  * description
@@ -48,11 +48,39 @@ app.start (async function (request: any, response: any, next: any) {
 			if (request.error [i].type === "agent") return response ("Forbidden", 404)
 			}
 		}
+	start (request, response)
 	return next ()
 	})
 
+function start (request: any, response: any) {
+	response.app.nav = {menu: [], page: []}
+	response.app.nav.page = [
+		{name: "Home", permalink: "/"},
+		{name: "About", permalink: request.router ({page: "about"})},
+		{name: "Contact", permalink: request.router ({page: "contact"})},
+		{name: "Help", permalink: request.router ({page: "help"})},
+		{name: "Privacy Policy", permalink: request.router ({page: "privacy-policy"})},
+		{name: "Term's of Use", permalink: request.router ({page: "term_of_use"})},
+		{name: "Cookie Preference", permalink: request.router ({page: "cookie:preference"})},
+		{name: "Disclaimer", permalink: request.router ({page: "disclaimer"})},
+		{name: "DMCA", permalink: request.router ({page: "DMCA"})},
+		]
+	response.app.nav.menu = [
+		{name: "Movie", permalink: request.router ("movie:index")},
+		{name: "Movie (Trending)", permalink: request.router ("movie:trending")},
+		{name: "Movie (Top Rated)", permalink: request.router ("movie:top_rated")},
+		{name: "Movie (Now Playing)", permalink: request.router ("movie:now_playing")},
+		{name: "Movie (Up Coming)", permalink: request.router ("movie:up_coming")},
+		{name: "TV Show", permalink: request.router ("movie:index")},
+		{name: "TV Show (Trending)", permalink: request.router ("movie:trending")},
+		{name: "TV Show (Top Rated)", permalink: request.router ("movie:top_rated")},
+		{name: "TV Show (Airing Today)", permalink: request.router ("movie:airing_today")},
+		{name: "TV Show (Up Coming)", permalink: request.router ("movie:up_coming")},
+		]
+	}
+
 /**
- * xxx
+ * index
  *
  * title
  * description
@@ -61,7 +89,7 @@ app.start (async function (request: any, response: any, next: any) {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-var test = async function (request: any, response: any, next: any) {
+var HOME = async function (request: any, response: any, next: any) {
 	response.set ({
 		layout: "index",
 		route: "home",
@@ -75,13 +103,29 @@ var test = async function (request: any, response: any, next: any) {
 		})
 	}
 
-app.get (app.router.index, test)
-app.get ("/001", test)
-app.get ("/002", test)
-app.get ("/003", test)
+app.get (app.router.index, HOME)
+app.get ("/001", HOME)
+app.get ("/002", HOME)
+app.get ("/003", HOME)
+
+app.get ("/testing", async function (request: any, response: any, next: any) {
+	var id = []
+	var data = []
+	for (var x in id) {
+		var json = await request.tmdb.movie.single (id [x])
+		data.push (JSON.stringify (json) + ",")
+		}
+	return response.text (data.join (ln))
+	})
+
+app.get ("/test/:id", async function (request: any, response: any, next: any) {
+	var movie_id = request.url.param ("id")
+	var data = await request.tmdb.movie.single (movie_id)
+	return response.json (data)
+	})
 
 /**
- * xxx
+ * page
  *
  * title
  * description
@@ -232,7 +276,7 @@ app.get (app.router.page ["service"])
 app.get (app.router.page ["partner"])
 
 /**
- * xxx
+ * page
  *
  * title
  * description
@@ -691,7 +735,10 @@ app.get (app.router ["cgi-bin:api trending:week"], async function (request: any,
  */
 
 app.get (app.router ["robot:text"], async function (request: any, response: any, next: any) {
-	return response.text ("")
+	var robot = ["User-agent: *"]
+	robot.push ("Disallow:")
+	robot.push ("Sitemap: " + request.router ("sitemap.xml"))
+	return response.text (robot.join (ln))
 	})
 
 app.get (app.router ["ad:text"], async function (request: any, response: any, next: any) {

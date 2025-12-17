@@ -35,15 +35,22 @@ vue.element ("icon", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.element ("a:link", {
+	prop: ["href"],
+	template: `
+		<a v-bind:href="vue.router.permalink (prop.href)"><slot name="default"/></a>
+		`,
+	})
+
 vue.element ("a:material", {
 	prop: ["text", "description", "url", "icon", "description-color"],
 	template: `
-		<a v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
+		<a:link v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
 			<icon v-bind:src="prop.icon"/>
 			<string v-if="prop.text" primary>{{ prop.text }}</string>
 			<string primary v-else><slot name="default"/></string>
 			<string v-if="prop.description" v-bind:class="'font:small font-bold:pop font-color:' + (prop.descriptionColor || 'green')">{{ prop.description }}</string>
-		</a>
+		</a:link>
 		`,
 	})
 
@@ -245,8 +252,8 @@ vue.element ("a:genre", {
 		css () { return "font-size:pop font-bold:pop font:static padding:pop border-radius:round border border-color:mono background-hover:mono-pop" },
 		},
 	template: `
-		<a v-if="prop.text" v-bind:class="css ()">{{ prop.text }}</a>
-		<a v-bind:class="css ()" v-else><slot name="default"/></a>
+		<a:link v-if="prop.text" v-bind:class="css ()">{{ prop.text }}</a:link>
+		<a:link v-bind:class="css ()" v-else><slot name="default"/></a:link>
 		`,
 	})
 

@@ -59,7 +59,7 @@ vue.route ("home", {
 				</div>
 			</div>
 			<div class="flex flex:wrap align:item justify:item gap padding">
-				<a:genre v-for="genre in vue.app.data.genre" v-bind:href="vue.router.permalink (genre.permalink)" v-bind:text="genre.name"/>
+				<a:genre v-for="genre in vue.app.data.genre" v-bind:href="genre.permalink" v-bind:text="genre.name"/>
 			</div>
 			<title-simple text="Trending" icon="local_fire_department" class="padding-bottom:none"/>
 			<video-card id="video-trending" v-bind:data="vue.app.data.trending.today"/>

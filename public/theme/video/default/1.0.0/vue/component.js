@@ -179,7 +179,7 @@ vue.component ("menu-simple", {
 				<string class="font-size:intermediate font:bold">GENRE</string>
 			</div>
 			<div class="flex flex:column padding" mobile>
-				<a:material v-for="a in vue.app.data.genre" v-bind:text="a.name" v-bind:href="vue.router.permalink (a.permalink)" icon="circle" class="padding:io border:radius icon:tiny"/>
+				<a:material v-for="a in vue.app.data.genre" v-bind:text="a.name" v-bind:href="a.permalink" icon="circle" class="padding:io border:radius icon:tiny"/>
 			</div>
 			<!--div class="padding-horizontal:large">
 				<string class="font-size:intermediate font:bold">DRAMA (ASIA)</string>
@@ -204,7 +204,7 @@ vue.component ("footer-simple", {
 					<string>
 						This site may contain sensitive content.
 						We does not review nor do we endorse the content of this site.
-						For more information please visit Privacy <a href="/">Content Policy</a>.
+						For more information please visit Privacy <a:link v-bind:href="vue.router ({page: 'privacy-policy'})">Content Policy</a:link>.
 					</string>
 				</div>
 			</div>
@@ -324,7 +324,7 @@ vue.component ("account-simple:float", {
 			<div class="flex flex:column gap:small font-size:pop padding padding-horizontal:medium">
 				<string class="line-spacing:small">
 					We do not Store your Information nor do we Track your Activity in this Website's.
-					Visit our <a v-bind:href="vue.router ({page: 'privacy-policy'})">Privacy Policy</a> and <a v-bind:href="vue.router ({page: 'term_of_use'})">Term's of Use</a>.
+					Visit our <a:link v-bind:href="vue.router ({page: 'privacy-policy'})">Privacy Policy</a:link> and <a:link v-bind:href="vue.router ({page: 'term_of_use'})">Term's of Use</a:link>.
 				</string>
 			</div>
 		</section>
@@ -416,14 +416,14 @@ vue.component ("nav-simple:genre", {
 	template: `
 		<div class="flex font:small text-align:left gap padding">
 			<div class="flex flex:column width:half">
-				<a v-for="data in (prop.left || [])" v-bind:href="vue.router.permalink (data.permalink)" class="padding:pop">
+				<a:link v-for="data in (prop.left || [])" v-bind:href="data.permalink" class="padding:pop">
 					{{ data.name }}
-				</a>
+				</a:link>
 			</div>
 			<div class="flex flex:column width:half">
-				<a v-for="data in (prop.right || [])" v-bind:href="vue.router.permalink (data.permalink)" class="padding:pop">
+				<a:link v-for="data in (prop.right || [])" v-bind:href="data.permalink" class="padding:pop">
 					{{ data.name }}
-				</a>
+				</a:link>
 			</div>
 		</div>
 		`,
@@ -468,7 +468,7 @@ vue.component ("video-card", {
 	template: `
 		<div v-if="ready" v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background">
 			<div v-for="data in data" class="owl-carousel-item gap:small">
-				<a v-bind:href="vue.router.permalink (data.permalink)" class="relative border:radius no-overflow">
+				<a:link v-bind:href="data.permalink" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg"/>
 					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
 					<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
@@ -486,9 +486,9 @@ vue.component ("video-card", {
 					<div class="flex flex:column align:end gap:tiny absolute position:bottom-right">
 						<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
 					</div>
-				</a>
+				</a:link>
 				<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
-				<a v-bind:href="vue.router.permalink (data.permalink)" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+				<a:link v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a:link>
 			</div>
 		</div>
 		<div class="padding" v-else>
@@ -509,9 +509,9 @@ vue.component ("video-card:poster", {
 		},
 	template: `
 		<div class="flex align:item gap">
-			<a v-for="data in data.tmp" v-bind:href="vue.router.permalink (data.permalink)">
+			<a:link v-for="data in data.tmp" v-bind:href="data.permalink">
 				<img:ratio v-bind:src="data.poster.url" ratio="3:4" width="128" class="border:radius">
-			</a>
+			</a:link>
 		</div>
 		`,
 	})
@@ -532,7 +532,7 @@ vue.component ("video-card:simple", {
 		<div class="flex flex:column gap:small width:max" item>
 			<div class="relative border:radius no-overflow">
 				<img:asset src="3x4.svg" class="width:height"/>
-				<a v-bind:href="vue.router.permalink (data.permalink)"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a>
+				<a:link v-bind:href="data.permalink"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a:link>
 				<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
 					<icon src="star"/>
 					<string class="font-bold:pop">{{ data.vote.average }}</string>
@@ -550,7 +550,7 @@ vue.component ("video-card:simple", {
 				</div>
 			</div>
 			<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
-			<a v-bind:href="vue.router.permalink (data.permalink)" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+			<a:link v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a:link>
 		</div>
 		`,
 	})
