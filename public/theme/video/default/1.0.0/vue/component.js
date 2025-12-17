@@ -179,7 +179,7 @@ vue.component ("menu-simple", {
 				<string class="font-size:intermediate font:bold">GENRE</string>
 			</div>
 			<div class="flex flex:column padding" mobile>
-				<a:material v-for="a in vue.app.data.genre" v-bind:text="a.name" v-bind:href="a.permalink" icon="circle" class="padding:io border:radius icon:tiny"/>
+				<a:material v-for="a in vue.app.data.genre" v-bind:text="a.name" v-bind:href="vue.router.permalink (a.permalink)" icon="circle" class="padding:io border:radius icon:tiny"/>
 			</div>
 			<!--div class="padding-horizontal:large">
 				<string class="font-size:intermediate font:bold">DRAMA (ASIA)</string>
@@ -416,12 +416,12 @@ vue.component ("nav-simple:genre", {
 	template: `
 		<div class="flex font:small text-align:left gap padding">
 			<div class="flex flex:column width:half">
-				<a v-for="data in (prop.left || [])" v-bind:href="data.permalink" class="padding:pop">
+				<a v-for="data in (prop.left || [])" v-bind:href="vue.router.permalink (data.permalink)" class="padding:pop">
 					{{ data.name }}
 				</a>
 			</div>
 			<div class="flex flex:column width:half">
-				<a v-for="data in (prop.right || [])" v-bind:href="data.permalink" class="padding:pop">
+				<a v-for="data in (prop.right || [])" v-bind:href="vue.router.permalink (data.permalink)" class="padding:pop">
 					{{ data.name }}
 				</a>
 			</div>
@@ -468,7 +468,7 @@ vue.component ("video-card", {
 	template: `
 		<div v-if="ready" v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background">
 			<div v-for="data in data" class="owl-carousel-item gap:small">
-				<a v-bind:href="data.permalink" class="relative border:radius no-overflow">
+				<a v-bind:href="vue.router.permalink (data.permalink)" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg"/>
 					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
 					<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
@@ -488,7 +488,7 @@ vue.component ("video-card", {
 					</div>
 				</a>
 				<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
-				<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+				<a v-bind:href="vue.router.permalink (data.permalink)" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
 			</div>
 		</div>
 		<div class="padding" v-else>
@@ -509,7 +509,7 @@ vue.component ("video-card:poster", {
 		},
 	template: `
 		<div class="flex align:item gap">
-			<a v-for="data in data.tmp" v-bind:href="data.permalink">
+			<a v-for="data in data.tmp" v-bind:href="vue.router.permalink (data.permalink)">
 				<img:ratio v-bind:src="data.poster.url" ratio="3:4" width="128" class="border:radius">
 			</a>
 		</div>
@@ -532,7 +532,7 @@ vue.component ("video-card:simple", {
 		<div class="flex flex:column gap:small width:max" item>
 			<div class="relative border:radius no-overflow">
 				<img:asset src="3x4.svg" class="width:height"/>
-				<a v-bind:href="data.permalink"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a>
+				<a v-bind:href="vue.router.permalink (data.permalink)"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a>
 				<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
 					<icon src="star"/>
 					<string class="font-bold:pop">{{ data.vote.average }}</string>
@@ -550,7 +550,7 @@ vue.component ("video-card:simple", {
 				</div>
 			</div>
 			<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
-			<a v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
+			<a v-bind:href="vue.router.permalink (data.permalink)" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a>
 		</div>
 		`,
 	})

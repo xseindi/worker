@@ -74,6 +74,7 @@ vue.reference = function (value = null) { return ref (value); }
 vue.route = function (key, value) { vue.markup ["route:" + key] = vue.js ({type: "route", ... value}); }
 vue.router = function (key, value = {}, query = {}) { return lib.router (key, value, query); }
 vue.router.link = function (client, router) { return lib.router.link (client, router); }
+vue.router.permalink = function (permalink) { return permalink.split ("localhost").join (lib.url.document.host.name); }
 vue.router.files = function (file) { return lib.router.files (vue.app (), file); }
 vue.component = function (key, value) { vue.markup [key] = vue.js ({type: "component", ... value}); }
 vue.element = function (key, value) { vue.markup [key] = vue.js ({type: "element", ... value}); }
