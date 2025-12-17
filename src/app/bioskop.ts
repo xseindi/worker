@@ -109,7 +109,7 @@ app.get ("/002", HOME)
 app.get ("/003", HOME)
 
 app.get ("/testing", async function (request: any, response: any, next: any) {
-	var id = []
+	var id: any = []
 	var data = []
 	for (var x in id) {
 		var json = await request.tmdb.movie.single (id [x])
@@ -410,6 +410,35 @@ app.get (app.router.search, async function (request: any, response: any, next: a
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+app.get (app.router.movie, async function (request: any, response: any, next: any) {
+	var movie = await request.tmdb.movie.single (request.url.param ("id"), {append_to_response: true})
+	// var movie = {id: 7451, title: "Movie", description: "description", poster: {url: "/file/100/cover.png"}, release_date: Date.now ()}
+	if (movie.id) {
+		var date = new php.date (movie.release_date)
+		response.post = {}
+		response.set ({
+			title: movie.title,
+			description: movie.description.split ('"').join ("'"),
+			article: {date: {publish: movie.release_date}},
+			"image:cover": movie.poster.url,
+			"ld+json webpage": {},
+			layout: "wide",
+			route: "under-construction",
+			variable: {
+				title: "Short",
+				icon: "subscription",
+				data: movie,
+				},
+			})
+		return response.vue ({
+			"post:date": date.string (),
+			"post:date string": POST_DATE_STRING,
+			"post:content": movie.description,
+			})
+		}
+	else return next ()
+	})
 
 app.get (app.router ["movie:index"], async function (request: any, response: any, next: any) {
 	response.set ({

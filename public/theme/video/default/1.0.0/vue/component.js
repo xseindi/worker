@@ -187,9 +187,9 @@ vue.component ("menu-simple", {
 			<div class="flex flex:column padding">
 				<a:material v-for="a in menu.drama" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/>
 			</div-->
-			<div class="flex justify:item padding padding-top:none padding-bottom:large">
+			<!--div class="flex justify:item padding padding-top:none padding-bottom:large">
 				<img:ad src="referral-vultr-001.png" width="200" class="border:radius"/>
-			</div>
+			</div-->
 		</div>
 		`,
 	})

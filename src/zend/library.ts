@@ -94,6 +94,7 @@ php.date = class {
 		return [this.year (), this.month (), this.day ()].join ("-");
 		}
 	iso () { return this.date.toISOString (); }
+	universal () { return this.date.toISOString (); }
 	year () { return this.date.getFullYear (); }
 	month (pad: boolean = true) { if (pad) return (this.date.getMonth () + 1).toString ().padStart (2, "0"); else return this.date.getMonth () + 1; }
 	day (pad: boolean = true) { if (pad) return this.date.getDate ().toString ().padStart (2, "0"); else return this.date.getDate (); }

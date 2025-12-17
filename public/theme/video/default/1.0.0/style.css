@@ -199,6 +199,7 @@ img { display: block; vertical-align: middle; }
 template { display: none; }
 pre { font-family: var(--font-family-code); }
 iframe:focus { outline: none; } iframe[seamless] { display: block; }
+iframe { border: none; }
 
 /**
  * xxx

@@ -6,7 +6,7 @@ var config = {
 	j_son: function (type, type_of) {
 		var c_gen = true;
 		var ad = false;
-		if (type_of === "public") {
+		if (type_of === "deploy") {
 			c_gen = false;
 			ad = true;
 			}

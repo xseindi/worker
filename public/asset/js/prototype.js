@@ -58,7 +58,7 @@ Array.proto ("select", function (filter) {
 	});
 
 /**
- * xxx
+ * string
  *
  * title
  * description
@@ -72,7 +72,7 @@ String.proto ("number", function () { return new Number (this); });
 String.proto ("integer", function () { return parseInt (this); });
 String.proto ("exist", function (search) { return this.includes (search); });
 String.proto ("after", function (search) { var pos = this.indexOf (search); if (pos !== undefined) return this.substr (pos + search.length); else return ""; });
-String.proto ("before", function (search) { return string.split (search) [0] || ""; });
+String.proto ("before", function (search) { return this.split (search) [0] || ""; });
 String.proto ("small", function () { return this.toLocaleLowerCase (); });
 String.proto ("big", function () { return this.toUpperCase (); });
 String.proto ("json", function () { return JSON.parse (this); });
@@ -707,6 +707,10 @@ Function.google.icon.src = {
 	card_star: "f375",
 	acute: "e4cb",
 	person: "e7fd",
+	download: "f090",
+	downloading: "f001",
+	cloud_download: "e2c0",
+	cloud_upload: "e2c3",
 	}
 
 Event.on ("load", function () {

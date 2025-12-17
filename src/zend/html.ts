@@ -112,33 +112,40 @@ php.html = function (output: string, variable: any = {}) {
 	}
 
 php.vue = function () {}
-php.vue.html = function (nav: any) {
+php.vue.html = function (request: any, response: any) {
 	var markup = new php.markup ();
 	markup.push (0, `<div id="app">`);
 		markup.push (1, `<div application>`);
 			markup.push (2, `<h1>{{ site:name }}</h1>`);
 			markup.push (2, `<h2>{{ site:description }}</h2>`);
-			markup.push (2, `<h3>{{ meta:description }}</h3>`);
+			markup.push (2, `<h3>{{ site:short }}</h3>`);
 			markup.push (2, `<nav>`);
-				if (nav) {
+				if (response.app.nav) {
 					markup.push (3, `<ul>`);
-					for (var i in nav.page) markup.push (4, `<li><a href="${nav.page [i].permalink}">${nav.page [i].name}</a></li>`);
+					for (var i in response.app.nav.page) markup.push (4, `<li><a href="${response.app.nav.page [i].permalink}">${response.app.nav.page [i].name}</a></li>`);
 					markup.push (3, `</ul>`);
 					}
 				markup.push (3, `<menu>`);
-					if (nav) {
+					if (response.app.nav) {
 						markup.push (4, `<ul>`);
-						for (var i in nav.menu) markup.push (5, `<li><a href="${nav.menu [i].permalink}">${nav.menu [i].name}</a></li>`);
+						for (var i in response.app.nav.menu) markup.push (5, `<li><a href="${response.app.nav.menu [i].permalink}">${response.app.nav.menu [i].name}</a></li>`);
 						markup.push (4, `</ul>`);
 						}
 				markup.push (3, `</menu>`);
 			markup.push (2, `</nav>`);
 			markup.push (2, `<article>`);
-				markup.push (3, `<h4>{{ title }}</h4>`);
-				markup.push (3, `<date>{{ post:date }}</date>`);
-				markup.push (3, `<div>`);
-				markup.push (4, `{{ post:content }}`);
-				markup.push (3, `</div>`);
+				if (response.post) {
+					markup.push (3, `<h4>{{ title }}</h4>`);
+					markup.push (3, `<h5>{{ post:content }}</h5>`);
+					markup.push (3, `<date>{{ post:date }}</date>`);
+					}
+				else {
+					markup.push (3, `<h4>{{ title }}</h4>`);
+					markup.push (3, `<date>{{ post:date }}</date>`);
+					markup.push (3, `<div>`);
+					markup.push (4, `{{ post:content }}`);
+					markup.push (3, `</div>`);
+					}
 			markup.push (2, `</article>`);
 		markup.push (1, `</div>`);
 	markup.push (0, `</div>`);

@@ -186,3 +186,20 @@ $.app.mount ("#app")
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+function video_src (id, context) {
+	//7451
+	// https://vidsrc.icu/embed/movie/7451
+	var url = ("https://vidsrcme.vidsrc.icu/embed/movie?tmdb={id}&autoplay=0&ds_lang=en").split ("{id}").join (id)
+	lib.ajax.get (url, {
+		success: function (response) {
+			var skip = "https:" + response.after ('<iframe id="player_iframe" src="').before ('"')
+			lib.ajax.get (skip, {
+				success: function (response) {
+					var c_url = "https://cloudnestra.com" + response.after ("id: 'player_iframe'").after ("src: '").before ("'")
+					context (c_url)
+					},
+				})
+			},
+		})
+	}

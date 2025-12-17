@@ -150,7 +150,7 @@ php.plugin.tmdb.movie = class {
 		return this.tmdb.array (await this.tmdb.fetch ("movie:discover", (option = php.object.assign ({type: "movie"}, option))), option);
 		}
 	async single (id: any, option: any = {}) {
-		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: false}, option))), option);
+		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: (option.append_to_response || false)}, option))), option);
 		}
 	async trending (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie trending:today", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option); }

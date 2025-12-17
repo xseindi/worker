@@ -110,7 +110,7 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.vue = function (slot: any, code: number = 200) {
 		if (typeof slot === "number") if (code = slot) slot = {}
 		// if (slot) {} else slot = "\t\t\t<!---->";
-		var markup = php.vue.html (response.app.nav);
+		var markup = php.vue.html (request, response);
 		return response.html (php.render (markup, slot, 2), code);
 		}
 	response.var = {}
@@ -314,6 +314,7 @@ var library: any = class {
 		this.response.var ["site:name"] = this.request.client.site.name, this.response.var ["alternate:site-name"] = this.request.client.site.name
 		this.response.var ["site:title"] = this.request.client.site.title
 		this.response.var ["site:description"] = this.request.client.site.description
+		this.response.var ["site:short"] = this.request.client.site.meta.description
 		this.response.var ["html:lang"] = "en"
 		this.response.var ["html:translate"] = "no"
 		this.response.var ["html:css"] = "w3"
@@ -396,6 +397,11 @@ var library: any = class {
 			if (data.article) {
 				this.response.var ["article"] = true
 				this.response.var ["og:type"] = "article"
+				if (data.article.date) {
+					if (data.article.date.publish) this.response.var ["article:published_time"] = new Date (data.article.date.publish).toISOString ()
+					this.response.var ["article:modified_time"] = new Date (data.article.date.update || data.article.date.publish).toISOString ()
+					this.response.var ["date:publish"] = new Date (data.article.date.publish).toUTCString ()
+					}
 				}
 			if (data.layout) this.response.var ["theme:layout"] = data.layout
 			if (data.route) this.response.var ["route"] = data.route
