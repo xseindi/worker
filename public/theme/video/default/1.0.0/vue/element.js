@@ -155,7 +155,7 @@ vue.element ("img:logo", {
 	method: {
 		url (src) {
 			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
-			return "/asset/image/logo/" + lib.image.stock [src]
+			return "/asset/image/logo/" + (lib.image.stock (src) || src)
 			},
 		},
 	template: `
@@ -168,7 +168,7 @@ vue.element ("img:avatar", {
 	method: {
 		url (src) {
 			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
-			return "/asset/image/avatar/" + lib.image.stock [src]
+			return "/asset/image/avatar/" + (lib.image.stock (src) || src)
 			},
 		},
 	template: `

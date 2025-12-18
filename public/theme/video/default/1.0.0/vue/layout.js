@@ -53,10 +53,12 @@ vue.layout ("wide", {
 				<header-simple:float></header-simple:float>
 			</header>
 			<main class="flex flex:grow justify:item index">
-				<div v-if="vue.device.computer ()" style="width: 1100px;">
-					<video-src/>
-				</div>
-				<div v-else>
+				<menu id="menu" class="nav-menu block relative index:small">
+					<div outter>
+						<menu-simple></menu-simple>
+					</div>
+				</menu>
+				<div class="video-src:size">
 					<video-src/>
 				</div>
 			</main>
@@ -79,17 +81,23 @@ vue.component ("video-src", {
 			if (this.v.click) {}
 			else if (this.v.click = true) {
 				$ ("#player-security").hide ()
-				$ ("#player-loading").removeClass ("none").addClass ("flex")
-				window.open (lib.AD__.link ["adsterra"])
-				if (true) video_src (this.variable.data.id, function (src) {
-					$ ("#player-frame").attr ("src", src)
-					$ ("#player-loading").removeClass ("flex").addClass ("none")
+				lib.element.show ("#player-loading")
+				if (vue.app.config ["AD__.s"]) window.open (lib.AD__.link ["adsterra"])
+				if (true) lib.video.src (this.variable.data.identity, {
+					success (src) {
+						$ ("#player-frame").attr ("src", src)
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						},
+					error () {
+						$ ("#player-frame").attr ("src", "about:blank")
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						},
 					})
 				else {
 					lib.timeout (function () {
-						var src = "https://www.youtube.com/embed/-b9o3uUKpO0?si=UTzgNDDpNi17Vgs5"
+						var src = "about:blank"
 						$ ("#player-frame").attr ("src", src)
-						$ ("#player-loading").removeClass ("flex").addClass ("none")
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
 						}, 3)
 					}
 				}
@@ -97,7 +105,7 @@ vue.component ("video-src", {
 		},
 	template: `
 		<div class="flex gap padding">
-			<div class="flex flex:column flex:grow gap">
+			<div class="flex flex:column flex:grow gap no-overflow">
 				<div id="player" class="relative no-overflow border:radius">
 					<img:asset src="16x9.svg" class="width:size"/>
 					<img:cover v-bind:src="video.poster.url" class="opacity:small transition:opacity"/>
@@ -113,38 +121,68 @@ vue.component ("video-src", {
 				</div>
 				<div class="flex flex:column">
 					<div class="font:medium font-bold:pop">{{ video.title }}</div>
-					<div v-if="video.tagline" class="font:small">{{ video.tagline }}</div>
+					<div v-if="video.tagline" class="font:small font-color:mono">{{ video.tagline }}</div>
 				</div>
 				<div class="flex align:item gap">
-					<div class="flex align:item gap" computer>
-						<img:logo v-bind:src="vue.app.image.logo" class="img:pop"/>
+					<div class="flex align:item gap">
+						<img:avatar src="20002" class="img:pop border-radius:circle"/>
 						<div class="flex flex:column">
 							<string class="font:bold">Administrator</string>
-							<string class="font:small">1M Subscriber's</string>
+							<string class="font:small font-color:mono">1M Subscriber's</string>
 						</div>
 					</div>
 					<flex:grow />
+					<div class="flex align:item gap padding:sky border-radius:round background-color:mono">
+						<div class="flex align:item gap">
+							<icon src="thumb_up" class="font:medium"/>
+							<string>{{ (100).shuffle (200) }}</string>
+						</div>
+						<separator:small />
+						<icon src="thumb_down" class="font:medium"/>
+					</div>
+					<div computer></div>
+					<button:material icon="cloud_download" class="padding icon:large border-radius:pop" computer/>
+					<button:material icon="more_vertical" class="padding icon:large border-radius:pop"></button:material>
+				</div>
+				<div class="flex align:item gap">
+					<a:link v-for="genre in video.genre" v-bind:href="genre.permalink" class="font:small">#{{ genre.name }}</a:link>
+				</div>
+				<div class="flex flex:column gap padding border:radius background-color:mono">
 					<div class="flex align:item gap">
 						<div class="flex align:item gap">
-							<icon src="visibility" class="font:medium"/>
-							<string>99K</string>
+							<icon src="visibility"/>
+							<string class="font-bold:pop">{{ lib.number.format ((1000).shuffle (2000)) }} View's</string>
 						</div>
 						<div class="flex align:item gap">
-							<icon src="favorite" class="font:medium"/>
-							<string>99K</string>
+							<icon src="calendar_clock"/>
+							<string class="font-bold:pop">{{ video ["release_date:string"] }}</string>
 						</div>
 					</div>
-					<div></div>
-					<button:material icon="cloud_download" class="padding icon:large"></button:material>
-					<button:material icon="more_vertical" class="padding icon:large"></button:material>
+					<string>
+						{{ video.description }}
+					</string>
 				</div>
-				<div>
-					<pre class="none">{{ variable }}</pre>
+				<div class="padding:bottom scroll:horizontal border:radius no-overflow">
+					<div class="flex gap">
+						<div v-for="cast in video.credit.people.cast.limit (15)" class="flex flex:column gap">
+							<div class="relative border:radius no-overflow">
+								<img:asset src="3x4.svg" width="150"/>
+								<img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/>
+							</div>
+							<div class="flex flex:column gap:tiny">
+								<string class="font:bold">{{ cast.name }}</string>
+								<string class="font:small">{{ cast.character }}</string>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="">
+					<adsterra type="horizontal"/>
 				</div>
 			</div>
 			<div class="" computer>
-				<div class="background-color:red" style="width: 300px;">
-					X
+				<div class="" style="width: 300px;">
+					-
 				</div>
 			</div>
 		</div>

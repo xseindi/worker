@@ -82,6 +82,7 @@ php.worker.io.request = function (io: any, worker: any) {
 	request.url.param = function (key: string) { return io.req.param (key); }
 	request.url.query = function (key: string) { return io.req.query (key); }
 	request.url.queries = function (key: string) { return io.req.queries (key); }
+	request.url.rebase = function (url: string) { return url.split ("http://localhost").join (request.base_url); }
 	request.base_url = request.url.address;
 	request.canonical_url = request.url.canonical;
 	request.visitor = {agent: request.header ["user-agent"], "agent:phone": false, "agent:crawler": false, country: {code: io.req.raw.cf.country, region: {code: io.req.raw.cf.regionCode, name: io.req.raw.cf.region, city: {name: io.req.raw.cf.city, postal: {code: io.req.raw.cf.postalCode}}}}, latitude: io.req.raw.cf.latitude, longitude: io.req.raw.cf.longitude, internet: {organization: io.req.raw.cf.asOrganization}, timezone: io.req.raw.cf.timezone}

@@ -46,6 +46,7 @@ vue.mount = function (v) {
 lib.event.on ("body:css", function (type, orientation) {
 	if (lib.device.computer ()) {
 		$ ("#menu").css ("display", "block").removeClass ("box-shadow")
+		$ (".nav-menu").css ("display", "none").removeClass ("box-shadow")
 		$ ("#menu [aria-modal='menu']").removeClass ("box-shadow")
 		vue.device.computer (true)
 		vue.device.mobile (false)
@@ -186,20 +187,3 @@ $.app.mount ("#app")
  *
  * xxx://xxx.xxx.xxx/xxx
  */
-
-function video_src (id, context) {
-	//7451
-	// https://vidsrc.icu/embed/movie/7451
-	var url = ("https://vidsrcme.vidsrc.icu/embed/movie?tmdb={id}&autoplay=0&ds_lang=en").split ("{id}").join (id)
-	lib.ajax.get (url, {
-		success: function (response) {
-			var skip = "https:" + response.after ('<iframe id="player_iframe" src="').before ('"')
-			lib.ajax.get (skip, {
-				success: function (response) {
-					var c_url = "https://cloudnestra.com" + response.after ("id: 'player_iframe'").after ("src: '").before ("'")
-					context (c_url)
-					},
-				})
-			},
-		})
-	}

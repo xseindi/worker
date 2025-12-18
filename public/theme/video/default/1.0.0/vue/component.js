@@ -156,7 +156,7 @@ vue.component ("menu-simple", {
 		vue.mount.menu ()
 		},
 	template: `
-		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color" aria-modal="menu" style="scrollbar-width: thin; scrollbar-color: rgb(var(--background-color)) rgb(var(--background-color));">
+		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color scrollbar:pop" aria-modal="menu">
 			<div class="flex flex:column padding">
 				<component v-for="data in menu.general" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
 				<!--a:material v-for="a in menu.general" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/-->

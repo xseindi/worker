@@ -711,6 +711,13 @@ Function.google.icon.src = {
 	downloading: "f001",
 	cloud_download: "e2c0",
 	cloud_upload: "e2c3",
+	calendar_clock: "f540",
+	calendar_check: "f243",
+	calendar_today: "e935",
+	calendar_lock: "f242",
+	event: "e878",
+	date_range: "e916",
+	chronic: "ebb2",
 	}
 
 Event.on ("load", function () {
@@ -773,7 +780,62 @@ Function.tmdb.api = {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+Function.element = function () {}
+Function.element.show = function (element) { return $ (element).removeClass ("none").addClass ("flex"); }
+Function.element.hide = function (element) { return $ (element).removeClass ("flex").addClass ("none"); }
+
 Function.image = function () {}
+Function.image.stock = function (stock) {
+	if (typeof stock === "object") return Function.image.stock.data = stock;
+	else return Function.image.stock.data [stock];
+	}
+Function.image.stock.data = {}
+
+// https://multiembed.mov/?video_id={id}&tmdb=1
+// https://www.2embed.cc/embed/{id}
+// https://111movies.com/movie/{id}?autoplay=0
+// https://veloratv.ru/watch/movie/{id}
+Function.video = function () {}
+Function.video.src = function (id, context) {
+	var url = ("https://vidsrcme.vidsrc.icu/embed/movie?tmdb={id}&autoplay=0&ds_lang=en").split ("{id}").join (id.tmdb);
+	Function.ajax.get (url, {
+		success: function (response) {
+			var frame = "https:" + response.after ('iframe id="player_iframe" src="').before ('"');
+			Function.ajax.get (frame, {
+				success: function (response) {
+					var src = "https://cloudnestra.com" + response.after ("id: 'player_iframe'").after ("src: '").before ("'");
+					if (context.success) context.success (src);
+					else context (src);
+					},
+				error (error) {
+					Function.video.src.embed.c (id, context);
+					},
+				})
+			},
+		error (error) {
+			Function.video.src.embed.c (id, context);
+			},
+		})
+	}
+
+Function.video.src.embed = {
+	c: function (id, context) {
+		var url = ("https://111movies.com/movie/{id}?autoplay=0").split ("{id}").join (id.tmdb);
+		if (url) {
+			if (context.success) context.success (url);
+			else context (url);
+			}
+		else Function.ajax.get (url, {
+			success: function (response) {
+				if (context.success) context.success (url);
+				else context (url);
+				},
+			error (error) {
+				if (context.error) context.error (error);
+				},
+			})
+		},
+	}
 
 Function.language = function () {}
 
@@ -915,7 +977,8 @@ Function.export = {
 	json: JSON,
 	cookie: Function.cookie,
 	path: Function.path, file: Function.file, dir: Function.dir,
-	image: Function.image,
+	element: Function.element,
+	image: Function.image, video: Function.video,
 	router: Function.router,
 	ajax: Function.ajax,
 	owl: Function.owl,

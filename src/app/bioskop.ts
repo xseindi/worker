@@ -28,6 +28,9 @@ var POST_DATE = "2025-09-11"
 var POST_DATE_STRING = "September 11, 2025"
 var POST_CONTENT = "Million's of Movie's, TV Show's and People to discover."
 
+import DB_SITEMAP_MOVIE from "../db/bioskop/sitemap/movie.json"
+import DB_SITEMAP_TV from "../db/bioskop/sitemap/tv.json"
+
 /**
  * setup
  *
@@ -818,25 +821,6 @@ app.get (app.router ["sitemap.xml"], async function (request: any, response: any
 	return response.xml (xml.render ())
 	})
 
-app.get (app.router ["sitemap:post.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	if (false) {
-		for (var i in response.app.data.genre) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
-			xml.push (2, `<lastmod>${date}</lastmod>`)
-			xml.push (2, `<changefreq>weekly</changefreq>`)
-			xml.push (2, `<priority>0.8</priority>`)
-			xml.push (1, `</url>`)
-			}
-		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
-	})
-
 app.get (app.router ["sitemap:page.xml"], async function (request: any, response: any, next: any) {
 	var date = (new php.date ()).iso ()
 	var sitemap = [
@@ -856,6 +840,24 @@ app.get (app.router ["sitemap:page.xml"], async function (request: any, response
 		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
 		xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
 		xml.push (1, `</url>`)
+		}
+	xml.push (0, `</urlset>`)
+	return response.xml (xml.render ())
+	})
+app.get (app.router ["sitemap:post.xml"], async function (request: any, response: any, next: any) {
+	var date = (new php.date ()).iso ()
+	var xml = new php.markup ()
+	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+	if (false) {
+		for (var i in response.app.data.genre) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
+			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (2, `<changefreq>weekly</changefreq>`)
+			xml.push (2, `<priority>0.8</priority>`)
+			xml.push (1, `</url>`)
+			}
 		}
 	xml.push (0, `</urlset>`)
 	return response.xml (xml.render ())
@@ -886,7 +888,17 @@ app.get (app.router ["sitemap:movie.xml"], async function (request: any, respons
 		xml.push (1, `<url>`)
 		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
 		xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
+		xml.push (2, `<changefreq>weekly</changefreq>`)
+		xml.push (2, `<priority>0.8</priority>`)
 		xml.push (1, `</url>`)
+		}
+	for (var i in DB_SITEMAP_MOVIE) {
+		if (DB_SITEMAP_MOVIE [i]) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_MOVIE [i])}</loc>`)
+			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (1, `</url>`)
+			}
 		}
 	xml.push (0, `</urlset>`)
 	return response.xml (xml.render ())
@@ -908,7 +920,17 @@ app.get (app.router ["sitemap:tv.xml"], async function (request: any, response: 
 		xml.push (1, `<url>`)
 		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
 		xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
+		xml.push (2, `<changefreq>weekly</changefreq>`)
+		xml.push (2, `<priority>0.8</priority>`)
 		xml.push (1, `</url>`)
+		}
+	for (var i in DB_SITEMAP_TV) {
+		if (DB_SITEMAP_TV [i]) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_TV [i])}</loc>`)
+			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (1, `</url>`)
+			}
 		}
 	xml.push (0, `</urlset>`)
 	return response.xml (xml.render ())
@@ -965,7 +987,7 @@ if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js
 	output.push (`vue.app.data.asia = {KR: [... vue.app.data.movie.country.KR, ... vue.app.data.tv.country.KR], JP: [... vue.app.data.movie.country.JP, ... vue.app.data.tv.country.JP], CN: [... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.CN]}`)
 	output.push (`vue.app.data.asia.all = [... vue.app.data.movie.country.KR, ... vue.app.data.movie.country.JP, ... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.KR, ... vue.app.data.tv.country.JP, ... vue.app.data.tv.country.CN]`)
 	output.push (`vue.router.link (${JSON.stringify (app.router)})`)
-	output.push (`lib.image.stock = ${JSON.stringify (response.image.stock)}`)
+	output.push (`Function.image.stock (${JSON.stringify (response.image.stock)})`)
 	return response.js (output.join (ln))
 	})
 

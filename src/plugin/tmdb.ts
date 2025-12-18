@@ -203,6 +203,8 @@ function revamp (input: any, type: any = null, adapter: any = {}, tmdb: any = {}
 
 revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tmdb: any = {}) {
 	var id = input.id;
+	var imdb = {id: input.imdb_id || ""}
+	var identity = {tmdb: id, imdb: imdb.id}
 	var title = (input.title || input.name) || "";
 	var title_original = (input.original_title || input.original_name) || "";
 	var slug = php.plugin.tmdb.slugify (title);
@@ -230,7 +232,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 			var genre_name = tmdb.genre [genre_id].name;
 			var genre_slug = tmdb.genre [genre_id].slug;
 			// var genre_permalink = adapter.request.router (type + ":genre", {id: genre_id, name: genre_slug});
-			var genre_permalink = adapter.request.router ("genre", {id: genre_id, name: genre_slug});
+			var genre_permalink = adapter.request.router ("genre", {id: genre_id, genre: genre_slug});
 			genre.push ({id: genre_id, name: genre_name, slug: genre_slug, permalink: genre_permalink});
 			}
 		}
@@ -240,7 +242,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 			var genre_name = tmdb.genre [genre_id].name;
 			var genre_slug = tmdb.genre [genre_id].slug;
 			// var genre_permalink = adapter.request.router (type + ":genre", {id: genre_id, name: genre_slug});
-			var genre_permalink = adapter.request.router ("genre", {id: genre_id, name: genre_slug});
+			var genre_permalink = adapter.request.router ("genre", {id: genre_id, genre: genre_slug});
 			genre.push ({id: genre_id, name: genre_name, slug: genre_slug, permalink: genre_permalink});
 			genre_id_list.push (genre_id);
 			}
@@ -292,7 +294,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 			}
 		}
 	var output = {
-		id, type, slug,
+		id, imdb, identity, type, slug,
 		"title": title, "title:original": title_original,
 		tagline,
 		description,

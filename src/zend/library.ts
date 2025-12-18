@@ -14,6 +14,8 @@ php.parse_url = function (input: string) {
 		}
 	}
 
+php.parse_url.rebase = function (input: string) {}
+
 php.is_agent_phone = function (agent: string) {
 	var browser = agent.toLowerCase ();
 	if (browser.indexOf ("iphone") !== undefined) return true;
