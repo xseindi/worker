@@ -135,7 +135,7 @@ vue.component ("video-src", {
 					<div class="flex align:item gap padding:sky border-radius:round background-color:mono">
 						<div class="flex align:item gap">
 							<icon src="thumb_up" class="font:medium"/>
-							<string>{{ (100).shuffle (200) }}</string>
+							<string>{{ video.vote.count }}</string>
 						</div>
 						<separator:small />
 						<icon src="thumb_down" class="font:medium"/>
@@ -145,7 +145,7 @@ vue.component ("video-src", {
 					<button:material icon="more_vertical" class="padding icon:large border-radius:pop"></button:material>
 				</div>
 				<div class="flex align:item gap">
-					<a:link v-for="genre in video.genre" v-bind:href="genre.permalink" class="font:small">#{{ genre.name }}</a:link>
+					<a:link v-for="genre in video.genre" v-bind:href="genre.permalink" class="font:small">{{ genre.name }}</a:link>
 				</div>
 				<div class="flex flex:column gap padding border:radius background-color:mono">
 					<div class="flex align:item gap">
@@ -153,6 +153,7 @@ vue.component ("video-src", {
 							<icon src="visibility"/>
 							<string class="font-bold:pop">{{ lib.number.format ((1000).shuffle (2000)) }} View's</string>
 						</div>
+						<flex:grow mobile/>
 						<div class="flex align:item gap">
 							<icon src="calendar_clock"/>
 							<string class="font-bold:pop">{{ video ["release_date:string"] }}</string>
@@ -161,12 +162,41 @@ vue.component ("video-src", {
 					<string>
 						{{ video.description }}
 					</string>
+					<div class="flex flex:wrap gap">
+						<div class="flex gap padding border:radius box-shadow background:color">
+							<div class="flex flex:column">
+								<string class="font:large font-color:blue-pop">{{ video.popularity }}</string>
+								<string class="font:small">Popularity</string>
+							</div>
+							<separator:vertical />
+							<div class="flex flex:column gap:tiny">
+								<string class="font:large">{{ video.vote.count }}</string>
+								<string class="font:small">Vote Count</string>
+							</div>
+							<separator:vertical />
+							<div class="flex flex:column gap:tiny">
+								<string class="font:large">{{ video.vote.average }}</string>
+								<string class="font:small">Vote Average</string>
+							</div>
+						</div>
+						<div class="flex gap padding border:radius box-shadow background:color">
+							<div class="flex flex:column">
+								<string class="font:large font-color:red-pop">{{ lib.number.format (video.budget) }}</string>
+								<string class="font:small">Budget</string>
+							</div>
+							<separator:vertical />
+							<div class="flex flex:column gap:tiny">
+								<string class="font:large font-color:green-pop">{{ lib.number.format (video.revenue) }}</string>
+								<string class="font:small">Revenue</string>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="padding:bottom scroll:horizontal border:radius no-overflow">
 					<div class="flex gap">
-						<div v-for="cast in video.credit.people.cast.limit (15)" class="flex flex:column gap">
+						<div v-for="cast in video.credit.people.cast.limit (20)" class="flex flex:column gap">
 							<div class="relative border:radius no-overflow">
-								<img:asset src="3x4.svg" width="150"/>
+								<img:asset src="3x4.svg" width="164"/>
 								<img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/>
 							</div>
 							<div class="flex flex:column gap:tiny">

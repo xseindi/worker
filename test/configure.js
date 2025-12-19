@@ -14,7 +14,7 @@ var config = {
 			"setup": true,
 			"internet": true,
 			"type": type,
-			"cache": "0.0.0",
+			"cache": "0.0.000",
 			"cache:io": "0000-00-00",
 			"cache:generator": c_gen,
 			"cd:io": false,

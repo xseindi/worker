@@ -718,6 +718,7 @@ Function.google.icon.src = {
 	event: "e878",
 	date_range: "e916",
 	chronic: "ebb2",
+	sticker: "e707",
 	}
 
 Event.on ("load", function () {

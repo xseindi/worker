@@ -137,12 +137,12 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				await request.db.setup ({drop: true, data: true})
 				}
 			}
-		request.router = function (key: any, value: any = {}) {
+		request.router = function (key: any, value: any = {}, query: any = {}) {
 			var router = request.base_url
 			if (typeof key === "string") router = router + (app.router [key] || key)
 			else for (var i in key) router = router + app.router [i][key [i]]
 			for (var i in value) router = router.split (":" + i).join (value [i])
-			return router
+			return router + php.url.query.build (query)
 			}
 		request.db.cache = {
 			config: await request.db.select ("config").json ().find ().query (),

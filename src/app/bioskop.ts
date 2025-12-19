@@ -566,6 +566,35 @@ app.get (app.router ["movie:editor-choice"], async function (request: any, respo
  * xxx://xxx.xxx.xxx/xxx
  */
 
+app.get (app.router.tv, async function (request: any, response: any, next: any) {
+	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
+	// var video = {id: 7451, title: "Movie", description: "description", poster: {url: "/file/100/cover.png"}, release_date: Date.now ()}
+	if (video.id) {
+		var date = new php.date (video.release_date)
+		response.post = {}
+		response.set ({
+			title: video.title,
+			description: video.description.split ('"').join ("'"),
+			article: {date: {publish: video.release_date}},
+			"image:cover": video.poster.url,
+			"ld+json webpage": {},
+			layout: "wide",
+			route: "under-construction",
+			variable: {
+				title: "Short",
+				icon: "subscription",
+				data: video,
+				},
+			})
+		return response.vue ({
+			"post:date": date.string (),
+			"post:date string": POST_DATE_STRING,
+			"post:content": video.description,
+			})
+		}
+	else return next ()
+	})
+
 app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
 	response.set ({
 		title: "TV Show",
@@ -812,11 +841,11 @@ app.get (app.router ["sitemap.xml"], async function (request: any, response: any
 	var xml = new php.markup ()
 	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
 	xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml"})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml"})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml"})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml"})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml"})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
+	if (false) xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
 	xml.push (0, `</sitemapindex>`)
 	return response.xml (xml.render ())
 	})

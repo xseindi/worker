@@ -1,5 +1,16 @@
 import php from "../zend/engine";
 
+php.url = function () {}
+
+php.url.query = function () {}
+php.url.query.build = function (query: any = {}, question: boolean = true) {
+	var q: any = [];
+	for (var i in query) q.push (`${i}=${query [i]}`);
+	if (q.length) q = (question ? "?" : "") + q.join ("&");
+	else q = q.join ("");
+	return q;
+	}
+
 php.parse_url = function (input: string) {
 	var url = new URL (input);
 	return {
