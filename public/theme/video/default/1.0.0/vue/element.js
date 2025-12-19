@@ -387,8 +387,10 @@ vue.element ("img:ad", {
 vue.element ("adsterra", {
 	prop: ["type"],
 	setup () {
-		var large = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__L"}).__html ()))
-		var small = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__S"}).__html ()))
+		// var large = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__L"}).__html ()))
+		// var small = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__S"}).__html ()))
+		var large = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__L"})))
+		var small = vue.router.files (lib.path ("ad", $.meta.get ({name: "adsterra:H__S"})))
 		return {large, small}
 		},
 	template: `

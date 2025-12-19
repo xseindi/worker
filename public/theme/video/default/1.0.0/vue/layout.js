@@ -74,7 +74,11 @@ vue.component ("video-src", {
 	setup () {
 		var v = vue.reactive ({click: false})
 		var variable = vue.app.variable
-		return {variable, video: variable.data, v}
+		var video = variable.data
+		if (video.type === "tv") {
+			if (variable.season) video.season = video.season.select ({number: variable.season.integer ()})
+			}
+		return {variable, video, v}
 		},
 	method: {
 		click () {
@@ -83,20 +87,39 @@ vue.component ("video-src", {
 				$ ("#player-security").hide ()
 				lib.element.show ("#player-loading")
 				if (vue.app.config ["AD__.s"]) window.open (lib.AD__.link ["adsterra"])
-				if (true) lib.video.src (this.variable.data.identity, {
+				if (this.video.type === "tv") {
+					if (this.variable.episode) {
+						lib.video.src.tv (this.variable.data.identity, this.variable.season, this.variable.episode, {
+							success (src) {
+								$ ("#player-frame").attr ("src", src)
+								lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+								},
+							error () {
+								// $ ("#player-frame").attr ("src", "about:blank")
+								lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+								},
+							})
+						}
+					else {
+						var src = this.video.credit.video.trailer.one () ["embed:url"]
+						$ ("#player-frame").attr ("src", src)
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						}
+					}
+				else if (true) lib.video.src (this.variable.data.identity, {
 					success (src) {
 						$ ("#player-frame").attr ("src", src)
 						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
 						},
 					error () {
-						$ ("#player-frame").attr ("src", "about:blank")
+						// $ ("#player-frame").attr ("src", "about:blank")
 						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
 						},
 					})
 				else {
 					lib.timeout (function () {
-						var src = "about:blank"
-						$ ("#player-frame").attr ("src", src)
+						// var src = "about:blank"
+						// $ ("#player-frame").attr ("src", src)
 						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
 						}, 3)
 					}
@@ -110,7 +133,9 @@ vue.component ("video-src", {
 					<img:asset src="16x9.svg" class="width:size"/>
 					<img:cover v-bind:src="video.poster.url" class="opacity:small transition:opacity"/>
 					<div v-on:click="click (this)" id="player-security" class="flex align:item justify:item absolute top left width:height index:large">
-						<!--icon src="home" class="font:big"/-->
+						<div class="padding:big border-radius:circle">
+							<icon src="play_circle" class="font:big" style="font-size: 64px; color: white;"/>
+						</div>
 					</div>
 					<div class="absolute top left width:height index">
 						<video:frame id="player-frame" src="about:blank"/>
@@ -135,7 +160,7 @@ vue.component ("video-src", {
 					<div class="flex align:item gap padding:sky border-radius:round background-color:mono">
 						<div class="flex align:item gap">
 							<icon src="thumb_up" class="font:medium"/>
-							<string>{{ video.vote.count }}</string>
+							<string>{{ lib.number.format (video.vote.count) }}</string>
 						</div>
 						<separator:small />
 						<icon src="thumb_down" class="font:medium"/>
@@ -158,6 +183,13 @@ vue.component ("video-src", {
 							<icon src="calendar_clock"/>
 							<string class="font-bold:pop">{{ video ["release_date:string"] }}</string>
 						</div>
+						<flex:grow computer/>
+						<div class="flex align:item gap" computer>
+							<circle:pop size="8" class="background-color:red-pop"/>
+							<circle:pop size="8" class="background-color:green-pop"/>
+							<circle:pop size="8" class="background-color:blue-pop"/>
+							<circle:line size="8" class="background-color:yellow-pop"/>
+						</div>
 					</div>
 					<string>
 						{{ video.description }}
@@ -165,28 +197,29 @@ vue.component ("video-src", {
 					<div class="flex flex:wrap gap">
 						<div class="flex gap padding border:radius box-shadow background:color">
 							<div class="flex flex:column">
-								<string class="font:large font-color:blue-pop">{{ video.popularity }}</string>
+								<string class="font:large font-color:blue-pop text-align:right">{{ video.popularity }}</string>
 								<string class="font:small">Popularity</string>
 							</div>
 							<separator:vertical />
 							<div class="flex flex:column gap:tiny">
-								<string class="font:large">{{ video.vote.count }}</string>
+								<string class="font:large text-align:right">{{ lib.number.format (video.vote.count) }}</string>
 								<string class="font:small">Vote Count</string>
 							</div>
 							<separator:vertical />
 							<div class="flex flex:column gap:tiny">
-								<string class="font:large">{{ video.vote.average }}</string>
+								<string class="font:large text-align:right">{{ video.vote.average }}</string>
 								<string class="font:small">Vote Average</string>
 							</div>
 						</div>
+						<flex:grow/>
 						<div class="flex gap padding border:radius box-shadow background:color">
 							<div class="flex flex:column">
-								<string class="font:large font-color:red-pop">{{ lib.number.format (video.budget) }}</string>
+								<string class="font:large font-color:red-pop text-align:right">{{ lib.number.format (video.budget) }}</string>
 								<string class="font:small">Budget</string>
 							</div>
 							<separator:vertical />
 							<div class="flex flex:column gap:tiny">
-								<string class="font:large font-color:green-pop">{{ lib.number.format (video.revenue) }}</string>
+								<string class="font:large font-color:green-pop text-align:right">{{ lib.number.format (video.revenue) }}</string>
 								<string class="font:small">Revenue</string>
 							</div>
 						</div>
@@ -196,13 +229,60 @@ vue.component ("video-src", {
 					<div class="flex gap">
 						<div v-for="cast in video.credit.people.cast.limit (20)" class="flex flex:column gap">
 							<div class="relative border:radius no-overflow">
-								<img:asset src="3x4.svg" width="164"/>
+								<img:asset src="tmdb.svg" width="164"/>
 								<img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/>
 							</div>
 							<div class="flex flex:column gap:tiny">
 								<string class="font:bold">{{ cast.name }}</string>
 								<string class="font:small">{{ cast.character }}</string>
 							</div>
+						</div>
+					</div>
+				</div>
+				<div v-if="video.season.length && ! video.episode.length" class="flex flex:column gap">
+					<div v-for="season in video.season" class="flex flex:column gap border:radius background-color:mono no-overflow">
+						<div class="flex gap">
+							<div class="relative border:radius">
+								<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (144, 96)"/>
+								<a:link v-bind:href="vue.router ('tv:season', {id: video.id, name: video.slug, season: season.number})"><img:cover v-bind:src="season.poster.url" class="opacity:small transition:opacity"/></a:link>
+							</div>
+							<div class="flex flex:column gap:small padding">
+								<a:link v-bind:href="'/'" class="font:medium font-bold:pop" string>{{ season.name }}</a:link>
+								<div class="flex align:item gap"><icon src="thumb_up"/><string>{{ season.vote.average }}</string></div>
+								<div class="flex align:item gap"><icon src="calendar_clock"/><string>{{ season.date.string }}</string></div>
+								<div class="flex align:item gap"><b>{{ season.episode.count }}</b> Episode's</div>
+								<flex:grow computer/>
+								<string class="font:small" computer>{{ season.description || video.description }}</string>
+							</div>
+						</div>
+						<string class="font:small padding padding-top:none" mobile>{{ season.description || video.description }}</string>
+					</div>
+				</div>
+				<div v-if="video.episode.length" class="flex flex:wrap gap" style="justify-content: space-between" computer>
+					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow" style="width: 30%">
+						<div class="relative border:radius">
+							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
+						</div>
+						<div class="flex flex:column gap:small padding:vertical">
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
+							<flex:grow/>
+							<div class="flex align:item gap font:small"><icon src="thumb_up"/><string>{{ episode.vote.average }}</string></div>
+							<div class="flex align:item gap font:small"><icon src="calendar_clock"/><string>{{ episode.date.string }}</string></div>
+						</div>
+					</div>
+				</div>
+				<div v-if="video.episode.length" class="flex flex:column gap" mobile>
+					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow">
+						<div class="relative border:radius">
+							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
+						</div>
+						<div class="flex flex:column gap:small padding:vertical">
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
+							<flex:grow/>
+							<div class="flex align:item gap font:small"><icon src="thumb_up"/><string>{{ episode.vote.average }}</string></div>
+							<div class="flex align:item gap font:small"><icon src="calendar_clock"/><string>{{ episode.date.string }}</string></div>
 						</div>
 					</div>
 				</div>

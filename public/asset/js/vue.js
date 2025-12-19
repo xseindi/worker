@@ -133,6 +133,7 @@ vue.var ("device:tablet", false)
 vue.var ("device:phone", false)
 
 vue.device = function () {}
+vue.device.if_else = function (computer, mobile) { return vue.device.computer () ? computer : mobile; }
 vue.device.computer = function (value) { return vue.var ("device:computer", value) }
 vue.device.mobile = function (value) { return vue.var ("device:mobile", value) }
 vue.device.tablet = function (value) { return vue.var ("device:tablet", value) }

@@ -23,6 +23,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<meta name="googlebot" content="{{ meta:google-bot }}">`);
 	markup.push (2, `<meta name="googlebot-news" content="{{ meta:google-bot-article }}">`);
 	if (variable ["google-site-verification"]) markup.push (2, `<meta name="google-site-verification" content="{{ google-site-verification }}">`);
+	if (variable ["yandex-verification"]) markup.push (2, `<meta name="yandex-verification" content="{{ yandex-verification }}">`);
 	if (variable ["ad adsterra:horizontal large"]) markup.push (2, `<meta name="adsterra:H__L" content="{{ ad adsterra:horizontal large }}">`);
 	if (variable ["ad adsterra:horizontal small"]) markup.push (2, `<meta name="adsterra:H__S" content="{{ ad adsterra:horizontal small }}">`);
 	markup.push (2, `<meta name="twitter:card" content="{{ twitter:card }}">`);

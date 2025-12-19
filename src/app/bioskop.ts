@@ -595,6 +595,67 @@ app.get (app.router.tv, async function (request: any, response: any, next: any) 
 	else return next ()
 	})
 
+app.get (app.router ["tv:season"], async function (request: any, response: any, next: any) {
+	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
+	video.episode = (await request.tmdb.tv.season (request.url.param ("id"), request.url.param ("season"), {append_to_response: false})).episode
+	if (video.id) {
+		var date = new php.date (video.release_date)
+		response.post = {}
+		response.set ({
+			title: video.title,
+			description: video.description.split ('"').join ("'"),
+			article: {date: {publish: video.release_date}},
+			"image:cover": video.poster.url,
+			"ld+json webpage": {},
+			layout: "wide",
+			route: "under-construction",
+			variable: {
+				season: request.url.param ("season"),
+				title: "",
+				icon: "home",
+				data: video,
+				},
+			})
+		return response.vue ({
+			"post:date": date.string (),
+			"post:date string": POST_DATE_STRING,
+			"post:content": video.description,
+			})
+		}
+	else return next ()
+	})
+
+app.get (app.router ["tv:season-episode"], async function (request: any, response: any, next: any) {
+	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
+	video.episode = (await request.tmdb.tv.season (request.url.param ("id"), request.url.param ("season"), {append_to_response: false})).episode
+	if (video.id) {
+		var date = new php.date (video.release_date)
+		response.post = {}
+		response.set ({
+			title: video.title,
+			description: video.description.split ('"').join ("'"),
+			article: {date: {publish: video.release_date}},
+			"image:cover": video.poster.url,
+			"ld+json webpage": {},
+			layout: "wide",
+			route: "under-construction",
+			variable: {
+				season: request.url.param ("season"),
+				episode: request.url.param ("episode"),
+				title: "",
+				icon: "home",
+				data: video,
+				},
+			})
+		return response.vue ({
+			"post:date": date.string (),
+			"post:date string": POST_DATE_STRING,
+			"post:content": video.description,
+			})
+		}
+	else return next ()
+	})
+
 app.get (app.router ["tv:index"], async function (request: any, response: any, next: any) {
 	response.set ({
 		title: "TV Show",

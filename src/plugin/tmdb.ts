@@ -15,6 +15,7 @@ const __api: any = {
 	"movie:now_playing": "https://api.themoviedb.org/3/movie/now_playing?language=en",
 	"movie:up_coming": "https://api.themoviedb.org/3/movie/upcoming?language=en",
 	"tv": "https://api.themoviedb.org/3/tv/{id}?language=en",
+	"tv:season": "https://api.themoviedb.org/3/tv/{id}/season/{season}?language=en",
 	"tv:search": "https://api.themoviedb.org/3/search/tv?include_adult=false&language=en",
 	"tv trending:today": "https://api.themoviedb.org/3/trending/tv/day?language=en",
 	"tv trending:week": "https://api.themoviedb.org/3/trending/tv/week?language=en",
@@ -61,6 +62,10 @@ php.plugin.tmdb = class {
 		if (option.id) {
 			url = url.split ("{id}").join (option.id);
 			delete option.id;
+			if (option.season) {
+				url = url.split ("{season}").join (option.season);
+				delete option.season;
+				}
 			}
 		option.page = option.page || 1;
 		option.sort = option.sort || "popularity.desc";
@@ -170,6 +175,9 @@ php.plugin.tmdb.tv = class {
 	async single (id: any, option: any = {}) {
 		return this.tmdb.object (await this.tmdb.fetch ("tv", (option = php.object.assign ({id, type: "tv", append_to_response: true}, option))), option);
 		}
+	async season (id: any, season: any, option: any = {}) {
+		return this.tmdb.object (await this.tmdb.fetch ("tv:season", (option = php.object.assign ({id, season, type: "tv", append_to_response: true}, option))), option);
+		}
 	async trending (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv trending:today", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:top_rated", (option = php.object.assign ({type: "tv"}, option))), option); }
@@ -214,7 +222,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 	var release_date = (input.release_date || input.first_air_date || Date.now ()), r_date = new Date (release_date);
 	var release_date_string = php.date.month.name [r_date.getMonth () + 1] + " " + r_date.getDate () + ", " + r_date.getFullYear ();
 	var year = r_date.getFullYear ();
-	var popularity = input.popularity;
+	var popularity = input.popularity || 0;
 	var vote = {average: input.vote_average || 0, count: input.vote_count || 0}
 	var country = input.origin_country || [];
 	var language = input.original_language || "en";
@@ -250,8 +258,15 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":name").join (slug);
 	if (type === "movie") {}
 	if (type === "tv") {}
-	var credit: any = {image: {poster: [], backdrop: []}, video: {trailer: [], teaser: [], s: [], list: []}, people: {cast: [], crew: []}}
+	var credit: any = {
+		image: {poster: [], backdrop: []}, video: {trailer: [], teaser: [], s: [], list: []},
+		people: {cast: [], crew: []},
+		director: [],
+		writer: [],
+		}
 	if (input.credits) {
+		credit.director = php.array (input.credits.crew).filter ({job: "Director"}).data;
+		credit.writer = php.array (input.credits.crew).filter ({job: "Writer"}).data;
 		if (input.images) {
 			if (input.images.posters) {
 				for (var i in input.images.posters) {
@@ -293,6 +308,42 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 				}
 			}
 		}
+	var season = [];
+	if (input.seasons && type === "tv") for (var i in input.seasons) {
+		var air_date = input.seasons [i].air_date, _air_date = new Date (air_date);
+		season.push ({
+			id: input.seasons [i].id,
+			number: input.seasons [i].season_number,
+			name: input.seasons [i].name,
+			description: input.seasons [i].overview,
+			episode: {count: input.seasons [i].episode_count},
+			poster: {path: input.seasons [i].poster_path, url: php.plugin.tmdb.image (input.seasons [i].poster_path), "url:original": php.plugin.tmdb.image (input.seasons [i].poster_path, "original")},
+			vote: {average: input.seasons [i].vote_average},
+			date: {
+				air: air_date,
+				string:  php.date.month.name [_air_date.getMonth () + 1] + " " + _air_date.getDate () + ", " + _air_date.getFullYear (),
+				year: _air_date.getFullYear (),
+				},
+			});
+		}
+	var episode = [];
+	if (input.episodes && type === "tv") for (var i in input.episodes) {
+		var air_date = input.episodes [i].air_date, _air_date = new Date (air_date);
+		episode.push ({
+			number: input.episodes [i].episode_number,
+			name: input.episodes [i].name,
+			description: input.episodes [i].overview,
+			runtime: input.episodes [i].runtime,
+			poster: {path: input.episodes [i].still_path, url: php.plugin.tmdb.image (input.episodes [i].still_path), "url:original": php.plugin.tmdb.image (input.episodes [i].still_path, "original")},
+			vote: {average: input.episodes [i].vote_average, count: input.episodes [i].vote_count},
+			date: {
+				air: air_date,
+				string:  php.date.month.name [_air_date.getMonth () + 1] + " " + _air_date.getDate () + ", " + _air_date.getFullYear (),
+				year: _air_date.getFullYear (),
+				},
+			guest: input.episodes [i].guest_stars || [],
+			});
+		}
 	var output = {
 		id, imdb, identity, type, slug,
 		"title": title, "title:original": title_original,
@@ -305,7 +356,9 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 		status, adult, budget, revenue,
 		popularity, vote,
 		country, language,
+		season, episode,
 		credit,
+		input,
 		}
 	return output;
 	}

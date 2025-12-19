@@ -22,7 +22,7 @@ function DefineGETTER (descriptor, key, value) { Object.defineProperty (descript
  */
 
 /**
- * xxx
+ * array
  *
  * title
  * description
@@ -799,6 +799,28 @@ Function.image.stock.data = {}
 Function.video = function () {}
 Function.video.src = function (id, context) {
 	var url = ("https://vidsrcme.vidsrc.icu/embed/movie?tmdb={id}&autoplay=0&ds_lang=en").split ("{id}").join (id.tmdb);
+	Function.ajax.get (url, {
+		success: function (response) {
+			var frame = "https:" + response.after ('iframe id="player_iframe" src="').before ('"');
+			Function.ajax.get (frame, {
+				success: function (response) {
+					var src = "https://cloudnestra.com" + response.after ("id: 'player_iframe'").after ("src: '").before ("'");
+					if (context.success) context.success (src);
+					else context (src);
+					},
+				error (error) {
+					Function.video.src.embed.c (id, context);
+					},
+				})
+			},
+		error (error) {
+			Function.video.src.embed.c (id, context);
+			},
+		})
+	}
+
+Function.video.src.tv = function (id, season, episode, context) {
+	var url = ("https://vidsrcme.vidsrc.icu/embed/tv?tmdb={id}&season={season}&episode={episode}&autoplay=0&ds_lang=en").split ("{id}").join (id.tmdb).split ("{season}").join (season).split ("{episode}").join (episode);
 	Function.ajax.get (url, {
 		success: function (response) {
 			var frame = "https:" + response.after ('iframe id="player_iframe" src="').before ('"');

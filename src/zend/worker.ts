@@ -337,6 +337,7 @@ var library: any = class {
 		this.response.var ["meta:google-bot-article"] = ["index", "follow"].join (ln_s)
 		this.response.var ["google-site-verification"] = this.request.client.object ["google-site-verification"]
 		this.response.var ["g-tag:id"] = this.request.client.object ["g-tag:id"]
+		this.response.var ["yandex-verification"] = this.request.client.object ["yandex-verification"]
 		this.response.var ["twitter:card"] = "summary_large_image"
 		this.response.var ["twitter:title"] = this.request.client.site.title
 		this.response.var ["twitter:description"] = this.request.client.site.description
