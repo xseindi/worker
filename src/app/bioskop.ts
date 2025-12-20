@@ -30,6 +30,7 @@ var POST_CONTENT = "Million's of Movie's, TV Show's and People to discover."
 
 import DB_SITEMAP_MOVIE from "../db/bioskop/sitemap/movie.json"
 import DB_SITEMAP_TV from "../db/bioskop/sitemap/tv.json"
+import { equal } from "hono/utils/buffer"
 
 /**
  * setup
@@ -416,7 +417,6 @@ app.get (app.router.search, async function (request: any, response: any, next: a
 
 app.get (app.router.movie, async function (request: any, response: any, next: any) {
 	var movie = await request.tmdb.movie.single (request.url.param ("id"), {append_to_response: true})
-	// var movie = {id: 7451, title: "Movie", description: "description", poster: {url: "/file/100/cover.png"}, release_date: Date.now ()}
 	if (movie.id) {
 		var date = new php.date (movie.release_date)
 		response.post = {}
@@ -426,8 +426,8 @@ app.get (app.router.movie, async function (request: any, response: any, next: an
 			article: {date: {publish: movie.release_date}},
 			"image:cover": movie.poster.url,
 			"ld+json webpage": {},
-			layout: "wide",
-			route: "under-construction",
+			layout: "wrap",
+			route: "video-src",
 			variable: {
 				title: "Short",
 				icon: "subscription",
@@ -568,7 +568,6 @@ app.get (app.router ["movie:editor-choice"], async function (request: any, respo
 
 app.get (app.router.tv, async function (request: any, response: any, next: any) {
 	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
-	// var video = {id: 7451, title: "Movie", description: "description", poster: {url: "/file/100/cover.png"}, release_date: Date.now ()}
 	if (video.id) {
 		var date = new php.date (video.release_date)
 		response.post = {}
@@ -578,8 +577,8 @@ app.get (app.router.tv, async function (request: any, response: any, next: any) 
 			article: {date: {publish: video.release_date}},
 			"image:cover": video.poster.url,
 			"ld+json webpage": {},
-			layout: "wide",
-			route: "under-construction",
+			layout: "wrap",
+			route: "video-src",
 			variable: {
 				title: "Short",
 				icon: "subscription",
@@ -607,10 +606,11 @@ app.get (app.router ["tv:season"], async function (request: any, response: any, 
 			article: {date: {publish: video.release_date}},
 			"image:cover": video.poster.url,
 			"ld+json webpage": {},
-			layout: "wide",
-			route: "under-construction",
+			layout: "wrap",
+			route: "video-src",
 			variable: {
 				season: request.url.param ("season"),
+				episode: one,
 				title: "",
 				icon: "home",
 				data: video,
@@ -637,8 +637,8 @@ app.get (app.router ["tv:season-episode"], async function (request: any, respons
 			article: {date: {publish: video.release_date}},
 			"image:cover": video.poster.url,
 			"ld+json webpage": {},
-			layout: "wide",
-			route: "under-construction",
+			layout: "wrap",
+			route: "video-src",
 			variable: {
 				season: request.url.param ("season"),
 				episode: request.url.param ("episode"),
@@ -778,6 +778,34 @@ app.get (app.router ["tv:editor-choice"], async function (request: any, response
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+app.get (app.router.people, async function (request: any, response: any, next: any) {
+	var people = await request.tmdb.people.single (request.url.param ("id"), {append_to_response: false})
+	var cc = await request.tmdb.people.cc (request.url.param ("id"))
+	people.profile.cast = cc.data
+	if (people.id) {
+		var date = new php.date (people.profile.birth.date.format)
+		var description = people.profile.biography.split (ln).join (" ")
+		response.post = {}
+		response.set ({
+			title: people.profile.name,
+			description,
+			article: {date: {publish: people.profile.birth.date.format}},
+			"image:cover": people.profile.poster.url,
+			"ld+json webpage": {},
+			layout: "wrap",
+			route: "people:single",
+			variable: {
+				data: people,
+				},
+			})
+		return response.vue ({
+			"post:date": date.string (),
+			"post:content": description,
+			})
+		}
+	else return next ()
+	})
 
 app.get (app.router ["people:index"], async function (request: any, response: any, next: any) {
 	response.set ({

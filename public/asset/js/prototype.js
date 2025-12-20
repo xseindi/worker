@@ -695,6 +695,7 @@ Function.google.icon.src = {
 	recycling: "e760",
 	arrow_left_alt: "ef7d",
 	arrow_right_alt: "e941",
+	play_arrow: "e037",
 	key: "e73c",
 	chart_show: "e6e1",
 	trending_up: "e8e5",
@@ -784,6 +785,8 @@ Function.tmdb.api = {
 Function.element = function () {}
 Function.element.show = function (element) { return $ (element).removeClass ("none").addClass ("flex"); }
 Function.element.hide = function (element) { return $ (element).removeClass ("flex").addClass ("none"); }
+
+Function.ln = function (input) { return input.split ("\n").join ("<br>"); }
 
 Function.image = function () {}
 Function.image.stock = function (stock) {
@@ -1011,6 +1014,7 @@ Function.export = {
 	language: Function.language,
 	email: Function.email,
 	p: Function.p,
+	ln: Function.ln,
 	}
 
 /**

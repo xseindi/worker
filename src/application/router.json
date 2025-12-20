@@ -23,7 +23,7 @@
 "search": "/search",
 "archive": "/archive/", "archive:year": "/:year{[0-9]+}/", "archive:month": "/:year{[0-9]+}/:month{[0-9]+}/", "archive:day": "/:year{[0-9]+}/:month{[0-9]+}/:day{[0-9]+}/",
 "author": "/author/:author/", "author:index": "/author/",
-"people": "/people/:id/:name/", "people:index": "/people/", "people:top_global": "/people/top_global/", "people:editor-choice": "/people/editor-choice/",
+"people": "/people/:id/:slug/", "people:index": "/people/", "people:top_global": "/people/top_global/", "people:editor-choice": "/people/editor-choice/",
 "blog": "/blog/:blog/", "blog:index": "/blog/",
 "article": "/article/:article/", "article:index": "/article/",
 "event": "/event/", "event:single": "/event/:event/",

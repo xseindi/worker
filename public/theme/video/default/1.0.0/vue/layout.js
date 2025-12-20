@@ -42,6 +42,34 @@ vue.layout ("index", {
 		`,
 	})
 
+vue.layout ("wrap", {
+	setup () {
+		var variable = vue.app.variable
+		return {variable}
+		},
+	template: `
+		<div layout="index" class="flex flex:column height:size">
+			<header id="header" class="header:size relative index:large">
+				<header-simple:float></header-simple:float>
+			</header>
+			<main class="flex flex:grow justify:item index">
+				<menu id="menu" class="nav-menu block relative index:small">
+					<div outter>
+						<menu-simple></menu-simple>
+					</div>
+				</menu>
+				<main id="main" class="flex flex:column flexible:port wrap:container index">
+					<route v-bind:src="vue.app.route" class="flex:grow"/>
+					<footer id="footer" class="flex flex:column padding">
+						<footer-simple />
+						<footer-simple:info />
+					</footer>
+				</main>
+			</main>
+		</div>
+		`,
+	})
+
 vue.layout ("wide", {
 	setup () {
 		var variable = vue.app.variable
@@ -58,14 +86,59 @@ vue.layout ("wide", {
 						<menu-simple></menu-simple>
 					</div>
 				</menu>
-				<div class="video-src:size">
-					<video-src/>
+				<div class="flex flex:column flexible:port main:size">
+					<main class="flex flex:grow gap padding">
+						<video-src class="background-color:mono"/>
+						<video-src:more computer/>
+						<div class=" background-color:mono" computer>
+							<div class="side:size">-</div>
+						</div>
+					</main>
+					<!--main class="flex:grow">
+						<video-src/>
+					</main-->
+					<footer id="footer" class="flex flex:column padding">
+						<footer-simple />
+						<footer-simple:info />
+					</footer>
 				</div>
 			</main>
-			<footer id="footer" class="flex flex:column padding">
-				<footer-simple />
-				<footer-simple:info />
-			</footer>
+		</div>
+		`,
+	})
+
+vue.layout ("people:single", {
+	setup () {
+		var variable = vue.app.variable
+		return {variable}
+		},
+	template: `
+		<div layout="index" class="flex flex:column height:size">
+			<header id="header" class="header:size relative index:large">
+				<header-simple:float></header-simple:float>
+			</header>
+			<main class="flex flex:grow justify:item index">
+				<menu id="menu" class="nav-menu block relative index:small">
+					<div outter>
+						<menu-simple></menu-simple>
+					</div>
+				</menu>
+				<div class="flex flex:column main:size">
+					<main class="flex flex:grow gap padding">
+						<div class="flex flex:grow gap no-overflow">
+							<div class="flexible background-color:mono">left</div>
+							<div class="flex:grow" computer>right</div>
+						</div>
+						<div class="" computer>
+							right
+						</div>
+					</main>
+					<footer id="footer" class="flex flex:column padding">
+						<footer-simple />
+						<footer-simple:info />
+					</footer>
+				</div>
+			</main>
 		</div>
 		`,
 	})
@@ -127,7 +200,7 @@ vue.component ("video-src", {
 			},
 		},
 	template: `
-		<div class="flex gap padding">
+		<!--div class="flex gap padding"-->
 			<div class="flex flex:column flex:grow gap no-overflow">
 				<div id="player" class="relative no-overflow border:radius">
 					<img:asset src="16x9.svg" class="width:size"/>
@@ -230,10 +303,10 @@ vue.component ("video-src", {
 						<div v-for="cast in video.credit.people.cast.limit (20)" class="flex flex:column gap">
 							<div class="relative border:radius no-overflow">
 								<img:asset src="tmdb.svg" width="164"/>
-								<img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/>
+								<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
 							</div>
 							<div class="flex flex:column gap:tiny">
-								<string class="font:bold">{{ cast.name }}</string>
+								<a v-bind:href="cast.permalink" class="font:bold" string>{{ cast.name }}</a>
 								<string class="font:small">{{ cast.character }}</string>
 							</div>
 						</div>
@@ -290,12 +363,12 @@ vue.component ("video-src", {
 					<adsterra type="horizontal"/>
 				</div>
 			</div>
-			<div class="" computer>
-				<div class="" style="width: 300px;">
+			<!--div class="" computer>
+				<div class="side:size">
 					-
 				</div>
 			</div>
-		</div>
+		</div-->
 		`,
 	})
 

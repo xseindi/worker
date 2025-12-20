@@ -93,7 +93,8 @@
 --float-size: 250px;
 --float-medium: 280px;
 --float-large: 350px;
---video-src-size: 1100px;
+--wrap-size: 1100px;
+--main-size: 1100px;
 }
 
 /**
@@ -590,8 +591,12 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .mobile #menu [outter] { position: fixed; width: 100vw; height: calc(100vh - var(--header-size)); background-color: rgba(var(--black),0.75); }
 #menu-simple { position: fixed; height: calc(100vh - var(--header-size)); overflow-y: scroll; }
 
-.computer .video-src\:size { width: var(--video-src-size); }
+.computer .wrap\:container { width: var(--wrap-size); }
+.computer .main\:size { width: var(--main-size); }
+.wrap\:side { width: var(--side-size); }
 .mobile .video-src\:size { width: 100vw; }
+.mobile .flexible { flex-grow: 1; }
+.mobile .flexible\:port { width: 100vw; }
 
 .position\:top-left { top: 10px; left: 10px; }
 .position\:top-right { top: 10px; right: 10px; }

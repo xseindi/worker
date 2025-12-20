@@ -5,6 +5,9 @@ const __api: any = {
 	"trending:today": "https://api.themoviedb.org/3/trending/all/day?language=en",
 	"trending:week": "https://api.themoviedb.org/3/trending/all/week?language=en",
 	"search": "https://api.themoviedb.org/3/search/multi?include_adult=false&language=en",
+	"people": "https://api.themoviedb.org/3/person/{id}?language=en",
+	"people:cc": "https://api.themoviedb.org/3/person/{id}/combined_credits?language=en",
+	"people:popular": "https://api.themoviedb.org/3/person/popular?language=en",
 	"movie": "https://api.themoviedb.org/3/movie/{id}?language=en",
 	"movie:search": "https://api.themoviedb.org/3/search/movie?include_adult=false&language=en",
 	"movie trending:today": "https://api.themoviedb.org/3/trending/movie/day?language=en",
@@ -34,6 +37,7 @@ php.plugin.tmdb = class {
 	api: string;
 	token: string;
 	adapter: any;
+	people: any;
 	movie: any;
 	tv: any;
 	genre: any = {}
@@ -42,6 +46,7 @@ php.plugin.tmdb = class {
 		this.token = tmdb.token;
 		this.adapter = adapter;
 		this.setup ();
+		this.people = new php.plugin.tmdb.people (this);
 		this.movie = new php.plugin.tmdb.movie (this);
 		this.tv = new php.plugin.tmdb.tv (this);
 		}
@@ -72,7 +77,8 @@ php.plugin.tmdb = class {
 		if  (option.page) url = [url, ["page", option.page].join ("=")].join ("&");
 		if  (option.query) url = [url, ["query", option.query].join ("=")].join ("&");
 		if  (option.genre) url = [url, ["with_genres", option.genre].join ("=")].join ("&");
-		if  (option.append_to_response) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
+		if  (option.append_to_response) if  (option.append_to_response === true) url = [url, ["append_to_response", "credits,images,videos,reviews"].join ("=")].join ("&");
+		if  (option.append_to_response === "credit") url = [url, ["append_to_response", "credits"].join ("=")].join ("&");
 		if  (option.country) url = [url, ["with_origin_country", option.country].join ("=")].join ("&");
 		if  (option.sort_by) url = [url, ["sort_by", option.sort].join ("=")].join ("&");
 		if  (option.vote_average) url = [url, ["vote_average.gte", option.sort].join ("=")].join ("&");
@@ -104,6 +110,15 @@ php.plugin.tmdb = class {
 		var adapter = this.adapter;
 		return new Promise (function (resolve, reject) {
 			resolve (revamp.json (respond, option.type, adapter, tmdb));
+			});
+		}
+	cc (respond: any, option: any = {}) {
+		var tmdb = this;
+		var adapter = this.adapter;
+		return new Promise (function (resolve, reject) {
+			resolve ({
+				data: revamp (respond.cast, option.type, adapter, tmdb),
+				});
 			});
 		}
 	image (path: string, size: string = "default") {
@@ -151,12 +166,8 @@ php.plugin.tmdb.movie = class {
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
-	async discover (option: any = {}) {
-		return this.tmdb.array (await this.tmdb.fetch ("movie:discover", (option = php.object.assign ({type: "movie"}, option))), option);
-		}
-	async single (id: any, option: any = {}) {
-		return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: (option.append_to_response || false)}, option))), option);
-		}
+	async discover (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:discover", (option = php.object.assign ({type: "movie"}, option))), option); }
+	async single (id: any, option: any = {}) { return this.tmdb.object (await this.tmdb.fetch ("movie", (option = php.object.assign ({id, type: "movie", append_to_response: (option.append_to_response || false)}, option))), option); }
 	async trending (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie trending:today", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:popular", (option = php.object.assign ({type: "movie"}, option))), option); }
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("movie:top_rated", (option = php.object.assign ({type: "movie"}, option))), option); }
@@ -169,21 +180,25 @@ php.plugin.tmdb.tv = class {
 	constructor (tmdb: any) {
 		this.tmdb = tmdb;
 		}
-	async discover (option: any = {}) {
-		return this.tmdb.array (await this.tmdb.fetch ("tv:discover", (option = php.object.assign ({type: "tv"}, option))), option);
-		}
-	async single (id: any, option: any = {}) {
-		return this.tmdb.object (await this.tmdb.fetch ("tv", (option = php.object.assign ({id, type: "tv", append_to_response: true}, option))), option);
-		}
-	async season (id: any, season: any, option: any = {}) {
-		return this.tmdb.object (await this.tmdb.fetch ("tv:season", (option = php.object.assign ({id, season, type: "tv", append_to_response: true}, option))), option);
-		}
+	async discover (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:discover", (option = php.object.assign ({type: "tv"}, option))), option); }
+	async single (id: any, option: any = {}) { return this.tmdb.object (await this.tmdb.fetch ("tv", (option = php.object.assign ({id, type: "tv", append_to_response: true}, option))), option); }
+	async season (id: any, season: any, option: any = {}) { return this.tmdb.object (await this.tmdb.fetch ("tv:season", (option = php.object.assign ({id, season, type: "tv", append_to_response: true}, option))), option); }
 	async trending (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv trending:today", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:popular", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async top_rated (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:top_rated", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async on_air (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:on_air", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async airing_today (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:airing_today", (option = php.object.assign ({type: "tv"}, option))), option); }
 	async search (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("tv:search", (option = php.object.assign ({type: "tv"}, option))), option); }
+	}
+
+php.plugin.tmdb.people = class {
+	tmdb: any;
+	constructor (tmdb: any) {
+		this.tmdb = tmdb;
+		}
+	async single (id: any, option: any = {}) { return this.tmdb.object (await this.tmdb.fetch ("people", (option = php.object.assign ({id, type: "people", append_to_response: true}, option))), option); }
+	async cc (id: any, option: any = {}) { return this.tmdb.cc (await this.tmdb.fetch ("people:cc", (option = php.object.assign ({id}, option))), option); }
+	async popular (option: any = {}) { return this.tmdb.array (await this.tmdb.fetch ("people:popular", (option = php.object.assign ({type: "tv"}, option))), option); }
 	}
 
 php.plugin.tmdb.image = function (path: string, size: string = "default") {
@@ -216,7 +231,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 	var title = (input.title || input.name) || "";
 	var title_original = (input.original_title || input.original_name) || "";
 	var slug = php.plugin.tmdb.slugify (title);
-	var description = input.overview;
+	var description = input.overview || input.biography || "";
 	var poster = {path: input.poster_path, url: php.plugin.tmdb.image (input.poster_path), "url:original": php.plugin.tmdb.image (input.poster_path, "original")}
 	var backdrop = null; if (input.backdrop_path) backdrop = {path: input.backdrop_path, url: php.plugin.tmdb.image (input.backdrop_path), "url:original": php.plugin.tmdb.image (input.backdrop_path, "original")}
 	var release_date = (input.release_date || input.first_air_date || Date.now ()), r_date = new Date (release_date);
@@ -304,7 +319,18 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 				var cast_poster_path = input.credits.cast [i].profile_path;
 				var cast_poster_url = php.plugin.tmdb.image (cast_poster_path);
 				var cast_poster_url_original = php.plugin.tmdb.image (cast_poster_path, "original");
-				credit.people.cast.push ({id: cast_id, identity: cast_identity, name: cast_name, character: cast_character, adult: cast_adult, gender: cast_gender, poster: {path: cast_poster_path, url: cast_poster_url, "url:original": cast_poster_url_original}});
+				var cast_slug = php.plugin.tmdb.slugify (cast_name);
+				credit.people.cast.push ({
+					id: cast_id,
+					identity: cast_identity,
+					name: cast_name,
+					slug: cast_slug,
+					character: cast_character,
+					adult: cast_adult,
+					gender: cast_gender,
+					poster: {path: cast_poster_path, url: cast_poster_url, "url:original": cast_poster_url_original},
+					permalink: adapter.request.router ("people", {id: cast_id, slug: cast_slug}),
+					});
 				}
 			}
 		}
@@ -344,6 +370,16 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 			guest: input.episodes [i].guest_stars || [],
 			});
 		}
+	var profile: any = {}
+	if (input.biography || input.gender) {
+		var p_date = new Date (input.birthday);
+		profile.name = input.name;
+		profile.gender = input.gender;
+		profile.biography = input.biography;
+		profile.birth = {date: {format: input.birthday, string: php.date.month.name [p_date.getMonth () + 1] + " " + p_date.getDate () + ", " + p_date.getFullYear ()}, place: input.place_of_birth}
+		profile.poster = {path: input.profile_path, url: php.plugin.tmdb.image (input.profile_path), "url:original": php.plugin.tmdb.image (input.profile_path, "original")}
+		profile.cast = [];
+		}
 	var output = {
 		id, imdb, identity, type, slug,
 		"title": title, "title:original": title_original,
@@ -358,7 +394,8 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 		country, language,
 		season, episode,
 		credit,
-		input,
+		profile,
+		// input,
 		}
 	return output;
 	}

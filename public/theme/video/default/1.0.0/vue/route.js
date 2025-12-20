@@ -200,6 +200,326 @@ vue.route ("listing:all", {
  * xxx://xxx.xxx.xxx/xxx
  */
 
+vue.route ("video-src", {
+	setup () {
+		var v = vue.reactive ({click: false})
+		var variable = vue.app.variable
+		var video = variable.data
+		if (video.type === "tv") {
+			if (variable.season) video.season = video.season.select ({number: variable.season.integer ()})
+			}
+		return {variable, video, v}
+		},
+	method: {
+		click () {
+			if (this.v.click) {}
+			else if (this.v.click = true) {
+				$ ("#player-security").hide ()
+				lib.element.show ("#player-loading")
+				if (vue.app.config ["AD__.s"]) window.open (lib.AD__.link ["adsterra"])
+				if (this.video.type === "tv") {
+					if (this.variable.episode) {
+						lib.video.src.tv (this.variable.data.identity, this.variable.season, this.variable.episode, {
+							success (src) {
+								$ ("#player-frame").attr ("src", src)
+								lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+								},
+							error () {
+								// $ ("#player-frame").attr ("src", "about:blank")
+								lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+								},
+							})
+						}
+					else {
+						var src = this.video.credit.video.trailer.one () ["embed:url"]
+						$ ("#player-frame").attr ("src", src)
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						}
+					}
+				else if (true) lib.video.src (this.variable.data.identity, {
+					success (src) {
+						$ ("#player-frame").attr ("src", src)
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						},
+					error () {
+						// $ ("#player-frame").attr ("src", "about:blank")
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						},
+					})
+				else {
+					lib.timeout (function () {
+						// var src = "about:blank"
+						// $ ("#player-frame").attr ("src", src)
+						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						}, 3)
+					}
+				}
+			},
+		},
+	template: `
+		<div class="flex gap padding">
+			<div class="flex flex:column flex:grow gap no-overflow">
+				<div id="player" class="relative no-overflow border:radius">
+					<img:asset src="16x9.svg" class="width:size"/>
+					<img:cover v-bind:src="video.poster.url" class="opacity:small transition:opacity"/>
+					<div v-on:click="click (this)" id="player-security" class="flex align:item justify:item absolute top left width:height index:large">
+						<div class="padding:big border-radius:circle">
+							<icon src="play_circle" class="font:big" style="font-size: 64px; color: white;"/>
+						</div>
+					</div>
+					<div class="absolute top left width:height index">
+						<video:frame id="player-frame" src="about:blank"/>
+					</div>
+					<div id="player-loading" class="none align:item justify:item absolute top left width:height index:small" style="background-color: rgba(var(--black),0.75);">
+						<img:spinner class="size:big"/>
+					</div>
+				</div>
+				<div class="flex flex:column">
+					<div class="font:medium font-bold:pop">{{ video.title }}</div>
+					<div v-if="video.tagline" class="font:small font-color:mono">{{ video.tagline }}</div>
+				</div>
+				<div class="flex align:item gap">
+					<div class="flex align:item gap">
+						<img:avatar src="20002" class="img:pop border-radius:circle"/>
+						<div class="flex flex:column">
+							<string class="font:bold">Administrator</string>
+							<string class="font:small font-color:mono">1M Subscriber's</string>
+						</div>
+					</div>
+					<flex:grow />
+					<div class="flex align:item gap padding:sky border-radius:round background-color:mono">
+						<div class="flex align:item gap">
+							<icon src="thumb_up" class="font:medium"/>
+							<string>{{ lib.number.format (video.vote.count) }}</string>
+						</div>
+						<separator:small />
+						<icon src="thumb_down" class="font:medium"/>
+					</div>
+					<div computer></div>
+					<button:material icon="cloud_download" class="padding icon:large border-radius:pop" computer/>
+					<button:material icon="more_vertical" class="padding icon:large border-radius:pop"></button:material>
+				</div>
+				<div class="flex align:item gap">
+					<a:link v-for="genre in video.genre" v-bind:href="genre.permalink" class="font:small">{{ genre.name }}</a:link>
+				</div>
+				<div class="flex flex:column gap padding border:radius background-color:mono">
+					<div class="flex align:item gap">
+						<div class="flex align:item gap">
+							<icon src="visibility"/>
+							<string class="font-bold:pop">{{ lib.number.format ((1000).shuffle (2000)) }} View's</string>
+						</div>
+						<flex:grow mobile/>
+						<div class="flex align:item gap">
+							<icon src="calendar_clock"/>
+							<string class="font-bold:pop">{{ video ["release_date:string"] }}</string>
+						</div>
+						<flex:grow computer/>
+						<div class="flex align:item gap" computer>
+							<circle:pop size="8" class="background-color:red-pop"/>
+							<circle:pop size="8" class="background-color:green-pop"/>
+							<circle:pop size="8" class="background-color:blue-pop"/>
+							<circle:line size="8" class="background-color:yellow-pop"/>
+						</div>
+					</div>
+					<string>
+						{{ video.description }}
+					</string>
+					<div class="flex flex:wrap gap">
+						<div class="flex gap padding border:radius box-shadow background:color">
+							<div class="flex flex:column">
+								<string class="font:large font-color:blue-pop text-align:right">{{ video.popularity }}</string>
+								<string class="font:small">Popularity</string>
+							</div>
+							<separator:vertical />
+							<div class="flex flex:column gap:tiny">
+								<string class="font:large text-align:right">{{ lib.number.format (video.vote.count) }}</string>
+								<string class="font:small">Vote Count</string>
+							</div>
+							<separator:vertical />
+							<div class="flex flex:column gap:tiny">
+								<string class="font:large text-align:right">{{ video.vote.average }}</string>
+								<string class="font:small">Vote Average</string>
+							</div>
+						</div>
+						<flex:grow/>
+						<div class="flex gap padding border:radius box-shadow background:color">
+							<div class="flex flex:column">
+								<string class="font:large font-color:red-pop text-align:right">{{ lib.number.format (video.budget) }}</string>
+								<string class="font:small">Budget</string>
+							</div>
+							<separator:vertical />
+							<div class="flex flex:column gap:tiny">
+								<string class="font:large font-color:green-pop text-align:right">{{ lib.number.format (video.revenue) }}</string>
+								<string class="font:small">Revenue</string>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="padding:bottom scroll:horizontal border:radius no-overflow">
+					<div class="flex gap">
+						<div v-for="cast in video.credit.people.cast.limit (20)" class="flex flex:column gap">
+							<div class="relative border:radius no-overflow">
+								<img:asset src="tmdb.svg" width="164"/>
+								<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
+							</div>
+							<div class="flex flex:column gap:tiny">
+								<a v-bind:href="cast.permalink" class="font:bold" string>{{ cast.name }}</a>
+								<string class="font:small">{{ cast.character }}</string>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div v-if="video.season.length && ! video.episode.length" class="flex flex:column gap">
+					<div v-for="season in video.season" class="flex flex:column gap border:radius background-color:mono no-overflow">
+						<div class="flex gap">
+							<div class="relative border:radius">
+								<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (144, 96)"/>
+								<a:link v-bind:href="vue.router ('tv:season', {id: video.id, name: video.slug, season: season.number})"><img:cover v-bind:src="season.poster.url" class="opacity:small transition:opacity"/></a:link>
+							</div>
+							<div class="flex flex:column gap:small padding">
+								<a:link v-bind:href="'/'" class="font:medium font-bold:pop" string>{{ season.name }}</a:link>
+								<div class="flex align:item gap"><icon src="thumb_up"/><string>{{ season.vote.average }}</string></div>
+								<div class="flex align:item gap"><icon src="calendar_clock"/><string>{{ season.date.string }}</string></div>
+								<div class="flex align:item gap"><b>{{ season.episode.count }}</b> Episode's</div>
+								<flex:grow computer/>
+								<string class="font:small" computer>{{ season.description || video.description }}</string>
+							</div>
+						</div>
+						<string class="font:small padding padding-top:none" mobile>{{ season.description || video.description }}</string>
+					</div>
+				</div>
+				<div v-if="video.episode.length" class="flex flex:wrap gap" style="justify-content: space-between" computer>
+					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow" style="width: 30%">
+						<div class="relative border:radius">
+							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
+						</div>
+						<div class="flex flex:column gap:small padding:vertical">
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
+							<flex:grow/>
+							<div class="flex align:item gap font:small"><icon src="thumb_up"/><string>{{ episode.vote.average }}</string></div>
+							<div class="flex align:item gap font:small"><icon src="calendar_clock"/><string>{{ episode.date.string }}</string></div>
+						</div>
+					</div>
+				</div>
+				<div v-if="video.episode.length" class="flex flex:column gap" mobile>
+					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow">
+						<div class="relative border:radius">
+							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
+						</div>
+						<div class="flex flex:column gap:small padding:vertical">
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
+							<flex:grow/>
+							<div class="flex align:item gap font:small"><icon src="thumb_up"/><string>{{ episode.vote.average }}</string></div>
+							<div class="flex align:item gap font:small"><icon src="calendar_clock"/><string>{{ episode.date.string }}</string></div>
+						</div>
+					</div>
+				</div>
+				<div class="">
+					<adsterra type="horizontal"/>
+				</div>
+			</div>
+			<div class="" computer>
+				<div class="wrap:side">
+					-
+				</div>
+			</div>
+		</div>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+vue.route ("people:single", {
+	setup () {
+		var variable = vue.app.variable
+		var people = variable.data
+		return {variable, people}
+		},
+	template: `
+		<div class="flex gap:large padding">
+			<div class="flex flex:column gap:large flexible">
+				<div class="relative border:radius no-overflow">
+					<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (256, '100%')"/>
+					<img:cover v-bind:src="people.profile.poster.url" class="opacity:small transition:opacity"/>
+				</div>
+				<div class="flex flex:column gap:large" mobile>
+					<string class="font:large font:bold">{{ people.profile.name }}</string>
+					<div class="flex flex:column gap">
+						<string class="font:medium font-bold:pop">Biography</string>
+						<string class="" v-html="lib.ln (people.profile.biography)"></string>
+					</div>
+					<div class="flex flex:column gap">
+						<string class="font:medium font-bold:pop">Movie &#8212; TV Show </string>
+						<div class="padding:bottom scroll:horizontal border:radius no-overflow" style="width: calc(100vw - 20px);">
+							<div class="flex gap">
+								<div v-for="cast in people.profile.cast" class="flex flex:column gap">
+									<div class="relative border:radius no-overflow">
+										<img:asset src="tmdb.svg" width="164"/>
+										<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="flex flex:column gap:tiny">
+					<string class="font:bold">Born</string>
+					<string>{{ people.profile.birth.date.string }}</string>
+					<string>{{ people.profile.birth.place }}</string>
+				</div>
+				<div class="flex flex:column gap:tiny">
+					<string class="font:bold">Gender</string>
+					<string>{{ people.profile.gender === 1 ? "Female" : "Male" }}</string>
+				</div>
+				<!--div class="flex flex:column gap:tiny">
+					<string class="font:bold">Also known as</string>
+					<string></string>
+				</div-->
+			</div>
+			<div class="flex flex:column flex:grow gap:big no-overflow" computer>
+				<string class="font:large font:bold">{{ people.profile.name }}</string>
+				<div class="flex flex:column gap">
+					<string class="font:medium font-bold:pop">Biography</string>
+					<string class="" v-html="lib.ln (people.profile.biography)"></string>
+				</div>
+				<div class="flex flex:column gap">
+					<string class="font:medium font-bold:pop">Movie &#8212; TV Show </string>
+					<div class="padding:bottom scroll:horizontal border:radius no-overflow">
+						<div class="flex gap">
+							<div v-for="cast in people.profile.cast" class="flex flex:column gap">
+								<div class="relative border:radius no-overflow">
+									<img:asset src="tmdb.svg" width="164"/>
+									<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		`,
+	})
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
 vue.route ("page", {
 	setup () {
 		return {variable: vue.app.variable}
