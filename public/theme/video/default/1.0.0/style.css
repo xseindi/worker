@@ -594,7 +594,7 @@ button:focus > section, button:focus > .float { visibility: visible; opacity: 1;
 .computer .wrap\:container { width: var(--wrap-size); }
 .computer .main\:size { width: var(--main-size); }
 .wrap\:side { width: var(--side-size); }
-.mobile .video-src\:size { width: 100vw; }
+.mobile .no-overflow\:mobile { overflow: hidden; }
 .mobile .flexible { flex-grow: 1; }
 .mobile .flexible\:port { width: 100vw; }
 

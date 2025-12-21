@@ -70,6 +70,49 @@ vue.layout ("wrap", {
 		`,
 	})
 
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+vue.layout (404, {
+	template: `
+		<div layout="404">not found</div>
+		`,
+	})
+	
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * xxx
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/**
+ * the end
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+/*
 vue.layout ("wide", {
 	setup () {
 		var variable = vue.app.variable
@@ -371,52 +414,4 @@ vue.component ("video-src", {
 		</div-->
 		`,
 	})
-
-vue.element ("video:frame", {
-	template: `
-		<iframe class="player width:height" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share;" allowfullscreen></iframe>
-		`,
-	})
-
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-vue.layout (404, {
-	template: `
-		<div layout="404">not found</div>
-		`,
-	})
-	
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-/**
- * the end
- *
- * xxx://xxx.xxx.xxx/xxx
- */
+*/

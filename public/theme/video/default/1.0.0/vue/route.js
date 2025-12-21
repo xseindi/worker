@@ -33,7 +33,7 @@ vue.route ("home", {
 					</div>
 				</div>
 				<div class="flex flex:column gap">
-					<video-card:poster v-bind:data="vue.app.data.asia.all"/>
+					<video-card:poster v-bind:data="vue.app.data ['editor-choice']"/>
 					<video-card:poster v-bind:data="vue.app.data.asia.all"/>
 				</div>
 			</div>
@@ -65,8 +65,8 @@ vue.route ("home", {
 			<video-card id="video-trending" v-bind:data="vue.app.data.trending.today"/>
 			<adsterra type="horizontal"/>
 			<title-simple text="Must Watch" icon="local_fire_department" class="padding-bottom:none"/>
-			<video-card v-if="vue.device.computer ()" id="video-mw" item="item:best" v-bind:option="{shuffle: true}"/>
-			<video-card id="video-mw" item="item:best" v-bind:option="{shuffle: true, limit: 10}" v-else/>
+			<video-card v-if="vue.device.computer ()" id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true, limit: 10}" v-else/>
 			<adsterra type="horizontal"/>
 			<title-simple text="Movie" description="Popular" icon="movie" class="padding-bottom:none"/>
 			<video-card id="video-movie" v-bind:data="vue.app.data.movie.popular"/>
@@ -374,10 +374,10 @@ vue.route ("video-src", {
 						<div class="flex gap">
 							<div class="relative border:radius">
 								<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (144, 96)"/>
-								<a:link v-bind:href="vue.router ('tv:season', {id: video.id, name: video.slug, season: season.number})"><img:cover v-bind:src="season.poster.url" class="opacity:small transition:opacity"/></a:link>
+								<a:link v-bind:href="vue.router ('tv:season', {id: video.id, slug: video.slug, season: season.number})"><img:cover v-bind:src="season.poster.url" class="opacity:small transition:opacity"/></a:link>
 							</div>
 							<div class="flex flex:column gap:small padding">
-								<a:link v-bind:href="'/'" class="font:medium font-bold:pop" string>{{ season.name }}</a:link>
+								<a:link v-bind:href="vue.router ('tv:season', {id: video.id, slug: video.slug, season: season.number})" class="font:medium font-bold:pop" string>{{ season.name }}</a:link>
 								<div class="flex align:item gap"><icon src="thumb_up"/><string>{{ season.vote.average }}</string></div>
 								<div class="flex align:item gap"><icon src="calendar_clock"/><string>{{ season.date.string }}</string></div>
 								<div class="flex align:item gap"><b>{{ season.episode.count }}</b> Episode's</div>
@@ -392,10 +392,10 @@ vue.route ("video-src", {
 					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow" style="width: 30%">
 						<div class="relative border:radius">
 							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
-							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, slug: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
 						</div>
 						<div class="flex flex:column gap:small padding:vertical">
-							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, slug: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
 							<flex:grow/>
 							<div class="flex align:item gap font:small"><icon src="thumb_up"/><string>{{ episode.vote.average }}</string></div>
 							<div class="flex align:item gap font:small"><icon src="calendar_clock"/><string>{{ episode.date.string }}</string></div>
@@ -406,10 +406,10 @@ vue.route ("video-src", {
 					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow">
 						<div class="relative border:radius">
 							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
-							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, slug: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
 						</div>
 						<div class="flex flex:column gap:small padding:vertical">
-							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, name: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
+							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, slug: video.slug, season: variable.season, episode: episode.number})" class="font-bold:pop" string>{{ episode.name }}</a:link>
 							<flex:grow/>
 							<div class="flex align:item gap font:small"><icon src="thumb_up"/><string>{{ episode.vote.average }}</string></div>
 							<div class="flex align:item gap font:small"><icon src="calendar_clock"/><string>{{ episode.date.string }}</string></div>
@@ -447,20 +447,29 @@ vue.route ("people:single", {
 		},
 	template: `
 		<div class="flex gap:large padding">
-			<div class="flex flex:column gap:large flexible">
+			<div class="flex flex:column gap:large flexible no-overflow:mobile">
 				<div class="relative border:radius no-overflow">
 					<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (256, '100%')"/>
 					<img:cover v-bind:src="people.profile.poster.url" class="opacity:small transition:opacity"/>
 				</div>
 				<div class="flex flex:column gap:large" mobile>
 					<string class="font:large font:bold">{{ people.profile.name }}</string>
+					<div class="flex flex:column gap:tiny">
+						<string class="font:bold">Born</string>
+						<string>{{ people.profile.birth.date.string }}</string>
+						<string>{{ people.profile.birth.place }}</string>
+					</div>
+					<div class="flex flex:column gap:tiny">
+						<string class="font:bold">Gender</string>
+						<string>{{ people.profile.gender === 1 ? "Female" : "Male" }}</string>
+					</div>
 					<div class="flex flex:column gap">
 						<string class="font:medium font-bold:pop">Biography</string>
 						<string class="" v-html="lib.ln (people.profile.biography)"></string>
 					</div>
-					<div class="flex flex:column gap">
+					<div class="flex flex:column gap no-overflow">
 						<string class="font:medium font-bold:pop">Movie &#8212; TV Show </string>
-						<div class="padding:bottom scroll:horizontal border:radius no-overflow" style="width: calc(100vw - 20px);">
+						<div class="padding:bottom scroll:horizontal border:radius no-overflow" styles="width: calc(100vw - 20px);">
 							<div class="flex gap">
 								<div v-for="cast in people.profile.cast" class="flex flex:column gap">
 									<div class="relative border:radius no-overflow">
@@ -472,19 +481,15 @@ vue.route ("people:single", {
 						</div>
 					</div>
 				</div>
-				<div class="flex flex:column gap:tiny">
+				<div class="flex flex:column gap:tiny" computer>
 					<string class="font:bold">Born</string>
 					<string>{{ people.profile.birth.date.string }}</string>
 					<string>{{ people.profile.birth.place }}</string>
 				</div>
-				<div class="flex flex:column gap:tiny">
+				<div class="flex flex:column gap:tiny" computer>
 					<string class="font:bold">Gender</string>
 					<string>{{ people.profile.gender === 1 ? "Female" : "Male" }}</string>
 				</div>
-				<!--div class="flex flex:column gap:tiny">
-					<string class="font:bold">Also known as</string>
-					<string></string>
-				</div-->
 			</div>
 			<div class="flex flex:column flex:grow gap:big no-overflow" computer>
 				<string class="font:large font:bold">{{ people.profile.name }}</string>

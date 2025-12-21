@@ -306,6 +306,26 @@ app.get (app.router.p ["short"], async function (request: any, response: any, ne
 		})
 	})
 
+app.get (app.router.p ["editor-choice"], async function (request: any, response: any, next: any) {
+	var movie = {data: request.db.cache.movie.data, "data:total": request.db.cache.movie.data.length, "page:total": 1}
+	var tv = {data: request.db.cache.tv.data, "data:total": request.db.cache.tv.data.length, "page:total": 1}
+	response.set ({
+		title: "Editor Choice",
+		layout: "index",
+		route: "listing:all",
+		variable: {
+			sub_title: "Editor Choice",
+			icon: "editor_choice",
+			data: {movie, tv},
+			},
+		})
+	return response.vue ({
+		"post:date": POST_DATE,
+		"post:date string": POST_DATE_STRING,
+		"post:content": POST_CONTENT,
+		})
+	})
+
 app.get (app.router.p ["live"], async function (request: any, response: any, next: any) {
 	response.set ({
 		title: "Live",
@@ -1096,11 +1116,13 @@ if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js
 		today: (await request.tmdb.trending ("today")).data,
 		week: (await request.tmdb.trending ("week")).data,
 		}
+	response.app.data ["editor-choice"] = [... request.db.cache.movie.data, ... request.db.cache.tv.data]
 	var output: any = []
 	output.push (`vue.app.config = ${JSON.stringify (response.app.config)}`)
 	output.push (`vue.app.data.movie = ${JSON.stringify (response.app.data.movie)}`)
 	output.push (`vue.app.data.tv = ${JSON.stringify (response.app.data.tv)}`)
 	output.push (`vue.app.data.trending = ${JSON.stringify (response.app.data.trending)}`)
+	output.push (`vue.app.data ["editor-choice"] = ${JSON.stringify (response.app.data ["editor-choice"])}`)
 	output.push (`vue.app.data.genre = ${JSON.stringify (response.app.data.genre)}`)
 	output.push (`vue.app.data.asia = {KR: [... vue.app.data.movie.country.KR, ... vue.app.data.tv.country.KR], JP: [... vue.app.data.movie.country.JP, ... vue.app.data.tv.country.JP], CN: [... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.CN]}`)
 	output.push (`vue.app.data.asia.all = [... vue.app.data.movie.country.KR, ... vue.app.data.movie.country.JP, ... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.KR, ... vue.app.data.tv.country.JP, ... vue.app.data.tv.country.CN]`)

@@ -255,7 +255,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 			var genre_name = tmdb.genre [genre_id].name;
 			var genre_slug = tmdb.genre [genre_id].slug;
 			// var genre_permalink = adapter.request.router (type + ":genre", {id: genre_id, name: genre_slug});
-			var genre_permalink = adapter.request.router ("genre", {id: genre_id, genre: genre_slug});
+			var genre_permalink = adapter.request.router ("genre", {id: genre_id, slug: genre_slug});
 			genre.push ({id: genre_id, name: genre_name, slug: genre_slug, permalink: genre_permalink});
 			}
 		}
@@ -265,12 +265,12 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 			var genre_name = tmdb.genre [genre_id].name;
 			var genre_slug = tmdb.genre [genre_id].slug;
 			// var genre_permalink = adapter.request.router (type + ":genre", {id: genre_id, name: genre_slug});
-			var genre_permalink = adapter.request.router ("genre", {id: genre_id, genre: genre_slug});
+			var genre_permalink = adapter.request.router ("genre", {id: genre_id, slug: genre_slug});
 			genre.push ({id: genre_id, name: genre_name, slug: genre_slug, permalink: genre_permalink});
 			genre_id_list.push (genre_id);
 			}
 		}
-	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":name").join (slug);
+	var permalink = adapter.request.base_url + php ["router.json"][type].split (":id").join (id).split (":slug").join (slug);
 	if (type === "movie") {}
 	if (type === "tv") {}
 	var credit: any = {

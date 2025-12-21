@@ -118,8 +118,8 @@ vue.component ("menu-simple", {
 			general: [
 				{component: "a:material", text: "Home", icon: "home", url: "/", css},
 				{component: "a:material", text: "Short", icon: "subscription", url: vue.router ({p: "short"}), css},
-				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ({p: "trending"}), css},
-				{component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
+				{component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ("movie:trending"), css},
+				// {component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
 				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: vue.router ({p: "editor-choice"}), css},
 				{component: "a:material", text: "Live", icon: "live_tv", url: vue.router ({p: "live"}), css},
 				],
@@ -142,7 +142,7 @@ vue.component ("menu-simple", {
 					{component: "a:material", text: "Top Rated", description: vue.dummy.tv_top_rated_count, icon: "star_s", url: vue.router ("tv:top_rated"), css: sub_css},
 					{component: "a:material", text: "Airing Today", description: vue.dummy.tv_airing_today_count, icon: "acute", url: vue.router ("tv:airing_today"), css: sub_css},
 					{component: "a:material", text: "Up Coming", description: vue.dummy.tv_up_coming_count, icon: "timer_play", url: vue.router ("tv:up_coming"), css: sub_css},
-				{component: "a:material", text: "Photo", icon: "photo_camera", url: vue.router ("photo:index"), css},
+				// {component: "a:material", text: "Photo", icon: "photo_camera", url: vue.router ("photo:index"), css},
 				],
 			drama: [
 				{component: "a:material", text: "Korea", icon: "globe_asia", url: vue.router ("country:by_type", {country: "korea", type: "tv"})},

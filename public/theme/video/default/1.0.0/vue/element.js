@@ -364,6 +364,12 @@ vue.element ("title-simple", {
 		`,
 	})
 
+vue.element ("video:frame", {
+	template: `
+		<iframe class="player width:height" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share;" allowfullscreen></iframe>
+		`,
+	})
+
 /**
  * xxx
  *
