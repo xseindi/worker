@@ -63,7 +63,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<link rel="preconnect" href="https://resources.blogblog.com" crossorigin>`);
 	markup.push (2, `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>`);
 	markup.push (2, `<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>`);
-	if (php ["config.json"]["internet"]) {
+	if (php ["config.json"].internet) {
 		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
@@ -76,7 +76,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
 	markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
 	if (false) markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
-	if (variable ["g-tag:id"])  markup.push (2, `<script src="https://www.googletagmanager.com/gtag/js?id={{ g-tag:id }}" async></script>`);
+	if (php ["config.json"].live) if (variable ["g-tag:id"])  markup.push (2, `<script src="https://www.googletagmanager.com/gtag/js?id={{ g-tag:id }}" async></script>`);
 	if (php ["config.json"]["internet"]) {
 		markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
 		markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
@@ -98,7 +98,7 @@ php.html = function (output: string, variable: any = {}) {
 	if (variable ["ld+json webpage"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].webpage ()}</script>`);
 	if (variable ["breadcrumb:list"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].breadcrumb.list (variable ["breadcrumb:list"])}</script>`);
 	markup.push (0, `{{ scriptag }}`);
-	if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
+	if (php ["config.json"].live) if (variable ["g-tag:id"]) if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[application] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);

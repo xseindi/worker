@@ -233,7 +233,7 @@ revamp.json = function (input: any = {}, type: any = null, adapter: any = {}, tm
 	var slug = php.plugin.tmdb.slugify (title);
 	var description = input.overview || input.biography || "";
 	var poster = {path: input.poster_path, url: php.plugin.tmdb.image (input.poster_path), "url:original": php.plugin.tmdb.image (input.poster_path, "original")}
-	var backdrop = null; if (input.backdrop_path) backdrop = {path: input.backdrop_path, url: php.plugin.tmdb.image (input.backdrop_path), "url:original": php.plugin.tmdb.image (input.backdrop_path, "original")}
+	var backdrop = {}; if (input.backdrop_path) backdrop = {path: input.backdrop_path, url: php.plugin.tmdb.image (input.backdrop_path), "url:original": php.plugin.tmdb.image (input.backdrop_path, "original")}
 	var release_date = (input.release_date || input.first_air_date || Date.now ()), r_date = new Date (release_date);
 	var release_date_string = php.date.month.name [r_date.getMonth () + 1] + " " + r_date.getDate () + ", " + r_date.getFullYear ();
 	var year = r_date.getFullYear ();

@@ -65,7 +65,7 @@ vue.route ("home", {
 			<video-card id="video-trending" v-bind:data="vue.app.data.trending.today"/>
 			<adsterra type="horizontal"/>
 			<title-simple text="Must Watch" icon="local_fire_department" class="padding-bottom:none"/>
-			<video-card v-if="vue.device.computer ()" id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true}"/>
+			<video-card v-if="vue.device.computer ()" id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true, limit: 20}"/>
 			<video-card id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true, limit: 10}" v-else/>
 			<adsterra type="horizontal"/>
 			<title-simple text="Movie" description="Popular" icon="movie" class="padding-bottom:none"/>
@@ -261,7 +261,7 @@ vue.route ("video-src", {
 			<div class="flex flex:column flex:grow gap no-overflow">
 				<div id="player" class="relative no-overflow border:radius">
 					<img:asset src="16x9.svg" class="width:size"/>
-					<img:cover v-bind:src="video.poster.url" class="opacity:small transition:opacity"/>
+					<img:cover v-bind:src="video.backdrop.url || video.poster.url" class="opacity:small transition:opacity"/>
 					<div v-on:click="click (this)" id="player-security" class="flex align:item justify:item absolute top left width:height index:large">
 						<div class="padding:big border-radius:circle">
 							<icon src="play_circle" class="font:big" style="font-size: 64px; color: white;"/>
@@ -359,7 +359,7 @@ vue.route ("video-src", {
 					<div class="flex gap">
 						<div v-for="cast in video.credit.people.cast.limit (20)" class="flex flex:column gap">
 							<div class="relative border:radius no-overflow">
-								<img:asset src="tmdb.svg" width="164"/>
+								<img:asset src="tmdb-portrait.svg" width="164"/>
 								<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
 							</div>
 							<div class="flex flex:column gap:tiny">
@@ -373,7 +373,7 @@ vue.route ("video-src", {
 					<div v-for="season in video.season" class="flex flex:column gap border:radius background-color:mono no-overflow">
 						<div class="flex gap">
 							<div class="relative border:radius">
-								<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (144, 96)"/>
+								<img:asset src="tmdb-portrait.svg" v-bind:width="vue.device.if_else (144, 96)"/>
 								<a:link v-bind:href="vue.router ('tv:season', {id: video.id, slug: video.slug, season: season.number})"><img:cover v-bind:src="season.poster.url" class="opacity:small transition:opacity"/></a:link>
 							</div>
 							<div class="flex flex:column gap:small padding">
@@ -391,7 +391,7 @@ vue.route ("video-src", {
 				<div v-if="video.episode.length" class="flex flex:wrap gap" style="justify-content: space-between" computer>
 					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow" style="width: 30%">
 						<div class="relative border:radius">
-							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
+							<img:asset src="tmdb-portrait.svg" v-bind:width="vue.device.if_else (64, 64)"/>
 							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, slug: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
 						</div>
 						<div class="flex flex:column gap:small padding:vertical">
@@ -405,7 +405,7 @@ vue.route ("video-src", {
 				<div v-if="video.episode.length" class="flex flex:column gap" mobile>
 					<div v-for="episode in video.episode" class="flex gap border:radius background-color:mono no-overflow">
 						<div class="relative border:radius">
-							<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (64, 64)"/>
+							<img:asset src="tmdb-portrait.svg" v-bind:width="vue.device.if_else (64, 64)"/>
 							<a:link v-bind:href="vue.router ('tv:season-episode', {id: video.id, slug: video.slug, season: variable.season, episode: episode.number})"><img:cover v-bind:src="episode.poster.url" class="opacity:small transition:opacity"/></a:link>
 						</div>
 						<div class="flex flex:column gap:small padding:vertical">
@@ -416,13 +416,22 @@ vue.route ("video-src", {
 						</div>
 					</div>
 				</div>
-				<div class="">
+				<div class="padding:vertical">
 					<adsterra type="horizontal"/>
+				</div>
+				<string icon="animated_image" class="font:large font-bold:pop">Recomendation</string>
+				<div class="padding:bottom scroll:horizontal border:radius no-overflow">
+					<div class="flex gap">
+						<div v-for="data in vue.app.data ['editor-choice'].shuffle ().limit (20)" class="" style="min-width: 164px">
+							<video-card:simple v-bind:data="data"/>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="" computer>
-				<div class="wrap:side">
-					-
+				<div class="flex flex:column align:item gap wrap:side">
+					<string icon="local_fire_department" class="font:large font-bold:pop width:size">Trending</string>
+					<video-card:simple v-for="data in vue.app.data.trending.today.shuffle ().limit (5)" v-bind:data="data" v-bind:option="{orientation: 'landscape', title: false}" styles="width: 164px"/>
 				</div>
 			</div>
 		</div>
@@ -449,7 +458,7 @@ vue.route ("people:single", {
 		<div class="flex gap:large padding">
 			<div class="flex flex:column gap:large flexible no-overflow:mobile">
 				<div class="relative border:radius no-overflow">
-					<img:asset src="tmdb.svg" v-bind:width="vue.device.if_else (256, '100%')"/>
+					<img:asset src="tmdb-portrait.svg" v-bind:width="vue.device.if_else (256, '100%')"/>
 					<img:cover v-bind:src="people.profile.poster.url" class="opacity:small transition:opacity"/>
 				</div>
 				<div class="flex flex:column gap:large" mobile>
@@ -473,7 +482,7 @@ vue.route ("people:single", {
 							<div class="flex gap">
 								<div v-for="cast in people.profile.cast" class="flex flex:column gap">
 									<div class="relative border:radius no-overflow">
-										<img:asset src="tmdb.svg" width="164"/>
+										<img:asset src="tmdb-portrait.svg" width="164"/>
 										<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
 									</div>
 								</div>
@@ -501,12 +510,15 @@ vue.route ("people:single", {
 					<string class="font:medium font-bold:pop">Movie &#8212; TV Show </string>
 					<div class="padding:bottom scroll:horizontal border:radius no-overflow">
 						<div class="flex gap">
-							<div v-for="cast in people.profile.cast" class="flex flex:column gap">
+							<div v-for="cast in people.profile.cast" class="" style="min-width: 164px">
+								<video-card:simple v-bind:data="cast"/>
+							</div>
+							<!--div v-for="cast in people.profile.cast" class="flex flex:column gap">
 								<div class="relative border:radius no-overflow">
-									<img:asset src="tmdb.svg" width="164"/>
+									<img:asset src="tmdb-portrait.svg" width="164"/>
 									<a v-bind:href="cast.permalink"><img:cover v-bind:src="cast.poster.url" class="opacity:small transition:opacity index"/></a>
 								</div>
-							</div>
+							</div-->
 						</div>
 					</div>
 				</div>

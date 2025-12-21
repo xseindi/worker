@@ -467,7 +467,8 @@ vue.component ("video-card", {
 		},
 	template: `
 		<div v-if="ready" v-bind:id="prop.id" class="owl-carousel owl-theme padding tmdb-background">
-			<div v-for="data in data" class="owl-carousel-item gap:small">
+			<video-card:simple v-for="data in data" v-bind:data="data" class="owl-carousel-item"/>
+			<!--div v-for="data in data" class="owl-carousel-item gap:small">
 				<a:link v-bind:href="data.permalink" class="relative border:radius no-overflow">
 					<img:asset src="3x4.svg"/>
 					<images v-bind:src="data.poster.url" type="cover" class="opacity:small transition:opacity"/>
@@ -489,7 +490,7 @@ vue.component ("video-card", {
 				</a:link>
 				<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
 				<a:link v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a:link>
-			</div>
+			</div-->
 		</div>
 		<div class="padding" v-else>
 			<img:spinner class="size:medium"/>
@@ -510,16 +511,18 @@ vue.component ("video-card:poster", {
 	template: `
 		<div class="flex align:item gap">
 			<a:link v-for="data in data.tmp" v-bind:href="data.permalink">
-				<img:ratio v-bind:src="data.poster.url" ratio="3:4" width="128" class="border:radius">
+				<img:ratio v-bind:src="data.poster.url" ratio="tmdb:portrait" width="128" class="border:radius"/>
 			</a:link>
 		</div>
 		`,
 	})
 
 vue.component ("video-card:simple", {
-	prop: ["data"],
+	prop: ["data", "option"],
 	setup (prop) {
-		return {data: prop.data}
+		var option = prop.option || {title: true}
+		if (("title" in option) === false) option.title = true
+		return {data: prop.data, option}
 		},
 	method: {
 		ico (type) {
@@ -527,12 +530,20 @@ vue.component ("video-card:simple", {
 			else if (type === "tv") return "tv_guide"
 			else return icon || "movie"
 			},
+		orientation () {
+			if (this.option.orientation === "landscape") return "tmdb-landscape.svg"
+			else return "tmdb-portrait.svg"
+			},
+		img (data) {
+			if (this.option.orientation === "landscape") return data.backdrop.url
+			else return data.poster.url
+			},
 		},
 	template: `
 		<div class="flex flex:column gap:small width:max" item>
 			<div class="relative border:radius no-overflow">
-				<img:asset src="3x4.svg" class="width:height"/>
-				<a:link v-bind:href="data.permalink"><img:cover v-bind:src="data.poster.url" class="opacity:small transition:opacity"/></a:link>
+				<img:asset v-bind:src="orientation ()" class="width:height"/>
+				<a:link v-bind:href="data.permalink"><img:cover v-bind:src="img (data)" class="opacity:small transition:opacity"/></a:link>
 				<div class="owl-carousel-rating flex gap:small font:tiny absolute border-radius:pop position:top-left">
 					<icon src="star"/>
 					<string class="font-bold:pop">{{ data.vote.average }}</string>
@@ -549,8 +560,8 @@ vue.component ("video-card:simple", {
 					<div v-for="genre in data.genre" class="owl-carousel-tag font:tiny border-radius:round">{{ genre.name }}</div>
 				</div>
 			</div>
-			<string class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
-			<a:link v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a:link>
+			<string v-if="option.title" class="font-size:pop font-color:mono padding-top:small">{{ data ["release_date:string"] }}</string>
+			<a:link v-if="option.title" v-bind:href="data.permalink" class="font-bold:pop font:static" style="height: 40px;" string>{{ data.title }}</a:link>
 		</div>
 		`,
 	})

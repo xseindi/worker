@@ -9,8 +9,16 @@
  */
 
 vue.element ("string", {
+	prop: ["icon"],
+	setup () {},
 	template: `
-		<span string>
+		<div v-if="prop.icon" class="flex align:item gap">
+			<icon v-bind:src="prop.icon"/>
+			<span string>
+				<slot name="default"/>
+			</span>
+		</div>
+		<span string v-else>
 			<slot name="default"/>
 		</span>
 		`,
@@ -221,6 +229,8 @@ vue.element ("img:ratio", {
 		if (ratio === "4:3") img = "4x3.svg"
 		if (ratio === "9:16") img = "9x16.svg"
 		if (ratio === "16:9") img = "16x9.svg"
+		if (ratio === "tmdb:portrait") img = "tmdb-portrait.svg"
+		if (ratio === "tmdb:landscape") img = "tmdb-landscape.svg"
 		if (prop.width) {
 			style = ("min-width: {size}px").split ("{size}").join (prop.width)
 			sheet = ("width: {size}px").split ("{size}").join (prop.width)
