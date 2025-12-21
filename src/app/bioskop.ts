@@ -28,6 +28,7 @@ var POST_DATE = "2025-09-11"
 var POST_DATE_STRING = "September 11, 2025"
 var POST_CONTENT = "Million's of Movie's, TV Show's and People to discover."
 
+var SITEMAP_DATE = "2025-12-21"
 import DB_SITEMAP_MOVIE from "../db/bioskop/sitemap/movie.json"
 import DB_SITEMAP_TV from "../db/bioskop/sitemap/tv.json"
 import { equal } from "hono/utils/buffer"
@@ -907,7 +908,7 @@ app.get (app.router ["cgi-bin:api trending:week"], async function (request: any,
 app.get (app.router ["robot:text"], async function (request: any, response: any, next: any) {
 	var robot = ["User-agent: *"]
 	robot.push ("Disallow:")
-	robot.push ("Sitemap: " + request.router ("sitemap.xml"))
+	robot.push ("Sitemap: " + request.router ("sitemap.xml", {cache: app.config ["cache:io"]}))
 	return response.text (robot.join (ln))
 	})
 
@@ -950,17 +951,17 @@ app.get (app.router ["sitemap.xml"], async function (request: any, response: any
 	var xml = new php.markup ()
 	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
 	xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
-	if (false) xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml"}, {cache: app.config.cache})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+	if (false) xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
 	xml.push (0, `</sitemapindex>`)
 	return response.xml (xml.render ())
 	})
 
 app.get (app.router ["sitemap:page.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
+	var date = (new php.date (SITEMAP_DATE)).iso ()
 	var sitemap = [
 		{location: request.router ({page: "about"}), date},
 		{location: request.router ({page: "contact"}), date},
@@ -983,7 +984,7 @@ app.get (app.router ["sitemap:page.xml"], async function (request: any, response
 	return response.xml (xml.render ())
 	})
 app.get (app.router ["sitemap:post.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
+	var date = (new php.date (SITEMAP_DATE)).iso ()
 	var xml = new php.markup ()
 	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
 	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
@@ -1002,7 +1003,7 @@ app.get (app.router ["sitemap:post.xml"], async function (request: any, response
 	})
 
 app.get (app.router ["sitemap:people.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
+	var date = (new php.date (SITEMAP_DATE)).iso ()
 	var xml = new php.markup ()
 	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
 	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
@@ -1011,7 +1012,7 @@ app.get (app.router ["sitemap:people.xml"], async function (request: any, respon
 	})
 
 app.get (app.router ["sitemap:movie.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
+	var date = (new php.date (SITEMAP_DATE)).iso ()
 	var sitemap = [
 		{location: request.router ("movie:index"), date},
 		{location: request.router ("movie:trending"), date},
@@ -1043,7 +1044,7 @@ app.get (app.router ["sitemap:movie.xml"], async function (request: any, respons
 	})
 
 app.get (app.router ["sitemap:tv.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
+	var date = (new php.date (SITEMAP_DATE)).iso ()
 	var sitemap = [
 		{location: request.router ("tv:index"), date},
 		{location: request.router ("tv:trending"), date},
@@ -1075,7 +1076,7 @@ app.get (app.router ["sitemap:tv.xml"], async function (request: any, response: 
 	})
 
 app.get (app.router ["sitemap:genre.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date ()).iso ()
+	var date = (new php.date (SITEMAP_DATE)).iso ()
 	var xml = new php.markup ()
 	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
 	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
