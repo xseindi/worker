@@ -5,6 +5,7 @@ var table: any = {
 	"blob": {name: "table_blob", sql: `create table if not exists (id integer primary key, reference integer, key text, value blob, description text);`},
 	"image": {name: "table_image", sql: `create table if not exists (id integer primary key, reference integer, name text, slug text, type text, type_of text, file text, description text);`},
 	"video": {name: "table_video", sql: `create table if not exists (id integer primary key, reference integer, name text, description text);`},
+	"file:transfer-queue": {name: "table_file_transfer_queue", sql: `create table if not exists (id integer primary key, reference integer, tmdb integer, imdb integer, description text);`},
 	"plugin:google-auth": {name: "plugin_google_auth", sql: `create table if not exists (id integer primary key, reference integer, p_id text, name text, email text, picture text, access text, description text);`},
 	"bioskop:movie": {name: "the_bioskop_movie", sql: `create table if not exists (id integer primary key, reference integer, name text, description text);`},
 	"bioskop:tv": {name: "the_bioskop_tv", sql: `create table if not exists (id integer primary key, reference integer, name text, description text);`},

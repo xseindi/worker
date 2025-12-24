@@ -9,7 +9,7 @@
 "robot:text": "/robots.txt",
 "ad:text": "/ads.txt",
 "favorite.ico": "/favicon.ico",
-"manifest.json": "/manifest.json",
+"manifest": "/file/:id/manifest.json", "manifest.json": "/manifest.json",
 "sitemap": "/sitemap/:cache/:sitemap", "sitemap:index": "/sitemap/",
 "sitemap.xml": "/sitemap/:cache/index.xml", "sitemap.xsl": "/sitemap.xsl",
 "sitemap:post.xml": "/sitemap/:cache/post.xml",

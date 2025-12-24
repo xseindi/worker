@@ -202,7 +202,7 @@ vue.route ("listing:all", {
 
 vue.route ("video-src", {
 	setup () {
-		var v = vue.reactive ({click: false})
+		var v = vue.reactive ({click: false, error: false})
 		var variable = vue.app.variable
 		var video = variable.data
 		if (video.type === "tv") {
@@ -212,45 +212,49 @@ vue.route ("video-src", {
 		},
 	method: {
 		click () {
+			var v = this.v
 			if (this.v.click) {}
 			else if (this.v.click = true) {
 				$ ("#player-security").hide ()
-				lib.element.show ("#player-loading")
+				$.element.show ("#player-loading")
 				if (vue.app.config ["AD__.s"]) window.open (lib.AD__.link ["adsterra"])
 				if (this.video.type === "tv") {
 					if (this.variable.episode) {
 						lib.video.src.tv (this.variable.data.identity, this.variable.season, this.variable.episode, {
 							success (src) {
 								$ ("#player-frame").attr ("src", src)
-								lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+								lib.timeout (function () { $.element.hide ("#player-loading") }, 5)
 								},
-							error () {
-								// $ ("#player-frame").attr ("src", "about:blank")
-								lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+							error (id) {
+								lib.help ["transfer-queue"] (id)
+								lib.timeout (function () { $.element.hide ("#player-loading") }, 5)
 								},
 							})
 						}
 					else {
 						var src = this.video.credit.video.trailer.one () ["embed:url"]
 						$ ("#player-frame").attr ("src", src)
-						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						lib.timeout (function () { $.element.hide ("#player-loading") }, 5)
 						}
 					}
 				else if (true) lib.video.src (this.variable.data.identity, {
 					success (src) {
 						$ ("#player-frame").attr ("src", src)
-						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						lib.timeout (function () { $.element.hide ("#player-loading") }, 5)
 						},
-					error () {
-						// $ ("#player-frame").attr ("src", "about:blank")
-						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+					error (id) {
+						// var s = "about:blank"
+						// if (id.tmdb === 32158) s = "https://bysefujedu.com/e/5mzy61uaun1l"
+						// $ ("#player-frame").attr ("src", s)
+						lib.help ["transfer-queue"] (id)
+						lib.timeout (function () { $.element.hide ("#player-loading") }, 5)
 						},
 					})
 				else {
+					var id = this.variable.data.identity
 					lib.timeout (function () {
-						// var src = "about:blank"
-						// $ ("#player-frame").attr ("src", src)
-						lib.timeout (function () { lib.element.hide ("#player-loading") }, 5)
+						lib.help ["transfer-queue"] (id)
+						lib.timeout (function () { $.element.hide ("#player-loading") }, 5)
 						}, 3)
 					}
 				}
@@ -273,6 +277,10 @@ vue.route ("video-src", {
 					<div id="player-loading" class="none align:item justify:item absolute top left width:height index:small" style="background-color: rgba(var(--black),0.75);">
 						<img:spinner class="size:big"/>
 					</div>
+				</div>
+				<div id="transfer-queue" class="none align:item gap padding-vertical:large padding-horizontal:big border:radius background-color:mono-pop">
+					<icon src="light_bulb_x" class="font-color:yellow-pop"/>
+					<string class="font-bold:pop">The file is currently in the <b>Transfer Queue</b> to the new <b>Data Center</b>.</string>
 				</div>
 				<div class="flex flex:column">
 					<div class="font:medium font-bold:pop">{{ video.title }}</div>

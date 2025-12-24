@@ -36,6 +36,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<meta property="og:description" content="{{ og:description }}">`);
 	markup.push (2, `<meta property="og:url" content="{{ og:url }}">`);
 	markup.push (2, `<meta property="og:image" content="{{ og:image }}">`);
+	if (variable ["og:image:original"]) markup.push (2, `<meta property="og:image:original" content="{{ og:image:original }}">`);
 	markup.push (2, `<meta property="og:type" content="{{ og:type }}">`);
 	markup.push (2, `<meta property="og:locale" content="{{ og:locale }}">`);
 	if (variable ["article"]) {
@@ -45,7 +46,7 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<link rel="profile" href="https://gmpg.org/xfn/11">`);
 	markup.push (2, `<link rel="icon" href="{{ base_url }}{{ router favorite.ico }}">`);
 	markup.push (2, `<link rel="canonical" href="{{ canonical_url }}">`);
-	if (variable ["manifest.json"]) markup.push (2, `<link rel="manifest" href="{{ base_url }}{{ manifest.json }}">`);
+	markup.push (2, `<link rel="manifest" href="{{ base_url:file }}{{ router manifest.json }}">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
 	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
 	if (variable ["open-search"]) {
@@ -98,7 +99,7 @@ php.html = function (output: string, variable: any = {}) {
 	if (variable ["ld+json webpage"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].webpage ()}</script>`);
 	if (variable ["breadcrumb:list"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].breadcrumb.list (variable ["breadcrumb:list"])}</script>`);
 	markup.push (0, `{{ scriptag }}`);
-	if (php ["config.json"].live) if (variable ["g-tag:id"]) if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
+	if (php ["config.json"].live) if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[application] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);
@@ -110,6 +111,43 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (1, `</body>`);
 	markup.push (0, `</html>`);
 	return markup.render ();
+	}
+
+php.body = function (request: any, response: any) {
+	var markup = new php.markup ();
+	markup.push (0, `<div id="app">`);
+		markup.push (1, `<div application>`);
+			markup.push (2, `<h1>{{ h1 }}</h1>`);
+			markup.push (2, `<h2>{{ h2 }}</h2>`);
+			markup.push (2, `<h3>{{ h3 }}</h3>`);
+			markup.push (2, `<h4>{{ h4 }}</h4>`);
+			markup.push (2, `<h5>{{ h5 }}</h5>`);
+			markup.push (2, `<h6>{{ h6 }}</h6>`);
+			markup.push (2, `<h7>{{ h7 }}</h7>`);
+			markup.push (2, `<date>{{ date }}</date>`);
+			markup.push (2, `<p>{{ description }}</p>`);
+			markup.push (2, `<nav>`);
+				if (response.app.link) {
+					markup.push (3, `<ul>`);
+					for (var i in response.app.link.page) markup.push (4, `<li><a href="${response.app.link.page [i].permalink}">${response.app.link.page [i].name}</a></li>`);
+					markup.push (3, `</ul>`);
+					}
+			markup.push (2, `</nav>`);
+			markup.push (2, `<menu>`);
+				if (response.app.link) {
+					markup.push (3, `<ul>`);
+					for (var i in response.app.link.menu) markup.push (4, `<li><a href="${response.app.link.menu [i].permalink}">${response.app.link.menu [i].name}</a></li>`);
+					markup.push (3, `</ul>`);
+					}
+			markup.push (2, `</menu>`);
+			if (response.app.link.s) {
+				markup.push (2, `<ul>`);
+				for (var i in response.app.link.s) markup.push (3, `<li><a href="${response.app.link.s [i].permalink}">${response.app.link.s [i].name}</a></li>`);
+				markup.push (2, `</ul>`);
+				}
+		markup.push (1, `</div>`);
+	markup.push (0, `</div>`);
+	return markup.data;
 	}
 
 php.vue = function () {}

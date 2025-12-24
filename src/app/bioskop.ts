@@ -58,8 +58,8 @@ app.start (async function (request: any, response: any, next: any) {
 	})
 
 function start (request: any, response: any) {
-	response.app.nav = {menu: [], page: []}
-	response.app.nav.page = [
+	response.app.link = {page: [], menu: [], s: []}
+	response.app.link.page = [
 		{name: "Home", permalink: "/"},
 		{name: "About", permalink: request.router ({page: "about"})},
 		{name: "Contact", permalink: request.router ({page: "contact"})},
@@ -70,18 +70,19 @@ function start (request: any, response: any) {
 		{name: "Disclaimer", permalink: request.router ({page: "disclaimer"})},
 		{name: "DMCA", permalink: request.router ({page: "DMCA"})},
 		]
-	response.app.nav.menu = [
+	response.app.link.menu = [
 		{name: "Movie", permalink: request.router ("movie:index")},
 		{name: "Movie (Trending)", permalink: request.router ("movie:trending")},
 		{name: "Movie (Top Rated)", permalink: request.router ("movie:top_rated")},
 		{name: "Movie (Now Playing)", permalink: request.router ("movie:now_playing")},
 		{name: "Movie (Up Coming)", permalink: request.router ("movie:up_coming")},
-		{name: "TV Show", permalink: request.router ("movie:index")},
-		{name: "TV Show (Trending)", permalink: request.router ("movie:trending")},
-		{name: "TV Show (Top Rated)", permalink: request.router ("movie:top_rated")},
-		{name: "TV Show (Airing Today)", permalink: request.router ("movie:airing_today")},
-		{name: "TV Show (Up Coming)", permalink: request.router ("movie:up_coming")},
+		{name: "TV Show", permalink: request.router ("tv:index")},
+		{name: "TV Show (Trending)", permalink: request.router ("tv:trending")},
+		{name: "TV Show (Top Rated)", permalink: request.router ("tv:top_rated")},
+		{name: "TV Show (Airing Today)", permalink: request.router ("tv:airing_today")},
+		{name: "TV Show (Up Coming)", permalink: request.router ("tv:up_coming")},
 		]
+	for (var i in request.db.cache.movie.data) response.app.link.s.push ({permalink: request.db.cache.movie.data [i].permalink, name: request.db.cache.movie.data [i].title})
 	}
 
 /**
@@ -98,13 +99,13 @@ var HOME = async function (request: any, response: any, next: any) {
 	response.set ({
 		layout: "index",
 		route: "home",
-		variable: {},
-		// article: {},
-		// "ld+json webpage": {},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: request.client.site.title,
+		h2: request.client.site.description,
+		h3: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	}
 
@@ -112,22 +113,6 @@ app.get (app.router.index, HOME)
 app.get ("/001", HOME)
 app.get ("/002", HOME)
 app.get ("/003", HOME)
-
-app.get ("/testing", async function (request: any, response: any, next: any) {
-	var id: any = []
-	var data = []
-	for (var x in id) {
-		var json = await request.tmdb.movie.single (id [x])
-		data.push (JSON.stringify (json) + ",")
-		}
-	return response.text (data.join (ln))
-	})
-
-app.get ("/test/:id", async function (request: any, response: any, next: any) {
-	var movie_id = request.url.param ("id")
-	var data = await request.tmdb.movie.single (movie_id)
-	return response.json (data)
-	})
 
 /**
  * page
@@ -146,9 +131,13 @@ app.get (app.router.page ["about"], async function (request: any, response: any,
 		route: "home",
 		variable: {},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "About",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -159,9 +148,13 @@ app.get (app.router.page ["contact"], async function (request: any, response: an
 		route: "home",
 		variable: {},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Contact",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -183,11 +176,15 @@ app.get (app.router.page ["privacy-policy"], async function (request: any, respo
 			url: request.router ({page: "contact"}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": php.render (php.page ["privacy-policy"] (), {
-			"var:last_update":POST_DATE_STRING,
+	return response.write ({
+		h1: "Privacy Policy",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		h5: request.client.site.tagline,
+		date: POST_DATE,
+		description: php.render (php.page ["privacy-policy"] (), {
+			"var:last_update": POST_DATE_STRING,
 			"var:name": request.client.site.name,
 			"var:email": request.client.site.meta.author.email.address,
 			"var:base_url": request.base_url,
@@ -218,15 +215,19 @@ app.get (app.router.page ["cookie:preference"], async function (request: any, re
 			url: request.router ({page: "privacy-policy"}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": php.render (php.page ["privacy-policy"] (), {
+	return response.write ({
+		h1: "Cookie",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		h5: request.client.site.tagline,
+		date: POST_DATE,
+		description: php.render (php.page ["privacy-policy"] (), {
 			"var:last_update": POST_DATE_STRING,
 			"var:name": request.client.site.name,
 			"var:email": request.client.site.meta.author.email.address,
 			"var:base_url": request.base_url,
-			"var:url": request.router ({page: "privacy-policy"}),
+			"var:url": request.router ({page: "contact"}),
 			}),
 		})
 	})
@@ -245,10 +246,13 @@ app.get (app.router.page ["disclaimer"], async function (request: any, response:
 			url: {contact: request.router ({page: "contact"})},
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Disclaimer",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -267,10 +271,13 @@ app.get (app.router.page ["DMCA"], async function (request: any, response: any, 
 			base_url: request.base_url,
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "DMCA",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -300,10 +307,13 @@ app.get (app.router.p ["short"], async function (request: any, response: any, ne
 			icon: "subscription",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Short",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -320,10 +330,13 @@ app.get (app.router.p ["editor-choice"], async function (request: any, response:
 			data: {movie, tv},
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Editor Choice",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -337,10 +350,13 @@ app.get (app.router.p ["live"], async function (request: any, response: any, nex
 			icon: "live_tv",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Live",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -354,10 +370,13 @@ app.get (app.router.p ["history"], async function (request: any, response: any, 
 			icon: "search_activity",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "History",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -371,10 +390,13 @@ app.get (app.router ["playlist:index"], async function (request: any, response: 
 			icon: "playlist_play",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Playlist",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -388,10 +410,13 @@ app.get (app.router ["playlist:default"], async function (request: any, response
 			icon: "timer_play",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Watch Later",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -419,10 +444,13 @@ app.get (app.router.search, async function (request: any, response: any, next: a
 			data: {movie, tv},
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Search : " + search.query,
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -437,28 +465,33 @@ app.get (app.router.search, async function (request: any, response: any, next: a
  */
 
 app.get (app.router.movie, async function (request: any, response: any, next: any) {
-	var movie = await request.tmdb.movie.single (request.url.param ("id"), {append_to_response: true})
-	if (movie.id) {
-		var date = new php.date (movie.release_date)
+	var video = await request.tmdb.movie.single (request.url.param ("id"), {append_to_response: true})
+	if (video.id) {
+		var date = new php.date (video.release_date)
+		var title = php.help.title.year (video.title, video.year)
+		var description = video.description.split ('"').join ("'")
 		response.post = {}
 		response.set ({
-			title: movie.title,
-			description: movie.description.split ('"').join ("'"),
-			article: {date: {publish: movie.release_date}},
-			"image:cover": movie.poster.url,
+			title,
+			description,
+			article: {date: {publish: video.release_date}},
+			"image:cover": video.poster.url,
+			"image:cover original": video.poster ["url:original"],
 			"ld+json webpage": {},
 			layout: "wrap",
 			route: "video-src",
 			variable: {
-				title: "Short",
-				icon: "subscription",
-				data: movie,
+				data: video,
 				},
 			})
-		return response.vue ({
-			"post:date": date.string (),
-			"post:date string": POST_DATE_STRING,
-			"post:content": movie.description,
+		return response.write ({
+			h1: title,
+			h2: request.client.site.title,
+			h3: request.client.site.description,
+			h4: request.client.site.meta.description,
+			h5: request.client.site.tagline,
+			date: date.string (),
+			description,
 			})
 		}
 	else return next ()
@@ -476,10 +509,13 @@ app.get (app.router ["movie:index"], async function (request: any, response: any
 			data: await request.tmdb.movie.popular ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Movie",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -495,10 +531,13 @@ app.get (app.router ["movie:trending"], async function (request: any, response: 
 			data: await request.tmdb.movie.trending ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Movie (Trending)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -514,10 +553,13 @@ app.get (app.router ["movie:top_rated"], async function (request: any, response:
 			data: await request.tmdb.movie.top_rated ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Movie (Top Rated)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -533,29 +575,35 @@ app.get (app.router ["movie:now_playing"], async function (request: any, respons
 			data: await request.tmdb.movie.now_playing ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Movie (Now Playing)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
 app.get (app.router ["movie:up_coming"], async function (request: any, response: any, next: any) {
 	response.set ({
-		title: "Movie (Coming Soon)",
+		title: "Movie (Up Coming)",
 		layout: "index",
 		route: "listing:default",
 		variable: {
 			title: "Movie",
-			sub_title: "Coming Soon",
+			sub_title: "Up Coming",
 			icon: "movie",
 			data: await request.tmdb.movie.discover ({page: (request.url.query ("page") || one), up_coming: true}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Movie (Up Coming)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -570,10 +618,13 @@ app.get (app.router ["movie:editor-choice"], async function (request: any, respo
 			icon: "editor_choice",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "Movie (Editor Choice)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -591,12 +642,14 @@ app.get (app.router.tv, async function (request: any, response: any, next: any) 
 	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
 	if (video.id) {
 		var date = new php.date (video.release_date)
-		response.post = {}
+		var title = php.help.title.year (video.title, video.year)
+		var description = video.description.split ('"').join ("'")
 		response.set ({
-			title: video.title,
-			description: video.description.split ('"').join ("'"),
+			title,
+			description,
 			article: {date: {publish: video.release_date}},
 			"image:cover": video.poster.url,
+			"image:cover original": video.poster ["url:original"],
 			"ld+json webpage": {},
 			layout: "wrap",
 			route: "video-src",
@@ -606,26 +659,33 @@ app.get (app.router.tv, async function (request: any, response: any, next: any) 
 				data: video,
 				},
 			})
-		return response.vue ({
-			"post:date": date.string (),
-			"post:date string": POST_DATE_STRING,
-			"post:content": video.description,
+		return response.write ({
+			h1: title,
+			h2: request.client.site.title,
+			h3: request.client.site.description,
+			h4: request.client.site.meta.description,
+			h5: request.client.site.tagline,
+			date: date.string (),
+			description,
 			})
 		}
 	else return next ()
 	})
 
 app.get (app.router ["tv:season"], async function (request: any, response: any, next: any) {
-	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
-	video.episode = (await request.tmdb.tv.season (request.url.param ("id"), request.url.param ("season"), {append_to_response: false})).episode
+	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true}), season
+	video.episode = (season = await request.tmdb.tv.season (request.url.param ("id"), request.url.param ("season"), {append_to_response: false})).episode
 	if (video.id) {
 		var date = new php.date (video.release_date)
-		response.post = {}
+		var title = php.help.title.year (video.title, video.year)
+		var description = (season.description || video.description).split ('"').join ("'")
+		video.description = description
 		response.set ({
-			title: video.title,
-			description: video.description.split ('"').join ("'"),
+			title,
+			description,
 			article: {date: {publish: video.release_date}},
 			"image:cover": video.poster.url,
+			"image:cover original": video.poster ["url:original"],
 			"ld+json webpage": {},
 			layout: "wrap",
 			route: "video-src",
@@ -637,26 +697,33 @@ app.get (app.router ["tv:season"], async function (request: any, response: any, 
 				data: video,
 				},
 			})
-		return response.vue ({
-			"post:date": date.string (),
-			"post:date string": POST_DATE_STRING,
-			"post:content": video.description,
+		return response.write ({
+			h1: title,
+			h2: request.client.site.title,
+			h3: request.client.site.description,
+			h4: request.client.site.meta.description,
+			h5: request.client.site.tagline,
+			date: date.string (),
+			description,
 			})
 		}
 	else return next ()
 	})
 
 app.get (app.router ["tv:season-episode"], async function (request: any, response: any, next: any) {
-	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true})
-	video.episode = (await request.tmdb.tv.season (request.url.param ("id"), request.url.param ("season"), {append_to_response: false})).episode
+	var video = await request.tmdb.tv.single (request.url.param ("id"), {append_to_response: true}), season, episode
+	video.episode = (season = await request.tmdb.tv.season (request.url.param ("id"), request.url.param ("season"), {append_to_response: false})).episode
+	episode = php.array (video.episode).filter ({number: parseInt (request.url.param ("episode"))}).one ()
 	if (video.id) {
 		var date = new php.date (video.release_date)
-		response.post = {}
+		var title = php.help.title.year (video.title, video.year)
+		var description = (episode.description || season.description || video.description).split ('"').join ("'")
 		response.set ({
-			title: video.title,
-			description: video.description.split ('"').join ("'"),
+			title,
+			description,
 			article: {date: {publish: video.release_date}},
 			"image:cover": video.poster.url,
+			"image:cover original": video.poster ["url:original"],
 			"ld+json webpage": {},
 			layout: "wrap",
 			route: "video-src",
@@ -668,10 +735,14 @@ app.get (app.router ["tv:season-episode"], async function (request: any, respons
 				data: video,
 				},
 			})
-		return response.vue ({
-			"post:date": date.string (),
-			"post:date string": POST_DATE_STRING,
-			"post:content": video.description,
+		return response.write ({
+			h1: title,
+			h2: request.client.site.title,
+			h3: request.client.site.description,
+			h4: request.client.site.meta.description,
+			h5: request.client.site.tagline,
+			date: date.string (),
+			description,
 			})
 		}
 	else return next ()
@@ -689,10 +760,13 @@ app.get (app.router ["tv:index"], async function (request: any, response: any, n
 			data: await request.tmdb.tv.popular ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "TV Show",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -708,10 +782,13 @@ app.get (app.router ["tv:trending"], async function (request: any, response: any
 			data: await request.tmdb.tv.trending ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "TV Show (Trending)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -727,10 +804,13 @@ app.get (app.router ["tv:top_rated"], async function (request: any, response: an
 			data: await request.tmdb.tv.top_rated ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "TV Show (Top Rated)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -746,29 +826,35 @@ app.get (app.router ["tv:airing_today"], async function (request: any, response:
 			data: await request.tmdb.tv.airing_today ({page: (request.url.query ("page") || one)}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "TV Show (Airing Today)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
 app.get (app.router ["tv:up_coming"], async function (request: any, response: any, next: any) {
 	response.set ({
-		title: "TV Show (Coming Soon)",
+		title: "TV Show (Up Coming)",
 		layout: "index",
 		route: "listing:default",
 		variable: {
 			title: "TV Show",
-			sub_title: "Coming Soon",
+			sub_title: "Up Coming",
 			icon: "tv_guide",
 			data: await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), up_coming_air: true}),
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "TV Show (Up Coming)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -783,10 +869,13 @@ app.get (app.router ["tv:editor-choice"], async function (request: any, response
 			icon: "editor_choice",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "TV Show (Editor Choice)",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -807,7 +896,6 @@ app.get (app.router.people, async function (request: any, response: any, next: a
 	if (people.id) {
 		var date = new php.date (people.profile.birth.date.format)
 		var description = people.profile.biography.split (ln).join (" ")
-		response.post = {}
 		response.set ({
 			title: people.profile.name,
 			description,
@@ -820,9 +908,14 @@ app.get (app.router.people, async function (request: any, response: any, next: a
 				data: people,
 				},
 			})
-		return response.vue ({
-			"post:date": date.string (),
-			"post:content": description,
+		return response.write ({
+			h1: people.profile.name,
+			h2: request.client.site.title,
+			h3: request.client.site.description,
+			h4: request.client.site.meta.description,
+			h5: request.client.site.tagline,
+			date: POST_DATE,
+			description,
 			})
 		}
 	else return next ()
@@ -838,10 +931,13 @@ app.get (app.router ["people:index"], async function (request: any, response: an
 			icon: "person",
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: "People",
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -861,7 +957,7 @@ app.get (app.router.genre, async function (request: any, response: any, next: an
 	var movie = await request.tmdb.movie.discover ({page: (request.url.query ("page") || one), genre: genre.id})
 	var tv = await request.tmdb.tv.discover ({page: (request.url.query ("page") || one), genre: genre.id})
 	response.set ({
-		title: "Genre : " + genre.name,
+		title: genre.name,
 		layout: "index",
 		route: "listing:all",
 		variable: {
@@ -870,10 +966,13 @@ app.get (app.router.genre, async function (request: any, response: any, next: an
 			data: {movie, tv},
 			},
 		})
-	return response.vue ({
-		"post:date": POST_DATE,
-		"post:date string": POST_DATE_STRING,
-		"post:content": POST_CONTENT,
+	return response.write ({
+		h1: genre.name,
+		h2: request.client.site.title,
+		h3: request.client.site.description,
+		h4: request.client.site.meta.description,
+		date: POST_DATE,
+		description: request.client.site.tagline,
 		})
 	})
 
@@ -893,6 +992,14 @@ app.get (app.router ["cgi-bin:api trending:today"], async function (request: any
 
 app.get (app.router ["cgi-bin:api trending:week"], async function (request: any, response: any, next: any) {
 	return response.json (await request.tmdb.trending ("week"))
+	})
+
+app.post ("/cgi-bin/file/transfer/queue", async function (request: any, response: any, next: any) {
+	var post = await request.json ()
+	var select = await request.db.select ("file:transfer-queue").find ({tmdb: post.id.tmdb}).query ()
+	if (select.data.length) {}
+	else { var insert = await request.db.insert ("file:transfer-queue").set ({tmdb: post.id.tmdb, imdb: post.id.imdb}).query () }
+	return response.json ({})
 	})
 
 /**
@@ -948,146 +1055,168 @@ app.get (app.router ["manifest.json"], async function (request: any, response: a
 	})
 
 app.get (app.router ["sitemap.xml"], async function (request: any, response: any, next: any) {
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
-	if (false) xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
-	xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
-	xml.push (0, `</sitemapindex>`)
-	return response.xml (xml.render ())
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+		if (false) xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml", cache: app.config ["cache:io"]})}</loc></sitemap>`)
+		xml.push (0, `</sitemapindex>`)
+		return response.xml (xml.render ())
+		}
+	else return next ()
 	})
 
 app.get (app.router ["sitemap:page.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date (SITEMAP_DATE)).iso ()
-	var sitemap = [
-		{location: request.router ({page: "about"}), date},
-		{location: request.router ({page: "contact"}), date},
-		{location: request.router ({page: "privacy-policy"}), date},
-		{location: request.router ({page: "term_of_use"}), date},
-		{location: request.router ({page: "cookie:preference"}), date},
-		{location: request.router ({page: "disclaimer"}), date},
-		{location: request.router ({page: "DMCA"}), date},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
-		xml.push (1, `</url>`)
-		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
-	})
-app.get (app.router ["sitemap:post.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date (SITEMAP_DATE)).iso ()
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	if (false) {
-		for (var i in response.app.data.genre) {
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var date = (new php.date (SITEMAP_DATE)).iso ()
+		var sitemap = [
+			{location: request.router ({page: "about"}), date},
+			{location: request.router ({page: "contact"}), date},
+			{location: request.router ({page: "privacy-policy"}), date},
+			{location: request.router ({page: "term_of_use"}), date},
+			{location: request.router ({page: "cookie:preference"}), date},
+			{location: request.router ({page: "disclaimer"}), date},
+			{location: request.router ({page: "DMCA"}), date},
+			]
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in sitemap) {
 			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
-			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+			xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
+			xml.push (1, `</url>`)
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
+		}
+	else return next ()
+	})
+
+app.get (app.router ["sitemap:post.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var date = (new php.date (SITEMAP_DATE)).iso ()
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		if (false) {
+			for (var i in response.app.data.genre) {
+				xml.push (1, `<url>`)
+				xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
+				xml.push (2, `<lastmod>${date}</lastmod>`)
+				xml.push (2, `<changefreq>weekly</changefreq>`)
+				xml.push (2, `<priority>0.8</priority>`)
+				xml.push (1, `</url>`)
+				}
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
+		}
+	else return next ()
+	})
+
+app.get (app.router ["sitemap:people.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var date = (new php.date (SITEMAP_DATE)).iso ()
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
+		}
+	else return next ()
+	})
+
+app.get (app.router ["sitemap:movie.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var date = (new php.date (SITEMAP_DATE)).iso ()
+		var sitemap = [
+			{location: request.router ("movie:index"), date},
+			{location: request.router ("movie:trending"), date},
+			{location: request.router ("movie:top_rated"), date},
+			{location: request.router ("movie:now_playing"), date},
+			{location: request.router ("movie:up_coming"), date},
+			]
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in sitemap) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+			xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
 			xml.push (2, `<changefreq>weekly</changefreq>`)
 			xml.push (2, `<priority>0.8</priority>`)
 			xml.push (1, `</url>`)
 			}
-		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
-	})
-
-app.get (app.router ["sitemap:people.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date (SITEMAP_DATE)).iso ()
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
-	})
-
-app.get (app.router ["sitemap:movie.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date (SITEMAP_DATE)).iso ()
-	var sitemap = [
-		{location: request.router ("movie:index"), date},
-		{location: request.router ("movie:trending"), date},
-		{location: request.router ("movie:top_rated"), date},
-		{location: request.router ("movie:now_playing"), date},
-		{location: request.router ("movie:up_coming"), date},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
-		xml.push (2, `<changefreq>weekly</changefreq>`)
-		xml.push (2, `<priority>0.8</priority>`)
-		xml.push (1, `</url>`)
-		}
-	for (var i in DB_SITEMAP_MOVIE) {
-		if (DB_SITEMAP_MOVIE [i]) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_MOVIE [i])}</loc>`)
-			xml.push (2, `<lastmod>${date}</lastmod>`)
-			xml.push (1, `</url>`)
+		for (var i in DB_SITEMAP_MOVIE) {
+			if (DB_SITEMAP_MOVIE [i]) {
+				xml.push (1, `<url>`)
+				xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_MOVIE [i])}</loc>`)
+				xml.push (2, `<lastmod>${date}</lastmod>`)
+				xml.push (1, `</url>`)
+				}
 			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
 	})
 
 app.get (app.router ["sitemap:tv.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date (SITEMAP_DATE)).iso ()
-	var sitemap = [
-		{location: request.router ("tv:index"), date},
-		{location: request.router ("tv:trending"), date},
-		{location: request.router ("tv:top_rated"), date},
-		{location: request.router ("tv:airing_today"), date},
-		{location: request.router ("tv:up_coming"), date},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
-		xml.push (2, `<changefreq>weekly</changefreq>`)
-		xml.push (2, `<priority>0.8</priority>`)
-		xml.push (1, `</url>`)
-		}
-	for (var i in DB_SITEMAP_TV) {
-		if (DB_SITEMAP_TV [i]) {
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var date = (new php.date (SITEMAP_DATE)).iso ()
+		var sitemap = [
+			{location: request.router ("tv:index"), date},
+			{location: request.router ("tv:trending"), date},
+			{location: request.router ("tv:top_rated"), date},
+			{location: request.router ("tv:airing_today"), date},
+			{location: request.router ("tv:up_coming"), date},
+			]
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in sitemap) {
 			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_TV [i])}</loc>`)
-			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+			xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
+			xml.push (2, `<changefreq>weekly</changefreq>`)
+			xml.push (2, `<priority>0.8</priority>`)
 			xml.push (1, `</url>`)
 			}
+		for (var i in DB_SITEMAP_TV) {
+			if (DB_SITEMAP_TV [i]) {
+				xml.push (1, `<url>`)
+				xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_TV [i])}</loc>`)
+				xml.push (2, `<lastmod>${date}</lastmod>`)
+				xml.push (1, `</url>`)
+				}
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
 	})
 
 app.get (app.router ["sitemap:genre.xml"], async function (request: any, response: any, next: any) {
-	var date = (new php.date (SITEMAP_DATE)).iso ()
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	for (var i in response.app.data.genre) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
-		xml.push (2, `<lastmod>${date}</lastmod>`)
-		xml.push (1, `</url>`)
+	if (request.url.param ("cache") === app.config ["cache:io"]) {
+		var date = (new php.date (SITEMAP_DATE)).iso ()
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in response.app.data.genre) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
+			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (1, `</url>`)
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
 	})
 
 if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js", async function (request: any, response: any, next: any) {
@@ -1128,8 +1257,25 @@ if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js
 	output.push (`vue.app.data.asia = {KR: [... vue.app.data.movie.country.KR, ... vue.app.data.tv.country.KR], JP: [... vue.app.data.movie.country.JP, ... vue.app.data.tv.country.JP], CN: [... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.CN]}`)
 	output.push (`vue.app.data.asia.all = [... vue.app.data.movie.country.KR, ... vue.app.data.movie.country.JP, ... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.KR, ... vue.app.data.tv.country.JP, ... vue.app.data.tv.country.CN]`)
 	output.push (`vue.router.link (${JSON.stringify (app.router)})`)
+	output.push (`Function.video.src.external (1252428, "byse", "https://bysefujedu.com/e/q03yj9hmy0dp")`)
 	output.push (`Function.image.stock (${JSON.stringify (response.image.stock)})`)
 	return response.js (output.join (ln))
+	})
+
+app.get ("/testing", async function (request: any, response: any, next: any) {
+	var id: any = []
+	var data = []
+	for (var x in id) {
+		var json = await request.tmdb.movie.single (id [x])
+		data.push (JSON.stringify (json) + ",")
+		}
+	return response.text (data.join (ln))
+	})
+
+app.get ("/test/:id", async function (request: any, response: any, next: any) {
+	var movie_id = request.url.param ("id")
+	var data = await request.tmdb.movie.single (movie_id)
+	return response.json (data)
 	})
 
 /**

@@ -7,7 +7,7 @@ var config = {
 		var c_gen = true;
 		var ad = false;
 		if (type_of === "deploy") {
-			c_gen = false;
+			c_gen = true;
 			ad = true;
 			}
 		return {
@@ -18,6 +18,7 @@ var config = {
 			"cache": "0.0.000",
 			"cache:io": "2025-12-21",
 			"cache:generator": c_gen,
+			"sitemap:cache": "2025-12-21",
 			"cd:io": false,
 			"cd:base_url": "https://vcredist.github.io",
 			"AD__.s": ad,

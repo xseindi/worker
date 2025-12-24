@@ -114,6 +114,10 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 		var markup = php.vue.html (request, response);
 		return response.html (php.render (markup, slot, 2), code);
 		}
+	response.write = function (variable: any, code: number = 200) {
+		if (typeof variable === "number") if (code = variable) variable = {}
+		return response.html (php.render (php.body (request, response), variable, 2), code);
+		}
 	response.var = {}
 	response.app = {config: {}, data: {}, variable: {}}
 	request.render = function (markup: string) { return php.render (markup, response.var); }
@@ -219,8 +223,9 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
  */
 
 php.worker.client = async function (app: any, request: any, response: any, next: any, client: any) {
-	request.client.id = client.id
 	request.client.reference = client.reference
+	request.client.id = client.id
+	request.client.identity = client.reference || client.id
 	request.client.object = request.db.value (client.meta) || {}
 	request.client.theme = request.db.cache.theme.array ().filter ({id: client.theme}).one () || {}
 	request.client.host = {name: client.host}
@@ -275,6 +280,7 @@ var library: any = class {
 			name: this.request.client.object ["site:name"],
 			title: this.request.client.object ["site:title"],
 			description: this.request.client.object ["site:description"],
+			tagline: this.request.client.object ["site:tagline"],
 			meta: {
 				author: {name: this.request.client.object ["meta:author"], email: {address: ("support@host").split ("host").join (this.request.url.host.name), support: "support"}},
 				generator: this.request.client.object ["meta:generator"],
@@ -301,16 +307,18 @@ var library: any = class {
 				},
 			}
 		this.response.var ["client:id"] = this.request.client.id
-		this.response.var ["cache:data.js"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.js").split ("file").join (this.request.cache.io)})
-		this.response.var ["cache:data.json"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: ("data/file.json").split ("file").join (this.request.cache.io)})
+		this.response.var ["cache"] = this.app.config.cache
+		this.response.var ["cache:data.js"] = this.request.router ("files", {id: this.request.client.identity, file: ("data/file.js").split ("file").join (this.request.cache.io)})
+		this.response.var ["cache:data.json"] = this.request.router ("files", {id: this.request.client.identity, file: ("data/file.json").split ("file").join (this.request.cache.io)})
+		this.response.var ["manifest.json"] = this.request.router ("manifest", {id: this.request.client.identity})
 		this.response.var ["theme:id"] = this.request.client.theme.id
 		this.response.var ["theme:slug"] = this.request.client.theme.slug
 		this.response.var ["theme:type"] = this.request.client.theme.type
 		this.response.var ["theme:version"] = this.request.client.theme.version
 		this.response.var ["theme:layout"] = "default"
-		this.response.var ["cache"] = this.app.config.cache
 		this.response.var ["route"] = "index"
 		this.response.var ["base_url"] = this.request.base_url
+		this.response.var ["base_url:file"] = this.request.router ("file", {file: this.request.client.identity})
 		this.response.var ["canonical_url"] = this.request.canonical_url
 		this.response.var ["site:name"] = this.request.client.site.name, this.response.var ["alternate:site-name"] = this.request.client.site.name
 		this.response.var ["site:title"] = this.request.client.site.title
@@ -324,9 +332,7 @@ var library: any = class {
 		this.response.var ["http-equiv:x-cross-origin"] = "*"
 		this.response.var ["meta:charset"] = "UTF-8"
 		this.response.var ["meta:viewport"] = ["width=device-width", "initial-scale=1.0", "maximum-scale=3.0", "user-scalable=1"].join (ln_s)
-		this.response.var ["meta:author"] = this.request.client.site.meta.author.name
-		this.response.var ["author:email"] = this.request.client.site.meta.author.email.address
-		this.response.var ["email:support"] = this.request.client.site.meta.author.email.support
+		this.response.var ["meta:author"] = this.request.client.site.meta.author.name, this.response.var ["author:email"] = this.request.client.site.meta.author.email.address, this.response.var ["email:support"] = this.request.client.site.meta.author.email.support
 		this.response.var ["meta:generator"] = this.request.client.site.meta.generator
 		this.response.var ["meta:keyword"] = this.request.client.site.meta.keyword
 		this.response.var ["meta:robot"] = ["index", "follow", "max-snippet:-1", "max-video-preview:-1", "max-image-preview:large"].join (ln_s)
@@ -341,12 +347,12 @@ var library: any = class {
 		this.response.var ["twitter:card"] = "summary_large_image"
 		this.response.var ["twitter:title"] = this.request.client.site.title
 		this.response.var ["twitter:description"] = this.request.client.site.description
-		this.response.var ["twitter:image"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: this.response.image.stock [this.request.client.site.image.cover]})
+		this.response.var ["twitter:image"] = this.request.router ("files", {id: this.request.client.identity, file: this.response.image.stock [this.request.client.site.image.cover]})
 		this.response.var ["og:site-name"] = this.request.client.site.name
 		this.response.var ["og:title"] = this.request.client.site.title
 		this.response.var ["og:description"] = this.request.client.site.description
 		this.response.var ["og:url"] = this.request.canonical_url
-		this.response.var ["og:image"] = this.request.router ("files", {id: (this.request.client.reference || this.request.client.id), file: this.response.image.stock [this.request.client.site.image.cover]})
+		this.response.var ["og:image"] = this.request.router ("files", {id: this.request.client.identity, file: this.response.image.stock [this.request.client.site.image.cover]})
 		this.response.var ["og:type"] = "website"
 		this.response.var ["og:locale"] = "en"
 		this.response.var ["ld+json organization:name"] = this.request.client.site.name
@@ -357,7 +363,17 @@ var library: any = class {
 		this.response.var ["article:modified_time"] = new Date ().toISOString ()
 		this.response.var ["ad adsterra:horizontal large"] = this.request.client.site.ad ["adsterra:horizontal large"]
 		this.response.var ["ad adsterra:horizontal small"] = this.request.client.site.ad ["adsterra:horizontal small"]
-		if (this.response.var ["c:type"] = "index") {
+		this.response.var ["ad monetag"] = this.request.client.site.ad ["monetag"]
+		this.response.var ["h1"] = ""
+		this.response.var ["h2"] = ""
+		this.response.var ["h3"] = ""
+		this.response.var ["h4"] = ""
+		this.response.var ["h5"] = ""
+		this.response.var ["h6"] = ""
+		this.response.var ["h7"] = ""
+		this.response.var ["date"] = ""
+		this.response.var ["description"] = ""
+		if (this.response.var [":"] = "index") {
 			for (var i in this.app.router) {
 				if (i === "$") continue
 				else if (typeof this.app.router [i] === "string") {
@@ -384,7 +400,6 @@ var library: any = class {
 			this.response.var ["cd:base_url"] = this.request.base_url
 			this.response.var ["theme:base_url"] = [this.request.base_url, "theme", this.request.client.theme.type, this.request.client.theme.slug, this.request.client.theme.version].join ("/")
 			}
-		if (this.request.client.object ["manifest:id"]) this.response.var ["manifest.json"] = `/manifest/${this.request.client.object ["manifest:id"]}.json`
 		}
 	async set (data: any) {
 		var title = data.title ? [data.title, this.request.client.site.name].join (" &#8212; ") : this.response.var ["title"]
@@ -395,6 +410,7 @@ var library: any = class {
 			if (data ["image:cover"]) {
 				this.response.var ["twitter:image"] = data ["image:cover"]
 				this.response.var ["og:image"] = data ["image:cover"]
+				this.response.var ["og:image:original"] = data ["image:cover original"]
 				}
 			if (data.article) {
 				this.response.var ["article"] = true

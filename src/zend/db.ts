@@ -62,6 +62,9 @@ php.db = class {
 	select (table: string) {
 		return new php.db.select (this, table);
 		}
+	insert (table: string) {
+		return new php.db.insert (this, table);
+		}
 	update (table: string) {
 		return new php.db.update (this, table);
 		}

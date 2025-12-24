@@ -720,6 +720,8 @@ Function.google.icon.src = {
 	date_range: "e916",
 	chronic: "ebb2",
 	sticker: "e707",
+	light_bulb: "e0f0",
+	light_bulb_x: "f3e3",
 	}
 
 Event.on ("load", function () {
@@ -795,12 +797,8 @@ Function.image.stock = function (stock) {
 	}
 Function.image.stock.data = {}
 
-// https://multiembed.mov/?video_id={id}&tmdb=1
-// https://www.2embed.cc/embed/{id}
-// https://111movies.com/movie/{id}?autoplay=0
-// https://veloratv.ru/watch/movie/{id}
 Function.video = function () {}
-Function.video.src = function (id, context) {
+Function.video.src = function (id, context, provider) {
 	var url = ("https://vidsrcme.vidsrc.icu/embed/movie?tmdb={id}&autoplay=0&ds_lang=en").split ("{id}").join (id.tmdb);
 	Function.ajax.get (url, {
 		success: function (response) {
@@ -812,12 +810,12 @@ Function.video.src = function (id, context) {
 					else context (src);
 					},
 				error (error) {
-					Function.video.src.embed.c (id, context);
+					Function.video.src.error (id, context, error);
 					},
 				})
 			},
 		error (error) {
-			Function.video.src.embed.c (id, context);
+			Function.video.src.error (id, context, error);
 			},
 		})
 	}
@@ -834,34 +832,38 @@ Function.video.src.tv = function (id, season, episode, context) {
 					else context (src);
 					},
 				error (error) {
-					Function.video.src.embed.c (id, context);
+					if (context.error) context.error (id, error);
 					},
 				})
 			},
 		error (error) {
-			Function.video.src.embed.c (id, context);
+			if (context.error) context.error (id, error);
 			},
 		})
 	}
 
-Function.video.src.embed = {
-	c: function (id, context) {
-		var url = ("https://111movies.com/movie/{id}?autoplay=0").split ("{id}").join (id.tmdb);
-		if (url) {
-			if (context.success) context.success (url);
-			else context (url);
+Function.video.src.error = function (id, context, error, provider = "byse") {
+	var src;
+	if (id.tmdb in Function.video.src.external.link) {
+		if (src = Function.video.src.external.link [id.tmdb][provider]) {
+			if (context.success) context.success (src);
+			else context (src);
 			}
-		else Function.ajax.get (url, {
-			success: function (response) {
-				if (context.success) context.success (url);
-				else context (url);
-				},
-			error (error) {
-				if (context.error) context.error (error);
-				},
-			})
-		},
+		else {
+			if (context.error) context.error (id, error);
+			}
+		}
+	else {
+		if (context.error) context.error (id, error);
+		}
 	}
+
+Function.video.src.external = function (id, key, value) {
+	if (Function.video.src.external.link [id]) Function.video.src.external.link [id][key] = value;
+	else Function.video.src.external.link [id] = {[key]: value}
+	}
+
+Function.video.src.external.link = {}
 
 Function.language = function () {}
 
@@ -941,6 +943,17 @@ Function.p.url.next = function (page, total) {
 	return URL.document.build ({page});
 	}
 
+Function.help = function () {}
+Function.help ["transfer-queue"] = function (id) {
+	$.element.show ("#transfer-queue");
+	if (Function.help ["transfer-queue"].data.includes (id.tmdb)) {}
+	else Function.ajax.post ("/cgi-bin/file/transfer/queue", {id}, {
+		success: function (response) {},
+		error: function (error) {},
+		});
+	}
+Function.help ["transfer-queue"].data = [];
+
 /**
  * xxx
  *
@@ -1015,6 +1028,7 @@ Function.export = {
 	email: Function.email,
 	p: Function.p,
 	ln: Function.ln,
+	help: Function.help,
 	}
 
 /**
@@ -1034,6 +1048,10 @@ $.meta.get = function (meta) {
 		if (element) return element.content;
 		}
 	}
+
+$.element = function () {}
+$.element.show = function (element) { return Function.element.show (element); }
+$.element.hide = function (element) { return Function.element.hide (element); }
 
 /**
  * the end
