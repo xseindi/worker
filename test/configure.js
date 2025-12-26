@@ -1,59 +1,93 @@
 var fs = require ("fs");
 var {readFileSync, writeFileSync} = fs;
 
-var config = {
-	json: "./src/application/config.json",
-	j_son: function (type, type_of) {
-		var c_gen = true;
+var file_config_target = "./src/application/config.json"
+var file_wrangler_target = "./wrangler.jsonc"
+var file_robot_target = "./public/robots.txt"
+
+var app = {
+	"bioskop": {
+		type: "bioskop",
+		wrangler: {name: "bioskop", main: "bioskop.ts"},
+		sitemap: {domain: "bioskopress.com", cache: "2025-12-21"},
+		},
+	"bokep": {
+		type: "bokep",
+		wrangler: {name: "bokep", main: "bokep.ts"},
+		sitemap: {domain: "bioskopress.online", cache: "2025-12-21"},
+		},
+	}
+
+function writeWrangler (id) {
+	var application;
+	if (application = app [id]) {
+		var data = {
+			"$schema": "node_modules/wrangler/config-schema.json",
+			"name": application.wrangler.name,
+			"main": "src/app/" + application.wrangler.main,
+			"compatibility_date": "2025-11-09",
+			"observability": {"enabled": true},
+			"assets": {"binding": "asset", "directory": "./public"},
+			"d1_databases": [{"binding": "db", "database_name": "database", "database_id": "3af716b8-37f1-4772-854f-075fc4fe28b4"}],
+			"vars": {},
+			}
+		writeFileSync (file_wrangler_target, JSON.stringify (data, null, "\t"));
+		console.log (`Writing ${file_wrangler_target} ... [OK]`);
+		}
+	}
+
+function writeConfig (id, action) {
+	var application;
+	if (application = app [id]) {
+		var gcc = true;
 		var ad = false;
-		if (type_of === "deploy") {
-			c_gen = true;
+		if (action === "deploy") {
+			gcc = false;
 			ad = true;
 			}
-		return {
+		var data = {
 			"setup": true,
-			"internet": true,
-			"type": type,
-			"live": (type_of === "deploy"),
+			"internet": (action === "deploy"),
+			"type": application.type,
 			"cache": "0.0.000",
 			"cache:io": "2025-12-21",
-			"cache:generator": c_gen,
-			"sitemap:cache": "2025-12-21",
+			"cache:generator": gcc,
+			"sitemap:cache": application.sitemap.cache,
 			"cd:io": false,
+			"cd:network": true,
 			"cd:base_url": "https://vcredist.github.io",
 			"AD__.s": ad,
 			"*": "*"
 			}
-		},
-	wrangler: {
-		"bioskop": {name: "bioskop", main: "bioskop", type: "bioskop"},
-		"bioskop-asia": {name: "bioskop-asia", main: "bioskop-asia", type: "bioskop"},
-		"bokep": {name: "bokep", main: "bokep", type: "bokep"},
-		},
-	}
-
-function wrangler (name, main) {
-	return {
-		"$schema": "node_modules/wrangler/config-schema.json",
-		"name": name,
-		"main": "src/app/" + main + ".ts",
-		"compatibility_date": "2025-11-09",
-		"observability": {"enabled": true},
-		"assets": {"binding": "asset", "directory": "./public"},
-		"vars": {},
-		"d1_databases": [{"binding": "db", "database_name": "database", "database_id": "3af716b8-37f1-4772-854f-075fc4fe28b4"}]
+		writeFileSync (file_config_target, JSON.stringify (data, null, "\t"));
+		console.log (`Writing ${file_config_target} ... [OK]`);
 		}
 	}
 
-wrangler.target = "./wrangler.jsonc";
-
-function generate (the, type_of) {
-	writeFileSync (wrangler.target, JSON.stringify (wrangler (the.name, the.main)));
-	writeFileSync (config.json, JSON.stringify (config.j_son (the.type, type_of)));
-	console.log ("OK");
+function writeRobot (id) {
+	var application;
+	if (application = app [id]) {
+		var robot = ["User-agent: *"];
+		robot.push ("Disallow: /cgi-bin/");
+		robot.push ("Disallow: /cpanel/");
+		robot.push ("Allow: /");
+		robot.push ("");
+		if (application.type == "bioskop") {
+			robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/${application.sitemap.cache}/index.xml`);
+			robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/${application.sitemap.cache}/movie.xml`);
+			robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/${application.sitemap.cache}/tv.xml`);
+			robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/${application.sitemap.cache}/people.xml`);
+			robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/${application.sitemap.cache}/genre.xml`);
+			}
+		var data = robot.join ("\n");
+		writeFileSync (file_robot_target, data);
+		console.log (`Writing ${file_robot_target} ... [OK]`);
+		}
 	}
 
-var the = config.wrangler [process.argv [2]]
-var type_of = process.argv [3]
+var id = process.argv [2]
+var action = process.argv [3]
 
-if (the) generate (the, type_of)
+writeWrangler (id);
+writeConfig (id, action);
+writeRobot (id);

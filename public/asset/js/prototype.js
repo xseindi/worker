@@ -323,9 +323,9 @@ Function.cookie.delete = function (key) {
 	Function.cookie.set (key)
 	}
 
-Function.cookie.set = function (key, value = "", expire = 0, domain = null, path = "/") {
+Function.cookie.set = function (key, value = "", expire = null, domain = null, path = "/") {
 	if (typeof key === "string") {
-		expire = expire || Function.cookie._expire;
+		if (expire === null) expire = Function.cookie._expire;
 		domain = domain || Function.cookie._domain;
 		document.cookie = `${key}=${value};expires=${expire};domain=${domain};path=/;samesite=lax`;
 		Function.cookie.data [key] = value;
@@ -947,12 +947,24 @@ Function.help = function () {}
 Function.help ["transfer-queue"] = function (id) {
 	$.element.show ("#transfer-queue");
 	if (Function.help ["transfer-queue"].data.includes (id.tmdb)) {}
-	else Function.ajax.post ("/cgi-bin/file/transfer/queue", {id}, {
+	else Function.ajax.post ("/cgi-bin/api/file/transfer/queue", {id}, {
 		success: function (response) {},
 		error: function (error) {},
 		});
 	}
 Function.help ["transfer-queue"].data = [];
+
+Function.help.visitor = function () {}
+Function.help.visitor.session = function (ip, country) {
+	if (Function.cookie.get ("visitroll")) {}
+	else {
+		Function.cookie.set ("visitroll", "?", 0);
+		Function.ajax.post ("/cgi-bin/api/visitor/session", {ip, country}, {
+			success: function (response) {},
+			error: function (error) {},
+			});
+		}
+	}
 
 /**
  * xxx

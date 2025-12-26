@@ -207,9 +207,10 @@ php.plugin.tmdb.image = function (path: string, size: string = "default") {
 
 php.plugin.tmdb.slugify = function (name: any) {
 	var slug: any = [];
-	var char = php.char.alpha.numeric.split ("")
-	for (var i in name) {
-		if (char.includes (name [i])) slug.push (name [i]);
+	var char = php.char.alpha.numeric.split ("");
+	var normalize = php.str_normalize (name);
+	for (var i in normalize) {
+		if (char.includes (normalize [i])) slug.push (normalize [i]);
 		else slug.push ("-");
 		}
 	slug = slug.join ("");

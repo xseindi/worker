@@ -29,8 +29,8 @@ php.parse_url.rebase = function (input: string) {}
 
 php.is_agent_phone = function (agent: string) {
 	var browser = agent.toLowerCase ();
-	if (browser.indexOf ("iphone") !== undefined) return true;
-	else if (browser.indexOf ("android") !== undefined) return true;
+	if (browser.indexOf ("iphone") !== undefined && browser.indexOf ("iphone") > (- 1)) return true;
+	else if (browser.indexOf ("android") !== undefined && browser.indexOf ("android") > (- 1)) return true;
 	else return false;
 	}
 
@@ -113,12 +113,15 @@ php.date = class {
 	day (pad: boolean = true) { if (pad) return this.date.getDate ().toString ().padStart (2, "0"); else return this.date.getDate (); }
 	}
 
+php.date.io = php.date;
+
 php.date.time = function (... date: any) { return new Date (... date as []); }
 php.date.month = {name: {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}}
 php.date.day = {name: {1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Sunday"}}
 
 php.str_after = function str_after (search: string, string: string) { var pos = string.indexOf (search); if (pos !== undefined) return string.substr (pos + search.length); else return ""; }
 php.str_before = function str_before (search: string, string: string) { return string.split (search) [0]; }
+php.str_normalize = function (input: string) { return input.normalize ("NFD").replace (/[\u0300-\u036f]/g, ""); }
 
 php.timeout = function (context: any, time: number = php.timeout.dummy) { return setTimeout (context, time); }
 php.timeout.clear = function (timeout: any) { return clearTimeout (timeout); }

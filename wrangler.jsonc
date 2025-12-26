@@ -1,1 +1,21 @@
-{"$schema":"node_modules/wrangler/config-schema.json","name":"bioskop","main":"src/app/bioskop.ts","compatibility_date":"2025-11-09","observability":{"enabled":true},"assets":{"binding":"asset","directory":"./public"},"vars":{},"d1_databases":[{"binding":"db","database_name":"database","database_id":"3af716b8-37f1-4772-854f-075fc4fe28b4"}]}
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "bioskop",
+	"main": "src/app/bioskop.ts",
+	"compatibility_date": "2025-11-09",
+	"observability": {
+		"enabled": true
+	},
+	"assets": {
+		"binding": "asset",
+		"directory": "./public"
+	},
+	"d1_databases": [
+		{
+			"binding": "db",
+			"database_name": "database",
+			"database_id": "3af716b8-37f1-4772-854f-075fc4fe28b4"
+		}
+	],
+	"vars": {}
+}

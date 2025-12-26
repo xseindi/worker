@@ -28,8 +28,8 @@ var POST_DATE = "2025-09-11"
 var POST_DATE_STRING = "September 11, 2025"
 var POST_CONTENT = "Million's of Movie's, TV Show's and People to discover."
 
-import DB_SITEMAP_MOVIE from "../db/bioskop/sitemap/movie.json"
-import DB_SITEMAP_TV from "../db/bioskop/sitemap/tv.json"
+import DB_SITEMAP_VIDEO_001 from "../db/bokep/sitemap/001.json"
+import DB_SITEMAP_VIDEO_002 from "../db/bokep/sitemap/002.json"
 
 /**
  * setup
@@ -1164,45 +1164,10 @@ app.get (app.router ["sitemap:movie.xml"], async function (request: any, respons
 			xml.push (2, `<priority>0.8</priority>`)
 			xml.push (1, `</url>`)
 			}
-		for (var i in DB_SITEMAP_MOVIE) {
-			if (DB_SITEMAP_MOVIE [i]) {
+		for (var i in DB_SITEMAP_VIDEO_001) {
+			if (DB_SITEMAP_VIDEO_001 [i]) {
 				xml.push (1, `<url>`)
-				xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_MOVIE [i])}</loc>`)
-				xml.push (2, `<lastmod>${date}</lastmod>`)
-				xml.push (1, `</url>`)
-				}
-			}
-		xml.push (0, `</urlset>`)
-		return response.xml (xml.render ())
-		}
-	else return next ()
-	})
-
-app.get (app.router ["sitemap:tv.xml"], async function (request: any, response: any, next: any) {
-	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
-		var date = (new php.date (app.config ["sitemap:cache"])).iso ()
-		var sitemap = [
-			{location: request.router ("tv:index"), date},
-			{location: request.router ("tv:trending"), date},
-			{location: request.router ("tv:top_rated"), date},
-			{location: request.router ("tv:airing_today"), date},
-			{location: request.router ("tv:up_coming"), date},
-			]
-		var xml = new php.markup ()
-		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		for (var i in sitemap) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-			xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
-			xml.push (2, `<changefreq>weekly</changefreq>`)
-			xml.push (2, `<priority>0.8</priority>`)
-			xml.push (1, `</url>`)
-			}
-		for (var i in DB_SITEMAP_TV) {
-			if (DB_SITEMAP_TV [i]) {
-				xml.push (1, `<url>`)
-				xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_TV [i])}</loc>`)
+				xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_VIDEO_001 [i])}</loc>`)
 				xml.push (2, `<lastmod>${date}</lastmod>`)
 				xml.push (1, `</url>`)
 				}
@@ -1325,127 +1290,3 @@ console.log ("let's go")
  *
  * xxx://xxx.xxx.xxx/xxx
  */
-
-/*
-app.get (app.router ["archive"])
-app.get (app.router ["archive:year"])
-app.get (app.router ["archive:month"])
-app.get (app.router ["archive:day"])
-
-app.get (app.router ["author:index"])
-app.get (app.router ["author"])
-
-app.get (app.router ["blog:index"])
-app.get (app.router ["blog"])
-
-app.get (app.router ["article:index"])
-app.get (app.router ["article"])
-
-app.get (app.router ["event:index"])
-app.get (app.router ["event"])
-
-app.get (app.router ["promo:index"])
-app.get (app.router ["promo"])
-
-app.get (app.router ["playlist:index"])
-app.get (app.router ["playlist"])
-
-app.get (app.router ["category:index"])
-app.get (app.router ["category"])
-
-app.get (app.router ["tag:index"])
-app.get (app.router ["tag"])
-
-app.get (app.router ["label:index"])
-app.get (app.router ["label"])
-
-app.get (app.router ["genre:index"])
-app.get (app.router ["genre"])
-
-app.get (app.router ["country:index"])
-app.get (app.router ["country"])
-
-app.get (app.router ["image:index"])
-app.get (app.router ["image"])
-
-app.get (app.router ["picture:index"])
-app.get (app.router ["picture"])
-
-app.get (app.router ["photo:index"])
-app.get (app.router ["photo"])
-
-app.get (app.router ["audio:index"])
-app.get (app.router ["audio"])
-
-app.get (app.router ["music:index"])
-app.get (app.router ["music"])
-
-app.get (app.router ["video:index"])
-app.get (app.router ["video"])
-
-app.get (app.router ["movie:index"])
-app.get (app.router ["movie"])
-app.get (app.router ["movie:keyword"])
-app.get (app.router ["movie genre:index"])
-app.get (app.router ["movie:genre"])
-app.get (app.router ["movie trending:today"])
-app.get (app.router ["movie trending:week"])
-app.get (app.router ["movie:discover"])
-app.get (app.router ["movie:popular"])
-app.get (app.router ["movie:top_rated"])
-app.get (app.router ["movie:up_coming"])
-app.get (app.router ["movie:now_playing"])
-app.get (app.router ["movie:top_global"])
-app.get (app.router ["movie:editor-choice"])
-
-app.get (app.router ["tv:index"])
-app.get (app.router ["tv:season-episode"])
-app.get (app.router ["tv:season"])
-app.get (app.router ["tv"])
-app.get (app.router ["tv:keyword"])
-app.get (app.router ["tv genre:index"])
-app.get (app.router ["tv:genre"])
-app.get (app.router ["tv trending:today"])
-app.get (app.router ["tv trending:week"])
-app.get (app.router ["tv:discover"])
-app.get (app.router ["tv:popular"])
-app.get (app.router ["tv:top_rated"])
-app.get (app.router ["tv:airing_today"])
-app.get (app.router ["tv:on_air"])
-app.get (app.router ["tv:top_global"])
-app.get (app.router ["tv:editor-choice"])
-
-app.get (app.router ["anime:index"])
-app.get (app.router ["anime:season-episode"])
-app.get (app.router ["anime:season"])
-app.get (app.router ["anime"])
-app.get (app.router ["anime:keyword"])
-app.get (app.router ["anime genre:index"])
-app.get (app.router ["anime:genre"])
-app.get (app.router ["anime trending:today"])
-app.get (app.router ["anime trending:week"])
-app.get (app.router ["anime:discover"])
-
-app.get (app.router ["people:index"])
-app.get (app.router ["people"])
-app.get (app.router ["people:top_global"])
-app.get (app.router ["people:editor-choice"])
-
-app.post ("/g_auth", async function (request: any, response: any, next: any) {
-	var post = await request.json ()
-	var g_auth = post.g_auth || {}
-	if ("email" in g_auth) {
-		if (request.db.cache.plugin.g_auth.array ().filter ({email: g_auth.email}).one ()) {}
-		else {
-			var insert = await request.db.cache.plugin.g_auth.insert ({
-				p_id: g_auth.p_id,
-				name: g_auth.name,
-				email: g_auth.email,
-				picture: g_auth.picture,
-				})
-			}
-		return response.json ({success: true})
-		}
-	return response.json ({})
-	})
-*/

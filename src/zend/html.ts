@@ -53,18 +53,18 @@ php.html = function (output: string, variable: any = {}) {
 		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search }}" type="application/opensearchdescription+xml" title="">`);
 		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search:description }}" type="application/opensearchdescription+xml" title="">`);
 		}
-	markup.push (2, `<link rel="dns-prefetch" href="https://1.bp.blogspot.com">`);
-	markup.push (2, `<link rel="dns-prefetch" href="https://2.bp.blogspot.com">`);
-	markup.push (2, `<link rel="dns-prefetch" href="https://3.bp.blogspot.com">`);
-	markup.push (2, `<link rel="dns-prefetch" href="https://4.bp.blogspot.com">`);
+	// markup.push (2, `<link rel="dns-prefetch" href="https://1.bp.blogspot.com">`);
+	// markup.push (2, `<link rel="dns-prefetch" href="https://2.bp.blogspot.com">`);
+	// markup.push (2, `<link rel="dns-prefetch" href="https://3.bp.blogspot.com">`);
+	// markup.push (2, `<link rel="dns-prefetch" href="https://4.bp.blogspot.com">`);
 	markup.push (2, `<link rel="dns-prefetch" href="https://www.google-analytics.com">`);
 	markup.push (2, `<link rel="dns-prefetch" href="https://www.googletagmanager.com">`);
-	markup.push (2, `<link rel="preconnect" href="https://www.blogger.com" crossorigin="anonymous">`);
-	markup.push (2, `<link rel="preconnect" href="https://blogger.googleusercontent.com" crossorigin>`);
-	markup.push (2, `<link rel="preconnect" href="https://resources.blogblog.com" crossorigin>`);
+	// markup.push (2, `<link rel="preconnect" href="https://www.blogger.com" crossorigin="anonymous">`);
+	// markup.push (2, `<link rel="preconnect" href="https://blogger.googleusercontent.com" crossorigin>`);
+	// markup.push (2, `<link rel="preconnect" href="https://resources.blogblog.com" crossorigin>`);
 	markup.push (2, `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>`);
 	markup.push (2, `<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>`);
-	if (php ["config.json"].internet) {
+	if (php ["config.json"]["cd:network"]) {
 		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
 		markup.push (2, `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">`);
@@ -77,8 +77,8 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<link rel="stylesheet" href="{{ base_url }}{{ router style.css }}?cache={{ cache }}">`);
 	markup.push (2, `<link rel="stylesheet" href="{{ theme:base_url }}{{ router style.css }}?cache={{ cache }}">`);
 	if (false) markup.push (2, `<script src="https://accounts.google.com/gsi/client" async></script>`);
-	if (php ["config.json"].live) if (variable ["g-tag:id"])  markup.push (2, `<script src="https://www.googletagmanager.com/gtag/js?id={{ g-tag:id }}" async></script>`);
-	if (php ["config.json"]["internet"]) {
+	if (php ["config.json"].internet) if (variable ["g-tag:id"])  markup.push (2, `<script src="https://www.googletagmanager.com/gtag/js?id={{ g-tag:id }}" async></script>`);
+	if (php ["config.json"]["cd:network"]) {
 		markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>`);
 		markup.push (2, `<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>`);
 		markup.push (2, `<script src="https://unpkg.com/lodash@4.17.21/core.min.js"></script>`);
@@ -99,7 +99,7 @@ php.html = function (output: string, variable: any = {}) {
 	if (variable ["ld+json webpage"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].webpage ()}</script>`);
 	if (variable ["breadcrumb:list"]) markup.push (2, `<script type="application/ld+json">${php.help ["ld+json"].breadcrumb.list (variable ["breadcrumb:list"])}</script>`);
 	markup.push (0, `{{ scriptag }}`);
-	if (php ["config.json"].live) if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
+	if (php ["config.json"].internet) if (variable ["g-tag:id"]) markup.push (2, `<script>window.dataLayer = window.dataLayer || []; function gtag () { dataLayer.push (arguments); } gtag ("js", new Date ()); gtag ("config", "{{ g-tag:id }}");</script>`);
 	markup.push (2, `<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>`);
 	markup.push (2, `<style>[application] { opacity: 0; }</style>`);
 	markup.push (1, `</head>`);
@@ -202,10 +202,12 @@ php.help.scriptag = function (app: any, request: any, response: any, next: any) 
 	markup.push (2, `<script>vue.app.route = "${response.var.route}"</script>`);
 	markup.push (2, `<script>vue.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
 	markup.push (2, `<script>vue.router.link (vue.app.id, ${JSON.stringify (app.router)})</script>`);
+	markup.push (2, `<script>vue.visitor = ${JSON.stringify (request.visitor)}</script>`);
 	markup.push (2, `<script>Function.image.stock (${JSON.stringify (response.image.stock)})</script>`)
 	markup.push (2, `<script>Function.cookie ()</script>`);
 	markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
 	markup.push (2, `<script>Function.cookie.start ()</script>`);
+	markup.push (2, `<script>Function.help.visitor.session (vue.visitor.ip.address, vue.visitor.country.code)</script>`);
 	markup.push (2, `<script>window.onload = function () { php.emit ("load") }</script>`);
 	return markup;
 	}
@@ -343,7 +345,7 @@ php.page ["privacy-policy"] = function () {
 						<li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service. Unless you have adjusted Your browser setting so that it will refuse Cookies, our Service may use Cookies.</li>
 						<li><strong>Web Beacons.</strong> Certain sections of our Service and our emails may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages or opened an email and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).</li>
 						</ul>
-						<p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser. You can learn more about cookies on <a href="https://www.termsfeed.com/blog/cookies/#What_Are_Cookies" target="_blank">TermsFeed website</a> article.</p>
+						<p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.
 						<p>We use both Session and Persistent Cookies for the purposes set out below:</p>
 						<ul>
 						<li>
