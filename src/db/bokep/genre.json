@@ -1,5 +1,5 @@
 [
-{"#": null, "reference": 0, "name": "", "slug": "", "icon": "", "description": ""},
+{"#": null, "reference": 0, "name": "", "slug": "", "icon": "", "thumbnail": {}, "description": ""},
 
 {"id": 12, "reference": 0, "name": "Adventure", "slug": "adventure", "icon": "", "description": ""},
 {"id": 14, "reference": 0, "name": "Fantasy", "slug": "fantasy", "icon": "", "description": ""},

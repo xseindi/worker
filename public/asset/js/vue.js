@@ -151,8 +151,10 @@ vue.device.phone = function (value) { return vue.var ("device:phone", value) }
 
 vue.app = function () { return (vue.app.reference || vue.app.id); }
 vue.app.var = vue.reactive ();
+vue.app.config = vue.reactive ();
 vue.app.data = vue.reactive ({
 	genre: [],
+	video: [],
 	movie: {trending: [], popular: [], top_rated: [], now_playing: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
 	tv: {trending: [], popular: [], top_rated: [], airing_today: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
 	asia: {all: [], KR: [], JP: [], CN: []},

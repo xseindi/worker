@@ -316,14 +316,14 @@ Function.cookie = function (key, value) {
 
 Function.cookie.get = function (key) {
 	if (key) return Function.cookie.data [key];
-	else return Function.cookie.get (Function.cookie.id);
+	else return Function.cookie.get (Function.cookie.identity);
 	}
 
 Function.cookie.delete = function (key) {
-	Function.cookie.set (key)
+	Function.cookie.set (key);
 	}
 
-Function.cookie.set = function (key, value = "", expire = null, domain = null, path = "/") {
+Function.cookie.set = function (key, value = "", expire = 0, domain = null, path = "/") {
 	if (typeof key === "string") {
 		if (expire === null) expire = Function.cookie._expire;
 		domain = domain || Function.cookie._domain;
@@ -341,12 +341,16 @@ Function.cookie.set = function (key, value = "", expire = null, domain = null, p
 	}
 
 Function.cookie.start = function () {
-	if (Function.cookie.get (Function.cookie.id)) {}
-	else Function.cookie.set (Function.cookie.id, Function.unique.id ());
+	if (Function.cookie.get (Function.cookie.identity)) {}
+	else Function.cookie.set (Function.cookie.identity, Function.unique.id ());
 	Event.emit ("cookie:start");
 	}
 
-Function.cookie.id = "session";
+Function.cookie.id = function () {
+	return Function.cookie.get (Function.cookie.identity);
+	}
+
+Function.cookie.identity = "session";
 Function.cookie.data = {}
 
 /**
@@ -955,11 +959,11 @@ Function.help ["transfer-queue"] = function (id) {
 Function.help ["transfer-queue"].data = [];
 
 Function.help.visitor = function () {}
-Function.help.visitor.session = function (ip, country) {
-	if (Function.cookie.get ("visitroll")) {}
+Function.help.visitor.session = function (ip, country, agent) {
+	if (Function.cookie.get ("visited")) {}
 	else {
-		Function.cookie.set ("visitroll", "?", 0);
-		Function.ajax.post ("/cgi-bin/api/visitor/session", {ip, country}, {
+		Function.cookie.set ("visited", Date.now ());
+		Function.ajax.post ("/cgi-bin/api/visitor/session", {cookie: Function.cookie.id (), ip, country, url: URL.document.path, agent}, {
 			success: function (response) {},
 			error: function (error) {},
 			});

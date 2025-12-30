@@ -24,14 +24,13 @@ import TABLE from "../zend/db_table";
 
 import table_config from "../db/table_config.json";
 import table_client from "../db/table_client.json";
+import table_channel from "../db/table_channel.json";
 import table_theme from "../db/table_theme.json";
 import table_image from "../db/table_image.json";
 
 import table_the_bioskop_movie from "../db/bioskop/movie.json";
 import table_the_bioskop_tv from "../db/bioskop/tv.json";
 import table_the_bioskop_genre from "../db/bioskop/genre.json";
-
-import table_the_bokep_genre from "../db/bioskop/genre.json";
 
 /**
  * xxx
@@ -49,12 +48,15 @@ php.db = class {
 	json: any = {
 		"config": table_config,
 		"client": table_client,
+		"channel": table_channel,
 		"theme": table_theme,
 		"image": table_image,
+		"genre": [],
+		"people": [],
+		"video": [],
 		"bioskop:movie": table_the_bioskop_movie,
 		"bioskop:tv": table_the_bioskop_tv,
 		"bioskop:genre": table_the_bioskop_genre,
-		"bokep:genre": table_the_bokep_genre,
 		}
 	constructor (adapter: any) {
 		this.adapter = adapter;
@@ -101,7 +103,8 @@ php.db = class {
 	async query (sql: string, ... data: any) {
 		var db = await this.adapter.prepare (sql).bind (... data).run ();
 		return new Promise (function (resolve, reject) {
-			resolve ({success: db.success, meta: db.meta, data: db.results, array: function () { return php.array (db.results); }});
+			var data = db.results;
+			resolve ({success: db.success, meta: db.meta, data, set: function (input: any) { return data = input; }, array: function () { return php.array (data); }});
 			});
 		}
 	async setup (option: any = {}) {
@@ -170,6 +173,7 @@ php.db.select = class {
 			if (self.j_son) data = php.array (self.db.merge (data, self.json_data)).filter (self.prop.filter).data;
 			resolve ({
 				success: db.success, meta: db.meta, data,
+				set: function (input: any) { return data = input; },
 				array: function () { return php.array (data); },
 				insert: function (data: any) { return new php.db.insert (self.db, self.table.key).set (data).query (); },
 				});

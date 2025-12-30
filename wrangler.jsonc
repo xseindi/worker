@@ -1,7 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "bioskop",
-	"main": "src/app/bioskop.ts",
+	"name": "bokep",
+	"main": "src/app/bokep.ts",
 	"compatibility_date": "2025-11-09",
 	"observability": {
 		"enabled": true
@@ -13,8 +13,8 @@
 	"d1_databases": [
 		{
 			"binding": "db",
-			"database_name": "database",
-			"database_id": "3af716b8-37f1-4772-854f-075fc4fe28b4"
+			"database_id": "691333b0-1e1f-4c27-a8d5-f6dbb5f7f7c3",
+			"database_name": "bokep"
 		}
 	],
 	"vars": {}

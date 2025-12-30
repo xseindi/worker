@@ -108,6 +108,13 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 	response.json = io.json;
 	response.text = io.text;
 	response.redirect = io.redirect;
+	request.router = function (key: any, value: any = {}, query: any = {}) {
+		var router = request.base_url
+		if (typeof key === "string") router = router + (worker.router [key] || key)
+		else for (var i in key) router = router + worker.router [i][key [i]]
+		for (var i in value) router = router.split (":" + i).join (value [i])
+		return router + php.url.query.build (query)
+		}
 	response.set = function (data: any) { request.library.set (data); }
 	response.vue = function (slot: any, code: number = 200) {
 		if (typeof slot === "number") if (code = slot) slot = {}
@@ -119,8 +126,20 @@ php.worker.io.response = function (io: any, worker: any, request: any) {
 		if (typeof variable === "number") if (code = variable) variable = {}
 		return response.html (php.render (php.body (request, response), variable, 2), code);
 		}
+	response.send = function (variable: any, code: number = 200) {
+		if (typeof variable === "number") if (code = variable) variable = {}
+		else {} else {
+			var index = 0;
+			for (var i in variable.heading) {
+				index ++
+				variable ["h" + index] = variable.heading [i];
+				}
+			}
+		return response.html (php.render (php.body (request, response), variable, 2), code);
+		}
+	response.db = {}
 	response.var = {}
-	response.app = {config: {}, data: {}, variable: {}}
+	response.app = {config: {}, data: {}, variable: {}, socket: {}}
 	request.render = function (markup: string) { return php.render (markup, response.var); }
 	return response;
 	}
@@ -142,6 +161,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 				await request.db.setup ({drop: true, data: true})
 				}
 			}
+		/*
 		request.router = function (key: any, value: any = {}, query: any = {}) {
 			var router = request.base_url
 			if (typeof key === "string") router = router + (app.router [key] || key)
@@ -149,6 +169,7 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			for (var i in value) router = router.split (":" + i).join (value [i])
 			return router + php.url.query.build (query)
 			}
+		*/
 		request.db.cache = {
 			config: await request.db.select ("config").json ().find ().query (),
 			client: await request.db.select ("client").json ().find ().query (),
@@ -177,6 +198,13 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 			response.app.data.category = request.db.cache.category.data.map (function (category: any) {
 				category.permalink = request.router ("category", {id: category.id, category: category.slug})
 				return category
+				})
+			}
+		else {
+			response.db.genre = await request.db.select ("genre").json ().find ().query ()
+			response.app.data.genre = response.db.genre.data.map (function (genre: any) {
+				genre.permalink = request.router ("genre", {id: genre.id, slug: genre.slug})
+				return genre
 				})
 			}
 		for (var i in request.db.cache.config.data) {
@@ -213,6 +241,69 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
 		})
 	}
 
+php.worker.start.up = async function (app: any, request: any, response: any, next: any) {
+	if (request.agent.crawler () === false) {
+		if (app.config.setup) {
+			if (request.url.query ("setup") === "install") {
+				await request.db.setup ({drop: true, data: true})
+				}
+			}
+		response.db.config = await request.db.select ("config").json ().find ().query ()
+		response.db.client = await request.db.select ("client").json ().find ().query ()
+		response.db.theme = await request.db.select ("theme").json ().find ().query ()
+		response.db.image = await request.db.select ("image").json ().find ().query ()
+		if (true) {
+			response.db.genre = await request.db.select ("genre").json ().find ().query ()
+			response.app.data.genre = response.db.genre.set (response.db.genre.data.map (function (genre: any) {
+				genre.permalink = request.router ("genre", {id: genre.id, slug: genre.slug})
+				return genre
+				}))
+			response.db.people = await request.db.select ("people").json ().find ().query ()
+			response.app.data.people = response.db.people.set (response.db.people.data.map (function (people: any) {
+				people.permalink = request.router ("people", {id: people.id, slug: people.slug})
+				return people
+				}))
+			response.db.video = await request.db.select ("video").json ().find ().query ()
+			response.app.data.video = response.db.video.set (response.db.video.data.map (function (video: any) {
+				video.permalink = request.router ("video", {id: video.id, slug: video.slug})
+				return video
+				}))
+			}
+		for (var i in response.db.config.data) {
+			app.config [response.db.config.data [i].key] = request.db.value (response.db.config.data [i].value)
+			}
+		var client: any
+		if (client = response.db.client.array ().filter ({host: request.url.host.name}).one ()) {
+			if (client.redirect) return php.promise (function (resolve: any, reject: any) {
+				var split = client.redirect.split (" ")
+				var url, code = 302
+				if (split.length > 1) { if (code = split [0]) url = split [1] }
+				else url = split [0]
+				request.redirect.url = url
+				request.redirect.code = code
+				resolve ()
+				})
+			if (app.config ["cache:io"]) request.cache.io = app.config ["cache:io"]
+			php.worker.client (app, request, response, next, client)
+			php.worker.image (app, request, response, next)
+			return php.promise (async function (resolve: any, reject: any) {
+				request.library = new library (app, request, response, next)
+				request.library.variable ()
+				request.library.set ()
+				resolve ()
+				})
+			}
+		else return php.promise (function (resolve: any, reject: any) {
+			request.error.push ({type: "host", status: "error"})
+			resolve ()
+			})
+		}
+	else return php.promise (function (resolve: any, reject: any) {
+		request.error.push ({type: "agent", status: "forbidden"})
+		resolve ()
+		})
+	}
+
 /**
  * xxx
  *
@@ -224,21 +315,24 @@ php.worker.start = async function (app: any, request: any, response: any, next: 
  */
 
 php.worker.client = async function (app: any, request: any, response: any, next: any, client: any) {
+	var db
+	if (request.db.cache.client) db = request.db.cache
+	else db = response.db
 	request.client.reference = client.reference
 	request.client.id = client.id
 	request.client.identity = client.reference || client.id
 	request.client.object = request.db.value (client.meta) || {}
-	request.client.theme = request.db.cache.theme.array ().filter ({id: client.theme}).one () || {}
+	request.client.theme = db.theme.array ().filter ({id: client.theme}).one () || {}
 	request.client.host = {name: client.host}
 	if (client.domain) request.client.host.cookie = "." + client.domain
 	else request.client.host.cookie = client.host
 	if (client.reference) {
-		var reference = request.db.cache.client.array ().filter ({id: client.reference}).one ()
+		var reference = db.client.array ().filter ({id: client.reference}).one ()
 		request.client.object = php.object.assign ((request.db.value (reference.meta) || {}), request.client.object)
-		if (("id" in request.client.theme) === false) request.client.theme = request.db.cache.theme.array ().filter ({id: reference.theme}).one () || {}
+		if (("id" in request.client.theme) === false) request.client.theme = db.theme.array ().filter ({id: reference.theme}).one () || {}
 		}
 	if (request.client.theme.reference) {
-		var reference = request.db.cache.theme.array ().filter ({id: request.client.theme.reference}).one ()
+		var reference = db.theme.array ().filter ({id: request.client.theme.reference}).one ()
 		request.client.theme.sub = request.client.theme.name
 		request.client.theme.name = reference.name
 		request.client.theme.slug = reference.slug
@@ -254,12 +348,15 @@ php.worker.client = async function (app: any, request: any, response: any, next:
 	}
 
 php.worker.image = async function (app: any, request: any, response: any, next: any) {
+	var db
+	if (request.db.cache.client) db = request.db.cache
+	else db = response.db
 	var image: any = {stock: {}}
-	for (var i in request.db.cache.image.data) {
+	for (var i in db.image.data) {
 		var dir = "";
-		if (request.db.cache.image.data [i].type_of === "brand") dir = "brand/";
-		image.stock [request.db.cache.image.data [i].id] = dir + request.db.cache.image.data [i].file;
-		if (request.db.cache.image.data [i].slug) image.stock [request.db.cache.image.data [i].slug] = dir + request.db.cache.image.data [i].file;
+		if (db.image.data [i].type_of === "brand") dir = "brand/";
+		image.stock [db.image.data [i].id] = dir + db.image.data [i].file;
+		if (db.image.data [i].slug) image.stock [db.image.data [i].slug] = dir + db.image.data [i].file;
 		}
 	response.image.stock = image.stock
 	}

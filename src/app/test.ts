@@ -18,32 +18,28 @@ import "../zend/worker"
 import "../zend/db"
 import "../zend/theme"
 
-import DB_GENRE from "../db/bokep/genre.json"
-import DB_PEOPLE from "../db/bokep/people.json"
-import DB_VIDEO from "../db/bokep/video.json"
-import THE_SITEMAP_VIDEO from "../db/bokep/sitemap/video.json"
+import "../plugin/tmdb"
+import "../plugin/video-src"
+
+import DB_SITEMAP_VIDEO_001 from "../db/test/sitemap/001.json"
+import DB_SITEMAP_VIDEO_002 from "../db/test/sitemap/002.json"
 
 var {ln, ln_r, ln_tab, ln_s} = php.constant
 var {zero, one} = php.constant
 
 var the = {
-	date: new php.date.io (),
-	dummy: {
-		date: {
-			index: "2025-09-11",
-			format: "September 11, 2025",
-			iso: (new php.date.io ("2025-09-11")).iso (),
-			},
+	date: {
+		index: "2025-09-11",
+		format: "September 11, 2025",
 		},
 	sitemap: {
 		page: [],
-		post: [],
-		article: [],
 		categories: [],
 		tag: [],
 		genre: [],
+		article: [],
 		people: [],
-		video: THE_SITEMAP_VIDEO,
+		video: [],
 		movie: [],
 		tv: [],
 		},
@@ -61,9 +57,6 @@ var the = {
 
 var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
-	request.db.json ["genre"] = DB_GENRE
-	request.db.json ["people"] = DB_PEOPLE
-	request.db.json ["video"] = DB_VIDEO
 	await php.worker.start.up (app, request, response, next)
 	if (request.redirect.url) return response.redirect (request.redirect.url, request.redirect.code)
 	if (request.error.length) {
@@ -118,7 +111,7 @@ app.get (app.router.index, async function (request: any, response: any, next: an
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -147,7 +140,7 @@ app.get (app.router.page ["help"], async function (request: any, response: any, 
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -176,7 +169,7 @@ app.get (app.router.channel, async function (request: any, response: any, next: 
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -195,7 +188,7 @@ app.get (app.router ["channel:video"], async function (request: any, response: a
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -214,7 +207,7 @@ app.get (app.router ["channel:video page"], async function (request: any, respon
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -292,7 +285,7 @@ app.get (app.router.video, async function (request: any, response: any, next: an
 app.get (app.router.movie, async function (request: any, response: any, next: any) {
 	var video = await request.tmdb.movie.single (request.url.param ("id"), {append_to_response: true})
 	if (video.id) {
-		var date = new php.date.io (video.release_date)
+		var date = new php.date (video.release_date)
 		var title = php.help.title.year (video.title, video.year)
 		var description = video.description.split ('"').join ("'")
 		response.post = {}
@@ -339,7 +332,7 @@ app.get (app.router ["movie:index"], async function (request: any, response: any
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -361,7 +354,7 @@ app.get (app.router ["movie:trending"], async function (request: any, response: 
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -383,7 +376,7 @@ app.get (app.router ["movie:top_rated"], async function (request: any, response:
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -405,7 +398,7 @@ app.get (app.router ["movie:now_playing"], async function (request: any, respons
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -427,7 +420,7 @@ app.get (app.router ["movie:up_coming"], async function (request: any, response:
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -448,7 +441,7 @@ app.get (app.router ["movie:editor-choice"], async function (request: any, respo
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -468,7 +461,7 @@ app.get (app.router.people, async function (request: any, response: any, next: a
 	var cc = await request.tmdb.people.cc (request.url.param ("id"))
 	people.profile.cast = cc.data
 	if (people.id) {
-		var date = new php.date.io (people.profile.birth.date.format)
+		var date = new php.date (people.profile.birth.date.format)
 		var description = people.profile.biography.split (ln).join (" ")
 		response.set ({
 			title: people.profile.name,
@@ -488,7 +481,7 @@ app.get (app.router.people, async function (request: any, response: any, next: a
 			h3: request.client.site.description,
 			h4: request.client.site.meta.description,
 			h5: request.client.site.tagline,
-			date: the.dummy.date.index,
+			date: the.date.index,
 			description,
 			})
 		}
@@ -510,7 +503,7 @@ app.get (app.router ["people:index"], async function (request: any, response: an
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -545,7 +538,7 @@ app.get (app.router.genre, async function (request: any, response: any, next: an
 		h2: request.client.site.title,
 		h3: request.client.site.description,
 		h4: request.client.site.meta.description,
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -577,7 +570,7 @@ app.get (app.router.p ["short"], async function (request: any, response: any, ne
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -599,7 +592,7 @@ app.get (app.router.p ["live"], async function (request: any, response: any, nex
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -621,7 +614,7 @@ app.get (app.router.history, async function (request: any, response: any, next: 
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -643,7 +636,7 @@ app.get (app.router ["playlist:index"], async function (request: any, response: 
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -665,7 +658,7 @@ app.get (app.router ["playlist:default"], async function (request: any, response
 			request.client.site.description,
 			request.client.site.meta.description,
 			],
-		date: the.dummy.date.index,
+		date: the.date.index,
 		description: request.client.site.tagline,
 		})
 	})
@@ -690,19 +683,8 @@ app.get (app.router ["cgi-bin:api trending:week"], async function (request: any,
 
 app.post (app.router ["cgi-bin:api visitor:session"], async function (request: any, response: any, next: any) {
 	var post = await request.json ()
-	console.log (post)
-	if (post.cookie) {
-		if (post.ip) {
-			if (post.country) {
-				if (post.url) {
-					if (post.agent) {
-						var insert = await request.db.insert ("visitor:session").set ({date: request.date.string (), session: post.cookie, ip: post.ip, country: post.country, url: post.url, agent: post.agent}).query ()
-						console.log ("cookie", post.cookie, request.date.string (), post.ip, post.country)
-						}
-					}
-				}
-			}
-		}
+	if (post.ip) if (post.country) if (post.url) if (post.agent) var insert = await request.db.insert ("visitor:session").set ({date: request.date.string (), ip: post.ip, country: post.country, url: post.url, agent: post.agent}).query ()
+	console.log ("registering cookie", request.date.string (), post.ip, post.country)
 	return response.json ({})
 	})
 
@@ -730,10 +712,11 @@ app.get (app.router ["robot:text"], async function (request: any, response: any,
 	robot.push ("Disallow: /cpanel/")
 	robot.push ("Allow: /")
 	robot.push ("")
-	robot.push ("Sitemap: " + request.router ({legacy: "sitemap.xml"}))
-	robot.push ("Sitemap: " + request.router ({legacy: "sitemap.xml:video"}))
-	robot.push ("Sitemap: " + request.router ({legacy: "sitemap.xml:people"}))
-	robot.push ("Sitemap: " + request.router ({legacy: "sitemap.xml:genre"}))
+	robot.push ("Sitemap: " + request.router ("sitemap.xml", {cache: app.config ["sitemap:cache"]}))
+	robot.push ("Sitemap: " + request.router ("sitemap:movie.xml", {cache: app.config ["sitemap:cache"]}))
+	robot.push ("Sitemap: " + request.router ("sitemap:tv.xml", {cache: app.config ["sitemap:cache"]}))
+	robot.push ("Sitemap: " + request.router ("sitemap:people.xml", {cache: app.config ["sitemap:cache"]}))
+	robot.push ("Sitemap: " + request.router ("sitemap:genre.xml", {cache: app.config ["sitemap:cache"]}))
 	return response.text (robot.join (ln))
 	})
 
@@ -759,176 +742,210 @@ app.get (app.router ["feed:atom"], async function (request: any, response: any, 
 
 app.get (app.router ["manifest.json"], async function (request: any, response: any, next: any) {
 	return response.json ({
-		"name": request.client.site.name,
-		"short_name": request.client.site.name,
+		"name": "Minimal Manifest",
+		"short_name": "Minimal Manifest",
 		"display": "minimal-ui",
 		"start_url": "/?manifest",
 		"scope": "/",
 		"background_color": "#FFFFFF",
 		"theme_color": "#4285f4",
 		"icons": [
-			{"src": request.router ("files", {id: request.client.identity, file: "manifest/144.png"}), "sizes": "144x144", "type": "image/png"},
+			{"src": "/asset/image/manifest/144.png", "sizes": "144x144", "type": "image/png"},
 			],
 		})
 	})
 
-app.get (app.router.legacy ["sitemap.xml"], async function (request: any, response: any, next: any) {
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<sitemap>`)
-	xml.push (2, `<loc>${request.router ({legacy: "sitemap.xml:video"})}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</sitemap>`)
-	xml.push (1, `<sitemap>`)
-	xml.push (2, `<loc>${request.router ({legacy: "sitemap.xml:people"})}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</sitemap>`)
-	xml.push (1, `<sitemap>`)
-	xml.push (2, `<loc>${request.router ({legacy: "sitemap.xml:genre"})}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</sitemap>`)
-	xml.push (0, `</sitemapindex>`)
-	return response.xml (xml.render ())
+app.get (app.router ["sitemap.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "page.xml", cache: app.config ["sitemap:cache"]})}</loc></sitemap>`)
+		if (false) xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "people.xml", cache: app.config ["sitemap:cache"]})}</loc></sitemap>`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "movie.xml", cache: app.config ["sitemap:cache"]})}</loc></sitemap>`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "tv.xml", cache: app.config ["sitemap:cache"]})}</loc></sitemap>`)
+		xml.push (1, `<sitemap><loc>${request.router ("sitemap", {sitemap: "genre.xml", cache: app.config ["sitemap:cache"]})}</loc></sitemap>`)
+		xml.push (0, `</sitemapindex>`)
+		return response.xml (xml.render ())
+		}
+	else return next ()
 	})
 
-app.get (app.router.legacy ["sitemap.xml:page"], async function (request: any, response: any, next: any) {
-	var sitemap = [
-		{location: request.router ({page: "about"})},
-		{location: request.router ({page: "contact"})},
-		{location: request.router ({page: "privacy-policy"})},
-		{location: request.router ({page: "term_of_use"})},
-		{location: request.router ({page: "cookie:preference"})},
-		{location: request.router ({page: "disclaimer"})},
-		{location: request.router ({page: "DMCA"})},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<url>`)
-	xml.push (2, `<loc>${request.base_url}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</url>`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
+app.get (app.router ["sitemap:page.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
+		var date = (new php.date (app.config ["sitemap:cache"])).iso ()
+		var sitemap = [
+			{location: request.router ({page: "about"}), date},
+			{location: request.router ({page: "contact"}), date},
+			{location: request.router ({page: "privacy-policy"}), date},
+			{location: request.router ({page: "term_of_use"}), date},
+			{location: request.router ({page: "cookie:preference"}), date},
+			{location: request.router ({page: "disclaimer"}), date},
+			{location: request.router ({page: "DMCA"}), date},
+			]
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in sitemap) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+			xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
+			xml.push (1, `</url>`)
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
 	})
 
-app.get (app.router.legacy ["sitemap.xml:people"], async function (request: any, response: any, next: any) {
-	var sitemap = [
-		{location: request.router ("people:index")},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<url>`)
-	xml.push (2, `<loc>${request.base_url}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</url>`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (2, `<changefreq>weekly</changefreq>`)
-		xml.push (2, `<priority>0.8</priority>`)
-		xml.push (1, `</url>`)
+app.get (app.router ["sitemap:post.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
+		var date = (new php.date (app.config ["sitemap:cache"])).iso ()
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		if (false) {
+			for (var i in response.app.data.genre) {
+				xml.push (1, `<url>`)
+				xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
+				xml.push (2, `<lastmod>${date}</lastmod>`)
+				xml.push (2, `<changefreq>weekly</changefreq>`)
+				xml.push (2, `<priority>0.8</priority>`)
+				xml.push (1, `</url>`)
+				}
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	for (var i in response.db.people.data) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${response.db.people.data [i].permalink}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
-		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
 	})
 
-app.get (app.router.legacy ["sitemap.xml:video"], async function (request: any, response: any, next: any) {
-	var sitemap = [
-		{location: request.router ("video:index")},
-		{location: request.router ("video-quality:HD")},
-		{location: request.router ("video-quality:camera")},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<url>`)
-	xml.push (2, `<loc>${request.base_url}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</url>`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (2, `<changefreq>weekly</changefreq>`)
-		xml.push (2, `<priority>0.8</priority>`)
-		xml.push (1, `</url>`)
+app.get (app.router ["sitemap:people.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
+		var date = (new php.date (app.config ["sitemap:cache"])).iso ()
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	for (var i in response.db.video.data) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${response.db.video.data [i].permalink}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
-		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
 	})
 
-app.get (app.router.legacy ["sitemap.xml:genre"], async function (request: any, response: any, next: any) {
-	var sitemap = [
-		{location: request.router ("genre:index")},
-		]
-	var xml = new php.markup ()
-	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-	xml.push (1, `<url>`)
-	xml.push (2, `<loc>${request.base_url}</loc>`)
-	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-	xml.push (1, `</url>`)
-	for (var i in sitemap) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (2, `<changefreq>weekly</changefreq>`)
-		xml.push (2, `<priority>0.8</priority>`)
-		xml.push (1, `</url>`)
+app.get (app.router ["sitemap:movie.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
+		var date = (new php.date (app.config ["sitemap:cache"])).iso ()
+		var sitemap = [
+			{location: request.router ("movie:index"), date},
+			{location: request.router ("movie:trending"), date},
+			{location: request.router ("movie:top_rated"), date},
+			{location: request.router ("movie:now_playing"), date},
+			{location: request.router ("movie:up_coming"), date},
+			]
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in sitemap) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+			xml.push (2, `<lastmod>${sitemap [i].date}</lastmod>`)
+			xml.push (2, `<changefreq>weekly</changefreq>`)
+			xml.push (2, `<priority>0.8</priority>`)
+			xml.push (1, `</url>`)
+			}
+		for (var i in DB_SITEMAP_VIDEO_001) {
+			if (DB_SITEMAP_VIDEO_001 [i]) {
+				xml.push (1, `<url>`)
+				xml.push (2, `<loc>${request.url.rebase (DB_SITEMAP_VIDEO_001 [i])}</loc>`)
+				xml.push (2, `<lastmod>${date}</lastmod>`)
+				xml.push (1, `</url>`)
+				}
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	for (var i in response.db.genre.data) {
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${response.db.genre.data [i].permalink}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
+	else return next ()
+	})
+
+app.get (app.router ["sitemap:genre.xml"], async function (request: any, response: any, next: any) {
+	if (request.url.param ("cache") === app.config ["sitemap:cache"]) {
+		var date = (new php.date (app.config ["sitemap:cache"])).iso ()
+		var xml = new php.markup ()
+		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+		for (var i in response.app.data.genre) {
+			xml.push (1, `<url>`)
+			xml.push (2, `<loc>${response.app.data.genre [i].permalink}</loc>`)
+			xml.push (2, `<lastmod>${date}</lastmod>`)
+			xml.push (1, `</url>`)
+			}
+		xml.push (0, `</urlset>`)
+		return response.xml (xml.render ())
 		}
-	xml.push (0, `</urlset>`)
-	return response.xml (xml.render ())
+	else return next ()
+	})
+
+if (php ["config.json"]["cache:generator"]) app.get ("/cgi-bin/cache/generate.js", async function (request: any, response: any, next: any) {
+	response.app.data.movie = {
+		popular: (await request.tmdb.movie.popular ()).data,
+		top_rated: (await request.tmdb.movie.top_rated ()).data,
+		now_playing: (await request.tmdb.movie.now_playing ()).data,
+		up_coming: (await request.tmdb.movie.discover ({up_coming: true})).data,
+		country: {
+			KR: (await request.tmdb.movie.discover ({country: "KR"})).data,
+			JP: (await request.tmdb.movie.discover ({country: "JP"})).data,
+			CN: (await request.tmdb.movie.discover ({country: "CN"})).data,
+			},
+		}
+	response.app.data.tv = {
+		popular: (await request.tmdb.tv.popular ()).data,
+		top_rated: (await request.tmdb.tv.top_rated ()).data,
+		airing_today: (await request.tmdb.tv.airing_today ()).data,
+		up_coming: (await request.tmdb.tv.discover ({up_coming: true})).data,
+		country: {
+			KR: (await request.tmdb.tv.discover ({country: "KR"})).data,
+			JP: (await request.tmdb.tv.discover ({country: "JP"})).data,
+			CN: (await request.tmdb.tv.discover ({country: "CN"})).data,
+			},
+		}
+	response.app.data.trending = {
+		today: (await request.tmdb.trending ("today")).data,
+		week: (await request.tmdb.trending ("week")).data,
+		}
+	response.app.data ["editor-choice"] = [... request.db.cache.movie.data, ... request.db.cache.tv.data]
+	var output: any = []
+	output.push (`vue.app.config = ${JSON.stringify (response.app.config)}`)
+	output.push (`vue.app.data.movie = ${JSON.stringify (response.app.data.movie)}`)
+	output.push (`vue.app.data.tv = ${JSON.stringify (response.app.data.tv)}`)
+	output.push (`vue.app.data.trending = ${JSON.stringify (response.app.data.trending)}`)
+	output.push (`vue.app.data ["editor-choice"] = ${JSON.stringify (response.app.data ["editor-choice"])}`)
+	output.push (`vue.app.data.genre = ${JSON.stringify (response.app.data.genre)}`)
+	output.push (`vue.app.data.asia = {KR: [... vue.app.data.movie.country.KR, ... vue.app.data.tv.country.KR], JP: [... vue.app.data.movie.country.JP, ... vue.app.data.tv.country.JP], CN: [... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.CN]}`)
+	output.push (`vue.app.data.asia.all = [... vue.app.data.movie.country.KR, ... vue.app.data.movie.country.JP, ... vue.app.data.movie.country.CN, ... vue.app.data.tv.country.KR, ... vue.app.data.tv.country.JP, ... vue.app.data.tv.country.CN]`)
+	output.push (`vue.router.link (${JSON.stringify (app.router)})`)
+	output.push (`Function.video.src.external (1252428, "byse", "https://bysefujedu.com/e/q03yj9hmy0dp")`)
+	output.push (`Function.image.stock (${JSON.stringify (response.image.stock)})`)
+	return response.js (output.join (ln))
+	})
+
+app.get ("/testing", async function (request: any, response: any, next: any) {
+	var id: any = []
+	var data = []
+	for (var x in id) {
+		var json = await request.tmdb.movie.single (id [x])
+		data.push (JSON.stringify (json) + ",")
+		}
+	return response.text (data.join (ln))
+	})
+
+app.get ("/test/:id", async function (request: any, response: any, next: any) {
+	var movie_id = request.url.param ("id")
+	var data = await request.tmdb.movie.single (movie_id)
+	return response.json (data)
 	})
 
 /**
- * generator
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-if (php ["config.json"].generator) {
-	app.get ("/cgi-bin/generator/cache.js", async function (request: any, response: any, next: any) {
-		return response.js ("")
-		})
-	app.get ("/cgi-bin/generator/sitemap.xml", async function (request: any, response: any, next: any) {
-		return response.xml ("")
-		})
-	}
-
-/**
- * catch
+ * xxx
  *
  * title
  * description

@@ -47,7 +47,7 @@ php.is_agent_crawler = function (agent: string) {
 		/Baiduspider/i,
 		/rogerbot/i,
 		/DotBot/i,
-		/SemrushBot/i,
+		// /SemrushBot/i,
 		/Scrapy/i,
 		];
 	for (var crawler of pattern) {
@@ -95,6 +95,8 @@ php.render.tag.open = "{{";
 php.render.tag.close = "}}";
 
 php.char = {alpha: {numeric: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"}}
+
+php.to_integer = function (input: any) { return parseInt (input) || 0; }
 
 php.date = class {
 	date: any;

@@ -1,11 +1,10 @@
 {
 	"setup": true,
 	"internet": false,
-	"type": "bioskop",
+	"type": "bokep",
 	"cache": "0.0.000",
 	"cache:io": "2025-12-21",
-	"cache:generator": true,
-	"sitemap:cache": "2025-12-21",
+	"generator": true,
 	"cd:io": false,
 	"cd:network": true,
 	"cd:base_url": "https://vcredist.github.io",

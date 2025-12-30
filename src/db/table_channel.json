@@ -1,0 +1,10 @@
+[
+{"#id": null, "reference": 0, "name": "", "slug": "", "meta": {}, "description": ""},
+
+{"id": 100, "reference": 0, "name": "Administrator", "slug": "administrator", "meta": {}, "description": ""},
+{"id": 101, "reference": 0, "name": "Chronicle", "slug": "chronicle", "meta": {}, "description": ""},
+{"id": 201, "reference": 0, "name": "ASEAN", "slug": "asean", "meta": {}, "description": ""},
+{"id": 202, "reference": 0, "name": "Western", "slug": "western", "meta": {}, "description": ""},
+
+{}
+]

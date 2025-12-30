@@ -6,7 +6,7 @@
 		"start": "wrangler dev",
 		"dev": "wrangler dev",
 		"local": "wrangler dev --port 80 --ip 0.0.0.0",
-		"deploy": "wrangler deploy && node test/configure.js",
+		"deploy": "wrangler deploy",
 		"test": "vitest",
 		"config": "node test/configure.js",
 		"cf-typegen": "wrangler types"

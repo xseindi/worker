@@ -51,7 +51,7 @@ php.plugin.tmdb = class {
 		this.tv = new php.plugin.tmdb.tv (this);
 		}
 	setup () {
-		for (var i in this.adapter.request.db.cache.genre.data) this.genre [this.adapter.request.db.cache.genre.data [i].id] = this.adapter.request.db.cache.genre.data [i]
+		if (this.adapter.request.db.cache.genre) for (var i in this.adapter.request.db.cache.genre.data) this.genre [this.adapter.request.db.cache.genre.data [i].id] = this.adapter.request.db.cache.genre.data [i]
 		}
 	head () {
 		return {

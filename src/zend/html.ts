@@ -47,8 +47,8 @@ php.html = function (output: string, variable: any = {}) {
 	markup.push (2, `<link rel="icon" href="{{ base_url }}{{ router favorite.ico }}">`);
 	markup.push (2, `<link rel="canonical" href="{{ canonical_url }}">`);
 	markup.push (2, `<link rel="manifest" href="{{ base_url:file }}{{ router manifest.json }}">`);
-	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
-	markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
+	if (false) markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed }}" type="application/rss+xml" title="{{ alternate:site-name }} &raquo; Feed">`);
+	if (false) markup.push (2, `<link rel="alternate" href="{{ base_url }}{{ router feed:atom }}" type="application/atom+xml" title="{{ alternate:site-name }} &raquo; Feed (Atom)">`);
 	if (variable ["open-search"]) {
 		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search }}" type="application/opensearchdescription+xml" title="">`);
 		markup.push (2, `<link rel="search" href="{{ base_url }}{{ router open-search:description }}" type="application/opensearchdescription+xml" title="">`);
@@ -86,7 +86,7 @@ php.html = function (output: string, variable: any = {}) {
 		markup.push (2, `<script src="https://unpkg.com/vue-router@4.6.3/dist/vue-router.global.prod.js"></script>`);
 		}
 	markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:prototype.js }}?cache={{ cache }}"></script>`);
-	markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:php.js }}?cache={{ cache }}"></script>`);
+	if (false) markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:php.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ cd:base_url }}{{ router asset:vue.js }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:layout }}?cache={{ cache }}"></script>`);
 	markup.push (2, `<script src="{{ theme:base_url }}{{ router vue:component }}?cache={{ cache }}"></script>`);
@@ -207,8 +207,8 @@ php.help.scriptag = function (app: any, request: any, response: any, next: any) 
 	markup.push (2, `<script>Function.cookie ()</script>`);
 	markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
 	markup.push (2, `<script>Function.cookie.start ()</script>`);
-	markup.push (2, `<script>Function.help.visitor.session (vue.visitor.ip.address, vue.visitor.country.code)</script>`);
-	markup.push (2, `<script>window.onload = function () { php.emit ("load") }</script>`);
+	markup.push (2, `<script>Function.help.visitor.session (vue.visitor.ip.address, vue.visitor.country.code, vue.visitor.agent)</script>`);
+	markup.push (2, `<script>window.onload = function () { Event.emit ("load") }</script>`);
 	return markup;
 	}
 

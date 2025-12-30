@@ -70,6 +70,18 @@ vue.layout ("wrap", {
 		`,
 	})
 
+vue.layout ("test", {
+	setup () {
+		var variable = vue.app.io
+		return {variable}
+		},
+	template: `
+		<div class="flex flex:column height:size">
+			test
+		</div>
+		`,
+	})
+
 /**
  * xxx
  *
