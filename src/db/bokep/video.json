@@ -1,5 +1,5 @@
 [
-{"#": null, "reference": 0, "title": "", "slug": "", "thumbnail": {}, "description": ""},
+{"#": null, "reference": 0, "title": "", "slug": "", "thumbnail": {}, "embed": [{"provider": "byse", "url": ""}], "prop": {"orientation": "", "length": "00:00"}, "description": ""},
 
 {"id": 1, "reference": 0, "title": "Default", "slug": "default", "thumbnail": {}, "description": ""},
 

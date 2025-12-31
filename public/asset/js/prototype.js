@@ -350,7 +350,7 @@ Function.cookie.id = function () {
 	return Function.cookie.get (Function.cookie.identity);
 	}
 
-Function.cookie.identity = "session";
+Function.cookie.identity = "cookie";
 Function.cookie.data = {}
 
 /**
@@ -959,6 +959,16 @@ Function.help ["transfer-queue"] = function (id) {
 Function.help ["transfer-queue"].data = [];
 
 Function.help.visitor = function () {}
+Function.help.visitor.cookie = function (ip, country, agent) {
+	if (Function.cookie.get ("visited")) {}
+	else {
+		Function.cookie.set ("visited", Date.now ());
+		Function.ajax.post ("/cgi-bin/api/visitor/cookie", {cookie: Function.cookie.id (), ip, country, url: URL.document.path, agent}, {
+			success: function (response) {},
+			error: function (error) {},
+			});
+		}
+	}
 Function.help.visitor.session = function (ip, country, agent) {
 	if (Function.cookie.get ("visited")) {}
 	else {

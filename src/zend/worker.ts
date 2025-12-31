@@ -326,6 +326,10 @@ php.worker.client = async function (app: any, request: any, response: any, next:
 	request.client.host = {name: client.host}
 	if (client.domain) request.client.host.cookie = "." + client.domain
 	else request.client.host.cookie = client.host
+	var sub
+	if (request.url.host.name === client.domain) sub = "www"
+	else sub = request.url.host.name.split (request.client.host.cookie).join ("")
+	request.url.domain.sub = sub
 	if (client.reference) {
 		var reference = db.client.array ().filter ({id: client.reference}).one ()
 		request.client.object = php.object.assign ((request.db.value (reference.meta) || {}), request.client.object)
@@ -526,7 +530,7 @@ var library: any = class {
 				this.response.var ["ld+json webpage:image"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
 				this.response.var ["ld+json webpage:thumbnail"] = data ["ld+json webpage"].image || data ["image:cover"] || "#"
 				}
-			if (data.var || data.variable) this.response.app.variable = (data.var || data.variable)
+			if (data.var || data.variable || data.socket) this.response.app.variable = (data.var || data.variable || data.socket)
 			}
 		this.request.client.theme.layout = this.response.var ["theme:layout"]
 		this.response.var ["scriptag"] = php.help.scriptag (this.app, this.request, this.response).render ()

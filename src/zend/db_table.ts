@@ -9,6 +9,7 @@ var table: any = {
 	"people": {name: "table_people", sql: `create table if not exists (id integer primary key, reference integer, description text);`},
 	"video": {name: "table_video", sql: `create table if not exists (id integer primary key, reference integer, description text);`},
 	"video:click": {name: "table_video_click", sql: `create table if not exists (id integer primary key, reference integer, description text);`},
+	"visitor:cookie": {name: "table_visitor_cookie", sql: `create table if not exists (id integer primary key, reference integer, date text, cookie text, ip text, country text, url text, agent text, description text);`},
 	"visitor:session": {name: "table_visitor_session", sql: `create table if not exists (id integer primary key, reference integer, date text, session text, ip text, country text, url text, agent text, description text);`},
 	"file:transfer-queue": {name: "tmp_file_transfer_queue", sql: `create table if not exists (id integer primary key, reference integer, tmdb integer, imdb text, description text);`},
 	"plugin:google-auth": {name: "tmp_plugin_google_auth", sql: `create table if not exists (id integer primary key, reference integer, p_id text, name text, email text, picture text, access text, description text);`},

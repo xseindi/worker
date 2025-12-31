@@ -21,12 +21,13 @@ import "../zend/theme"
 import DB_GENRE from "../db/bokep/genre.json"
 import DB_PEOPLE from "../db/bokep/people.json"
 import DB_VIDEO from "../db/bokep/video.json"
-import THE_SITEMAP_VIDEO from "../db/bokep/sitemap/video.json"
+import DB_VIDEO_001 from "../db/bokep/part/video-001.json"
 
 var {ln, ln_r, ln_tab, ln_s} = php.constant
 var {zero, one} = php.constant
 
 var the = {
+	sub: ["bokep", "bacot"],
 	date: new php.date.io (),
 	dummy: {
 		date: {
@@ -43,7 +44,7 @@ var the = {
 		tag: [],
 		genre: [],
 		people: [],
-		video: THE_SITEMAP_VIDEO,
+		video: [],
 		movie: [],
 		tv: [],
 		},
@@ -63,8 +64,11 @@ var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
 	request.db.json ["genre"] = DB_GENRE
 	request.db.json ["people"] = DB_PEOPLE
-	request.db.json ["video"] = DB_VIDEO
+	request.db.json ["video"] = [... DB_VIDEO, ... DB_VIDEO_001]
 	await php.worker.start.up (app, request, response, next)
+	if (request.sub = the.sub.includes (request.url.domain.sub)) {}
+	else if (request.url.path === "/") {}
+	else return response ("Not Found", 404)
 	if (request.redirect.url) return response.redirect (request.redirect.url, request.redirect.code)
 	if (request.error.length) {
 		for (var i in request.error) {
@@ -107,20 +111,26 @@ function start (request: any, response: any) {
  */
 
 app.get (app.router.index, async function (request: any, response: any, next: any) {
-	response.set ({
-		layout: "test",
-		route: "home",
-		socket: {},
-		})
-	return response.send ({
-		heading: [
-			request.client.site.title,
-			request.client.site.description,
-			request.client.site.meta.description,
-			],
-		date: the.dummy.date.index,
-		description: request.client.site.tagline,
-		})
+	if (request.sub) {
+		response.set ({
+			layout: "test",
+			route: "home",
+			socket: {},
+			})
+		return response.send ({
+			heading: [
+				request.client.site.title,
+				request.client.site.description,
+				request.client.site.meta.description,
+				],
+			date: the.dummy.date.index,
+			description: request.client.site.tagline,
+			})
+		}
+	else {
+		var url = "//" + "bacot." + request.url.host.name
+		return response.redirect (url, 302)
+		}
 	})
 
 /**
@@ -500,16 +510,18 @@ app.get (app.router ["people:index"], async function (request: any, response: an
 		title: "People",
 		layout: "index",
 		route: "under-construction",
-		variable: {
+		socket: {
 			title: "People",
 			icon: "person",
 			},
 		})
-	return response.write ({
-		h1: "People",
-		h2: request.client.site.title,
-		h3: request.client.site.description,
-		h4: request.client.site.meta.description,
+	return response.send ({
+		heading: [
+			"People",
+			request.client.site.title,
+			request.client.site.description,
+			request.client.site.meta.description,
+			],
 		date: the.dummy.date.index,
 		description: request.client.site.tagline,
 		})
@@ -680,12 +692,20 @@ app.get (app.router ["playlist:default"], async function (request: any, response
  * xxx://xxx.xxx.xxx/xxx
  */
 
-app.get (app.router ["cgi-bin:api trending:today"], async function (request: any, response: any, next: any) {
-	return response.json (await request.tmdb.trending ("today"))
-	})
-
-app.get (app.router ["cgi-bin:api trending:week"], async function (request: any, response: any, next: any) {
-	return response.json (await request.tmdb.trending ("week"))
+app.post (app.router ["cgi-bin:api visitor:cookie"], async function (request: any, response: any, next: any) {
+	var post = await request.json ()
+	if (post.cookie) {
+		if (post.ip) {
+			if (post.country) {
+				if (post.url) {
+					if (post.agent) {
+						var insert = await request.db.insert ("visitor:cookie").set ({date: request.date.string (), cookie: post.cookie, ip: post.ip, country: post.country, url: post.url, agent: post.agent}).query ()
+						}
+					}
+				}
+			}
+		}
+	return response.json ({})
 	})
 
 app.post (app.router ["cgi-bin:api visitor:session"], async function (request: any, response: any, next: any) {
@@ -697,7 +717,6 @@ app.post (app.router ["cgi-bin:api visitor:session"], async function (request: a
 				if (post.url) {
 					if (post.agent) {
 						var insert = await request.db.insert ("visitor:session").set ({date: request.date.string (), session: post.cookie, ip: post.ip, country: post.country, url: post.url, agent: post.agent}).query ()
-						console.log ("cookie", post.cookie, request.date.string (), post.ip, post.country)
 						}
 					}
 				}

@@ -207,7 +207,7 @@ php.help.scriptag = function (app: any, request: any, response: any, next: any) 
 	markup.push (2, `<script>Function.cookie ()</script>`);
 	markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
 	markup.push (2, `<script>Function.cookie.start ()</script>`);
-	markup.push (2, `<script>Function.help.visitor.session (vue.visitor.ip.address, vue.visitor.country.code, vue.visitor.agent)</script>`);
+	markup.push (2, `<script>Function.help.visitor.cookie (vue.visitor.ip.address, vue.visitor.country.code, vue.visitor.agent)</script>`);
 	markup.push (2, `<script>window.onload = function () { Event.emit ("load") }</script>`);
 	return markup;
 	}

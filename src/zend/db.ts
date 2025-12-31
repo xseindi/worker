@@ -131,6 +131,12 @@ php.db = class {
 		}
 	}
 
+php.db.merge = function (db: any = []) {
+	return db.filter (function (data: any) {
+		return "id" in data;
+		});
+	}
+
 /**
  * xxx
  *
