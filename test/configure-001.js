@@ -94,9 +94,16 @@ async function writeRobot (id, action) {
 			}
 		else {
 			robot.push (`Sitemap: https://${application.sitemap.domain}/file/${application.identity}/sitemap.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/page.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/categories.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/tag.xml`);
 			robot.push (`Sitemap: https://${application.sitemap.domain}/file/${application.identity}/sitemap/genre.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/article.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/article/2026-01.xml`);
 			robot.push (`Sitemap: https://${application.sitemap.domain}/file/${application.identity}/sitemap/people.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/people/2026-01.xml`);
 			robot.push (`Sitemap: https://${application.sitemap.domain}/file/${application.identity}/sitemap/video.xml`);
+			// robot.push (`Sitemap: https://${application.sitemap.domain}/sitemap/video/2026-01.xml`);
 			if (action === "generate") {
 				var fp = await fetch ("http://" + application.local + "/cgi-bin/generator/sitemap.xml");
 				var sitemap = await fp.text ()

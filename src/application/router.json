@@ -97,5 +97,17 @@
 	"sitemap.xml:categories": "/sitemap/categories.xml",
 	"sitemap.xml:tag": "/sitemap/tag.xml",
 	"sitemap.xml:genre": "/sitemap/genre.xml"
+	},
+"generic": {
+	"sitemap": "/file/:id/sitemap/:sitemap",
+	"sitemap.xml": "/file/:id/sitemap.xml",
+	"sitemap:page.xml": "/file/:id/sitemap/page.xml",
+	"sitemap:post.xml": "/file/:id/sitemap/post.xml",
+	"sitemap:article.xml": "/file/:id/sitemap/article.xml", "sitemap:article.xml part": "/file/:id/sitemap/article/:part.xml",
+	"sitemap:people.xml": "/file/:id/sitemap/people.xml", "sitemap:people.xml part": "/file/:id/sitemap/people/:part.xml",
+	"sitemap:video.xml": "/file/:id/sitemap/video.xml", "sitemap:video.xml part": "/file/:id/sitemap/video/:part.xml",
+	"sitemap:categories.xml": "/file/:id/sitemap/categories.xml",
+	"sitemap:tag.xml": "/file/:id/sitemap/tag.xml",
+	"sitemap:genre.xml": "/file/:id/sitemap/genre.xml"
 	}
 }

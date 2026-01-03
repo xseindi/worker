@@ -23,7 +23,6 @@ import DB_PEOPLE from "../db/bokep/people.json"
 import DB_VIDEO from "../db/bokep/video.json"
 import DB_VIDEO_100 from "../db/bokep/part/video-100.json"
 import DB_VIDEO_200 from "../db/bokep/part/video-200.json"
-import DB_VIDEO_300 from "../db/bokep/part/video-300.json"
 
 var {ln, ln_r, ln_tab, ln_s} = php.constant
 var {zero, one} = php.constant
@@ -66,7 +65,7 @@ var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
 	request.db.json ["genre"] = DB_GENRE
 	request.db.json ["people"] = DB_PEOPLE
-	request.db.json ["video"] = [... DB_VIDEO, ... DB_VIDEO_100, ... DB_VIDEO_200, ... DB_VIDEO_300]
+	request.db.json ["video"] = [... DB_VIDEO, ... DB_VIDEO_100, ... DB_VIDEO_200]
 	await php.worker.start.up (app, request, response, next)
 	if (request.sub = the.sub.includes (request.url.domain.sub)) {}
 	else if (request.url.path === "/") {}
@@ -796,150 +795,8 @@ if (php ["config.json"].generator) {
 	app.get ("/cgi-bin/generator/cache.js", async function (request: any, response: any, next: any) {
 		return response.js ("")
 		})
-	app.get ("/cgi-bin/generator/manifest.json", async function (request: any, response: any, next: any) {
-		return response.json ({
-			"name": request.client.site.name,
-			"short_name": request.client.site.name,
-			"display": "minimal-ui",
-			"start_url": "/?manifest",
-			"scope": "/",
-			"background_color": "#FFFFFF",
-			"theme_color": "#4285f4",
-			"icons": [
-				{"src": request.router ("files", {id: request.client.identity, file: "manifest/144.png"}), "sizes": "144x144", "type": "image/png"},
-				],
-			})
-		})
 	app.get ("/cgi-bin/generator/sitemap.xml", async function (request: any, response: any, next: any) {
-		var xml = new php.markup ()
-		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-		xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		xml.push (1, `<sitemap>`)
-		xml.push (2, `<loc>${request.router ({generic: "sitemap:genre.xml"}, {id: request.client.identity})}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</sitemap>`)
-		xml.push (1, `<sitemap>`)
-		xml.push (2, `<loc>${request.router ({generic: "sitemap:people.xml"}, {id: request.client.identity})}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</sitemap>`)
-		xml.push (1, `<sitemap>`)
-		xml.push (2, `<loc>${request.router ({generic: "sitemap:video.xml"}, {id: request.client.identity})}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</sitemap>`)
-		xml.push (0, `</sitemapindex>`)
-		return response.xml (xml.render ())
-		})
-	app.get (app.router.legacy ["sitemap.xml:page"], async function (request: any, response: any, next: any) {
-		var sitemap = [
-			{location: request.router ({page: "about"})},
-			{location: request.router ({page: "contact"})},
-			{location: request.router ({page: "privacy-policy"})},
-			{location: request.router ({page: "term_of_use"})},
-			{location: request.router ({page: "cookie:preference"})},
-			{location: request.router ({page: "disclaimer"})},
-			{location: request.router ({page: "DMCA"})},
-			]
-		var xml = new php.markup ()
-		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${request.base_url}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
-		for (var i in sitemap) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (1, `</url>`)
-			}
-		xml.push (0, `</urlset>`)
-		return response.xml (xml.render ())
-		})
-	app.get ("/cgi-bin/generator/sitemap/genre.xml", async function (request: any, response: any, next: any) {
-		var sitemap = [
-			{location: request.router ("genre:index")},
-			]
-		var xml = new php.markup ()
-		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${request.base_url}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
-		for (var i in sitemap) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (2, `<changefreq>weekly</changefreq>`)
-			xml.push (2, `<priority>0.8</priority>`)
-			xml.push (1, `</url>`)
-			}
-		for (var i in response.db.genre.data) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${response.db.genre.data [i].permalink}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (1, `</url>`)
-			}
-		xml.push (0, `</urlset>`)
-		return response.xml (xml.render ())
-		})
-	app.get ("/cgi-bin/generator/sitemap/people.xml", async function (request: any, response: any, next: any) {
-		var sitemap = [
-			{location: request.router ("people:index")},
-			]
-		var xml = new php.markup ()
-		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${request.base_url}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
-		for (var i in sitemap) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (2, `<changefreq>weekly</changefreq>`)
-			xml.push (2, `<priority>0.8</priority>`)
-			xml.push (1, `</url>`)
-			}
-		for (var i in response.db.people.data) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${response.db.people.data [i].permalink}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (1, `</url>`)
-			}
-		xml.push (0, `</urlset>`)
-		return response.xml (xml.render ())
-		})
-	app.get ("/cgi-bin/generator/sitemap/video.xml", async function (request: any, response: any, next: any) {
-		var sitemap = [
-			{location: request.router ("video:index")},
-			{location: request.router ("video-quality:HD")},
-			{location: request.router ("video-quality:camera")},
-			]
-		var xml = new php.markup ()
-		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
-		xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
-		xml.push (1, `<url>`)
-		xml.push (2, `<loc>${request.base_url}</loc>`)
-		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-		xml.push (1, `</url>`)
-		for (var i in sitemap) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${sitemap [i].location}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (2, `<changefreq>weekly</changefreq>`)
-			xml.push (2, `<priority>0.8</priority>`)
-			xml.push (1, `</url>`)
-			}
-		for (var i in response.db.video.data) {
-			xml.push (1, `<url>`)
-			xml.push (2, `<loc>${response.db.video.data [i].permalink}</loc>`)
-			xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
-			xml.push (1, `</url>`)
-			}
-		xml.push (0, `</urlset>`)
-		return response.xml (xml.render ())
+		return response.xml ("")
 		})
 	}
 
@@ -978,3 +835,154 @@ console.log ("let's go")
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+app.get (app.router ["manifest.json"], async function (request: any, response: any, next: any) {
+	return response.json ({
+		"name": request.client.site.name,
+		"short_name": request.client.site.name,
+		"display": "minimal-ui",
+		"start_url": "/?manifest",
+		"scope": "/",
+		"background_color": "#FFFFFF",
+		"theme_color": "#4285f4",
+		"icons": [
+			{"src": request.router ("files", {id: request.client.identity, file: "manifest/144.png"}), "sizes": "144x144", "type": "image/png"},
+			],
+		})
+	})
+
+app.get (app.router.legacy ["sitemap.xml"], async function (request: any, response: any, next: any) {
+	var xml = new php.markup ()
+	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+	xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+	xml.push (1, `<sitemap>`)
+	xml.push (2, `<loc>${request.router ({legacy: "sitemap.xml:video"})}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</sitemap>`)
+	xml.push (1, `<sitemap>`)
+	xml.push (2, `<loc>${request.router ({legacy: "sitemap.xml:people"})}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</sitemap>`)
+	xml.push (1, `<sitemap>`)
+	xml.push (2, `<loc>${request.router ({legacy: "sitemap.xml:genre"})}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</sitemap>`)
+	xml.push (0, `</sitemapindex>`)
+	return response.xml (xml.render ())
+	})
+
+app.get (app.router.legacy ["sitemap.xml:page"], async function (request: any, response: any, next: any) {
+	var sitemap = [
+		{location: request.router ({page: "about"})},
+		{location: request.router ({page: "contact"})},
+		{location: request.router ({page: "privacy-policy"})},
+		{location: request.router ({page: "term_of_use"})},
+		{location: request.router ({page: "cookie:preference"})},
+		{location: request.router ({page: "disclaimer"})},
+		{location: request.router ({page: "DMCA"})},
+		]
+	var xml = new php.markup ()
+	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+	xml.push (1, `<url>`)
+	xml.push (2, `<loc>${request.base_url}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</url>`)
+	for (var i in sitemap) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (1, `</url>`)
+		}
+	xml.push (0, `</urlset>`)
+	return response.xml (xml.render ())
+	})
+
+app.get (app.router.legacy ["sitemap.xml:people"], async function (request: any, response: any, next: any) {
+	var sitemap = [
+		{location: request.router ("people:index")},
+		]
+	var xml = new php.markup ()
+	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+	xml.push (1, `<url>`)
+	xml.push (2, `<loc>${request.base_url}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</url>`)
+	for (var i in sitemap) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (2, `<changefreq>weekly</changefreq>`)
+		xml.push (2, `<priority>0.8</priority>`)
+		xml.push (1, `</url>`)
+		}
+	for (var i in response.db.people.data) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${response.db.people.data [i].permalink}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (1, `</url>`)
+		}
+	xml.push (0, `</urlset>`)
+	return response.xml (xml.render ())
+	})
+
+app.get (app.router.legacy ["sitemap.xml:video"], async function (request: any, response: any, next: any) {
+	var sitemap = [
+		{location: request.router ("video:index")},
+		{location: request.router ("video-quality:HD")},
+		{location: request.router ("video-quality:camera")},
+		]
+	var xml = new php.markup ()
+	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+	xml.push (1, `<url>`)
+	xml.push (2, `<loc>${request.base_url}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</url>`)
+	for (var i in sitemap) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (2, `<changefreq>weekly</changefreq>`)
+		xml.push (2, `<priority>0.8</priority>`)
+		xml.push (1, `</url>`)
+		}
+	for (var i in response.db.video.data) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${response.db.video.data [i].permalink}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (1, `</url>`)
+		}
+	xml.push (0, `</urlset>`)
+	return response.xml (xml.render ())
+	})
+
+app.get (app.router.legacy ["sitemap.xml:genre"], async function (request: any, response: any, next: any) {
+	var sitemap = [
+		{location: request.router ("genre:index")},
+		]
+	var xml = new php.markup ()
+	xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
+	xml.push (0, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
+	xml.push (1, `<url>`)
+	xml.push (2, `<loc>${request.base_url}</loc>`)
+	xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+	xml.push (1, `</url>`)
+	for (var i in sitemap) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${sitemap [i].location}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (2, `<changefreq>weekly</changefreq>`)
+		xml.push (2, `<priority>0.8</priority>`)
+		xml.push (1, `</url>`)
+		}
+	for (var i in response.db.genre.data) {
+		xml.push (1, `<url>`)
+		xml.push (2, `<loc>${response.db.genre.data [i].permalink}</loc>`)
+		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
+		xml.push (1, `</url>`)
+		}
+	xml.push (0, `</urlset>`)
+	return response.xml (xml.render ())
+	})
