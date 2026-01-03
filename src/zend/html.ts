@@ -201,13 +201,14 @@ php.help.scriptag = function (app: any, request: any, response: any, next: any) 
 	markup.push (2, `<script>vue.app.theme = ${JSON.stringify (request.client.theme)}</script>`);
 	markup.push (2, `<script>vue.app.route = "${response.var.route}"</script>`);
 	markup.push (2, `<script>vue.app.image = ${JSON.stringify (request.client.object.image)}</script>`);
+	markup.push (2, `<script>vue.app.data.genre = ${JSON.stringify (response.db.genre.data)}</script>`);
 	markup.push (2, `<script>vue.router.link (vue.app.id, ${JSON.stringify (app.router)})</script>`);
 	markup.push (2, `<script>vue.visitor = ${JSON.stringify (request.visitor)}</script>`);
 	markup.push (2, `<script>Function.image.stock (${JSON.stringify (response.image.stock)})</script>`)
 	markup.push (2, `<script>Function.cookie ()</script>`);
-	markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}", "expire:day": 30})</script>`);
-	markup.push (2, `<script>Function.cookie.start ()</script>`);
-	markup.push (2, `<script>Function.help.visitor.cookie (vue.visitor.ip.address, vue.visitor.country.code, vue.visitor.agent)</script>`);
+	markup.push (2, `<script>Function.cookie.set ({domain: "${request.client.host.cookie}"})</script>`);
+	markup.push (2, `<script>Function.cookie.start (vue.visitor)</script>`);
+	if (false) markup.push (2, `<script>Function.visitor.cookie (vue.visitor.ip.address, vue.visitor.country.code, vue.visitor.agent)</script>`);
 	markup.push (2, `<script>window.onload = function () { Event.emit ("load") }</script>`);
 	return markup;
 	}

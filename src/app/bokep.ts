@@ -21,13 +21,14 @@ import "../zend/theme"
 import DB_GENRE from "../db/bokep/genre.json"
 import DB_PEOPLE from "../db/bokep/people.json"
 import DB_VIDEO from "../db/bokep/video.json"
-import DB_VIDEO_001 from "../db/bokep/part/video-001.json"
+import DB_VIDEO_100 from "../db/bokep/part/video-100.json"
+import DB_VIDEO_200 from "../db/bokep/part/video-200.json"
 
 var {ln, ln_r, ln_tab, ln_s} = php.constant
 var {zero, one} = php.constant
 
 var the = {
-	sub: ["bokep", "bacot"],
+	sub: ["bokep"],
 	date: new php.date.io (),
 	dummy: {
 		date: {
@@ -64,7 +65,7 @@ var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
 	request.db.json ["genre"] = DB_GENRE
 	request.db.json ["people"] = DB_PEOPLE
-	request.db.json ["video"] = [... DB_VIDEO, ... DB_VIDEO_001]
+	request.db.json ["video"] = [... DB_VIDEO, ... DB_VIDEO_100, ... DB_VIDEO_200]
 	await php.worker.start.up (app, request, response, next)
 	if (request.sub = the.sub.includes (request.url.domain.sub)) {}
 	else if (request.url.path === "/") {}
@@ -113,8 +114,8 @@ function start (request: any, response: any) {
 app.get (app.router.index, async function (request: any, response: any, next: any) {
 	if (request.sub) {
 		response.set ({
-			layout: "test",
-			route: "home",
+			layout: "bokep:index",
+			route: "bokep:index",
 			socket: {},
 			})
 		return response.send ({
@@ -122,14 +123,18 @@ app.get (app.router.index, async function (request: any, response: any, next: an
 				request.client.site.title,
 				request.client.site.description,
 				request.client.site.meta.description,
+				"🔞",
 				],
 			date: the.dummy.date.index,
 			description: request.client.site.tagline,
 			})
 		}
 	else {
-		var url = "//" + "bacot." + request.url.host.name
-		return response.redirect (url, 302)
+		if (false) {
+			var url = "//" + "bokep." + request.url.host.name
+			return response.redirect (url, 302)
+			}
+		else return next ()
 		}
 	})
 

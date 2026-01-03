@@ -120,6 +120,10 @@ php.date.io = php.date;
 php.date.time = function (... date: any) { return new Date (... date as []); }
 php.date.month = {name: {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}}
 php.date.day = {name: {1: "Monday", 2: "Tuesday", 3: "Wednesday", 4: "Thursday", 5: "Friday", 6: "Saturday", 7: "Sunday"}}
+php.date.embed = function () {}
+php.date.embed.format = function (input: any) { if ((input = parseInt (input)) > 3600) return php.date.embed.hour (input); else return php.date.embed.minute (input); }
+php.date.embed.hour = function (input: any) { var hour = Math.floor ((input = parseInt (input)) / 3600); var minute = Math.floor ((input % 3600) / 60); var second = input % 60; return `${hour}:${String (minute).padStart(2, "0")}:${String (second).padStart(2, "0")}`; }
+php.date.embed.minute = function (input: any) { var minute = Math.floor ((input = parseInt (input)) / 60); var second = input % 60; return `${String (minute).padStart(2, "0")}:${String (second).padStart(2, "0")}`; }
 
 php.str_after = function str_after (search: string, string: string) { var pos = string.indexOf (search); if (pos !== undefined) return string.substr (pos + search.length); else return ""; }
 php.str_before = function str_before (search: string, string: string) { return string.split (search) [0]; }

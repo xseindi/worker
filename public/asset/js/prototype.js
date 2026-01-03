@@ -12,7 +12,7 @@ function Define (descriptor, key, value) { Object.defineProperty (descriptor, ke
 function DefineGETTER (descriptor, key, value) { Object.defineProperty (descriptor, key, {get: value, writable: true, enumerable: false, configurable: true}); }
 
 /**
- * xxx
+ * object
  *
  * title
  * description
@@ -20,6 +20,10 @@ function DefineGETTER (descriptor, key, value) { Object.defineProperty (descript
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+Object.is = function () {}
+
+Object.is.url = function (input) { return input.startsWith ("http://") || input.startsWith ("https://"); }
 
 /**
  * array
@@ -219,6 +223,11 @@ Date.time.interval.clear = function (context) { clearInterval (context); }
 Date.timeout = function (context, second = 1) { return setTimeout (context, (second * 1000)); }
 Date.timeout.clear = function (context) { clearTimeout (context); }
 
+Date.embed = function () {}
+Date.embed.format = function (input) { if ((input = parseInt (input)) > 3600) return Date.embed.hour (input); else return Date.embed.minute (input); }
+Date.embed.hour = function (input) { var hour = Math.floor (input / 3600); var minute = Math.floor ((input % 3600) / 60); var second = input % 60; return `${hour}:${String (minute).padStart(2, "0")}:${String (second).padStart(2, "0")}`; }
+Date.embed.minute = function (input) { var minute = Math.floor (input / 60); var second = input % 60; return `${String (minute).padStart(2, "0")}:${String (second).padStart(2, "0")}`; }
+
 /**
  * url
  *
@@ -244,7 +253,10 @@ URL.parse = function (input) {
 		}
 	}
 
-URL.query = function () {}
+URL.query = function (key) {
+	return URL.document.q [key];
+	}
+
 URL.query.parse = function (query) {
 	var parse = {}, q;
 	if (query.startsWith ("?")) q = query.substr (1);
@@ -294,7 +306,7 @@ JSON.token.parse = function (token) {
 	}
 
 /**
- * xxx
+ * cookie
  *
  * title
  * description
@@ -340,10 +352,11 @@ Function.cookie.set = function (key, value = "", expire = 0, domain = null, path
 		}
 	}
 
-Function.cookie.start = function () {
+Function.cookie.start = function (visitor) {
 	if (Function.cookie.get (Function.cookie.identity)) {}
 	else Function.cookie.set (Function.cookie.identity, Function.unique.id ());
-	Event.emit ("cookie:start");
+	if (visitor) Function.visitor.cookie (visitor.ip.address, visitor.country.code, visitor.agent);
+	Event.emit ("cookie:start", visitor);
 	}
 
 Function.cookie.id = function () {
@@ -958,8 +971,9 @@ Function.help ["transfer-queue"] = function (id) {
 	}
 Function.help ["transfer-queue"].data = [];
 
-Function.help.visitor = function () {}
-Function.help.visitor.cookie = function (ip, country, agent) {
+Function.visitor = function () {}
+
+Function.visitor.cookie = function (ip, country, agent) {
 	if (Function.cookie.get ("visited")) {}
 	else {
 		Function.cookie.set ("visited", Date.now ());
@@ -969,7 +983,8 @@ Function.help.visitor.cookie = function (ip, country, agent) {
 			});
 		}
 	}
-Function.help.visitor.session = function (ip, country, agent) {
+
+Function.visitor.session = function (ip, country, agent) {
 	if (Function.cookie.get ("visited")) {}
 	else {
 		Function.cookie.set ("visited", Date.now ());
@@ -1030,7 +1045,7 @@ Function.body.css.reset = function (type, type_of, orientation) {
  */
 
 Function.export = {
-	object: Object,
+	object: Object, is: Object.is,
 	array: Array,
 	string: String,
 	number: Number,

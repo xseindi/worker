@@ -702,3 +702,118 @@ vue.component ("the-genre:nav", {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+vue.component ("bokep:header", {
+	mount () {
+		vue.mount.search ()
+		},
+	template: `
+		<div id="header-simple" class="flex align:item gap header:size width:size fixed background-color:alpha box-shadow index:tiny" component="header-simple:float">
+			<div class="padding:left" mobile>
+				<button:material id="menu:toggle" icon="menu" class="icon:large padding-horizontal:small padding:vertical background:clear"/>
+			</div>
+			<div class="padding-left:small" computer></div>
+			<logo-simple href="/"/>
+			<div class="flex align:item justify:item flex:grow">
+				<div class="flex align:item gap" computer>
+					<!--the-genre:nav /-->
+				</div>
+			</div>
+			<div class="flex align:item gap:tiny padding:right">
+				<button:material id="search-button" icon="search" class="icon:large padding:pop border-radius:pop"/>
+				<notification-simple>
+					<notification-simple:float />
+				</notification-simple>
+				<account-simple:anonymous>
+					<account-simple:float />
+				</account-simple:anonymous>
+			</div>
+		</div>
+		<div id="search-form" class="flex align:item header:size width:size fixed padding:right background-color:alpha index:small" style="display: none">
+			<input id="search-input" type="search" class="flex:grow header:size font:medium padding-left:medium border:none" placeholder="Search something ...">
+			<button:material id="search-button-submit" icon="search" class="icon:large padding:pop border-radius:pop"/>
+		</div>
+		`,
+	})
+
+vue.component ("bokep:menu", {
+	setup () {
+		var css = "padding:io border:radius icon:medium"
+		var sub_css = "padding:io padding-left:big border:radius font:small --mobile"
+		var menu = {
+			general: [
+				{component: "a:material", text: "Home", icon: "home", url: "/", css},
+				{component: "a:material", text: "Short", icon: "subscription", url: vue.router ({p: "short"}), css},
+				// {component: "a:material", text: "Trending", icon: "local_fire_department", url: vue.router ("movie:trending"), css},
+				// {component: "a:material", text: "Popular", icon: "local_fire_department", url: vue.router ({p: "popular"}), css},
+				{component: "a:material", text: "Editor Choice", icon: "editor_choice", url: vue.router ({p: "editor-choice"}), css},
+				{component: "a:material", text: "Live", icon: "live_tv", url: vue.router ({p: "live"}), css},
+				],
+			visitor: [
+				{component: "a:material", text: "History", icon: "search_activity", url: vue.router ({p: "history"}), css},
+				{component: "a:material", text: "Watch Later", icon: "timer_play", url: vue.router ("playlist:default"), css},
+				{component: "a:material", text: "Playlist", icon: "playlist_play", url: vue.router ("playlist:index"), css},
+				],
+			explore: [
+				{component: "a:material", text: "Star", description: "99 +", descriptionColor: "blue", icon: "person", url: vue.router ("people:index"), css},
+					{component: "a:material", text: "Male", description: "0", icon: "male", url: vue.router ("people:index", {}, {gender: "male"}), css: sub_css},
+					{component: "a:material", text: "Female", description: "99 +", icon: "female", url: vue.router ("people:index", {}, {gender: "female"}), css: sub_css},
+				// {component: "a:material", text: "Movie", description: vue.dummy.movie_count, descriptionColor: "blue", icon: "movie", url: vue.router ("movie:index"), css},
+					// {component: "a:material", text: "Trending", description: vue.dummy.movie_trending_count, icon: "trending_up", url: vue.router ("movie:trending"), css: sub_css},
+					// {component: "a:material", text: "Top Rated", description: vue.dummy.movie_top_rated_count, icon: "star_s", url: vue.router ("movie:top_rated"), css: sub_css},
+					// {component: "a:material", text: "Now Playing", description: vue.dummy.movie_now_playing_count, icon: "animated_image", url: vue.router ("movie:now_playing"), css: sub_css},
+					// {component: "a:material", text: "Up Coming", description: vue.dummy.movie_up_coming_count, icon: "timer_play", url: vue.router ("movie:up_coming"), css: sub_css},
+				// {component: "a:material", text: "TV Show", description: vue.dummy.tv_count, descriptionColor: "blue", icon: "tv_guide", url: vue.router ("tv:index"), css},
+					// {component: "a:material", text: "Trending", description: vue.dummy.tv_trending_count, icon: "trending_up", url: vue.router ("tv:trending"), css: sub_css},
+					// {component: "a:material", text: "Top Rated", description: vue.dummy.tv_top_rated_count, icon: "star_s", url: vue.router ("tv:top_rated"), css: sub_css},
+					// {component: "a:material", text: "Airing Today", description: vue.dummy.tv_airing_today_count, icon: "acute", url: vue.router ("tv:airing_today"), css: sub_css},
+					// {component: "a:material", text: "Up Coming", description: vue.dummy.tv_up_coming_count, icon: "timer_play", url: vue.router ("tv:up_coming"), css: sub_css},
+				{component: "a:material", text: "Photo", description: "1K +", descriptionColor: "blue", icon: "photo_camera", url: vue.router ("photo:index"), css},
+				],
+			}
+		var genre = []
+		var lgbt = []
+		for (var i in vue.app.data.genre) {
+			if (["transgender", "lesbian"].includes (vue.app.data.genre [i].slug)) lgbt.push (vue.app.data.genre [i])
+			else genre.push (vue.app.data.genre [i])
+			}
+		return {menu, genre, lgbt}
+		},
+	mount () {
+		vue.mount.menu ()
+		},
+	template: `
+		<div id="menu-simple" class="menu:size flex flex:column box-shadow background:color scrollbar:pop" aria-modal="menu">
+			<div class="flex flex:column padding">
+				<component v-for="data in menu.general" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
+				<!--a:material v-for="a in menu.general" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/-->
+			</div>
+			<div class="padding-horizontal:large padding-top:small">
+				<string class="font-size:intermediate font:bold">YOU</string>
+			</div>
+			<div class="flex flex:column padding">
+				<component v-for="data in menu.visitor" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
+				<!--a:material v-for="a in menu.visitor" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/-->
+			</div>
+			<div class="padding-horizontal:large padding-top:small">
+				<string class="font-size:intermediate font:bold">EXPLORE</string>
+			</div>
+			<div class="flex flex:column padding">
+				<component v-for="data in menu.explore" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
+				<!--a:material v-for="a in menu.explore" v-bind:text="a.text" v-bind:href="a.url" v-bind:icon="a.icon" class="padding:io border:radius"/-->
+			</div>
+			<div class="padding-horizontal:large padding-top:small">
+				<string class="font-size:intermediate font:bold">LGBT</string>
+			</div>
+			<div class="flex flex:column padding">
+				<a:material v-for="a in lgbt" v-bind:text="a.name" v-bind:href="a.permalink" v-bind:icon="a.icon" class="padding:io border:radius icon:medium"/>
+			</div>
+			<div class="padding-horizontal:large padding-top:small">
+				<string class="font-size:intermediate font:bold">GENRE</string>
+			</div>
+			<div class="flex flex:column padding">
+				<a:material v-for="a in genre" v-bind:text="a.name" v-bind:href="a.permalink" icon="circle" class="padding:io border:radius icon:tiny"/>
+			</div>
+		</div>
+		`,
+	})

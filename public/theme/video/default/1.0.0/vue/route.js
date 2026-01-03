@@ -933,3 +933,84 @@ vue.route ("under-construction", {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+vue.route ("bokep:index", {
+	setup () {},
+	template: `
+		<div class="flex flex:column">
+			<div class="flex gap padding" computer>
+				<div class="flex flex:column flex:grow gap padding:large border:radius box-shadow background-color">
+					<div class="flex align:item gap">
+						<circle:pop size="8" class="background-color:red-pop"/>
+						<circle:pop size="8" class="background-color:green-pop"/>
+						<circle:pop size="8" class="background-color:blue-pop"/>
+						<div class="flex:grow"></div>
+						<circle:line size="8" class="background-color:yellow-pop"/>
+						<circle:pop size="8" class="background-color:yellow-pop"/>
+					</div>
+					<div class="flex flex:grow align:item justify:item"><img:undraw src="designer" height="128" class=""/></div>
+					<div class="">
+						<separator:mono />
+					</div>
+					<div class="font:large font-bold:pop">Million's of Video's, Photo's and People to discover.</div>
+					<div class="flex align:item gap font:big">
+						<icon src="play_circle" class="text:gradient"/>
+						<string>Explore now.</string>
+					</div>
+				</div>
+				<!--div class="flex flex:column gap">
+					<video-card:poster v-bind:data="vue.app.data ['editor-choice']"/>
+					<video-card:poster v-bind:data="vue.app.data.asia.all"/>
+				</div-->
+			</div>
+			<div class="padding background-color:mono" mobile>
+				<div class="flex flex:column flex:grow gap padding:large border:radius box-shadow background-color">
+					<div class="flex align:item gap">
+						<circle:pop size="8" class="background-color:red-pop"/>
+						<circle:pop size="8" class="background-color:green-pop"/>
+						<circle:pop size="8" class="background-color:blue-pop"/>
+						<div class="flex:grow"></div>
+						<circle:line size="8" class="background-color:yellow-pop"/>
+						<circle:pop size="8" class="background-color:yellow-pop"/>
+					</div>
+					<div class="flex flex:grow align:item justify:item"><img:undraw src="designer" height="128" class=""/></div>
+					<div class="">
+						<separator:mono/>
+					</div>
+					<div class="font:intermediate font-bold:pop">Million's of Video's, Photo's and People to discover.</div>
+					<div class="flex align:item gap font:large">
+						<icon src="play_circle" class="text:gradient"/>
+						<string>Explore now.</string>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex:wrap align:item justify:item gap padding">
+				<a:genre v-for="genre in vue.app.data.genre" v-bind:href="genre.permalink" v-bind:text="genre.name"/>
+			</div>
+			<!--
+			<title-simple text="Trending" icon="local_fire_department" class="padding-bottom:none"/>
+			<video-card id="video-trending" v-bind:data="vue.app.data.trending.today"/>
+			<adsterra type="horizontal"/>
+			<title-simple text="Must Watch" icon="local_fire_department" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true, limit: 20}"/>
+			<video-card id="video-mw" item="item:best" v-bind:data="vue.app.data ['editor-choice']" v-bind:option="{shuffle: true, limit: 10}" v-else/>
+			<adsterra type="horizontal"/>
+			<title-simple text="Movie" description="Popular" icon="movie" class="padding-bottom:none"/>
+			<video-card id="video-movie" v-bind:data="vue.app.data.movie.popular"/>
+			<adsterra type="horizontal"/>
+			<title-simple text="TV Show" description="Popular" icon="tv_guide" class="padding-bottom:none"/>
+			<video-card id="video-tv" v-bind:data="vue.app.data.tv.popular"/>
+			<adsterra type="horizontal"/>
+			<title-simple text="South Korea" description="Movie — TV Show" icon="globe" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-asia-KR" v-bind:data="vue.app.data.asia.KR" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-asia-KR" v-bind:data="vue.app.data.asia.KR" v-bind:option="{shuffle: true, limit: 20}" v-else/>
+			<title-simple text="Japan" description="Movie — TV Show" icon="globe" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-asia-JP" v-bind:data="vue.app.data.asia.JP" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-asia-JP" v-bind:data="vue.app.data.asia.JP" v-bind:option="{shuffle: true, limit: 20}" v-else/>
+			<title-simple text="China" description="Movie — TV Show" icon="globe" class="padding-bottom:none"/>
+			<video-card v-if="vue.device.computer ()" id="video-asia-CN" v-bind:data="vue.app.data.asia.CN" v-bind:option="{shuffle: true}"/>
+			<video-card id="video-asia-CN" v-bind:data="vue.app.data.asia.CN" v-bind:option="{shuffle: true, limit: 20}" v-else/>
+			-->
+		</div>
+		`,
+	})

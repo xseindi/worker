@@ -1,7 +1,7 @@
 [
-{"#": null, "reference": 0, "title": "", "slug": "", "thumbnail": {}, "embed": [{"provider": "byse", "url": ""}], "prop": {"orientation": "", "length": "00:00"}, "description": ""},
+{"#": null, "reference": 0, "title": "", "slug": "", "country": [], "genre": [], "cast": [], "rating": 0, "quality": "", "type_of": "", "orientation": "landscape", "runtime": 0, "length": "00:00", "thumbnail": {"url": ""}, "embed": [{"provider": "byse", "id": "", "url": ""}], "description": "", "keyword": []},
 
-{"id": 1, "reference": 0, "title": "Default", "slug": "default", "thumbnail": {}, "description": ""},
+{"id": null, "reference": 0, "title": "Default", "slug": "default", "country": [], "genre": [], "cast": [], "rating": 0, "quality": "", "type_of": "short", "orientation": "landscape", "runtime": 0, "length": "00:00", "thumbnail": {"url": ""}, "embed": [{"provider": "byse", "id": "", "url": ""}], "description": "", "keyword": []},
 
 {}
 ]

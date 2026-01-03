@@ -1,5 +1,5 @@
 /**
- * xxx
+ * default
  *
  * title
  * description
@@ -34,7 +34,7 @@ vue.element ("icon", {
 	})
 
 /**
- * xxx
+ * anchor
  *
  * title
  * description
@@ -51,9 +51,9 @@ vue.element ("a:link", {
 	})
 
 vue.element ("a:material", {
-	prop: ["text", "description", "url", "icon", "description-color"],
+	prop: ["text", "description", "href", "url", "icon", "description-color"],
 	template: `
-		<a:link v-bind:href="prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
+		<a:link v-bind:href="prop.href || prop.url" class="flex align:item gap font:static font:flex background-hover:mono-pop">
 			<icon v-bind:src="prop.icon"/>
 			<string v-if="prop.text" primary>{{ prop.text }}</string>
 			<string primary v-else><slot name="default"/></string>
@@ -61,6 +61,28 @@ vue.element ("a:material", {
 		</a:link>
 		`,
 	})
+
+vue.element ("a:genre", {
+	prop: ["text"],
+	setup () {},
+	method: {
+		css () { return "font-size:pop font-bold:pop font:static padding:pop border-radius:round border border-color:mono background-hover:mono-pop" },
+		},
+	template: `
+		<a:link v-if="prop.text" v-bind:class="css ()">{{ prop.text }}</a:link>
+		<a:link v-bind:class="css ()" v-else><slot name="default"/></a:link>
+		`,
+	})
+
+/**
+ * button
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
 
 vue.element ("button:material", {
 	prop: ["text", "description", "icon", "icon-position"],
@@ -91,7 +113,7 @@ vue.element ("button:awesome", {
 	})
 
 /**
- * xxx
+ * icon
  *
  * title
  * description
@@ -111,7 +133,7 @@ vue.element ("icon:material", {
 	})
 
 /**
- * xxx
+ * image
  *
  * title
  * description
@@ -148,6 +170,26 @@ vue.element ("img:file", {
 		`,
 	})
 
+vue.element ("img:ad", {
+	prop: ["src"],
+	method: {
+		url (src) { return ("/ad/{src}").split ("{src}").join (src) },
+		},
+	template: `
+		<img v-bind:src="url (prop.src)">
+		`,
+	})
+
+vue.element ("asset:image", {
+	prop: ["src"],
+	method: {
+		url (src) { return "/asset/image/" + src },
+		},
+	template: `
+		<img v-bind:src="url (prop.src)">
+		`,
+	})
+
 vue.element ("img:asset", {
 	prop: ["src"],
 	method: {
@@ -162,7 +204,7 @@ vue.element ("img:logo", {
 	prop: ["src"],
 	method: {
 		url (src) {
-			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
+			if (typeof src === "string") if (lib.is.url (src)) return src
 			return "/asset/image/logo/" + (lib.image.stock (src) || src)
 			},
 		},
@@ -175,7 +217,7 @@ vue.element ("img:avatar", {
 	prop: ["src"],
 	method: {
 		url (src) {
-			if (typeof src === "string") if (src.startsWith ("http:") || src.startsWith ("https:")) return src
+			if (typeof src === "string") if (lib.is.url (src)) return src
 			return "/asset/image/avatar/" + (lib.image.stock (src) || src)
 			},
 		},
@@ -239,34 +281,12 @@ vue.element ("img:ratio", {
 		},
 	template: `
 		<div class="relative no-overflow" v-bind:style="style">
-			<img:asset v-bind:src="img" class="width:size" v-bind:style="sheet"/>
-			<images v-bind:src="prop.src" type="cover" class="opacity:small transition:opacity"/>
+			<asset:image v-bind:src="img" class="width:size" v-bind:style="sheet"/>
+			<img:cover v-bind:src="prop.src" class="opacity:small transition:opacity"/>
 		</div>
 		`,
 	})
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
-
-vue.element ("a:genre", {
-	prop: ["text"],
-	setup () {},
-	method: {
-		css () { return "font-size:pop font-bold:pop font:static padding:pop border-radius:round border border-color:mono background-hover:mono-pop" },
-		},
-	template: `
-		<a:link v-if="prop.text" v-bind:class="css ()">{{ prop.text }}</a:link>
-		<a:link v-bind:class="css ()" v-else><slot name="default"/></a:link>
-		`,
-	})
-
+	
 /**
  * xxx
  *
@@ -334,7 +354,7 @@ vue.element ("circle:line", {
 	})
 
 /**
- * xxx
+ * miscellaneous
  *
  * title
  * description
@@ -348,16 +368,6 @@ vue.element ("status:online", {
 		<div class="absolute border-radius:circle index" style="width: 10px; height: 10px; border: 2px solid white; bottom: -2px; right: -2px;"></div>
 		`,
 	})
-
-/**
- * xxx
- *
- * title
- * description
- * sub description
- *
- * xxx://xxx.xxx.xxx/xxx
- */
 
 vue.element ("title-simple", {
 	prop: ["text", "description", "icon"],
@@ -389,16 +399,6 @@ vue.element ("video:frame", {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
-
-vue.element ("img:ad", {
-	prop: ["src"],
-	method: {
-		url (src) { return ("/ad/{src}").split ("{src}").join (src) },
-		},
-	template: `
-		<img v-bind:src="url (prop.src)">
-		`,
-	})
 
 vue.element ("adsterra", {
 	prop: ["type"],

@@ -89,6 +89,26 @@ vue.markup = {
 			<component v-bind:is="vue.layout.key (src)"></component>
 			`,
 		}),
+	"for:each": vue.js ({
+		prop: ["component"],
+		template: `
+			<component v-for="data in prop.component" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
+			`,
+		}),
+	"block": vue.js ({
+		prop: ["component"],
+		template: `
+			<div>
+				<component v-for="data in prop.component" v-bind:is="data.component" v-bind:param="data" v-bind:class="data.css"/>
+			</div>
+			`,
+		}),
+	"route": vue.js ({
+		prop: ["src"],
+		template: `
+			<component v-bind:is="'route:' + prop.src"/>
+			`,
+		}),
 	}
 
 /**
@@ -121,7 +141,7 @@ vue.markup = {
  * xxx://xxx.xxx.xxx/xxx
  */
 
-vue.var = function (key, value) { if (value === undefined) return vue.variable [key]; else return vue.variable [key] = value; }
+vue.var = function (key, value) { if (arguments.length === 1) if (typeof key === "string") return vue.variable [key]; else for (var i in key) vue.variable [i] = key [i]; else return vue.variable [key] = value; }
 vue.variable = vue.reactive ();
 vue.loading = vue.reactive ();
 vue.dummy = vue.reactive ();
@@ -134,10 +154,10 @@ vue.var ("device:phone", false)
 
 vue.device = function () {}
 vue.device.if_else = function (computer, mobile) { return vue.device.computer () ? computer : mobile; }
-vue.device.computer = function (value) { return vue.var ("device:computer", value) }
-vue.device.mobile = function (value) { return vue.var ("device:mobile", value) }
-vue.device.tablet = function (value) { return vue.var ("device:tablet", value) }
-vue.device.phone = function (value) { return vue.var ("device:phone", value) }
+vue.device.computer = function (... value) { return vue.var ("device:computer", ... value) }
+vue.device.mobile = function (... value) { return vue.var ("device:mobile", ... value) }
+vue.device.tablet = function (... value) { return vue.var ("device:tablet", ... value) }
+vue.device.phone = function (... value) { return vue.var ("device:phone", ... value) }
 
 /**
  * xxx
@@ -153,8 +173,10 @@ vue.app = function () { return (vue.app.reference || vue.app.id); }
 vue.app.var = vue.reactive ();
 vue.app.config = vue.reactive ();
 vue.app.data = vue.reactive ({
+	categories: [],
+	tag: [],
 	genre: [],
-	video: [],
+	video: {src: [], country: {ID: [], JP: [], CN: [], KR: []}, asia: []},
 	movie: {trending: [], popular: [], top_rated: [], now_playing: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
 	tv: {trending: [], popular: [], top_rated: [], airing_today: [], up_coming: [], country: {KR: [], JP: [], CN: []}},
 	asia: {all: [], KR: [], JP: [], CN: []},

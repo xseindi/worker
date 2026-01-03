@@ -94,6 +94,7 @@ php.db = class {
 					index ++;
 					dummy [i].id = index;
 					}
+				else index = dummy [i].id;
 				if (id.includes (dummy [i].id)) continue;
 				else data.push (dummy [i]);
 				}

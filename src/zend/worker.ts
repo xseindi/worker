@@ -384,7 +384,7 @@ var library: any = class {
 			description: this.request.client.object ["site:description"],
 			tagline: this.request.client.object ["site:tagline"],
 			meta: {
-				author: {name: this.request.client.object ["meta:author"], email: {address: ("support@host").split ("host").join (this.request.url.host.name), support: "support"}},
+				author: {name: this.request.client.object ["meta:author"], email: {address: (this.request.client.object ["author:email"] || ("support@host").split ("host").join (this.request.url.host.name)), support: "support"}},
 				generator: this.request.client.object ["meta:generator"],
 				description: this.request.client.object ["meta:description"],
 				keyword: this.request.client.object ["meta:keyword"],
