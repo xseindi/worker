@@ -70,35 +70,6 @@ vue.layout ("wrap", {
 		`,
 	})
 
-vue.layout ("bokep:index", {
-	setup () {
-		var variable = vue.app.variable
-		return {variable}
-		},
-	template: `
-		<div class="flex flex:column height:size">
-			<header id="header" class="header:size relative index:large">
-				<bokep:header />
-			</header>
-			<main class="flex flex:grow index">
-				<menu id="menu" class="block relative index:small">
-					<div outter>
-						<bokep:menu />
-						<div class="menu:size" computer></div>
-					</div>
-				</menu>
-				<main id="main" class="flex flex:column flex:grow index">
-					<route v-bind:src="vue.app.route" class="flex:grow"/>
-					<footer id="footer" class="flex flex:column padding">
-						<footer-simple />
-						<footer-simple:info />
-					</footer>
-				</main>
-			</main>
-		</div>
-		`,
-	})
-
 /**
  * xxx
  *
@@ -140,6 +111,35 @@ vue.layout (404, {
  *
  * xxx://xxx.xxx.xxx/xxx
  */
+
+vue.layout ("bokep:index", {
+	setup () {
+		var variable = vue.app.variable
+		return {variable}
+		},
+	template: `
+		<div class="flex flex:column height:size">
+			<header id="header" class="header:size relative index:large">
+				<bokep:header />
+			</header>
+			<main class="flex flex:grow index">
+				<menu id="menu" class="block relative index:small">
+					<div outter>
+						<bokep:menu />
+						<div class="menu:size" computer></div>
+					</div>
+				</menu>
+				<main id="main" class="flex flex:column flex:grow index">
+					<route v-bind:src="vue.app.route" class="flex:grow"/>
+					<footer id="footer" class="flex flex:column padding">
+						<footer-simple />
+						<footer-simple:info />
+					</footer>
+				</main>
+			</main>
+		</div>
+		`,
+	})
 
 /*
 vue.layout ("wide", {

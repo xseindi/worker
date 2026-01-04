@@ -255,17 +255,17 @@ php.worker.start.up = async function (app: any, request: any, response: any, nex
 		if (true) {
 			response.db.genre = await request.db.select ("genre").json ().find ().query ()
 			response.app.data.genre = response.db.genre.set (response.db.genre.data.map (function (genre: any) {
-				genre.permalink = request.router ("genre", {id: genre.id, slug: genre.slug})
+				genre.permalink = request.router ("genre:src", {id: genre.id, slug: genre.slug})
 				return genre
 				}))
 			response.db.people = await request.db.select ("people").json ().find ().query ()
 			response.app.data.people = response.db.people.set (response.db.people.data.map (function (people: any) {
-				people.permalink = request.router ("people", {id: people.id, slug: people.slug})
+				people.permalink = request.router ("people:src", {id: people.id, slug: people.slug})
 				return people
 				}))
 			response.db.video = await request.db.select ("video").json ().find ().query ()
 			response.app.data.video = response.db.video.set (response.db.video.data.map (function (video: any) {
-				video.permalink = request.router ("video", {id: video.id, slug: video.slug})
+				video.permalink = request.router ("video:src", {id: video.id, slug: video.slug})
 				return video
 				}))
 			}

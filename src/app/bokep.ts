@@ -30,7 +30,7 @@ var {zero, one} = php.constant
 
 var the = {
 	sub: ["bokep"],
-	date: new php.date.io ("2026-01-01"),
+	date: new php.date.io (),
 	dummy: {
 		date: {
 			index: "2025-09-11",
@@ -53,6 +53,19 @@ var the = {
 	}
 
 /**
+ * function
+ *
+ * title
+ * description
+ * sub description
+ *
+ * xxx://xxx.xxx.xxx/xxx
+ */
+
+function error_found (response: any) { return response ("Not Found", 404) }
+function error_forbidden (response: any) { return response ("Forbidden", 403) }
+
+/**
  * setup
  *
  * title
@@ -64,18 +77,46 @@ var the = {
 
 var app = new php.worker (php.express)
 app.start (async function (request: any, response: any, next: any) {
+	return next ()
+	})
+
+app.get ("*", function (request: any, response: any, next: any) {
+	var path = function () {
+		var page = [
+			"/search",
+			"/about/", "/term_of_use",
+			]
+		var regex = [
+			"/cgi-bin/", "/cpanel/",
+			"/categories/", "/tag/", "/genre/", "/label/",
+			"/people/", "/photo/", "/video/",
+			"/editor-choice/",
+			"/short/", "/live/",
+			"/history/", "/playlist/",
+			]
+		if (request.url.path === "/") return true
+		else if (page.includes (request.url.path)) return true
+		for (var i in regex) if (request.url.path.startsWith (regex [i])) return true
+		return false
+		}
+	if (path ()) {}
+	else return error_found (response)
+	return next ()
+	})
+
+app.use ("*", async function (request: any, response: any, next: any) {
 	request.db.json ["genre"] = DB_GENRE
 	request.db.json ["people"] = DB_PEOPLE
 	request.db.json ["video"] = [... DB_VIDEO, ... DB_VIDEO_100, ... DB_VIDEO_200, ... DB_VIDEO_300]
 	await php.worker.start.up (app, request, response, next)
 	if (request.sub = the.sub.includes (request.url.domain.sub)) {}
 	else if (request.url.path === "/") {}
-	else return response ("Not Found", 404)
+	else return error_found (response)
 	if (request.redirect.url) return response.redirect (request.redirect.url, request.redirect.code)
 	if (request.error.length) {
 		for (var i in request.error) {
-			if (request.error [i].type === "host") return response ("Not Found", 404)
-			if (request.error [i].type === "agent") return response ("Forbidden", 403)
+			if (request.error [i].type === "host") return error_found (response)
+			if (request.error [i].type === "agent") return error_forbidden (response)
 			}
 		}
 	start (request, response)
@@ -815,15 +856,15 @@ if (php ["config.json"].generator) {
 		xml.push (0, `<?xml version="1.0" encoding="UTF-8"?>`)
 		xml.push (0, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`)
 		xml.push (1, `<sitemap>`)
-		xml.push (2, `<loc>${request.router ({generic: "sitemap:genre.xml"}, {id: request.client.identity})}</loc>`)
+		xml.push (2, `<loc>${request.router ({generator: "sitemap:genre.xml"}, {id: request.client.identity})}</loc>`)
 		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
 		xml.push (1, `</sitemap>`)
 		xml.push (1, `<sitemap>`)
-		xml.push (2, `<loc>${request.router ({generic: "sitemap:people.xml"}, {id: request.client.identity})}</loc>`)
+		xml.push (2, `<loc>${request.router ({generator: "sitemap:people.xml"}, {id: request.client.identity})}</loc>`)
 		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
 		xml.push (1, `</sitemap>`)
 		xml.push (1, `<sitemap>`)
-		xml.push (2, `<loc>${request.router ({generic: "sitemap:video.xml"}, {id: request.client.identity})}</loc>`)
+		xml.push (2, `<loc>${request.router ({generator: "sitemap:video.xml"}, {id: request.client.identity})}</loc>`)
 		xml.push (2, `<lastmod>${the.date.iso ()}</lastmod>`)
 		xml.push (1, `</sitemap>`)
 		xml.push (0, `</sitemapindex>`)
@@ -971,7 +1012,41 @@ app.catch (function (request: any, response: any, next: any) {
 
 export default app.export ()
 
-console.log ("let's go")
+function genre_id () { return php.number.shuffle (300000, 399999) }
+function people_id () { return php.number.shuffle (100000, 199999) }
+function video_id () { return php.number.shuffle (100000000000, 199999999999) }
+
+function genre_check () {
+	var data: any = []
+	for (var i in DB_GENRE) {
+		if ("id" in DB_GENRE [i]) {
+			if (data.includes (DB_GENRE [i].id)) console.log ("genre duplicate", DB_GENRE [i].id)
+			else data.push (DB_GENRE [i].id)
+			}
+		}
+	console.log ("genre", data.length)
+	}
+
+function people_check () {
+	var people: any = []
+	for (var i in DB_PEOPLE) {
+		if ("id" in DB_PEOPLE [i]) {
+			if (people.includes (DB_PEOPLE [i].id)) console.log ("people duplicate", DB_PEOPLE [i].id)
+			else people.push (DB_PEOPLE [i].id)
+			}
+		}
+	console.log ("people", people.length)
+	}
+
+if (php ["config.json"].generator) {
+	console.log ("genre:id", genre_id ())
+	console.log ("people:id", people_id ())
+	console.log ("video:id", video_id ())
+	for (var i = 0; i < 10; i ++) {}
+	genre_check ()
+	people_check ()
+	console.log ("let's go")
+	}
 
 /**
  * the end

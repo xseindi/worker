@@ -183,4 +183,7 @@ php.array.io = class {
 		}
 	}
 
+php.number = function () {}
+php.number.shuffle = function (min: number, max: number) { return Math.floor (Math.random () * (min - max + 1)) + max; }
+
 //
